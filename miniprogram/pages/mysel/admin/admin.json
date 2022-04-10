@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "classCard": "/components/admin/classCard/classCard",
+    "indexCard": "/components/index/indexCard/indexCard",
+    "ec-canvas": "../../../ec-canvas/ec-canvas"
+  }
+  
+}

@@ -1,0 +1,69 @@
+/* components/classCard.wxss */
+@import "../../style/iconfont.wxss";
+
+
+.swiper {
+
+  /* min-width: 420rpx; */
+  margin-left: 1%;
+  right: 10rpx;
+  width: 100%;
+  height: 480rpx;
+  bottom: 150rpx;
+  /* border: 1px solid black; */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.Card{
+  border: 1px solid black;
+  height: 100%;
+  width: 280rpx;
+  border-radius: 30rpx;
+  margin-bottom: 50rpx;
+}
+
+.img{
+  border: 1px solid black;
+  height: 75%;
+  width: 95%;
+  margin: 5rpx;
+  border-radius: 0rpx 0rpx 30rpx 30rpx;
+  /* margin-bottom: 30rpx; */
+}
+
+.Title{
+  width: 100%;
+  text-align: center;
+  font-size: 35rpx;
+  color: #fff !important;
+  background: #5bc0de !important;
+  border-color: #46b8da !important;
+  border-radius: 30rpx 30rpx 0rpx 0rpx;
+  /* margin-bottom: 20rpx; */
+}
+
+
+@keyframes closeDown {
+  form {
+    transform: translateY(0%);
+  }
+
+  to {
+    height: 0;
+    transform: translateY(110%);
+  }
+}
+
+
+
+.toClass {
+  margin-top: 40rpx;
+  background-color: white;
+  border-radius: 100rpx;
+}

@@ -1,2 +1,75 @@
-<!--miniprogram/pages/index/index.wxml-->
-<text>miniprogram/pages/index/index.wxml</text>
+<!--index.wxml-->
+<!-- <view class="myswiper"> -->
+
+<swiper indicator-dots='true' autoplay='true' interval='3000' duration='100' circular='true' previousMargin='50px' nextMargin='50px' bindchange="swiperBindchange">
+  <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
+    <swiper-item>
+      <image bindtap="preimage" src='{{item}}' class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
+    </swiper-item>
+  </block>
+  <view class="remind-box" wx:if="{{remind}}">
+    <image class="remind-img" src="/Images/start1/loading_blue.gif"></image>
+  </view>
+</swiper>
+
+<!-- </view> -->
+<!-- <view class='myGrid'>
+  <Grid icon2="{{icon2}}">
+    <view slot="1" bindtap='unopen'>关注</view>
+    <view slot="2" class="gridFont" bindtap="tonearby" wx-if="{{identity==1}}">附近飞手</view>
+    <view slot="2" class="gridFont" bindtap="tonearby" wx-if="{{identity==2}}">我要接单</view>
+
+    <view slot="3" bindtap="totopic" >话题</view>
+    <view slot="4">我要考证</view>
+    <view slot="5" bindtap='tonew'>发布</view>
+    <view slot="6">汇飞社团活动</view>
+  </Grid>
+</view> -->
+
+<view class="flex-box">
+  <view class="flex-item" bindtap="toXiaoXi">
+    <image src="../../images/index/discuss.png"></image>
+    <text>来问我</text>
+  </view>
+
+
+
+
+  <view class="flex-item" bindtap='toSchoolDetail'>
+    <image src="../../images/index/messge.png"></image>
+    <text>快解说</text>
+  </view>
+
+  <view class="flex-item" bindtap="toCrouseBot">
+    <image src="../../images/index/love.png"></image>
+    <text>来学习</text>
+  </view>
+  <!-- <view class="flex-item" bindtap="tonearby" >
+    <image src="../../Images/index/shequ.png"></image>
+    <text>我要接单</text>
+  </view> -->
+
+
+  <view class="flex-item" bindtap="toSendCrouse">
+    <image src="../../images/index/topic.png"></image>
+    <text>传知识</text>
+  </view>
+
+  <view class="flex-item" bindtap="toSendSchoolDetail">
+    <image src="../../images/index/plane.png"></image>
+    <text>发解说</text>
+  </view>
+
+
+  <view class="flex-item" bindtap="toSchoolData">
+    <image src="../../images/index/xxzx.png"></image>
+    <text>小扩展</text>
+  </view>
+
+
+</view>
+
+<view>
+  <button class="continueBtn"  catchtap="touchAddVisitorApply">访客入校申请</button>
+</view>
+

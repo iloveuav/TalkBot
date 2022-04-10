@@ -1,0 +1,10 @@
+{
+
+  "backgroundColor": "#F6F6F6",
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#4D9BF4",
+  "navigationBarTitleText": "校园语音助手",
+  "navigationBarTextStyle": "white",
+  "navigationStyle": "default",
+  "usingComponents": {}
+}

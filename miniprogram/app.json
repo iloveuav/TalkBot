@@ -1,15 +1,31 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/TalkBot/TalkBot",
-    "pages/me/me",
-    "pages/FunTalk/FunTalk"
+
+    "pages/courseBotIndex/index",
+    "pages/courseBot/index",
+    "pages/schoolDetail/index",
+    "pages/AddEngClassContent/AddEngClassContent",
+    "pages/mysel/me",
+    "pages/mysel/FeedBack/FeedBack",
+    "pages/schoolDetailBot/TalkBot",
+    "pages/train/train",
+    "pages/mysel/admin/admin",
+    "pages/SendSchoolDetail/index",
+    "pages/notification/notification",
+
+
+    "pages/mysel/superAdmin/index",
+    "pages/mysel/superAdmin/admin/train/train",
+    "pages/mysel/takePhoto/index",
+
+    "pages/mysel/superAdmin/visitorFromList/visitorFromList"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "AI教练",
+    "navigationBarTitleText": "校园语音助手",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -23,20 +39,27 @@
         "pagePath": "pages/index/index",
         "text": "首页"
       },
-      {
-        "selectedIconPath": "images/button/talk2.png",
-        "iconPath": "images/button/talk1.png",
-        "pagePath": "pages/FunTalk/FunTalk",
-        "text": "消息"
-      },
+ 
       {
         "selectedIconPath": "images/button/me2.png",
         "iconPath": "images/button/me1.png",
-        "pagePath": "pages/me/me",
+        "pagePath": "pages/mysel/me",
         "text": "我的"
       }
     ]
   },
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.4",
+      "provider": "wx069ba97219f66d99"
+    },
+    "QCloudTBP": {
+      "version": "1.0.4",
+      "provider": "wx65f00fe52f504192"
+    }
+  },
+ 
+  
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }

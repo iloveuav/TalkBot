@@ -1,0 +1,156 @@
+/* components/index/indexCardCard/courseCard.wxss */
+
+.Card{
+  height: 900rpx;
+  /* margin-left: 50rpx; */
+  margin-top: 80rpx;
+  margin-bottom: 60rpx;
+  background-color: #F3F3F3;
+  /* border: 1px solid #d0d0d000; */
+  /* box-shadow: 0 0 8rpx #ccc; */
+}
+
+.infoBox{
+  border: 1px solid rgba(0, 128, 0, 0);
+  /* height: 500rpx;
+  width: 80%; */
+}
+
+.Card-item {
+  display: inline-block;
+  /* padding-left: 20rpx; *//* margin-right: 30rpx; */
+  width: 100%;
+  /* border: 1px solid rgba(0, 128, 0, 0); */
+}
+
+
+
+
+
+.Card-icon {
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 20%;
+  /* background-color: rgb(91, 176, 204); */
+  border: 1rpx solid rgb(218, 218, 218);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30rpx;
+}
+
+.icon {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+
+
+.Card-info {
+  flex: 3;
+  margin-left: 25rpx;
+  min-width: 100rpx;
+}
+
+.Card-info-title {
+  font-size: 38rpx;
+}
+
+.swiper {
+  position: absolute;
+  width: 96%;
+  height: 52%;
+  bottom: 40%;
+  left: 2%;
+  /* border: 1px solid black; */
+}
+
+.slide-image {
+  width: 85%;
+  height: 100%;
+  border-radius: 30rpx;
+}
+
+.zoom-out {
+  transform: scale(0.8);
+  transition: all 0.7s ease-out 0s;
+}
+
+.zoom-in {
+  transform: scale(1);
+  transition: all 0.7s ease-in 0s;
+}
+
+.Card-cover-container {
+  position: relative;
+  display: flex;
+  left: 250rpx;
+}
+
+.Card-cover {
+  height: 200rpx;
+  width: 150rpx;
+  border-radius: 15rpx;
+}
+
+.Card-cover-next {
+  height: 160rpx;
+  width: 120rpx;
+  margin-top: 40rpx;
+  margin-left: 20rpx;
+  border-radius: 15rpx;
+  margin-right: -140rpx;
+}
+
+.classInfoBox {
+  display: flex;
+  /* border: 1px solid red; */
+  box-shadow: 0 0 8rpx #ccc;
+  border: 1px solid #d0d0d0;
+  /* background-color: white */
+  margin-top: 600rpx;
+  width: 80%;
+  margin-left: 5%;
+
+  height: 200rpx;
+  border-radius: 30rpx;
+  padding: 5%;
+  /* flex-wrap: nowrap; *//* justify-content: flex-start; */
+}
+
+.Card-progress {
+  margin-left: 110rpx;
+  margin-top: -125rpx;
+  height: 60rpx;
+  width: 70%;
+  padding: 10rpx;
+  border: 1rpx solid rgb(222, 222, 222);
+  border-radius: 15rpx;
+  background-color: #fff;
+  background: rgb(221, 232, 235);
+  color:rgb(21, 139, 179);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* border: 1px solid blue; */
+}
+
+.Card-id {
+  height: 50rpx;
+  width: 50rpx;
+  border-radius: 25rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+  /* background-color: rgb(244, 244, 238); */
+  background: rgb(236, 239, 240);
+  border: 1rpx solid rgb(222, 222, 222);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroller {
+  /* height: 274rpx; */
+  width: 100%;
+}
