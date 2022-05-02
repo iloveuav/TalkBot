@@ -1,17 +1,16 @@
-<!--pages/mysel/mysel.wxml-->
-<view class="bg">
-  <view class="head">
-    <view class="headIcon">
-      <!-- <image wx:if="{{islogin==false}}" style="width:200rpx;height:200rpx;" src="Images/user-unlogin.png"></image> -->
-      <image style="width:200rpx;height:200rpx;" src="{{info.avatarUrl}}"></image>
-    </view>
-    <view class="login">
-      {{info.nickName}}
-      <view class="btn_view" wx:if="{{islogin==false}}">
-        <button class="btn_init" bindtap="getUserProfile">微信登陆</button>
+<view class="head">
+  <view class="bg"></view>
+  <view class="box">
+    <view class="headIcon" wx:if="{{islogin==true}}">
+      <image src="{{info.avatarUrl}}"></image>
+      <view class="headInfo">
+        <view>姓名：{{info.nickName}}</view>
+        <view>语言：{{info.language}}</view>
       </view>
     </view>
-    <view class="whiteline"></view>
+    <view class="login" wx:else>
+      <button class="btn_init" bindtap="getUserProfile">微信登陆</button>
+    </view>
   </view>
 </view>
 
@@ -29,21 +28,19 @@
   </view>
 </view> -->
 
-<view class='item' bindtap='unopen'>
+<!-- <view class='item' bindtap='unopen'>
   <view class="title">姓名</view>
   <view class="detail2">
     <text>{{info.nickName}}</text>
   </view>
 </view>
 
-
 <view class='item' bindtap='unopen'>
   <view class="title">语言</view>
   <view class="detail2">
     <text>{{info.language}}</text>
   </view>
-</view>
-
+</view> -->
 
 <!-- <view class="line"></view>
 <view class="item" bindtap='unopen'>
@@ -54,22 +51,22 @@
 </view>
 <view class="line"></view> -->
 
-<view class='item' bindtap="toSendCrouse">
-  <view class="title">发布课程</view>
-  <view class="detail2">
-    <text> ></text>
+<view class="func_list">
+  <view class='item' bindtap="toSendCrouse">
+    <view class="title">发布课程</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
+  <view class='item' bindtap='unopen'>
+    <view class="title">我要反馈</view>
+    <image class="icon"  src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
+  <view class='item' bindtap="toSuperAdmin" wx:if="{{!isAdmin}}">
+    <view class="title">超级管理员</view>
+    <image class="icon"  src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 </view>
-<view class="line"></view>
-
-<view class='item' bindtap='unopen'>
-  <view class="title">我要反馈</view>
-  <view class="detail2">
-    <text> ></text>
-  </view>
-</view>
-<view class="line"></view>
-
 <!-- <view class='item'bindtap="addArticle">
   <view class="title">上传文章</view>
   <view class="detail2">
@@ -95,10 +92,3 @@
 </view>
 <view class="line"></view> -->
 
-<view class='item' bindtap="toSuperAdmin" wx:if="{{!isAdmin}}">
-  <view class="title">超级管理员</view>
-  <view class="detail2">
-    <text> ></text>
-  </view>
-</view>
-<view class="line"></view>

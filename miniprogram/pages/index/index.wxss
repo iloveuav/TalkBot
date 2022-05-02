@@ -1,9 +1,9 @@
 /**index.wxss**/
 swiper{
-  margin-top: 50rpx;
- height: 450rpx;
- width: 100%;
-
+  margin: 30rpx;
+  height: 240rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
 }
 
  page {
@@ -13,18 +13,17 @@ swiper{
 .slide-image {
   width: 100%;
   height: 100%;
-   border-radius: 60rpx;
 }
  
-.zoom-out {
-  transform: scale(0.8);
+/* .zoom-out {
+  transform: scale(0.9);
   transition: all 0.7s ease-out 0s;
 }
  
 .zoom-in {
   transform: scale(1);
   transition: all 0.7s ease-in 0s;
-}
+} */
 
 .myGrid{
 top: 200rpx;
@@ -40,22 +39,23 @@ margin-bottom: 200rpx;
 
 .flex-box{
   display: flex;
-  margin: 30rpx;
   flex-wrap: wrap;
+  margin: 0 30rpx;
 }
 .flex-item{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 210rpx;
-  height: 160rpx;
-  background-color: #307af7;
+  margin: 0 10rpx 30rpx;
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  background-color: #4D9BF4;
   color: #fff;
-  margin: 30rpx 10rpx;
-  border-radius: 15rpx;
 }
-.flex-item:nth-child(1){
+
+/* .flex-item:nth-child(1){
   background-color: #307af7;
   box-shadow: 0 10rpx 15rpx #307af7;
 }
@@ -78,15 +78,15 @@ margin-bottom: 200rpx;
 .flex-item:nth-child(6){
   background-color: #9c88ff;
   box-shadow: 0 10rpx 15rpx #9c88ff;
-}
+} */
 .flex-item image{
-  width: 50%;
-  height: 50%;
+  width: 50rpx;
+  height: 50rpx;
 }
 .flex-item text{
   display: block;
   margin-top: 10rpx;
-  font-size: 10pt;
+  font-size: 26rpx;
 }
 
 .remind-box {
@@ -106,16 +106,14 @@ margin-bottom: 200rpx;
 
 
 .continueBtn {
-  border: 1px solid #000;
-  font-size: 15px;
-  height: 80rpx;
-  width: 80rpx;
   position: fixed;
   bottom: 50rpx;
-  right: 25%;
-  border-radius: 100rpx 100rpx 100rpx 100rpx;
-  z-index: 999;
-  /* color: black; */
-  text-align: center;
-  background: linear-gradient(to right, rgb(48, 180, 163), rgb(47, 184, 154));
+  left: 50%;
+  transform: translateX(-50%);
+  height: 80rpx;
+  
+  border: 1px solid #4D9BF4;
+  border-radius: 100rpx;
+  font-size: 30rpx;
+  color: #4D9BF4;
 }

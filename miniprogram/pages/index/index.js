@@ -6,6 +6,7 @@ Page({
     remind: '加载中',
     islogin:false,
     login:false,
+    currentSwiperIndex: 0,
     "bnrUrl": [{
       "url": "cloud://uav-001-9213ca.7561-uav-001-9213ca/images/start1.jpg"
     }, {

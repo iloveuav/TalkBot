@@ -24,14 +24,13 @@
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarBackgroundColor": "#4D9BF4",
     "navigationBarTitleText": "校园语音助手",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#3399FF",
-    "borderStyle": "white",
     "list": [
       {
         "selectedIconPath": "images/button/home2.png",
