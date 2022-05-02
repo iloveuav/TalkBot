@@ -11,7 +11,7 @@
 			<image bindtap="tap_ch" class="pic" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
 			</image>
 			<image bindtap="tap_ch" class="pic" src="{{appSetting.homeImageUrl}}"></image>
-			<text class="title">管理员中心 </text>
+			<text class="title">管理员数据中心 </text>
 			<view class="wc {{pageFlag == 0 ? 'active' : ''}}" bindtap="touchHome">
 				<text>主页 🌈</text>
 			</view>
@@ -20,11 +20,11 @@
 				<text>运营数据审核 📊</text>
 			</view>
 
-			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
-				<text>访客申请列表🎫 </text>
+			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
+				<text>访客待审核列表🎫 </text>
 			</view>
 
-			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitors">
+			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
 				<text>访客申请日志📕 </text>
 			</view>
 
@@ -38,8 +38,8 @@
 		<block wx:if="{{pageFlag == 0}}">
 			<!-- <image bindtap="tap_ch" src="../../images/icon/menu.png"></image> -->
 			<view class="tap">
-				<indexCard allVisitorNumber="{{allVisitorNumber}}" todayVisitorNumber="{{todayVisitorNumber}}"
-					nowtime="{{nowtime}}">
+				<indexCard title="Visitors" leftIndexName="Visitors of Today" rightIndexName="Total Visitors"
+					allVisitorNumber="{{allVisitorNumber}}" todayVisitorNumber="{{todayVisitorNumber}}" nowtime="{{nowtime}}">
 				</indexCard>
 				<view class="cardBtn">
 					<image wx:if="{{identity===2}}" class="addFrom" src="../../../images/icon/addFrom.png" bindtap="touchAddFrom">
@@ -47,11 +47,23 @@
 				</view>
 			</view>
 
+			<view class="tap">
+				<indexCard title="Courses" leftIndexName="wait Check Content Count" rightIndexName="All Content Count"
+					allVisitorNumber="{{allCourseNumber}}" todayVisitorNumber="{{waitCheckCourseNumber}}" nowtime="{{nowtime}}">
+				</indexCard>
+				<view class="cardBtn">
 
-			<textarea class="noticeTextArea" value="暂无公告" hidden="{{appSetting.notice!=''}}" />
+				</view>
+			</view>
+
+
+			<!-- <textarea class="noticeTextArea" value="暂无公告" hidden="{{appSetting.notice!=''}}" />
 
 			<textarea class="noticeTextArea" maxlength="" type="emoji" disabled="true" confirm-type="done"
-				value='{{appSetting.notice}}' hidden="{{appSetting.notice==''}}" />
+				value='{{appSetting.notice}}' hidden="{{appSetting.notice==''}}" /> -->
+
+			<!-- <textarea class="noticeTextArea" maxlength="" type="emoji" disabled="true" confirm-type="done"
+				value="暂无公告" hidden="{{appSetting.notice==''}}" /> -->
 
 
 
@@ -67,7 +79,7 @@
 		</block>
 		<!-- VisitorEdit页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 4}}">
-			<vistorEdit list_index="{{list_index}}" bindchangePage="changePage">
+			<vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="true">
 			</vistorEdit>
 		</block>
 		<!-- datePicker页面的条件渲染 -->
@@ -82,21 +94,30 @@
 				</scroll-view>
 			</view>
 		</block>
-		<!-- Visitors页面的条件渲染 -->
-		<block wx:elif="{{pageFlag == 1}}">
+		<!-- Visitors页面的条件渲染及待审核Visitors页面的条件渲染 -->
+		<block wx:elif="{{pageFlag == 1||pageFlag == 8}}">
 			<view class="Visitors_container">
 				<button class="CSV_export" plain="true" catchtap="getExcel">导出EXcel</button>
 				<!-- 按钮弹窗模态框部分 -->
 				<view class="top_part">
 					<view id="select_buttons">
-						<button class="select_button" bindtap="selectByName" plain="true">按姓名查询</button>
-						<button class="select_button" bindtap="selectByTeam" plain="true">按公司查询</button>
+						<!-- chooseDate: , -->
+
+
+						<input class="select_button" plain="true" placeholder="姓名" bindblur="inputVisitorName"></input>
+						<input class="select_button" plain="true" placeholder="组织" bindblur="inputVisitorTeamName"></input>
+
+						<!-- <button class="select_button" bindtap="selectByName" plain="true">按姓名查询</button>
+						<button class="select_button" bindtap="selectByTeam" plain="true">按公司查询</button> -->
 					</view>
 					<view id="select_buttons">
-						<button class="select_button" bindtap="selectByPhoneNumber" plain="true">按手机号查询</button>
-						<button class="select_button" bindtap="selectByDate" plain="true">按日期查询</button>
+						<!-- <button class="select_button" bindtap="selectByPhoneNumber" plain="true">按手机号查询</button>
+						<button class="select_button" bindtap="selectByDate" plain="true">按日期查询</button> -->
+						<input class="select_button" plain="true" placeholder="手机号" bindblur="inputVisitorPhonenum"></input>
+						<input class="select_button" plain="true" placeholder="日期"></input>
 					</view>
-					<mp-dialog title="按姓名查询" show="{{dialogFlag == 0}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
+
+					<!-- <mp-dialog title="按姓名查询" show="{{dialogFlag == 0}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
 						<input class="input_moudel" type="text" bindinput="bindkeyInput" confirm-type="done" maxlength="10"
 							cursor-spacing="250rpx" placeholder="请输入姓名" />
 					</mp-dialog>
@@ -107,7 +128,7 @@
 					<mp-dialog title="按公司查询" show="{{dialogFlag == 2}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
 						<input class="input_moudel" type="text" bindinput="bindkeyInput" confirm-type="done" maxlength="20"
 							cursor-spacing="250rpx" placeholder="请输入公司（团队）名" />
-					</mp-dialog>
+					</mp-dialog> -->
 				</view>
 				<!-- 列表部分 -->
 				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="true" showScrollbar="false"
@@ -130,6 +151,8 @@
 								<text class="text_small">{{item.visitorPhonenum}}</text>
 
 								<text class="text_date">{{item.visitData}}</text>
+
+								<text class="text_state">{{item.state}}</text>
 							</view>
 
 						</view>
@@ -138,6 +161,7 @@
 				</scroll-view>
 			</view>
 		</block>
+
 		<!-- admin页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 2}}">
 			<view class="adminBox">

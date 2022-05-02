@@ -27,7 +27,7 @@
 </view> -->
 
 <view class="flex-box">
-  <view class="flex-item" bindtap="toXiaoXi">
+  <view class="flex-item" bindtap="toHelper">
     <image src="../../images/index/discuss.png"></image>
     <text>来问我</text>
   </view>
@@ -35,7 +35,7 @@
 
 
 
-  <view class="flex-item" bindtap='toSchoolDetail'>
+  <view class="flex-item" bindtap='toNarrate'>
     <image src="../../images/index/messge.png"></image>
     <text>快解说</text>
   </view>
@@ -55,13 +55,13 @@
     <text>传知识</text>
   </view>
 
-  <view class="flex-item" bindtap="toSendSchoolDetail">
+  <view class="flex-item" bindtap="toSendNarrate">
     <image src="../../images/index/plane.png"></image>
     <text>发解说</text>
   </view>
 
 
-  <view class="flex-item" bindtap="toSchoolData">
+  <view class="flex-item" bindtap="toExtend">
     <image src="../../images/index/xxzx.png"></image>
     <text>小扩展</text>
   </view>

@@ -1,36 +1,41 @@
 /* page/four/index.wxss */
 
-page,.page {
+page,
+.page {
   height: 100%;
   font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, 'Droid Sans Fallback', 'Microsoft Yahei', sans-serif;
 }
-.page-bottom{
+
+.page-bottom {
   height: 100%;
   width: 750rpx;
-  position: fixed; 
+  position: fixed;
   background-color: rgb(246, 246, 250);
   z-index: 0;
 }
-.wc{
+
+.wc {
   color: black;
   padding: 30rpx 0 30rpx 40rpx;
   font-size: 28rpx;
 }
-.page-content{
+
+.page-content {
   padding-top: 300rpx;
 }
-.page-top{
+
+.page-top {
   height: 100%;
   position: fixed;
   width: 750rpx;
   background-color: rgb(246, 246, 250);
   z-index: 0;
-  transition: All 0.4s ease; 
+  transition: All 0.4s ease;
   -webkit-transition: All 0.4s ease;
 }
 
 
-.page-content .title{
+.page-content .title {
   position: absolute;
   width: 248rpx;
   height: 68rpx;
@@ -38,51 +43,53 @@ page,.page {
   left: 20rpx;
   top: 200rpx;
 }
-.c-state1{
-  transform: rotate(0deg) scale(1) translate(75%,0%); 
-  -webkit-transform: rotate(0deg) scale(1) translate(75%,0%); 
+
+.c-state1 {
+  transform: rotate(0deg) scale(1) translate(75%, 0%);
+  -webkit-transform: rotate(0deg) scale(1) translate(75%, 0%);
 }
-.c-state2{
-  transform: rotate(0deg) scale(.8) translate(75%,0%); 
-  -webkit-transform: rotate(0deg) scale(.8) translate(75%,0%); 
+
+.c-state2 {
+  transform: rotate(0deg) scale(.8) translate(75%, 0%);
+  -webkit-transform: rotate(0deg) scale(.8) translate(75%, 0%);
 }
 
 .tap {
   width: 56%;
   margin-left: 10rpx;
-  margin-top: 100rpx;
+  margin-top: 50rpx;
 }
 
 .callboard {
- margin-top: 200rpx;
+  margin-top: 200rpx;
   border: 1rpx solid black;
   height: 10%;
   position: relative;
 }
 
-.callboard image{
+.callboard image {
   position: absolute;
   bottom: 10rpx;
 
 }
 
-.cardBtn{
+.cardBtn {
   position: relative;
   /* border: 1px solid red; */
   /* height: 50rpx; */
- }
- 
- .addFrom{
-   position: absolute;
-   right: 30rpx;
-   bottom: 5rpx;
-   width: 50rpx;
-   height: 50rpx;
- }
+}
 
- /* edit Nda */
+.addFrom {
+  position: absolute;
+  right: 30rpx;
+  bottom: 5rpx;
+  width: 50rpx;
+  height: 50rpx;
+}
 
- .adminBox {
+/* edit Nda */
+
+.adminBox {
 
   width: 56%;
   margin-left: 10rpx;
@@ -118,19 +125,21 @@ page,.page {
   border: none;
 }
 
-.itemBox{
-  flex:1;
-  align-items: center;/** 垂直居中*/
+.itemBox {
+  flex: 1;
+  align-items: center;
+  /** 垂直居中*/
   display: flex;
-  justify-content: center; /** flex 属性， 水平居中**/
+  justify-content: center;
+  /** flex 属性， 水平居中**/
   flex-wrap: wrap;
   padding: 5rpx;
   /* border: 1px solid black; */
-  flex-direction:column;
+  flex-direction: column;
 }
 
-.adminText{
- margin-left: 3rpx;
+.adminText {
+  margin-left: 3rpx;
   /* border: 1px solid black; */
 }
 
@@ -140,6 +149,7 @@ page,.page {
   height: 60rpx;
   /* border: 1px solid black; */
 }
+
 .adminSetting {
 
   width: 60rpx;
@@ -174,16 +184,18 @@ page,.page {
   z-index: 10;
   box-sizing: content-box;
 }
-.adminBg{
+
+.adminBg {
   height: 200rpx;
 }
 
-.loading{
+.loading {
   border: 1px solid black;
   position: relative;
   left: 20rpx;
 }
-.loading image{
+
+.loading image {
   position: fixed;
   bottom: 45%;
   left: 36%;
@@ -227,7 +239,7 @@ page,.page {
 }
 
 .select_button {
-  width: 160rpx;
+  width: 290rpx;
   height: 60rpx;
   font-size: 20rpx;
   border: 1px solid grey;
@@ -262,13 +274,13 @@ page,.page {
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+
   /* 圆角 */
   border-radius: 20rpx;
 
   /* 边 */
   border: 2rpx solid #C0C0C0;
-  box-shadow:2rpx 2rpx 2rpx 2rpx #C0C0C0;
+  box-shadow: 2rpx 2rpx 2rpx 2rpx #C0C0C0;
 
   background-color: #ffffff;
   margin: 20rpx 10rpx;
@@ -311,7 +323,15 @@ page,.page {
   font-size: 15rpx;
 }
 
-.logo{
+.text_state {
+  position: absolute;
+  right: 5rpx;
+  bottom: 2rpx;
+  color: #7a7878;
+  font-size: 15rpx;
+}
+
+.logo {
   position: absolute;
   width: 88rpx;
   height: 88rpx;
@@ -320,7 +340,7 @@ page,.page {
   border-radius: 25%;
 }
 
-.pic{
+.pic {
   position: absolute;
   width: 168rpx;
   height: 228rpx;
@@ -329,7 +349,7 @@ page,.page {
   border-radius: 10%;
 }
 
-.noticeTextArea{
+.noticeTextArea {
   height: 200rpx;
 
   /* flex: 4; */

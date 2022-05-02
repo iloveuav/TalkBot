@@ -21,11 +21,12 @@ exports.main = async (event, context) => {
         visitorPhonenum: event.visitorPhonenum,
         visitorId_num: event.visitorId_num,
 
-        ndaSignPath:event.ndaSignPath,
-        visitorPhoto:event.visitorPhoto,
+        ndaSignPath: event.ndaSignPath,
+        visitorPhoto: event.visitorPhoto,
 
-        
-        VisitorInfo: event.newVisitor
+
+        VisitorInfo: event.newVisitor,
+        state: event.state
       }
     });
 

@@ -493,7 +493,6 @@ Component({
 
     formSubmit(e) {
       console.log(e);
-      // this.getNda();//先获取保密协议 避免有网络延迟的用户等待
       if (this.data.name == "") {
         wx.showModal({
           title: '提示',
@@ -529,7 +528,6 @@ Component({
         })
         return;
       }
-  
   
       // if (this.data.localImage =='') {
       //   wx.showModal({
@@ -567,20 +565,10 @@ Component({
         newVisitor.fourteenValues = this.data.fourteenValues
         newVisitor.healthValues = this.data.healthValues
         newVisitor.image = this.data.imgUrl;
-        // console.log(newVisitor)
-
-      // wx.showLoading({
-      //   title: '提交认证',
-      // })
-
       this.setData({
         hiddenmodalput: false,
         newVisitor:newVisitor
       });
-
-  
-      // ---------------------------------------------------
-   
     },
 
 

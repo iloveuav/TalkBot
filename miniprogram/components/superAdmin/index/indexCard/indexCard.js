@@ -19,6 +19,20 @@ Component({
       type: Number,
       value: '数据加载有误',
     },
+
+    title: {
+      type: String,
+      value: '数据加载有误',
+    },
+    leftIndexName: {
+      type: String,
+      value: '数据加载有误',
+    },
+    rightIndexName: {
+      type: String,
+      value: '数据加载有误',
+    },
+
     nowtime: {
       type: String,
       value: '数据加载有误',

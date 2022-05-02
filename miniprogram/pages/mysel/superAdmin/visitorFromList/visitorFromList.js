@@ -87,38 +87,24 @@ Page({
   },
 
   // -------------------------提交新的访客信息 并且发送邮件给访客填写的邮件-------------------
-
   submit() {
-
     let that = this;
-    // if (Object.keys(this.data.step1).length === 0 ) {
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: 'step1访客表单数据未提交 请重试',
-    //     showCancel: false
-    //   })
-    //   return;
-    // }
-
-    // if (this.data.signature.ndaSignPath == '') {
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: 'step2请签字确认保密协议',
-    //     showCancel: false
-    //   })
-    //   return;
-    // }
-
-
-    // if (this.data.visitorPhoto.visitorPhoto == '') {
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: 'step2请点击相机icon拍照后重试',
-    //     showCancel: false
-    //   })
-    //   return;
-    // }
-
+    if (Object.keys(this.data.step1).length === 0 ) {
+      wx.showModal({
+        title: '提示',
+        content: 'step1访客表单数据未提交 请重试',
+        showCancel: false
+      })
+      return;
+    }
+    if (this.data.visitorPhoto.visitorPhoto == '') {
+      wx.showModal({
+        title: '提示',
+        content: 'step2请点击相机icon拍照后重试',
+        showCancel: false
+      })
+      return;
+    }
     // 确认无误后  开始提交 
     wx.showLoading({
       title: '系统提交中~',
@@ -127,24 +113,11 @@ Page({
     wx.cloud.init({
       env: 'talkbot-56sn5'
     })
-
-    // 先上传两个图片分别获取对应的url
-    // let NdaSignatureCloudUrl = this.uploadImgweb('NdaSignature',this.data.signature.ndaSignPath);
-
     let VisortorPhotoCloudUrl = this.uploadImgweb("VisortorPhoto", this.data.visitorPhoto.visitorPhoto);
-
-
     var waittime = setTimeout(function () {
-      // console.log(that.data.NdaSignature)
-      // console.log(that.data.VisortorPhoto)
       let first1 = that.data.VisortorPhoto.indexOf('.');
       let end1 = that.data.VisortorPhoto.indexOf('/', first1);
       let VPHOTO = 'https://' + that.data.VisortorPhoto.slice(first1 + 1, end1) + '.tcb.qcloud.la/' + that.data.VisortorPhoto.slice(end1 + 1, that.data.VisortorPhoto.length);
-
-      // let first2 = that.data.NdaSignature.indexOf('.');
-      // let end2 = that.data.NdaSignature.indexOf('/', first2);
-      // let NPHOTO = 'https://' + that.data.NdaSignature.slice(first2 + 1, end2) + '.tcb.qcloud.la/' + that.data.NdaSignature.slice(end2 + 1, that.data.NdaSignature.length);
-      // console.log(NPHOTO);
       that.setData({
         VPHOTO: VPHOTO,
         // NPHOTO: NPHOTO
@@ -153,7 +126,6 @@ Page({
       let nowtime = time.formatTime(new Date, 'Y/M/D h:m:s');
       that.setData({
         nowtime: nowtime || ''
-        // nowtime: ''
       })
       wx.cloud.callFunction({
         name: 'addNewVisitor',
@@ -163,11 +135,10 @@ Page({
           visitorPhonenum: that.data.step1.phonenum,
           visitorId_num: that.data.step1.id_num,
           visitorTeamName: that.data.step1.teamName,
-
           ndaSignPath: that.data.NPHOTO || '',
           visitorPhoto: that.data.VPHOTO,
-
           visitData: nowtime,
+          state:'待审核',
         },
         success(res) {
           console.log(res.result);
@@ -182,10 +153,6 @@ Page({
               success(res) {
                 if (res.cancel == true) {
                   //执行父方法 回到首页
-                  // var myEventDetail = {} // detail对象，提供给事件监听函数
-                  // var myEventOption = {} // 触发事件的选项
-                  // that.triggerEvent('toHome', myEventDetail, myEventOption) //成功回到首页
-                  
                   wx.switchTab({
                     url: '../../../index/index',
                   })
@@ -195,13 +162,6 @@ Page({
                   wx.navigateTo({
                     url: '../../../mysel/superAdmin/visitorFromList/visitorFromList',
                   })
-                  //清空数据 遍历多选按钮
-                  // that.data.fourteenDayList.forEach(v=>{
-                  //   v.selected = false
-                  // })
-                  // that.data.healthList.forEach(v=>{
-                  //   v.selected = false
-                  // })
                 }
                 that.setData({
                   newVisitor: {},
@@ -315,9 +275,6 @@ Page({
     //                   }
     //                 })
     //               }, 4000)
-
-
-
 
   },
 

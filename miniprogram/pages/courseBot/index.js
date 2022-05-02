@@ -341,7 +341,7 @@ Page({
         },
         success: res => {
           let classContent = res.result.classContent.data;
-          // console.log(res.result)
+          console.log(res.result)
           if (res.result.classContent.data.length <= 0 || null || undefined) {
             wx.showModal({
               title: '提示',

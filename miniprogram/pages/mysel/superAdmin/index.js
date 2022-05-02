@@ -1,8 +1,8 @@
 // page/one/index.js
-  // "mp-badge": "/miniprogram_npm/weui-miniprogram/badge/badge",
-  // "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
-  // "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
-  // "mp-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
+// "mp-badge": "/miniprogram_npm/weui-miniprogram/badge/badge",
+// "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
+// "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
+// "mp-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
 Page({
   data: {
     open: false,
@@ -27,20 +27,26 @@ Page({
     defaultValue: '',
     list: [],
     inputValue: '',
+
+    visitorName: '',
+    // chooseDate: ,
+    visitorTeamName: '',
+    visitorPhonenum: '',
+
     list_index: [],
     allCourseDemo: [{
-      name:"工业园区",
-      value:0,
+      name: "工业园区",
+      value: 0,
     },
     {
-      name:"吴中区",
-      value:0,
+      name: "吴中区",
+      value: 0,
     },
     {
-      name:"昆山",
-      value:0,
+      name: "昆山",
+      value: 0,
     },
-  ],
+    ],
   },
   tap_ch: function (e) {
     if (this.data.open) {
@@ -204,57 +210,8 @@ Page({
   },
 
 
-  touchEdit_NDA: function () {
 
-    this.setData({
-      remind: '加载中'
-    })
-    // 获取云端上保密协议的内容
-    wx.cloud.init()
-    //  下面是云函数的调用
-    // wx.cloud.callFunction({
-    //   name: 'get_Nda',
-    //   data: {},
-    //   success: res => {
 
-    //   },
-    //   fail: err => {
-    //     // handle error
-    //     wx.showModal({
-    //       title: '获取失败',
-    //       content: '请检查网络',
-    //       showCancel: false,
-    //     })
-    //   },
-    //   complete: res => {
-    //     console.log('callFunction test result: ', res)
-    //     this.setData({
-    //       remind: '',
-    //       message: res.result.Nda.data[0].NdaText
-    //     })
-    //   }
-    // })
-
-    this.setData({
-      pageFlag: 2,
-      // translate: 'transform: translateX(0px)'
-    })
-  },
-
-  touchEdit_Food: function () { 
-    wx.navigateTo({
-      url: '../superAdmin/AddFood/index',
-    })
-  //   this.setData({
-  //   pageFlag: 6,
-  //   translate: 'transform: translateX(0px)'
-  // })
-},
-  touchAnalyse_Data: function () {  
-    wx.navigateTo({
-      url: '../superAdmin/admin/train/train',
-    })
-  },
 
   touchHome: function () {
 
@@ -265,43 +222,48 @@ Page({
     let nowtime = time.formatDayTime(new Date, 'Y/M/D');
     console.log(nowtime)
     // 获取云端上保密协议的内容
-    wx.cloud.init()
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
     //  下面是云函数的调用
-    // wx.cloud.callFunction({
-    //   name: 'get_indexCardMess',
-    //   data: {
-    //     today: nowtime
-    //   },
-    //   success: res => {
-    //     this.setData({
-    //       remind: '',
-    //       allVisitorNumber: res.result.allVisitorNumber,
-    //       todayVisitorNumber: res.result.todayVisitorNumber,
-    //       nowtime: nowtime,
-    //       appSetting:res.result.appSetting.data[0]
-    //     })
-    //     wx.setStorageSync('appSetting', res.result.appSetting.data[0])
-    //   },
-    //   fail: err => {
-    //     // handle error
-    //     wx.showModal({
-    //       title: '获取失败',
-    //       content: '请检查网络',
-    //       showCancel: false,
-    //     })
-    //   },
-    //   complete: res => {
-    //     console.log('callFunction test result: ', res)
-    //     this.setData({
-    //       remind: '',
-    //       appSetting:{}
-    //     })
-    //   }
-    // })
+    wx.cloud.callFunction({
+      name: 'get_indexCardMess',
+      data: {
+        today: nowtime
+      },
+      success: res => {
+        console.log(res)
+        this.setData({
+          remind: '',
+          allVisitorNumber: res.result.allVisitorNumber,
+          todayVisitorNumber: res.result.todayVisitorNumber,
+          allCourseNumber: res.result.allCourseNumber,
+          waitCheckCourseNumber: res.result.waitCheckCourseNumber,
+          nowtime: nowtime,
+          // appSetting: res.result.appSetting.data[0]
+        })
+        // wx.setStorageSync('appSetting', res.result.appSetting.data[0])
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '获取失败',
+          content: '请检查网络',
+          showCancel: false,
+        })
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        this.setData({
+          remind: '',
+          appSetting: {}
+        })
+      }
+    })
     this.setData({
       pageFlag: 0,
       nowtime: nowtime,
-      appSetting:{}
+      appSetting: {}
       // translate: 'transform: translateX(0px)'
     })
     console.log("返回首页")
@@ -323,27 +285,28 @@ Page({
     })
   },
   touchVisitorsList: function () {
-    // 获取当天日期以便datePicker加标记
-    // let date = new Date()
-    // let y = date.getFullYear()
-    // let m = date.getMonth() + 1 > 10 ? date.getMonth() + 1 : `0${date.getMonth()+1}`
-    // let d = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`
-    // let nowValue = `${y}-${m}-${d}`
-    // console.log(nowValue)
     this.setData({
       pageFlag: 1,
       translate: 'transform: translateX(0px)',
-      // defaultValue: nowValue
     })
+    this.queryVisitorList()
   },
 
-  editNda(){
+  touchWaitCheckVisitorsList: function () {
+    this.setData({
+      pageFlag: 8,
+      translate: 'transform: translateX(0px)',
+    })
+    this.queryVisitorList()
+  },
+
+  editNda() {
     wx.navigateTo({
       url: '../superAdmin/admin/editNda/index',
     })
   },
 
-  setting(){
+  setting() {
     wx.navigateTo({
       url: '../superAdmin/admin/setting/setting',
     })
@@ -382,107 +345,7 @@ Page({
     })
   },
   //取消dialog显示
-  tapDialogButton(e) {
-    // 按姓名查询
-    if (this.data.dialogFlag == 0) {
-      // 点击查询
-      if (e.detail.index == 1) {
-        wx.showLoading({
-          title: '查询中',
-          mask: true
-        })
-        wx.cloud.callFunction({
-          name: "query_record",
-          data: {
-            visitorName: this.data.inputValue,
-            select_flag: this.data.dialogFlag
-          }
-        }).then(res => {
-          console.log(res)
-          wx.hideLoading({
-          })
-          this.setData({
-            list: res.result.listData.list
-          })
-          if (this.data.list.length <= 0) {
-            wx.showModal({
-              title: '没有对应数据',
-              content: '',
-              showCancel: false
-            })
-          }
-        })
-      }
-    }
-    // 按手机号查询
-    else if (this.data.dialogFlag == 1) {
-      // 点击查询
-      if (e.detail.index == 1) {
-        wx.showLoading({
-          title: '查询中',
-          mask: true
-        })
-        wx.cloud.callFunction({
-          name: "query_record",
-          data: {
-            visitorPhonenum: this.data.inputValue,
-            select_flag: this.data.dialogFlag
-          }
-        }).then(res => {
-          console.log(res)
-          wx.hideLoading({
-          })
-          this.setData({
-            list: res.result.listData.list
-          })
-          if (this.data.list.length <= 0) {
-            wx.showModal({
-              title: '没有对应数据',
-              content: '',
-              showCancel: false
-            })
-          }
-        })
-      }
-    }
-    // 按公司名查询
-    else if (this.data.dialogFlag == 2) {
-      // 点击查询
-      if (e.detail.index == 1) {
-        wx.showLoading({
-          title: '查询中',
-          mask: true
-        })
-        console.log(this.data)
-        wx.cloud.callFunction({
-          name: "query_record",
-          data: {
-            visitorTeamName: this.data.inputValue,
-            select_flag: this.data.dialogFlag
-          }
-        }).then(res => {
-          console.log(res)
-          wx.hideLoading({
-          })
-          this.setData({
-            list: res.result.listData.list
-          })
 
-          if (this.data.list.length <= 0) {
-            wx.showModal({
-              title: '没有对应数据',
-              content: '',
-              showCancel: false
-            })
-          }
-        })
-      }
-    }
-    // 点击取消或查询都隐藏dialog
-    this.setData({
-      dialogFlag: -1
-    })
-  },
   //按日期查询
   //点击指定日期
   dateChange(e) {
@@ -532,7 +395,7 @@ Page({
       cancelText: '放弃',
       confirmColor: 'red',
       confirmText: '删除',
-      content: '你确定要删除 '+ that.data.list[e.currentTarget.id].visitorName+" 这条记录吗？",
+      content: '你确定要删除 ' + that.data.list[e.currentTarget.id].visitorName + " 这条记录吗？",
       showCancel: true,
       title: '警告',
       success: (res) => {
@@ -543,10 +406,10 @@ Page({
           })
           wx.cloud.callFunction({
             name: 'deleteItem',
-            data:{
+            data: {
               visitData: that.data.list[e.currentTarget.id].visitData
             },
-            success (res) {
+            success(res) {
               console.log(res)
               console.log(that.data.list)
               wx.hideLoading({
@@ -554,12 +417,12 @@ Page({
               wx.showToast({
                 title: '删除成功',
               })
-              that.data.list.splice(e.currentTarget.id,1)
+              that.data.list.splice(e.currentTarget.id, 1)
               that.setData({
                 list: that.data.list
               })
             },
-            fail (err) {
+            fail(err) {
               wx.hideLoading({
               })
               console.log(err)
@@ -571,7 +434,7 @@ Page({
         } else if (res.cancel) {
 
         }
-        
+
       }
     })
   },
@@ -675,7 +538,7 @@ Page({
     wx.showShareMenu({
       withShareTicket: true
     })
-   
+
 
   },
   onShow: function (e) {
@@ -683,26 +546,87 @@ Page({
       translate: 'transform: translateX(' + this.data.windowWidth * 0.4 + 'px)',
       remind: ' '
     })
+    this.queryVisitorList()
 
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // 重新写访客数据列表获取------------------------------------------------------------------------------------------------------------------
+
+  inputVisitorName(e) {
+    this.setData({
+      visitorName: e.detail.value,
+    })
+    this.queryVisitorList()
+  },
+  inputVisitorTeamName(e) {
+    this.setData({
+      visitorTeamName: e.detail.value,
+    })
+    this.queryVisitorList()
+  },
+  inputVisitorPhonenum(e) {
+    this.setData({
+      visitorPhonenum: e.detail.value,
+    })
+    this.queryVisitorList()
+  },
+
+  queryVisitorList() {
+    // wx.showLoading({
+    //   title: '查询中',
+    //   mask: true
+    // })
+    const params = {
+      visitorName: this.data.visitorName || '',
+      // chooseDate: this.data.chooseDate,
+      visitorTeamName: this.data.visitorTeamName,
+      visitorPhonenum: this.data.visitorPhonenum,
+      isWaitCheck: this.data.pageFlag === 8 ? true : false
+      // select_flag: this.data.dialogFlag || '',
+    }
+    console.log("test-params", params)
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: "query_visitorRecord",
+      data: params
+    }).then(res => {
+      console.log(res)
+      wx.hideLoading({
+      })
+      this.setData({
+        list: res.result.listData.data
+      })
+      if (this.data.list.length <= 0) {
+        wx.showModal({
+          title: '没有对应数据',
+          content: '',
+          showCancel: false
+        })
+      }
+    })
   }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // ------------------------------------------------------------------------------------------------------------------
 })

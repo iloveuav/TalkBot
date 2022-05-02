@@ -49,7 +49,7 @@ Component({
       {
         wx.navigateTo({
           //这里传值
-          url: "../../AddEngClassContent/AddEngClassContent?currentChooseCard=" + currentChooseCard ,
+          url: "../../AddCourseContent/AddCourseContent?currentChooseCard=" + currentChooseCard ,
         })
       }
       else{

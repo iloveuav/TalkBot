@@ -5,7 +5,7 @@
 		<view style="display:flex">
 			<view class="top-card-visitors">
 				<view class="title" style="margin-right:20rpx;">
-					Visitors
+					{{title}}
 				</view>
 
 				<view class="top-card-info">
@@ -18,7 +18,7 @@
 						{{todayVisitorNumber/1000}}k
 						</view>
 						</view>
-						<text>Clients of Today</text>
+						<text class="indexName">{{leftIndexName}}</text>
 					</view>
 					<view class="mess-right">
 						<view class="number">
@@ -27,7 +27,7 @@
 							<view class="number" wx:if="{{allVisitorNumber>1000}}">
 						{{allVisitorNumber/1000}}k
 						</view>
-						<text>Total Clients</text>
+						<text class="indexName">{{rightIndexName}}</text>
 					</view>
 				</view>
 

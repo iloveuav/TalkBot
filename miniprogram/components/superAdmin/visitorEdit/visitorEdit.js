@@ -5,12 +5,16 @@ Component({
    * 组件的属性列表
    */
 
-   
+
   properties: {
     list_index: {
       type: Object,
       value: {}
-    }
+    },
+    isSuperAdmin: {
+      type: Boolean,
+      value: false
+    },
   },
 
   /**
@@ -25,7 +29,7 @@ Component({
     // “继续”按钮的点击事件
     bindconfirm: "",
     editFlag: true,
-    fourteenValues:'',
+    fourteenValues: '',
     fourteenDayList: [{
       value: '居住/途经高风险地区',
       selected: false,
@@ -44,40 +48,40 @@ Component({
       title: '无上述情况'
     }],
 
-    healthValues:'',
+    healthValues: '',
     healthList: [{
-        value: '发热/咳嗽',
-        selected: false,
-        title: '发热/咳嗽'
-      }, {
-        value: '咳嗽/咽疼',
-        selected: false,
-        title: '咳嗽/咽疼'
-      }, {
-        value: '胸痛/肌肉关节痛',
-        selected: false,
-        title: '胸痛/肌肉关节痛'
-      }, {
-        value: '气促',
-        selected: false,
-        title: '气促'
-      }, {
-        value: '腹泻',
-        selected: false,
-        title: '腹泻'
-      },
-      {
-        value: '无上述情况',
-        selected: false,
-        title: '无上述情况'
-      }
+      value: '发热/咳嗽',
+      selected: false,
+      title: '发热/咳嗽'
+    }, {
+      value: '咳嗽/咽疼',
+      selected: false,
+      title: '咳嗽/咽疼'
+    }, {
+      value: '胸痛/肌肉关节痛',
+      selected: false,
+      title: '胸痛/肌肉关节痛'
+    }, {
+      value: '气促',
+      selected: false,
+      title: '气促'
+    }, {
+      value: '腹泻',
+      selected: false,
+      title: '腹泻'
+    },
+    {
+      value: '无上述情况',
+      selected: false,
+      title: '无上述情况'
+    }
     ],
 
-    newVisitor:{},
-    visitorName:'',
-    visitorPhone:'',
-    visitorId:'',
-    visitorTeamName:'',
+    newVisitor: {},
+    visitorName: '',
+    visitorPhone: '',
+    visitorId: '',
+    visitorTeamName: '',
 
     images: [],
     cloudimgs: [],
@@ -170,8 +174,8 @@ Component({
       this.hint();
       this.setData({
         images: [],
-        localImage:'',
-        imgUrl:""
+        localImage: '',
+        imgUrl: ""
       })
       // $digest(this)
     },
@@ -183,7 +187,7 @@ Component({
       images.push(that.data.list_index.visitorPhoto)
       wx.previewImage({
         current: that.data.list_index.visitorPhoto,
-        urls:images,
+        urls: images,
       })
     },
 
@@ -194,7 +198,7 @@ Component({
       images.push(that.data.list_index.ndaSignPath)
       wx.previewImage({
         current: that.data.list_index.ndaSignPath,
-        urls:images,
+        urls: images,
       })
     },
 
@@ -210,7 +214,7 @@ Component({
           imgs2.push(imgUrl)
 
           that.setData({
-            images:imgs2,
+            images: imgs2,
             localImage: imgUrl,
           })
           that.uploadImgweb(imgUrl)
@@ -219,8 +223,7 @@ Component({
           var myEventOption = {} // 触发事件的选项
           that.triggerEvent('callHelp', myEventDetail, myEventOption) //成功解决bug
         },
-        fail(res)
-        {
+        fail(res) {
           var myEventDetail = {} // detail对象，提供给事件监听函数
           var myEventOption = {} // 触发事件的选项
           that.triggerEvent('callHelp', myEventDetail, myEventOption) //成功解决bug
@@ -229,7 +232,7 @@ Component({
       var myEventDetail = {} // detail对象，提供给事件监听函数
       var myEventOption = {} // 触发事件的选项
       that.triggerEvent('callHelp', myEventDetail, myEventOption) //成功解决bug
-  
+
 
     },
     uploadImgweb(imgUrl) {
@@ -319,36 +322,36 @@ Component({
       })
     },
 
-   
+
 
     // 检查表单手机号格式
-  blurPhone: function(phone) {
-    // var phone = e.detail.value;
-    // console.log(e);
-    if (!(/^1[34578]\d{9}$/.test(phone))) {
-      return false;
-      if (phone.length >= 11) {
-        // wx.showToast({
-        //   title: '手机号有误',
-        //   icon: 'success',
-        //   duration: 2000
-        // })
+    blurPhone: function (phone) {
+      // var phone = e.detail.value;
+      // console.log(e);
+      if (!(/^1[34578]\d{9}$/.test(phone))) {
         return false;
+        if (phone.length >= 11) {
+          // wx.showToast({
+          //   title: '手机号有误',
+          //   icon: 'success',
+          //   duration: 2000
+          // })
+          return false;
+        }
+      } else {
+        return true;
+
       }
-    } else {
-      return true;
+    },
+    flagset(e) {
+      let { pageflag } = e.currentTarget.dataset
+      console.log(e)
+      console.log(pageflag)
 
-    }
-  },
-  flagset(e) {
-    let {pageflag} = e.currentTarget.dataset
-    console.log(e)
-    console.log(pageflag)
+      this.triggerEvent('changePage', { pageflag })
+    },
 
-    this.triggerEvent('changePage',{pageflag})
-  },
-
-     addVisitor: function () {
+    addVisitor: function () {
       this.setData({
         hiddenmodalput: true
       });
@@ -360,26 +363,26 @@ Component({
         mask: true
       })
       wx.cloud.init()
-     
+
       // var mynotes = wx.getStorageSync("openid");
       let teamName = this.data.newVisitor.teamName
       var that = this;
       let allimgs = []
       // ===============上传图片==================
-        let timestamp = (new Date()).valueOf();
-      var waittime = setTimeout(function() {
-       
+      let timestamp = (new Date()).valueOf();
+      var waittime = setTimeout(function () {
+
         var time = require('../../utils/util');
         let nowtime = time.formatTime(new Date, 'Y/M/D h:m:s');
         wx.cloud.callFunction({
           name: 'add_visitor',
           data: {
-            newVisitor:that.data.newVisitor,
-            visitorName:that.data.newVisitor.name,
-            visitorPhonenum:that.data.newVisitor.phonenum,
-            visitorId_num : that.data.newVisitor.id_num,
+            newVisitor: that.data.newVisitor,
+            visitorName: that.data.newVisitor.name,
+            visitorPhonenum: that.data.newVisitor.phonenum,
+            visitorId_num: that.data.newVisitor.id_num,
             visitorTeamName: that.data.newVisitor.teamName,
-            visitData :  nowtime,
+            visitData: nowtime,
           },
           success(res) {
             console.log(res.result);
@@ -390,16 +393,16 @@ Component({
                 cancelText: "继续修改",
                 confirmText: "返回首页",
               })
-                return;
+              return;
             }
-            else{
+            else {
               wx.showModal({
                 title: '提交失败',
                 content: '请检查网络后重新提交',
                 showCancel: false
               })
             }
-  
+
           },
           fail(err) {
             console.log(err);
@@ -415,33 +418,37 @@ Component({
     },
 
 
-    getNda:function(){
-       // 获取云端上保密协议的内容
-    wx.cloud.init()
-    //  下面是云函数的调用
-    wx.cloud.callFunction({
-      name: 'get_Nda',
-      data: {
-      },
-      success: res => {
-        
-      },
-      fail: err => {
-        // handle error
-        wx.showModal({
-          title: '获取失败',
-          content: '请检查网络',
-          showCancel: false,
-        })
-      },
-      complete: res => {
-        console.log('callFunction test result: ', res)
-        this.setData({
-          // remind: '',
-          instructions:res.result.Nda.data[0].NdaText
-        })
-      }
-    })
+    updateVisitorFormData: function (e) {
+      let that = this
+      console.log('e', e.currentTarget.dataset.content)
+      console.log('_id', that.data.list_index)
+      const state = e.currentTarget.dataset.content
+
+      wx.cloud.callFunction({
+        name: 'update_visitorForm',
+        data: {
+          _id: that.data.list_index._id,
+          state:state
+        },
+        success: res => {
+          console.log(res.result)
+        },
+        fail: err => {
+          // handle error
+        },
+        complete: res => {
+          console.log('callFunction test result: ', res)
+          wx.hideLoading()
+          if (res.result.mess.sucess) {
+            wx.showToast({
+              title: res.result.mess.sucess,
+              icon: 'success',
+              duration: 1000
+            })
+          }
+
+        }
+      })
     }
   }
 })

@@ -150,13 +150,13 @@ Page({
       url: '/pages/courseBotIndex/index',
     })
   },
-  toSendSchoolDetail() {
+  toSendNarrate() {
     // this.setData({
     //   remind: '加载中'
     // })
     wx.navigateTo({
       //这里传值
-      url: '/pages/SendSchoolDetail/index',
+      url: '/pages/sendNarrate/index',
     })
   },
 
@@ -167,14 +167,14 @@ Page({
       // url: '/pages/AddEngClassContent/AddEngClassContent',
     })
   },
-  toXiaoXi() {
+  toHelper() {
     wx.navigateTo({
       //这里传值
       url: '/pages/notification/notification',
     })
   },
 
-  toSchoolData() {
+  toExtend() {
     // this.setData({
     //   remind: '加载中'
     // })
@@ -184,13 +184,13 @@ Page({
     })
   },
 
-  toSchoolDetail() {
+  toNarrate() {
     // this.setData({
     //   remind: '加载中'
     // })
     wx.navigateTo({
       //这里传值
-      url: '/pages/schoolDetail/index',
+      url: '/pages/narrate/index',
     })
   },
 

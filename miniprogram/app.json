@@ -4,14 +4,14 @@
 
     "pages/courseBotIndex/index",
     "pages/courseBot/index",
-    "pages/schoolDetail/index",
-    "pages/AddEngClassContent/AddEngClassContent",
+    "pages/narrate/index",
+    "pages/AddCourseContent/AddCourseContent",
     "pages/mysel/me",
     "pages/mysel/FeedBack/FeedBack",
     "pages/schoolDetailBot/TalkBot",
     "pages/train/train",
     "pages/mysel/admin/admin",
-    "pages/SendSchoolDetail/index",
+    "pages/sendNarrate/index",
     "pages/notification/notification",
 
 

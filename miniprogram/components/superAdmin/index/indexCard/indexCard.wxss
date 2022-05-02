@@ -51,7 +51,7 @@
 }
 .mess-left text{
   flex: 1;
-  font-size: 24rpx;
+  font-size: 18rpx;
   color: gray;
   margin-left: 25rpx;
 }
@@ -68,7 +68,7 @@
 }
 .mess-right text{
   flex: 1;
-  font-size: 24rpx;
+  font-size: 18rpx;
   color: gray;
   margin-left: 25rpx;
 }
@@ -93,6 +93,7 @@ font-size: 18rpx;
   width: 50rpx;
   height: 50rpx;
 }
+
 
 
 

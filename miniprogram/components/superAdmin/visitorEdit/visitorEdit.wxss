@@ -29,7 +29,7 @@ page {
   margin-top: 3%;
 }
 
-.backBox{
+.backBox {
   position: absolute;
   top: 20rpx;
   left: 5rpx;
@@ -38,6 +38,7 @@ page {
   height: 60rpx;
   width: 80rpx;
 }
+
 .back {
   font-size: 38rpx;
   text-align: center;
@@ -162,7 +163,9 @@ page {
   height: 90rpx;
   text-align: center;
   line-height: 38px;
-  background-color: rgb(193, 200, 202); /*按钮透明*//* border:none;				设置按钮边框 */
+  background-color: rgb(193, 200, 202);
+  /*按钮透明*/
+  /* border:none;				设置按钮边框 */
 }
 
 .back {
@@ -190,6 +193,7 @@ page {
   left: 20%;
 
 }
+
 .confirm-visitor2 {
   position: relative;
   display: inline-block;
@@ -261,36 +265,60 @@ page {
   font-size: 25rpx;
   transform: scale(0.7);
 }
+
 /* -------保密协议样式end--------------- */
 
 /* ---------------健康状况-14天-------------------------- */
 
-.firstCheckbox{
+.firstCheckbox {
   margin-left: 10rpx;
-      /* border: 1px solid black; */
-      display: flex;
-      flex-wrap: wrap;
-      height: 50%;
-      width: 100%;
-      justify-content: space-around;
-      align-items: center;
-      margin-top: 20rpx;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-wrap: wrap;
+  height: 50%;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20rpx;
 }
 
-.day-btn{
+.day-btn {
   /* flex: 1; */
-      /* width: 100%;
+  /* width: 100%;
       height: 120rpx; */
-      font-size: 18rpx;
-      border-radius: 4px;
-      text-align: center;
-      margin: 3rpx;
-      padding: 10rpx;
-      border: 1px solid #85e1cd;
+  font-size: 18rpx;
+  border-radius: 4px;
+  text-align: center;
+  margin: 3rpx;
+  padding: 10rpx;
+  border: 1px solid #85e1cd;
 }
-.btn-selected{
+
+.btn-selected {
   border: 1px solid #06a380;
   background-color: #85e1cd;
 }
 
 /* ------------------14天------------------------------------ */
+
+
+
+.confirm-btn {
+  background: #0088fb;
+  color: #fff;
+  border-radius: 5rpx;
+  top: 25%;
+  font-size: 30rpx;
+  width: 400rpx;
+  margin-top: 20px;
+}
+
+.decline-btn {
+  background: #d45741;
+  color: #fff;
+  border-radius: 5rpx;
+  top: 25%;
+  font-size: 30rpx;
+  width: 400rpx;
+  margin-top: 20px;
+}
