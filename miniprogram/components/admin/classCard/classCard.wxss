@@ -1,18 +1,4 @@
 /* components/classCard.wxss */
-
-
-.swiper {
-
-  min-width: 420rpx;
-  margin-left: 35%;
-  right: 10rpx;
-  width: 480rpx;
-  height: 220rpx;
-  bottom: 150rpx;
-  background: transparent;
-  /* border: 1px solid black; */
-}
-
 #root {
   display: flex;
   flex-direction: column;
@@ -20,45 +6,72 @@
   max-height: 100vh;
 }
 
-.Card{
-  /* border: 1px solid black; */
+.swiper {
+  margin: 30rpx;
+  height: 400rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.Card {
+  width: 100%;
+  height: 400rpx;
+  position: relative;
+}
+
+.Card::after {
+  content: "";
+  width: 100%;
   height: 100%;
-  width: 260rpx;
-  border-radius: 30rpx;
-  /* background: rgb(224, 177, 74); */
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
-.Title{
-  text-align: center;
-  font-size: 28rpx;
-  /* color: white; */
-  margin-top: 65rpx;
-  padding: 40rpx 0 0 0;
-  margin-bottom: 20rpx;
-  font-family:"Comic Sans MS", cursive, sans-serif
+.Card image {
+  width: 100%;
+  height: 100%;
 }
 
-.content{
-  margin-left: 25%;
-  font-size: 30rpx;
+.card_info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
-
-@keyframes closeDown {
-  form {
-    transform: translateY(0%);
-  }
-
-  to {
-    height: 0;
-    transform: translateY(110%);
-  }
+.card_info::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -18rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 4rpx;
+  background: #FFFFFF;
 }
 
+.swiper .card_name {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: white;
+}
 
+.Card .content {
+  position: absolute;
+  z-index: 1;
+  top: 7rpx;
+  right: 20rpx;
+  font-weight: 800;
+  color: white;
+}
 
 .toClass {
-  margin-top: 40rpx;
-  background-color: white;
+  border: 1px solid #4D9BF4;
   border-radius: 100rpx;
+  font-size: 30rpx;
+  color: #4D9BF4;
 }

@@ -1,9 +1,9 @@
 /**index.wxss**/
 swiper{
-  margin: 30rpx;
-  height: 240rpx;
-  border-radius: 20rpx;
-  overflow: hidden;
+  margin: 0 0 30rpx ;
+  height: 300rpx;
+  /* border-radius: 20rpx; */
+  /* overflow: hidden; */
 }
 
  page {

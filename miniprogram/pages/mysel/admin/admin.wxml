@@ -12,25 +12,15 @@
 
 <!-- -----------------课程卡片组件------------------------------------------ -->
 <view class="classCard">
-<scroll-view>
-<classCard   objectArray="{{allCourseDemo}}" intoBtnName="进入" pageName="admin" >
-  </classCard>
-</scroll-view>
-</view>
-<!-- ------------------------------------------------- -->
-<view>
-<scroll-view >
-</scroll-view>
+  <classCard objectArray="{{allCourseDemo}}" intoBtnName="进入" pageName="admin"></classCard>
 </view>
 
 
-<view class='item' >
+<view class='item'>
   <view class="title">更新数据</view>
-  <view class="detail2">
-    <button bindtap='getAllCourse' class="updateCourseMess">
-   更新
+  <button bindtap='getAllCourse' class="updateCourseMess">
+    更新
   </button>
-  </view>
 </view>
 
 <view class="treemapContainer">

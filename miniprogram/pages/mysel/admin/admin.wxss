@@ -16,36 +16,38 @@
 {
   height: 50%;
 }
-.classCard
-{
-  height: 50%;
-}
 
 .item {
-  margin-top: 60rpx;
+  margin: 60rpx 30rpx 0;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .title {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 15px;
-  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  font-size: 36rpx;
+  font-weight: bold;
 }
-
-.detail2 {
-  font-size: 15px;
-  position: absolute;
-  right: 10px;
-  height: 50px;
-  line-height: 50px;
-  color: #888;
+.title::before{
+  content: "";
+  display: block;
+  height: 60%;
+  width: 6rpx;
+  margin-right: 14rpx;
+  background-color: #4D9BF4;
+  border-radius: 10rpx;
 }
 
 .updateCourseMess {
-  background-color: white;
-  border-radius: 100rpx;
+  width: 130rpx;
+  height: 52rpx;
+  background: #78C525;
+  border-radius: 30rpx;
+  color: white;
 }
 
 ec-canvas {
@@ -53,16 +55,10 @@ ec-canvas {
   height: 1120rpx;
 }
 .treemapContainer {
-  position: absolute;
-  top: 580rpx;
-  bottom: 30rpx;
-  left: 0;
-  right: 0;
-  height: 920rpx;
-
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   box-sizing: border-box;
+  height: 920rpx;
 } 
