@@ -28,14 +28,14 @@ Page({
 
     tempimg: [], //临时数组  等点击发送的时候一起走
 
-     //拖拽相关
-     mark: 0,
-     newmark: 0,
-     startmark: 0,
-     endmark: 0,
-     windowWidth: wx.getSystemInfoSync().windowWidth,
-     staus: 1,
-     translate: '',
+    //拖拽相关
+    mark: 0,
+    newmark: 0,
+    startmark: 0,
+    endmark: 0,
+    windowWidth: wx.getSystemInfoSync().windowWidth,
+    staus: 1,
+    translate: '',
   },
 
   /**
@@ -419,37 +419,37 @@ Page({
         })
         initQiniu(result.data);
         qiniuUploader.upload(that.data.tempimg, (res) => {
-            // let that = this
-            var obj = JSON.stringify(res.imageURL)
+          // let that = this
+          var obj = JSON.stringify(res.imageURL)
+          that.setData({
+            'imageObject': res,
+          })
+
+          let imgobj = that.data.imageObject;
+          // console.log(imgobj);
+          if (imgobj != '') {
             that.setData({
-              'imageObject': res,
+              imgUrl: 'http://' + imgobj.imageURL
             })
+          }
 
-            let imgobj = that.data.imageObject;
-            // console.log(imgobj);
-            if (imgobj != '') {
-              that.setData({
-                imgUrl: 'http://' + imgobj.imageURL
-              })
-            }
+          if (that.data.textimgTitle == '') {
+            that.add();
+          } else {
+            that.addOneItem();
+          }
 
-            if (that.data.textimgTitle == '') {
-              that.add();
-            } else {
-              that.addOneItem();
-            }
-
-            // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
-          },
+          // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
+        },
           (error) => {
             //   console.error('error: ' + JSON.stringify(error));
           }, {
-            region: 'SCN', // 华南
-            // ECN, SCN, NCN, NA, ASG，分别对应七牛的：华东，华南，华北，北美，新加坡 5 个区域
-            qiniuUploadToken: that.data.uptoken,
-            domain: 'imgchatbot.uavserve.online', // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接。
-            shouldUseQiniuFileName: false,
-          },
+          region: 'SCN', // 华南
+          // ECN, SCN, NCN, NA, ASG，分别对应七牛的：华东，华南，华北，北美，新加坡 5 个区域
+          qiniuUploadToken: that.data.uptoken,
+          domain: 'imgchatbot.uavserve.online', // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接。
+          shouldUseQiniuFileName: false,
+        },
           // null, // 可以使用上述参数，或者使用 null 作为参数占位符
           progress => {
             console.log("上传进度", progress.progress);
@@ -732,6 +732,7 @@ Page({
         interactData: this.data.interactData,
         answer: this.data.answer,
       },
+      time: time.formatTime(new Date, 'Y/M/D'),
 
     }
     let that = this;
@@ -896,7 +897,7 @@ Page({
             wx.cloud.init({
               env: 'talkbot-56sn5'
             })
-           
+
             console.log(that.data.className)
             console.log(ClassCollection)
             wx.cloud.callFunction({
@@ -940,89 +941,89 @@ Page({
 
   },
 
-    // 编辑抽屉拖拽
-    tap_start: function (e) {
-      this.data.mark = this.data.newmark = e.touches[0].pageX;
+  // 编辑抽屉拖拽
+  tap_start: function (e) {
+    this.data.mark = this.data.newmark = e.touches[0].pageX;
+    if (this.data.staus == 1) {
+      // staus = 1指默认状态
+      this.data.startmark = e.touches[0].pageX;
+    } else {
+      // staus = 2指屏幕滑动到右边的状态
+      this.data.startmark = e.touches[0].pageX;
+    }
+
+  },
+  tap_drag: function (e) {
+    /*
+     * 正在用日期组件时 不执行
+     * 
+     */
+    // if(useselectByDate)x
+    /*
+     * 手指从左向右移动
+     * @newmark是指移动的最新点的x轴坐标 ， @mark是指原点x轴坐标
+     */
+    this.data.newmark = e.touches[0].pageX;
+    if (this.data.mark < this.data.newmark) {
       if (this.data.staus == 1) {
-        // staus = 1指默认状态
-        this.data.startmark = e.touches[0].pageX;
-      } else {
-        // staus = 2指屏幕滑动到右边的状态
-        this.data.startmark = e.touches[0].pageX;
-      }
-  
-    },
-    tap_drag: function (e) {
-      /*
-       * 正在用日期组件时 不执行
-       * 
-       */
-      // if(useselectByDate)x
-      /*
-       * 手指从左向右移动
-       * @newmark是指移动的最新点的x轴坐标 ， @mark是指原点x轴坐标
-       */
-      this.data.newmark = e.touches[0].pageX;
-      if (this.data.mark < this.data.newmark) {
-        if (this.data.staus == 1) {
-          if (this.data.windowWidth * 0.2 > Math.abs(this.data.newmark - this.data.startmark)) {
-            this.setData({
-              translate: 'transform: translateX(' + (this.data.newmark - this.data.startmark) + 'px)'
-            })
-          }
-        }
-  
-      }
-      /*
-       * 手指从右向左移动
-       * @newmark是指移动的最新点的x轴坐标 ， @mark是指原点x轴坐标
-       */
-      if (this.data.mark > this.data.newmark) {
-        if (this.data.staus == 1 && (this.data.newmark - this.data.startmark) > 0) {
+        if (this.data.windowWidth * 0.2 > Math.abs(this.data.newmark - this.data.startmark)) {
           this.setData({
             translate: 'transform: translateX(' + (this.data.newmark - this.data.startmark) + 'px)'
           })
-        } else if (this.data.staus == 2 && Math.abs(this.data.startmark - this.data.newmark) > this.data.windowWidth * 0.2) {
-          // console.log( Math.abs(this.data.startmark - this.data.newmark))
-          this.setData({
-            translate: 'transform: translateX(' + (this.data.newmark + this.data.windowWidth * 0.4 - this.data.startmark) + 'px)'
-          })
         }
-  
       }
-  
-      this.data.mark = this.data.newmark;
-  
-    },
-    tap_end: function (e) {
-      if (this.data.staus == 1 && this.data.startmark < this.data.newmark) {
-        if (Math.abs(this.data.newmark - this.data.startmark) < (this.data.windowWidth * 0.2)) {
-          this.setData({
-            translate: 'transform: translateX(0px)'
-          })
-          this.data.staus = 1;
-        } else {
-          this.setData({
-            translate: 'transform: translateX(' + this.data.windowWidth * 0.4 + 'px)'
-          })
-          this.data.staus = 2;
-        }
+
+    }
+    /*
+     * 手指从右向左移动
+     * @newmark是指移动的最新点的x轴坐标 ， @mark是指原点x轴坐标
+     */
+    if (this.data.mark > this.data.newmark) {
+      if (this.data.staus == 1 && (this.data.newmark - this.data.startmark) > 0) {
+        this.setData({
+          translate: 'transform: translateX(' + (this.data.newmark - this.data.startmark) + 'px)'
+        })
+      } else if (this.data.staus == 2 && Math.abs(this.data.startmark - this.data.newmark) > this.data.windowWidth * 0.2) {
+        // console.log( Math.abs(this.data.startmark - this.data.newmark))
+        this.setData({
+          translate: 'transform: translateX(' + (this.data.newmark + this.data.windowWidth * 0.4 - this.data.startmark) + 'px)'
+        })
+      }
+
+    }
+
+    this.data.mark = this.data.newmark;
+
+  },
+  tap_end: function (e) {
+    if (this.data.staus == 1 && this.data.startmark < this.data.newmark) {
+      if (Math.abs(this.data.newmark - this.data.startmark) < (this.data.windowWidth * 0.2)) {
+        this.setData({
+          translate: 'transform: translateX(0px)'
+        })
+        this.data.staus = 1;
       } else {
-        if (Math.abs(this.data.newmark - this.data.startmark) < (this.data.windowWidth * 0.2)) {
-          this.setData({
-            // translate: 'transform: translateX(' + this.data.windowWidth * 0.4 + 'px)'  //注掉 避免触发菜单
-          })
-          this.data.staus = 2;
-        } else {
-          // 左边向右边滑动
-          this.setData({
-            translate: 'transform: translateX(0px)'
-          })
-          this.data.staus = 1;
-        }
+        this.setData({
+          translate: 'transform: translateX(' + this.data.windowWidth * 0.4 + 'px)'
+        })
+        this.data.staus = 2;
       }
-  
-      this.data.mark = 0;
-      this.data.newmark = 0;
-    },
+    } else {
+      if (Math.abs(this.data.newmark - this.data.startmark) < (this.data.windowWidth * 0.2)) {
+        this.setData({
+          // translate: 'transform: translateX(' + this.data.windowWidth * 0.4 + 'px)'  //注掉 避免触发菜单
+        })
+        this.data.staus = 2;
+      } else {
+        // 左边向右边滑动
+        this.setData({
+          translate: 'transform: translateX(0px)'
+        })
+        this.data.staus = 1;
+      }
+    }
+
+    this.data.mark = 0;
+    this.data.newmark = 0;
+  },
 })

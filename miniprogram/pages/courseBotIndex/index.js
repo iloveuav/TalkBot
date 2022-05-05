@@ -410,6 +410,10 @@ Page({
            courseFrontImgArray.forEach(v3 => {
              if (v.name == v3.courseMess.name) {
                v.frontImg = v3.courseMess.frontImg
+             }  
+             //课程审核状态更新
+             if(v3.state){
+              v.state = v3.state
              }
            })
            v.id = num++;
