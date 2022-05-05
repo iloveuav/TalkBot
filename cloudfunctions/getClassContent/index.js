@@ -9,8 +9,8 @@ const db = cloud.database()
 const _ = db.command
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const wxContext = cloud.getWXContext()
-
+  // const wxContext = cloud.getWXContext()
+  // wxContext.OPENID
   var classContent = await db.collection(event.classCollection)
     .where({
       classId: event.classId,

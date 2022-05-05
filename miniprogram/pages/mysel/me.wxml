@@ -52,6 +52,12 @@
 <view class="line"></view> -->
 
 <view class="func_list">
+
+  <view class='item' bindtap="toMineVisitorFormList">
+    <view class="title">我的访客申请</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
   <view class='item' bindtap="toSendCrouse">
     <view class="title">发布课程</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
@@ -59,12 +65,12 @@
 
   <view class='item' bindtap='unopen'>
     <view class="title">我要反馈</view>
-    <image class="icon"  src="../../images/icon/ic_arrow_gray@2x.png" />
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
   <view class='item' bindtap="toSuperAdmin" wx:if="{{!isAdmin}}">
     <view class="title">超级管理员</view>
-    <image class="icon"  src="../../images/icon/ic_arrow_gray@2x.png" />
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 </view>
 <!-- <view class='item'bindtap="addArticle">
@@ -91,4 +97,3 @@
   </view>
 </view>
 <view class="line"></view> -->
-

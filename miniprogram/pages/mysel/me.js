@@ -30,7 +30,7 @@ Page({
     })
   },
 
-  toSuperAdmin: function(e) {
+  toSuperAdmin: function (e) {
     if (this.data.islogin == false) {
       wx.showModal({
         title: '提示',
@@ -42,7 +42,7 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    wx.setStorageSync("useridentity",2) 
+    wx.setStorageSync("useridentity", 2)
     wx.navigateTo({
       url: '/pages/mysel/superAdmin/index?identity=2',
     })
@@ -61,7 +61,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     var identity = wx.getStorageSync("useridentity");
     this.setData({
       identity: identity,
@@ -76,13 +76,13 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
     var identity = wx.getStorageSync("useridentity");
     console.log(identity)
     this.setData({
@@ -95,36 +95,74 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
   },
 
 
+  toMineVisitorFormList: function (e) {
+    this.queryVisitorList();
+  },
 
-  toconfigTeacher: function(e) {
+  queryVisitorList() {
+    // wx.showLoading({
+    //   title: '查询中',
+    //   mask: true
+    // })
+    const params = {
+      isQueryForUser: true,
+      isWaitCheck: false
+      // select_flag: this.data.dialogFlag || '',
+    }
+    console.log("test-params", params)
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: "query_visitorRecord",
+      data: params
+    }).then(res => {
+      console.log(res)
+      wx.hideLoading({
+      })
+      this.setData({
+        list: res.result.listData.data
+      })
+      if (this.data.list.length <= 0) {
+        wx.showModal({
+          title: '没有对应数据',
+          content: '',
+          showCancel: false
+        })
+      }
+    })
+  },
+
+
+  toconfigTeacher: function (e) {
     if (this.data.islogin == false) {
       wx.showModal({
         title: '提示',
@@ -143,21 +181,21 @@ Page({
     wx.hideLoading()
   },
 
-  unopen: function() {
+  unopen: function () {
     this.setData({
-        messageTitle: "程序员已被祭天",
-        message: "功能开发中，请耐心等待"
-      }),
+      messageTitle: "程序员已被祭天",
+      message: "功能开发中，请耐心等待"
+    }),
       this.showMessage()
   },
 
 
-  showMessage: function() {
+  showMessage: function () {
     wx.showModal({
       title: this.data.messageTitle,
       content: this.data.message,
       showCancel: false,
-      success: function(res) {
+      success: function (res) {
         if (res.confirm) {
           console.log('用户点击确定')
         } else {
@@ -275,7 +313,7 @@ Page({
   },
 
 
-  tosetconnectway: function(e) {
+  tosetconnectway: function (e) {
     if (this.data.islogin == false) {
       wx.showModal({
         title: '提示',
@@ -293,7 +331,7 @@ Page({
     // wx.hideLoading()
   },
 
-  feedBack: function(e) {
+  feedBack: function (e) {
     if (this.data.islogin == false) {
       wx.showModal({
         title: '提示',
@@ -330,7 +368,7 @@ Page({
     // wx.hideLoading()
   },
 
-  getAllCourse() { 
+  getAllCourse() {
     wx.cloud.init({
       env: 'talkbot-56sn5'
     })
@@ -398,7 +436,7 @@ Page({
           if (!map[item._id.className]) {
             nList.push({
               name: item._id.className,
-              value:item.courseNum,
+              value: item.courseNum,
               courseType: 'eng',
               data: [item]
             })
@@ -433,25 +471,25 @@ Page({
           v.data.sort(compare('courseId'));
 
           // v.forEach(ch=>{
-            if (UserCourseMess == '') {
-              v.progress = 1
+          if (UserCourseMess == '') {
+            v.progress = 1
+            let progress = 0
+            v.courseProgress = "课程进度 -  " + progress + '%';
+          } else {
+            UserCourseMess.forEach(v2 => {
               let progress = 0
               v.courseProgress = "课程进度 -  " + progress + '%';
-            } else {
-              UserCourseMess.forEach(v2 => {
-                let progress = 0
+              v.progress = 1
+              if (v.name == v2.className) {
+                progress = Number((v2.courseId / v.data.length)).toFixed(2) * 100;
+                // console.log(v)
                 v.courseProgress = "课程进度 -  " + progress + '%';
-                v.progress = 1
-                if (v.name == v2.className) {
-                  progress = Number((v2.courseId / v.data.length)).toFixed(2) * 100;
-                  // console.log(v)
-                  v.courseProgress = "课程进度 -  " + progress + '%';
-                  v.progress = v2.courseId
-                }
-              })
-            }
+                v.progress = v2.courseId
+              }
+            })
+          }
           // })
-          
+
           courseFrontImgArray.forEach(v3 => {
             if (v.name == v3.courseMess.name) {
               v.frontImg = v3.courseMess.frontImg

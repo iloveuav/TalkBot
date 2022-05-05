@@ -26,7 +26,8 @@ exports.main = async (event, context) => {
 
 
         VisitorInfo: event.newVisitor,
-        state: event.state
+        state: event.state,
+        openid: wxContext.OPENID
       }
     });
 
