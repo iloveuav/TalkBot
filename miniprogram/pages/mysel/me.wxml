@@ -58,6 +58,11 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
+  <view class='item' bindtap="toMineCourseList">
+    <view class="title">我上传的课程</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
   <view class='item' bindtap="toSendCrouse">
     <view class="title">发布课程</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />

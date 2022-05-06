@@ -144,7 +144,7 @@ Page({
       classCollection = "JaClassContents";
     } else if (corseObject.courseType == 'other') {
       classCollection = "otherClassContents";
-    }else if(corseObject.courseType == 'schoolDetail'){
+    } else if (corseObject.courseType == 'schoolDetail') {
       classCollection = "SchoolDetail";
     }
     let hisdataLength = LeftOverClassConten.length
@@ -386,6 +386,27 @@ Page({
               }
               wx.setStorageSync('UserCourseMess', UserCourseMess);
             }
+            //进行云同步 更新当前用户课程使用情况
+            wx.cloud.init({
+              env: 'talkbot-56sn5'
+            })
+            wx.cloud.callFunction({
+              name: 'update_userInfo',
+              data: {
+                type:'update',
+                params:{UserCourseMess},
+              },
+              success: res => {
+                // console.log(res)
+                console.log('callFunction test result: ', res)
+              },
+              fail: err => {
+                // handle error
+              },
+              complete: res => {
+                console.log(res)
+              }
+            })
           }
 
           this.setData({
@@ -460,7 +481,7 @@ Page({
           growid: growid,
           btnDie: true,
         })
-      
+
         this.bottom();
         // this.toScrollBottom();
       }
@@ -545,7 +566,7 @@ Page({
 
     // console.log(`item${this.data.centendata.length }`);
     this.setData({
-      toLast: `item${this.data.centendata.length+1}`
+      toLast: `item${this.data.centendata.length + 1}`
     })
     // --------------
 
@@ -695,9 +716,9 @@ Page({
           if (resTrans.retcode == 0) {
             // let tmpTranslate = Object.assign({}, item, {
             autoPlay: true, // 自动播放背景音乐
-            that.setData({
-              voicePath: resTrans.filename,
-            })
+              that.setData({
+                voicePath: resTrans.filename,
+              })
             that.yuyinPlay();
           }
           else {

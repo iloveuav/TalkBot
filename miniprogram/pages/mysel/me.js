@@ -124,10 +124,10 @@ Page({
 
 
   toMineVisitorFormList: function (e) {
-    this.queryVisitorList();
+    this.queryMineVisitorList();
   },
 
-  queryVisitorList() {
+  queryMineVisitorList() {
     // wx.showLoading({
     //   title: '查询中',
     //   mask: true
@@ -148,16 +148,52 @@ Page({
       console.log(res)
       wx.hideLoading({
       })
-      this.setData({
-        list: res.result.listData.data
-      })
-      if (this.data.list.length <= 0) {
-        wx.showModal({
-          title: '没有对应数据',
-          content: '',
-          showCancel: false
-        })
-      }
+      // this.setData({
+      //   list: res.result.listData.data
+      // })
+      // if (this.data.list.length <= 0) {
+      //   wx.showModal({
+      //     title: '没有对应数据',
+      //     content: '',
+      //     showCancel: false
+      //   })
+      // }
+    })
+  },
+  toMineCourseList: function (e) {
+    this.queryMineCourseList();
+  },
+
+  queryMineCourseList() {
+    // wx.showLoading({
+    //   title: '查询中',
+    //   mask: true
+    // })
+    const params = {
+      isQueryForUser: true,
+      isWaitCheck: false
+      // select_flag: this.data.dialogFlag || '',
+    }
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: "get_allCourseMess",
+      data: {}
+    }).then(res => {
+      console.log(res)
+      // wx.hideLoading({
+      // })
+      // this.setData({
+      //   list: res.result.listData.data
+      // })
+      // if (this.data.list.length <= 0) {
+      //   wx.showModal({
+      //     title: '没有对应数据',
+      //     content: '',
+      //     showCancel: false
+      //   })
+      // }
     })
   },
 
