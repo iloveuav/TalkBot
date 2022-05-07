@@ -64,7 +64,7 @@ Page({
 
 
     currentIndex: 0,
-    pageType:'studyPage'//当前页面类型 studyPage为公开课程页  mineCoursePage为个人上传课程页
+    pageType: 'studyPage'//当前页面类型 studyPage为公开课程页  mineCoursePage为个人上传课程页
 
 
   },
@@ -76,9 +76,9 @@ Page({
 
     this.setData({
       remind: '加载中',
-      pageType:options.pageType||'studyPage'
+      pageType: options.pageType || 'studyPage'
     })
-    if(options&&options.pageType){
+    if (options && options.pageType) {
       this.getAllCourse(options.pageType);
     }
     // this.getAllCourse();
@@ -96,12 +96,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-    if(options&&options.pageType){
+    if (options && options.pageType) {
       this.getAllCourse(options.pageType);
+      this.setData({
+        pageType: options.pageType || 'studyPage'
+      })
     }
-    this.setData({
-      pageType:options.pageType||'studyPage'
-    })
+
   },
 
   /**
@@ -157,9 +158,9 @@ Page({
         wx.setStorageSync('allCourseMess', res.result.allCourse);
 
         let showCourse = []
-        if(pageType==='studyPage'){
+        if (pageType === 'studyPage') {
           showCourse = res.result.allCourse
-        }else{
+        } else {
           showCourse = res.result.allCourse
         }
         this.setData({
