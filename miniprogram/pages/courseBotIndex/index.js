@@ -96,11 +96,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-    if (options && options.pageType) {
-      this.getAllCourse(options.pageType);
-      this.setData({
-        pageType: options.pageType || 'studyPage'
-      })
+    if (this.data.pageType) {
+      this.getAllCourse(this.data.pageType);
     }
 
   },
