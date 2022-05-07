@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-
     "pages/courseBotIndex/index",
     "pages/courseBot/index",
     "pages/narrate/index",
@@ -13,13 +12,11 @@
     "pages/mysel/admin/admin",
     "pages/sendNarrate/index",
     "pages/notification/notification",
-
-
     "pages/mysel/superAdmin/index",
     "pages/mysel/superAdmin/admin/train/train",
     "pages/mysel/takePhoto/index",
-
-    "pages/mysel/superAdmin/visitorFromList/visitorFromList"
+    "pages/mysel/superAdmin/visitorFromList/visitorFromList",
+    "pages/mysel/mineVisitorFromList/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -38,7 +35,6 @@
         "pagePath": "pages/index/index",
         "text": "首页"
       },
- 
       {
         "selectedIconPath": "images/button/me2.png",
         "iconPath": "images/button/me1.png",
@@ -57,7 +53,5 @@
       "provider": "wx65f00fe52f504192"
     }
   },
- 
-  
   "sitemapLocation": "sitemap.json"
 }

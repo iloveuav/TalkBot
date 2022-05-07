@@ -345,9 +345,6 @@ Component({
     },
     flagset(e) {
       let { pageflag } = e.currentTarget.dataset
-      console.log(e)
-      console.log(pageflag)
-
       this.triggerEvent('changePage', { pageflag })
     },
 

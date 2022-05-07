@@ -154,8 +154,26 @@ exports.main = async (event, context) => {
 
     courseFrontImgArray.forEach(v3 => {
       if (v.name == v3.courseMess.name) {
-        v.frontImg = v3.courseMess.frontImg
+        //根据名字匹配上后根据有值的进行更新
+        if (v3.courseMess.frontImg) {
+          v.frontImg = v3.courseMess.frontImg
+        }
+        if (v3.createrOpenid) {
+          v.createrOpenid = v3.createrOpenid
+          if (v3.createrOpenid === wxContext.OPENID) {
+            v.isMineCourse = true
+          } else {
+            v.isMineCourse = false
+          }
+        }
+        //课程审核状态更新
+        if (v3.state) {
+          v.state = v3.state
+        }
       }
+      //创作者
+
+
     })
     v.id = num++;
   })
@@ -241,8 +259,24 @@ exports.main = async (event, context) => {
 
     courseFrontImgArray.forEach(v3 => {
       if (v.name == v3.courseMess.name) {
-        v.frontImg = v3.courseMess.frontImg
+        //根据名字匹配上后根据有值的进行更新
+        if (v3.courseMess.frontImg) {
+          v.frontImg = v3.courseMess.frontImg
+        }
+        if (v3.createrOpenid) {
+          v.createrOpenid = v3.createrOpenid
+          if (v3.createrOpenid === wxContext.OPENID) {
+            v.isMineCourse = true
+          } else {
+            v.isMineCourse = false
+          }
+        }
+        //课程审核状态更新
+        if (v3.state) {
+          v.state = v3.state
+        }
       }
+
     })
     v.id = num++;
   })
@@ -334,10 +368,22 @@ exports.main = async (event, context) => {
     courseFrontImgArray.forEach(v3 => {
       if (v.name == v3.courseMess.name) {
         v.frontImg = v3.courseMess.frontImg
-      }
-      //课程审核状态更新
-      if (v3.state) {
-        v.state = v3.state
+        //根据名字匹配上后根据有值的进行更新
+        if (v3.courseMess.frontImg) {
+          v.frontImg = v3.courseMess.frontImg
+        }
+        if (v3.createrOpenid) {
+          v.createrOpenid = v3.createrOpenid
+          if (v3.createrOpenid === wxContext.OPENID) {
+            v.isMineCourse = true
+          } else {
+            v.isMineCourse = false
+          }
+        }
+        //课程审核状态更新
+        if (v3.state) {
+          v.state = v3.state
+        }
       }
     })
     v.id = num++;
@@ -360,6 +406,7 @@ exports.main = async (event, context) => {
     allCourseMess,
     schoolDetail,
     allCourse,
-    UserCourseMess
+    UserCourseMess,
+    currentOpenid: wxContext.OPENID
   }
 }

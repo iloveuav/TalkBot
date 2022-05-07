@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+      "courseCard": "/components/index/bigCrouseCard/courseCard",
+      "indexCard": "/components/index/indexCard/indexCard",
+      "dailySentence": "/components/index/dailySentence/dailySentence",
+      "vistorEdit": "/components/superAdmin/visitorEdit/visitorEdit"
+    }
+}

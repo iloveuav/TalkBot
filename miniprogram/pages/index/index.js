@@ -143,18 +143,12 @@ Page({
   },
 
   toCrouseBot() {
-    // this.setData({
-    //   remind: '加载中'
-    // })
     wx.navigateTo({
       //这里传值
-      url: '/pages/courseBotIndex/index',
+      url: '/pages/courseBotIndex/index?pageType='+'studyPage',
     })
   },
   toSendNarrate() {
-    // this.setData({
-    //   remind: '加载中'
-    // })
     wx.navigateTo({
       //这里传值
       url: '/pages/sendNarrate/index',

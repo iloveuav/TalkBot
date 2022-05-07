@@ -514,10 +514,10 @@ Page({
 
   // ----------------选择图片 ----------------
   uploadimg() {
-    if (this.data.classId == '') {
+    if (this.data.classId == ''&&!this.data.setFrontImg) {//上传封面的时候可以不需要输入章节id
       wx.showModal({
         title: '提示',
-        content: '课程id不能为空',
+        content: '章节id不能为空',
         showCancel: false
       })
       return;

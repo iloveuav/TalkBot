@@ -10,6 +10,8 @@ const _ = db.command
 const $ = db.command.aggregate
 // 云函数入口函数
 exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext()
+
   try {
     return db.collection('allCourseMess').where({
       courseName: event.courseMess.name
@@ -20,7 +22,8 @@ exports.main = async (event, context) => {
           return db.collection('allCourseMess').add({
             data: {
               courseName: event.courseMess.name,
-              courseMess:event.courseMess
+              courseMess: event.courseMess,
+              createrOpenid: wxContext.OPENID
             }
           })
         } else {
@@ -28,12 +31,13 @@ exports.main = async (event, context) => {
             courseName: event.courseMess.name
           }).update({
             data: {
-              courseMess: event.courseMess
+              courseMess: event.courseMess,
+              createrOpenid: wxContext.OPENID
             },
           })
         }
       })
-     
+
   } catch (e) {
     console.error(e)
   }

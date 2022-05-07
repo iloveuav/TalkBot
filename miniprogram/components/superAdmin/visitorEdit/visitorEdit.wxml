@@ -4,7 +4,7 @@
 
 
 		<!-- <image class='background' src='/Images/uavfire01.png'> </image> -->
-		<view class='head'>访客登记</view>
+		<view class='head' wx:if="{{isSuperAdmin}}">访客登记</view>
 		<!-- <button class="back" bindtap='jump'> 返回 </button> -->
 		<form bindsubmit="formSubmit">
 
@@ -110,8 +110,7 @@
 				</view>
 
 			</view>
-
-			<view class='section'>
+			<view class='section' wx:if="{{isSuperAdmin}}">
 				<view class='seciton-title'>管理员审核</view>
 				<view class='item'>
 					<!-- 图片缩略图  -->
@@ -136,8 +135,8 @@
 				</view>
 
 			</view>
-			<view class="backBox" bindtap="flagset" data-pageFlag="1">
-				<view class="back">返回</view>
+			<view class="backBox" bindtap="flagset" data-pageFlag="1" >
+				<view class="back" >返回</view>
 			</view>
 
 

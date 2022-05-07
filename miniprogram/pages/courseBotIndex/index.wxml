@@ -22,15 +22,18 @@
 <!-- -----------------英语课程卡片组件------------------------------------------ -->
 <view class="classCard">
 
- <view class="remind-box" wx:if="{{remind}}">
+  <view class="remind-box" wx:if="{{remind}}">
     <image class="remind-img" src="/images/loading_blue.gif"></image>
   </view>
 
   <scroll-view>
 
     <view wx:for="{{allCourse[0].children}}">
-    <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" bindchangeCourse="getcurrentCourse">
-    </courseCard>
+      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+          bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
     </view>
   </scroll-view>
   <!-- <view class="crouseType">英语课程</view> -->
@@ -40,14 +43,17 @@
 <view class="classCard">
 
 
- <!-- <view class="remind-box" wx:if="{{remind}}">
+  <!-- <view class="remind-box" wx:if="{{remind}}">
           <image class="remind-img" src="/images/loading.gif"></image>
         </view> -->
 
   <scroll-view>
-  <view wx:for="{{allCourse[1].children}}">
-    <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" bindchangeCourse="getcurrentCourse">
-    </courseCard>
+    <view wx:for="{{allCourse[1].children}}">
+      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+          bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
     </view>
   </scroll-view>
   <!-- <view class="crouseType">日语课程</view> -->
@@ -57,14 +63,17 @@
 <view class="classCard">
 
 
- <!-- <view class="remind-box" wx:if="{{remind}}">
+  <!-- <view class="remind-box" wx:if="{{remind}}">
           <image class="remind-img" src="/images/loading.gif"></image>
         </view> -->
 
   <scroll-view>
     <view wx:for="{{allCourse[2].children}}">
-    <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" bindchangeCourse="getcurrentCourse">
-    </courseCard>
+      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+          bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
     </view>
   </scroll-view>
   <!-- <view class="crouseType">其他课程</view>  -->

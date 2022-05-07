@@ -101,34 +101,13 @@
 				<!-- 按钮弹窗模态框部分 -->
 				<view class="top_part">
 					<view id="select_buttons">
-						<!-- chooseDate: , -->
-
-
 						<input class="select_button" plain="true" placeholder="姓名" bindblur="inputVisitorName"></input>
 						<input class="select_button" plain="true" placeholder="组织" bindblur="inputVisitorTeamName"></input>
-
-						<!-- <button class="select_button" bindtap="selectByName" plain="true">按姓名查询</button>
-						<button class="select_button" bindtap="selectByTeam" plain="true">按公司查询</button> -->
 					</view>
 					<view id="select_buttons">
-						<!-- <button class="select_button" bindtap="selectByPhoneNumber" plain="true">按手机号查询</button>
-						<button class="select_button" bindtap="selectByDate" plain="true">按日期查询</button> -->
 						<input class="select_button" plain="true" placeholder="手机号" bindblur="inputVisitorPhonenum"></input>
 						<input class="select_button" plain="true" placeholder="日期"></input>
 					</view>
-
-					<!-- <mp-dialog title="按姓名查询" show="{{dialogFlag == 0}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
-						<input class="input_moudel" type="text" bindinput="bindkeyInput" confirm-type="done" maxlength="10"
-							cursor-spacing="250rpx" placeholder="请输入姓名" />
-					</mp-dialog>
-					<mp-dialog title="按手机号查询" show="{{dialogFlag == 1}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
-						<input class="input_moudel" type="number" bindinput="bindkeyInput" confirm-type="done" maxlength="13"
-							cursor-spacing="250rpx" placeholder="请输入手机号" />
-					</mp-dialog>
-					<mp-dialog title="按公司查询" show="{{dialogFlag == 2}}" bindbuttontap="tapDialogButton" buttons="{{buttons}}">
-						<input class="input_moudel" type="text" bindinput="bindkeyInput" confirm-type="done" maxlength="20"
-							cursor-spacing="250rpx" placeholder="请输入公司（团队）名" />
-					</mp-dialog> -->
 				</view>
 				<!-- 列表部分 -->
 				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="true" showScrollbar="false"

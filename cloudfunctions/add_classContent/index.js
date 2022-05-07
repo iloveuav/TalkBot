@@ -26,6 +26,7 @@ exports.main = async(event, context) => {
       imgfile: event.contentData.imgfile,
       time: event.contentData.time,
       detail: event.contentData.detail,
+      openid:wxContext.OPENID
     }
   }); //success!!!!!!!!!!!!!!!!!!!!!
 

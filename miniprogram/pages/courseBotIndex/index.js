@@ -64,6 +64,7 @@ Page({
 
 
     currentIndex: 0,
+    pageType:'studyPage'//当前页面类型 studyPage为公开课程页  mineCoursePage为个人上传课程页
 
 
   },
@@ -75,8 +76,12 @@ Page({
 
     this.setData({
       remind: '加载中',
+      pageType:options.pageType||'studyPage'
     })
-    this.getAllCourse();
+    if(options&&options.pageType){
+      this.getAllCourse(options.pageType);
+    }
+    // this.getAllCourse();
 
   },
 
@@ -90,8 +95,13 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    this.onLoad();
+  onShow: function (options) {
+    if(options&&options.pageType){
+      this.getAllCourse(options.pageType);
+    }
+    this.setData({
+      pageType:options.pageType||'studyPage'
+    })
   },
 
   /**
@@ -134,7 +144,7 @@ Page({
   },
 
 
-  getAllCourse() {
+  getAllCourse(pageType) {
     wx.cloud.init({
       env: 'talkbot-56sn5'
     })
@@ -145,8 +155,15 @@ Page({
         // console.log(res)
         console.log('callFunction test result: ', res);
         wx.setStorageSync('allCourseMess', res.result.allCourse);
+
+        let showCourse = []
+        if(pageType==='studyPage'){
+          showCourse = res.result.allCourse
+        }else{
+          showCourse = res.result.allCourse
+        }
         this.setData({
-          allCourse: res.result.allCourse,
+          allCourse: showCourse,
           remind: '',
         })
       },

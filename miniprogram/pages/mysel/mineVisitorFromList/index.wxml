@@ -1,0 +1,65 @@
+<!--miniprogram/pages/index/index.wxml-->
+
+<view class="weclowBox">
+  <!-- <text class="hello">> 欢迎</text> -->
+</view>
+
+<view wx:if="{{showVisitorDetail}}">
+  <vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="true">
+  </vistorEdit>
+</view>
+
+<!-- -----------------列表内容------------------------------------------ -->
+<view wx:else>
+  <dailySentence sentence="审核周期一般为1~2个工作日~">
+  </dailySentence>
+  <view class="classCard">
+
+    <view class="remind-box" wx:if="{{remind}}">
+      <image class="remind-img" src="/images/loading_blue.gif"></image>
+    </view>
+
+    <view class="course" wx:if="{{!remind}}">
+      <view class="course-center-title">我的访客申请列表</view>
+    </view>
+
+    <!-- 列表部分 -->
+    <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="true" showScrollbar="false"
+      scroll-with-animation="true" class="bottom_part">
+      <!-- <view>数据为空</view> -->
+      <block wx:for="{{list}}" wx:key="index">
+
+        <!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
+
+        <view class="view_tupian_wenzi" bindtap="click" bindlongpress="delete" id="{{index}}">
+
+          <image class="image_1"
+            src="{{item.visitorPhoto ? item.visitorPhoto : '../../images/icon/defaultVisitor.png'}}" />
+
+          <!-- 包裹两行文字 -->
+          <view class="view_wenzi2">
+
+            <text>{{item.visitorName}} （{{item.visitorTeamName}}）</text>
+
+            <text class="text_small">{{item.visitorPhonenum}}</text>
+
+            <text class="text_date">{{item.visitData}}</text>
+
+            <text class="text_state">{{item.state}}</text>
+          </view>
+
+        </view>
+
+      </block>
+    </scroll-view>
+  </view>
+</view>
+<!-- ------------------------------------------------- -->
+
+
+
+
+<view>
+  <scroll-view>
+  </scroll-view>
+</view>

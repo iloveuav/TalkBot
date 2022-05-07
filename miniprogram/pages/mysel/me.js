@@ -123,45 +123,12 @@ Page({
   },
 
 
-  toMineVisitorFormList: function (e) {
-    this.queryMineVisitorList();
-  },
-
-  queryMineVisitorList() {
-    // wx.showLoading({
-    //   title: '查询中',
-    //   mask: true
-    // })
-    const params = {
-      isQueryForUser: true,
-      isWaitCheck: false
-      // select_flag: this.data.dialogFlag || '',
-    }
-    console.log("test-params", params)
-    wx.cloud.init({
-      env: 'talkbot-56sn5'
-    })
-    wx.cloud.callFunction({
-      name: "query_visitorRecord",
-      data: params
-    }).then(res => {
-      console.log(res)
-      wx.hideLoading({
-      })
-      // this.setData({
-      //   list: res.result.listData.data
-      // })
-      // if (this.data.list.length <= 0) {
-      //   wx.showModal({
-      //     title: '没有对应数据',
-      //     content: '',
-      //     showCancel: false
-      //   })
-      // }
-    })
-  },
   toMineCourseList: function (e) {
-    this.queryMineCourseList();
+    wx.navigateTo({
+      //这里传值
+      url: '/pages/courseBotIndex/index?pageType='+'mineCoursePage',
+    })
+    // this.queryMineCourseList();
   },
 
   queryMineCourseList() {
@@ -568,4 +535,12 @@ Page({
       // url: '/pages/AddEngClassContent/AddEngClassContent',
     })
   },
+  toMineVisitorFormList() {
+    wx.navigateTo({
+      //这里传值
+      url: '/pages/mysel/mineVisitorFromList/index',
+      // url: '/pages/AddEngClassContent/AddEngClassContent',
+    })
+  },
+
 })
