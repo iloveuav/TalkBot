@@ -17,7 +17,8 @@
 
 <!-- ---------------------------------------------------------------------------- -->
 <view class="course">
-  <view class="course-center-title">课程中心</view>
+  <view class="course-center-title" wx:if="{{pageType ==='studyPage'}}">课程中心</view>
+  <view class="course-center-title" wx:if="{{pageType ==='mineCoursePage'}}">我上传的课程</view>
 </view>
 <!-- -----------------英语课程卡片组件------------------------------------------ -->
 <view class="classCard">
