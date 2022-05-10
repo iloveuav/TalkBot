@@ -18,48 +18,9 @@ Page({
       rankIcon: 'https://one.zzux.net/image/level.png' //根据用户级别显示Icon
     },
     engcourseArray: [
-      //   {
-      //   courseName: "英语入门", //课程名称
-      //   courseId: -1, //课程Id
-      //   courseType: 'eng', //课程类型
-      //   courseProgress: "Grammar - 课程 1 / 4", //课程进度
-      //   courseSrc: "https://one.zzux.net/image/engcover.jpg" //课程封面
-      // }, 
-      // {
-      //   courseName: "英语初级", //课程名称
-      //   courseId: 9, //课程Id
-      //   courseType: 'eng', //课程类型
-      //   courseProgress: "Vocabulary - 课程 1 / 3", //课程进度
-      //   courseSrc: "https://one.zzux.net/image/engcover.jpg" //课程封面
-      // }, {
-      //   courseName: "英语高级", //课程名称
-      //   courseId: 19, //课程Id
-      //   courseType: 'eng', //课程类型
-      //   courseProgress: "Vocabulary - 课程 1 / 2", //课程进度
-      //   courseSrc: "https://one.zzux.net/image/engcover.jpg" //课程封面
-      // }, 
     ],
 
     jacorseArray: [
-      //   {
-      //   courseName: "日语入门", //课程名称
-      //   courseId: -1, //课程Id
-      //   courseType: 'ja', //课程类型
-      //   courseProgress: "Grammar - 课程 1 / 4", //课程进度
-      //   courseSrc: "http://imgchatbot.uavserve.online/%E8%AF%BE%E6%9C%AC%E5%B0%81%E9%9D%A2.png" //课程封面
-      // }, {
-      //   courseName: "日语初级", //课程名称
-      //   courseId: 9, //课程Id
-      //   courseType: 'ja', //课程类型
-      //   courseProgress: "Vocabulary - 课程 1 / 2", //课程进度
-      //   courseSrc: "http://imgchatbot.uavserve.online/%E8%AF%BE%E6%9C%AC%E5%B0%81%E9%9D%A2.png" //课程封面
-      // }, {
-      //   courseName: "日语高级", //课程名称
-      //   courseId: 19, //课程Id
-      //   courseType: 'ja', //课程类型
-      //   courseProgress: "Vocabulary - 课程 1 / 2", //课程进度
-      //   courseSrc: "http://imgchatbot.uavserve.online/%E8%AF%BE%E6%9C%AC%E5%B0%81%E9%9D%A2.png" //课程封面
-      // },
     ],
 
 
@@ -96,9 +57,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function (options) {
-    if (this.data.pageType) {
-      this.getAllCourse(this.data.pageType);
-    }
+    // if (this.data.pageType) {
+    //   this.getAllCourse(this.data.pageType);
+    // }
 
   },
 
@@ -155,13 +116,9 @@ Page({
         wx.setStorageSync('allCourseMess', res.result.allCourse);
 
         let showCourse = []
-        if (pageType === 'studyPage') {
-          showCourse = res.result.allCourse
-        } else {
-          showCourse = res.result.allCourse
-        }
+        showCourse = pageType === 'studyPage' ? res.result.allCourseMess.data : res.result.MineCrouseList
         this.setData({
-          allCourse: showCourse,
+          showCourseList: showCourse,
           remind: '',
         })
       },

@@ -29,9 +29,9 @@
 
   <scroll-view>
 
-    <view wx:for="{{allCourse[0].children}}">
-      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+    <view wx:for="{{showCourseList}}">
+      <view>
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
           bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
@@ -39,47 +39,7 @@
   </scroll-view>
   <!-- <view class="crouseType">英语课程</view> -->
 </view>
-<!-- ------------------------------------------------- -->
-<!-- -----------------日语课程卡片组件------------------------------------------ -->
-<view class="classCard">
 
-
-  <!-- <view class="remind-box" wx:if="{{remind}}">
-          <image class="remind-img" src="/images/loading.gif"></image>
-        </view> -->
-
-  <scroll-view>
-    <view wx:for="{{allCourse[1].children}}">
-      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
-          bindchangeCourse="getcurrentCourse">
-        </courseCard>
-      </view>
-    </view>
-  </scroll-view>
-  <!-- <view class="crouseType">日语课程</view> -->
-</view>
-<!-- ------------------------------------------------- -->
-<!-- -----------------其他课程卡片组件------------------------------------------ -->
-<view class="classCard">
-
-
-  <!-- <view class="remind-box" wx:if="{{remind}}">
-          <image class="remind-img" src="/images/loading.gif"></image>
-        </view> -->
-
-  <scroll-view>
-    <view wx:for="{{allCourse[2].children}}">
-      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
-          bindchangeCourse="getcurrentCourse">
-        </courseCard>
-      </view>
-    </view>
-  </scroll-view>
-  <!-- <view class="crouseType">其他课程</view>  -->
-</view>
-<!-- ------------------------------------------------- -->
 <view>
   <scroll-view>
   </scroll-view>

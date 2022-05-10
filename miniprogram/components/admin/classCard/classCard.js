@@ -22,7 +22,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    currentSwiperIndex:0,
+    currentSwiperIndex: 0,
     objectArray: [
     ]
   },
@@ -41,7 +41,7 @@ Component({
         currentIndex: e.detail.current,
         courseDetail: this.data.objectArray[e.detail.current]
       }
-      this.triggerEvent('changeCourse', currentCourse )
+      this.triggerEvent('changeCourse', currentCourse)
     },
 
     toClass(e) {
@@ -53,14 +53,16 @@ Component({
       //     showCancel: false
       //   })
       let currentChooseCard = this.data.currentSwiperIndex;
-      if (this.data.pageName == "admin")
-      {
+      if (this.data.pageName == "admin") {
+        // wx.navigateTo({
+        //   //这里传值
+        //   url: "../../AddCourseContent/AddCourseContent?currentChooseCard=" + currentChooseCard ,
+        // })
         wx.navigateTo({
           //这里传值
-          url: "../../AddCourseContent/AddCourseContent?currentChooseCard=" + currentChooseCard ,
+          url: "../../courseMessForm/index?currentChooseCard=" + currentChooseCard,
         })
       }
-      
       return;
       // }
 

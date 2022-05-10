@@ -135,6 +135,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    // this.getAllCourse()
     allCourseMess = wx.getStorageSync('allCourseMess');
     this.data.allCourseDemo.forEach(v=>{
       allCourseMess.forEach(v1=>{

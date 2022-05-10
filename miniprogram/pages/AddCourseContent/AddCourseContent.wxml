@@ -7,7 +7,7 @@
         <text>{{unReadNum}}</text>
       </view>
       <text class="themeKey">课程名</text>
-      <input class="themeInput" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="eg:初级日语"  placeholder-style="color:#fff;"/>
+      <input class="themeInput" bindinput="bindChange2" confirm-type="done" value='{{courseName}}' placeholder="eg:初级日语"  placeholder-style="color:#fff;"/>
     </view>  
    
 <view class="chapter-item">

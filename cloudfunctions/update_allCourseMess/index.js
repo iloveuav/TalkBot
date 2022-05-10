@@ -14,25 +14,35 @@ exports.main = async (event, context) => {
 
   try {
     return db.collection('allCourseMess').where({
-      courseName: event.courseMess.name
+      courseName: event.courseMess.courseName
     }).count()
       .then(res => {
         console.log('count', res)
         if (res.total <= 0) {
           return db.collection('allCourseMess').add({
             data: {
-              courseName: event.courseMess.name,
-              courseMess: event.courseMess,
-              createrOpenid: wxContext.OPENID
+              courseName: event.courseMess.courseName,
+              courseUUid: event.courseMess.courseUUid,
+              courseFrontImgUrl: event.courseMess.courseFrontImgUrl,
+              courseIntroduce: event.courseMess.courseIntroduce,
+              courseType: event.courseMess.courseType,
+              creatTime: event.courseMess.creatTime,
+              createrOpenid: wxContext.OPENID,
+              state: '待审核'
             }
           })
         } else {
           return db.collection('allCourseMess').where({
-            courseName: event.courseMess.name
+            courseUUid: event.courseMess.courseUUid
           }).update({
             data: {
-              courseMess: event.courseMess,
-              createrOpenid: wxContext.OPENID
+              courseName: event.courseMess.courseName,
+              courseFrontImgUrl: event.courseMess.courseFrontImgUrl,
+              courseIntroduce: event.courseMess.courseIntroduce,
+              courseType: event.courseMess.courseType,
+              creatTime: event.courseMess.creatTime,
+              state: event.courseMess.state || '待审核',
+              createrOpenid: wxContext.OPENID,
             },
           })
         }

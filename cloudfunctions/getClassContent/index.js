@@ -9,14 +9,16 @@ const db = cloud.database()
 const _ = db.command
 // 云函数入口函数
 exports.main = async (event, context) => {
-  // const wxContext = cloud.getWXContext()
-  // wxContext.OPENID
+  const wxContext = cloud.getWXContext()
+
   var classContent = await db.collection(event.classCollection)
     .where({
       classId: event.classId,
       className:event.className,
       chapterName:event.chapterName
     })
+    .orderBy('time','asc')
+    // }).orderBy('time','desc')
     .get()
 
   return {

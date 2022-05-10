@@ -14,6 +14,9 @@ Component({
     },
     remind: {
       type: String,
+    },
+    pageType: {
+      type: String,
     }
 
 
@@ -32,10 +35,10 @@ Component({
    */
   methods: {
 
-    
+
     swiperBindchange(e) {
       this.setData({
-        
+
         currentSwiperIndex: e.detail.current,
         courseDetail: this.data.corseArray[e.detail.current]
       })
@@ -46,51 +49,109 @@ Component({
       this.triggerEvent('changeCourse', currentCourse)
     },
 
-    toCourse(e) {
-      // console.log(this.data.corseArray);
+    // toCourse(e) {
+    //   // console.log(this.data.corseArray);
+    //   let corseArray = this.data.corseArray;
+    //   let currentSwiperIndex = this.data.currentSwiperIndex;
+
+    //   const crouseDetail = this.data.crouseDetail
+    //   // console.log(corseArray[currentSwiperIndex].data)
+    //   // console.log(corseArray[currentSwiperIndex].data[0]._id)
+    //   let CurrentChapter = {
+    //     courseId: crouseDetail.data[0].courseId,
+    //     className: crouseDetail.data[0]._id.className,
+    //     chapterName: crouseDetail.data[0]._id.chapterName,
+    //     id : crouseDetail.data[0].id,
+    //     reset : false
+    //   }
+    //   // console.log(CurrentChapter)
+
+    //   let str = JSON.stringify(crouseDetail);
+    //   let Cc = JSON.stringify(CurrentChapter);
+    //   wx.navigateTo({
+    //     //这里传值
+    //     url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
+    //   })
+
+    //   // let userEngCId = 1;
+    //   // let userJaCId = 1;
+    //   // let cid = 1;
+    //   // if (wx.getStorageSync('userEngclassId')) {
+    //   //   userEngCId = wx.getStorageSync('userEngclassId');
+    //   // }
+    //   // if (wx.getStorageSync('userJaclassId')) {
+    //   //   userJaCId = wx.getStorageSync('userJaclassId');
+    //   // }
+    //   // if (corseArray[currentSwiperIndex].courseType=='eng')
+    //   // {
+    //   //   cid = userEngCId
+    //   // }
+    //   // else
+    //   // {
+    //     // cid = userJaCId
+    //   // }
+
+
+    //     // let cid = currentChooseCard == 0 ? userEngCId : userJaCId;
+
+    // },
+
+
+    toCourseChapterPage(e) {
+      let btnType = e.currentTarget.dataset.content
       let corseArray = this.data.corseArray;
       let currentSwiperIndex = this.data.currentSwiperIndex;
 
       const crouseDetail = this.data.crouseDetail
+      console.log("crouseDetail", crouseDetail)
       // console.log(corseArray[currentSwiperIndex].data)
       // console.log(corseArray[currentSwiperIndex].data[0]._id)
-      let CurrentChapter = {
-        courseId: crouseDetail.data[0].courseId,
-        className: crouseDetail.data[0]._id.className,
-        chapterName: crouseDetail.data[0]._id.chapterName,
-        id : crouseDetail.data[0].id,
-        reset : false
-      }
+      // let CurrentChapter = {
+      //   courseId: crouseDetail.data[0].courseId,
+      //   className: crouseDetail.data[0]._id.className,
+      //   chapterName: crouseDetail.data[0]._id.chapterName,
+      //   id : crouseDetail.data[0].id,
+      //   reset : false
+      // }
       // console.log(CurrentChapter)
 
       let str = JSON.stringify(crouseDetail);
-      let Cc = JSON.stringify(CurrentChapter);
-      wx.navigateTo({
+      // let Cc = JSON.stringify(CurrentChapter);
+      // wx.navigateTo({
+      //   //这里传值
+      //   url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
+      // })
+
+       wx.navigateTo({
         //这里传值
-        url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
+        url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType="+btnType,
+        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
       })
-
-      // let userEngCId = 1;
-      // let userJaCId = 1;
-      // let cid = 1;
-      // if (wx.getStorageSync('userEngclassId')) {
-      //   userEngCId = wx.getStorageSync('userEngclassId');
-      // }
-      // if (wx.getStorageSync('userJaclassId')) {
-      //   userJaCId = wx.getStorageSync('userJaclassId');
-      // }
-      // if (corseArray[currentSwiperIndex].courseType=='eng')
-      // {
-      //   cid = userEngCId
-      // }
-      // else
-      // {
-        // cid = userJaCId
-      // }
-
-      
-        // let cid = currentChooseCard == 0 ? userEngCId : userJaCId;
-       
     },
+
+    // toEditCourse(e) {
+    //   let corseArray = this.data.corseArray;
+    //   let currentSwiperIndex = this.data.currentSwiperIndex;
+
+    //   const crouseDetail = this.data.crouseDetail
+    //   console.log("crouseDetail", crouseDetail)
+    //   // console.log(corseArray[currentSwiperIndex].data)
+    //   // console.log(corseArray[currentSwiperIndex].data[0]._id)
+    //   // let CurrentChapter = {
+    //   //   courseId: crouseDetail.data[0].courseId,
+    //   //   className: crouseDetail.data[0]._id.className,
+    //   //   chapterName: crouseDetail.data[0]._id.chapterName,
+    //   //   id : crouseDetail.data[0].id,
+    //   //   reset : false
+    //   // }
+    //   // console.log(CurrentChapter)
+
+    //   // let str = JSON.stringify(crouseDetail);
+    //   // let Cc = JSON.stringify(CurrentChapter);
+    //   // wx.navigateTo({
+    //   //   //这里传值
+    //   //   url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
+    //   // })
+    // },
   }
 })

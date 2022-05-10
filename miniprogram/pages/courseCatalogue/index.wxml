@@ -1,0 +1,34 @@
+<!--miniprogram/pages/courseCatalogue/index.wxml-->
+<view class="Card" >
+  <view class="left">
+    <!-- mode='aspectFill' 不缩放自动裁切 -->
+    <!-- mode='widthFix'保持宽高比例 -->
+    <image wx:if="{{crouseDetail.courseFrontImgUrl&&crouseDetail.courseFrontImgUrl!==''}}" class="leftImage"
+      src="{{crouseDetail.courseFrontImgUrl}}"></image>
+    <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png'>
+    </image>
+  </view>
+  <view class="right">
+    <view class="title">{{crouseDetail.courseName}}</view>
+    <view class="detail" wx:if="{{pageType==='studyPage'}}">开始了解吧</view>
+    <view class="process">
+      <view class="top-card-weeksign">
+        <view class="process-data" wx:if="{{pageType==='studyPage'}}">{{crouseDetail.courseProgress}}</view>
+        <!-- <view class="process-data">
+ </view> -->
+ 简介：{{crouseDetail.courseIntroduce}}
+ <view wx:if="{{btnType==='edit'}}"> 审核状态：{{crouseDetail.state}}</view>
+
+
+
+      </view>
+    </view>
+  </view>
+
+
+</view>
+
+
+<view class="bottomCard" wx:if="{{btnType==='edit'}}">
+  <button class="addChapter-btn" bindtap="toAddChapter" data-content='pass'>新增章节</button>
+</view>

@@ -1,4 +1,3 @@
-// miniprogram/pages/AddCourseContent/AddCourseContent.js
 var app = getApp();
 var util = require("../../utils/util.js")
 var time = require('../../utils/util.js');
@@ -17,7 +16,7 @@ Page({
     message: '',
     classId: '',
     courseName: '',
-    chapterName: '',
+    courseIntroduce: '',
     value: '',
     imgUrl: '',
     textimgTitle: '',
@@ -27,15 +26,8 @@ Page({
     textImgArray: [],
 
     tempimg: [], //临时数组  等点击发送的时候一起走
+    courseUUid: util.uuid()
 
-    //拖拽相关
-    mark: 0,
-    newmark: 0,
-    startmark: 0,
-    endmark: 0,
-    windowWidth: wx.getSystemInfoSync().windowWidth,
-    staus: 1,
-    translate: '',
   },
 
   /**
@@ -51,19 +43,6 @@ Page({
       //其他课程
       ClassCollection = 'otherClassContents'
     }
-
-    let courseMess = JSON.parse(options.courseMess);
-    console.log("courseMess",courseMess)
-    this.setData({
-      // textImgArray: textImgArray,
-      // textimgTitle: '',
-      // message: '',
-      // imgUrl: '',
-      // imageObject: '',
-      // answer: '',
-      courseName:courseMess.courseName
-    })
-
 
     console.log(ClassCollection);
   },
@@ -121,7 +100,7 @@ Page({
   addOneItem: function (e) {
     var newData = {
       textimgTitle: this.data.textimgTitle,
-      chapterName: this.data.chapterName,
+      courseIntroduce: this.data.courseIntroduce,
       content: this.data.message,
       src: this.data.imgUrl,
     }
@@ -169,6 +148,8 @@ Page({
       wx.cloud.init({
         env: 'talkbot-56sn5'
       })
+      // wx.cloud.init()
+      //  下面是云函数的调用
       wx.cloud.callFunction({
         name: 'update_allCourseMess',
         data: {
@@ -238,7 +219,7 @@ Page({
           showCancel: false
         })
         return;
-      } else if (this.data.chapterName == '' && this.data.imgUrl == null) {
+      } else if (this.data.courseIntroduce == '' && this.data.imgUrl == null) {
         wx.showModal({
           title: '提示',
           content: '章节名不能为空~',
@@ -272,7 +253,7 @@ Page({
           classId: parseInt(that.data.classId),
           courseName: that.data.courseName,
           classType: ClassCollection,
-          chapterName: this.data.chapterName,
+          courseIntroduce: this.data.courseIntroduce,
 
           detail: {},
           textimgTitle: that.data.textimgTitle,
@@ -338,6 +319,74 @@ Page({
     }
   },
 
+  clickFinish: function (e) {
+    if (this.data.courseName == '') {//上传封面的时候可以不需要输入章节id
+      wx.showModal({
+        title: '提示',
+        content: '给课程取个名字吧~',
+        showCancel: false
+      })
+      return;
+    } else if (this.data.imgUrl == '') {
+      wx.showModal({
+        title: '提示',
+        content: '不要忘记上传封面哦~',
+        showCancel: false
+      })
+      return;
+    } else if (this.data.courseIntroduce == '') {
+      wx.showModal({
+        title: '提示',
+        content: '简单介绍下课程吧~',
+        showCancel: false
+      })
+      return;
+    }
+
+    const courseMess = {
+      courseUUid: this.data.courseUUid,
+      courseName: this.data.courseName,
+      courseFrontImgUrl: this.data.imgUrl,
+      courseIntroduce: this.data.courseIntroduce,
+      courseType: 'other',
+      creatTime: time.formatTime(new Date, 'Y/M/D'),
+    }
+    console.log("courseMess", courseMess)
+    wx.showLoading({
+      title: '处理中',
+      mask: true
+    })
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: 'update_allCourseMess',
+      data: {
+        courseMess: courseMess,
+      },
+      success: res => {
+        wx.showModal({
+          title: '课程添加成功',
+          content: '可以开始添加章节数据了~',
+          showCancel: false,
+        })
+        return;
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '提示',
+          content: '课程信息上传出错 请检查网络',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+      }
+    })
+  },
 
   useTecentCloud() {
     // wx.cloud.init()
@@ -476,6 +525,7 @@ Page({
             // this.cancelTask = cancelTask;
           }
         );
+
         wx.hideLoading()
         wx.showToast({
           title: '上传成功2',
@@ -524,21 +574,7 @@ Page({
 
   // ----------------选择图片 ----------------
   uploadimg() {
-    if (this.data.classId == ''&&!this.data.setFrontImg) {//上传封面的时候可以不需要输入章节id
-      wx.showModal({
-        title: '提示',
-        content: '章节id不能为空',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.courseName == '') {
-      wx.showModal({
-        title: '提示',
-        content: '课程名不能为空',
-        showCancel: false
-      })
-      return;
-    }
+
     var that = this;
     // that.data.imgnum
     wx.chooseImage({
@@ -735,7 +771,7 @@ Page({
       classCollection: ClassCollection,
       classId: parseInt(this.data.classId),
       courseName: this.data.courseName,
-      chapterName: this.data.chapterName,
+      courseIntroduce: this.data.courseIntroduce,
 
       detail: {
         btnNum: this.data.btnNum,
@@ -838,14 +874,14 @@ Page({
   },
 
   bindChange1: function (e) {
-    this.data.classId = e.detail.value
+    this.data.imgUrl = e.detail.value
   },
 
   bindChange2: function (e) {
     this.data.courseName = e.detail.value
   },
   bindChange3: function (e) {
-    this.data.chapterName = e.detail.value
+    this.data.courseIntroduce = e.detail.value
   },
 
   preimage(e) {
@@ -879,7 +915,7 @@ Page({
         showCancel: false
       })
       return;
-    } else if (this.data.chapterName == '') {
+    } else if (this.data.courseIntroduce == '') {
       wx.showModal({
         title: '提示',
         content: '章节名不能为空',
@@ -916,7 +952,7 @@ Page({
                 classCollection: ClassCollection,
                 classId: parseInt(that.data.classId),
                 courseName: that.data.courseName,
-                chapterName: that.data.chapterName,
+                courseIntroduce: that.data.courseIntroduce,
               },
               success: res => {
                 wx.showModal({

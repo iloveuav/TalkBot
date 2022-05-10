@@ -18,9 +18,9 @@
 
 <view class='item'>
   <view class="title">更新数据</view>
-  <button bindtap='getAllCourse' class="updateCourseMess">
+  <!-- <button bindtap='getAllCourse' class="updateCourseMess">
     更新
-  </button>
+  </button> -->
 </view>
 
 <view class="treemapContainer">

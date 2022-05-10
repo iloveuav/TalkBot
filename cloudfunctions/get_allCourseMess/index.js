@@ -17,11 +17,12 @@ exports.main = async (event, context) => {
     .group({
       // 按 category 字段分组
       _id: {
-        className: '$className',
+        courseName: '$courseName',
         chapterName: '$chapterName',
+        classId: '$classId',
       },
       courseNum: $.sum(1),
-      courseId: $.first('$classId'),
+      // courseId: $.first('$classId'),
     })
     .end()
   // engAllCourse.forEach(v=>{
@@ -33,11 +34,13 @@ exports.main = async (event, context) => {
     .group({
       // 按 category 字段分组
       _id: {
-        className: '$className',
+        courseName: '$courseName',
         chapterName: '$chapterName',
+        // classId:'$classId',
       },
       courseNum: $.sum(1),
-      courseId: $.first('$classId'),
+      // courseId: $.first('$classId'),
+      // courseId: $.first('$classId'),
     })
     .end()
 
@@ -46,10 +49,12 @@ exports.main = async (event, context) => {
     .group({
       // 按 category 字段分组
       _id: {
-        className: '$className',
+        courseName: '$courseName',
         chapterName: '$chapterName',
+        classId: '$classId',
       },
       courseNum: $.sum(1),
+      // courseId:'$classId',
       courseId: $.first('$classId'),
     })
     .end()
@@ -58,11 +63,11 @@ exports.main = async (event, context) => {
     .group({
       // 按 category 字段分组
       _id: {
-        className: '$className',
+        courseName: '$courseName',
         chapterName: '$chapterName',
       },
       courseNum: $.sum(1),
-      courseId: $.first('$classId'),
+      // courseId: $.first('$classId'),
     })
     .end()
 
@@ -74,7 +79,18 @@ exports.main = async (event, context) => {
   }).get()
   var UserCourseMess = tempUserCourseMess.data
 
+
+  // allCourse = []
+  MineCrouseList = []
+
   //之前前端的处理逻辑 放入云函数
+  allCourseMess.data.forEach(courseMess => {
+    let item = courseMess
+    if (item.createrOpenid === wxContext.OPENID) {
+      MineCrouseList.push(item)
+    }
+  })
+
 
   let courseFrontImgArray = allCourseMess.data
   let allCourse = []
@@ -90,21 +106,21 @@ exports.main = async (event, context) => {
   children.forEach(v => {
     let item = v
     // console.log(!map[item])
-    // console.log(item._id.className)
-    if (!map[item._id.className]) {
+    // console.log(item._id.courseName)
+    if (!map[item._id.courseName]) {
       nList.push({
-        name: item._id.className,
+        name: item._id.courseName,
         value: item.courseNum,
         courseType: 'ja',
         data: [item]
       })
-      map[item._id.className] = item
+      map[item._id.courseName] = item
     } else {
       //遍历nList
       for (var j = 0; j < nList.length; j++) {
         var nItem = nList[j]
         //如查找到date符合则添加
-        if (nItem.name == item._id.className) {
+        if (nItem.name == item._id.courseName) {
           nItem.data.push(item)
           //跳出循环
           break
@@ -140,7 +156,7 @@ exports.main = async (event, context) => {
       UserCourseMess.forEach(v2 => {
         let progress = 0
 
-        if (v.name == v2.className) {
+        if (v.name == v2.courseName) {
           progress = Number((v2.courseId / v.data.length)).toFixed(2) * 100;
           console.log(progress)
           // console.log(v)
@@ -153,11 +169,12 @@ exports.main = async (event, context) => {
     // })
 
     courseFrontImgArray.forEach(v3 => {
-      if (v.name == v3.courseMess.name) {
+      if (v.name == v3.courseName) {
         //根据名字匹配上后根据有值的进行更新
-        if (v3.courseMess.frontImg) {
-          v.frontImg = v3.courseMess.frontImg
+        if (v3.courseFrontImgUrl) {
+          v.courseFrontImgUrl = v3.courseFrontImgUrl
         }
+        //创作者
         if (v3.createrOpenid) {
           v.createrOpenid = v3.createrOpenid
           if (v3.createrOpenid === wxContext.OPENID) {
@@ -171,7 +188,7 @@ exports.main = async (event, context) => {
           v.state = v3.state
         }
       }
-      //创作者
+
 
 
     })
@@ -196,21 +213,21 @@ exports.main = async (event, context) => {
   children.forEach(v => {
     let item = v
     // console.log(!map[item])
-    // console.log(item._id.className)
-    if (!map[item._id.className]) {
+    // console.log(item._id.courseName)
+    if (!map[item._id.courseName]) {
       nList.push({
-        name: item._id.className,
+        name: item._id.courseName,
         value: item.courseNum,
         courseType: 'eng',
         data: [item]
       })
-      map[item._id.className] = item
+      map[item._id.courseName] = item
     } else {
       //遍历nList
       for (var j = 0; j < nList.length; j++) {
         var nItem = nList[j]
         //如查找到date符合则添加
-        if (nItem.name == item._id.className) {
+        if (nItem.name == item._id.courseName) {
           nItem.data.push(item)
           //跳出循环
           break
@@ -220,8 +237,6 @@ exports.main = async (event, context) => {
   })
   //对章节按照课程分组end----------------------------------------------------------------------
   num = 1
-  // courseMess = nList
-  // console.log(courseMess)
   nList.forEach(v => {
     // 进一步处理 加上课程进度 课程封面 并且将章节数组根据classId排序
     // 设置为升序
@@ -244,10 +259,10 @@ exports.main = async (event, context) => {
       v.courseProgress = "课程进度 -  " + progress + '%';
     } else {
       UserCourseMess.forEach(v2 => {
-        if (v.name == v2.className) {
+        if (v.name == v2.courseName) {
 
           progress = Number((v2.courseId / v.data.length)).toFixed(2) * 100;
-          console.log(v.name + v2.className + v2.courseId)
+          console.log(v.name + v2.courseName + v2.courseId)
           console.log('progress', progress)
           v.courseProgress = "课程进度 -  " + progress.toFixed(2) + '%';
           v.progress = v2.courseId
@@ -258,10 +273,10 @@ exports.main = async (event, context) => {
     // })
 
     courseFrontImgArray.forEach(v3 => {
-      if (v.name == v3.courseMess.name) {
+      if (v.name == v3.courseName) {
         //根据名字匹配上后根据有值的进行更新
-        if (v3.courseMess.frontImg) {
-          v.frontImg = v3.courseMess.frontImg
+        if (v3.courseFrontImgUrl) {
+          v.courseFrontImgUrl = v3.courseFrontImgUrl
         }
         if (v3.createrOpenid) {
           v.createrOpenid = v3.createrOpenid
@@ -301,21 +316,21 @@ exports.main = async (event, context) => {
   children.forEach(v => {
     let item = v
     // console.log(!map[item])
-    // console.log(item._id.className)
-    if (!map[item._id.className]) {
+    // console.log(item._id.courseName)
+    if (!map[item._id.courseName]) {
       nList.push({
-        name: item._id.className,
+        name: item._id.courseName,
         value: item.courseNum,
         courseType: 'other',
         data: [item]
       })
-      map[item._id.className] = item
+      map[item._id.courseName] = item
     } else {
       //遍历nList
       for (var j = 0; j < nList.length; j++) {
         var nItem = nList[j]
         //如查找到date符合则添加
-        if (nItem.name == item._id.className) {
+        if (nItem.name == item._id.courseName) {
           nItem.data.push(item)
           //跳出循环
           break
@@ -325,8 +340,6 @@ exports.main = async (event, context) => {
   })
   //对章节按照课程分组end----------------------------------------------------------------------
   num = 1
-  // let courseMess = nList
-  // console.log(courseMess)
   nList.forEach(v => {
     // 进一步处理 加上课程进度 课程封面 并且将章节数组根据classId排序
     // 设置为升序
@@ -351,13 +364,13 @@ exports.main = async (event, context) => {
         v.courseProgress = "课程进度 -  " + progress + '%';
         v.progress = v.data[0].courseId
         v.progressValue = 0
-        if (v.name == v2.className) {
+        if (v.name == v2.courseName) {
           progress = Number((v2.courseId / v.data.length)).toFixed(2) * 100;
           // console.log(v)
           v.courseProgress = "课程进度 -  " + progress.toFixed(2) + '%';
           v.progress = v2.courseId
           v.progressValue = v2.courseId
-          console.log(v.name + v2.className + v2.courseId)
+          console.log(v.name + v2.courseName + v2.courseId)
           console.log('progress', progress.toFixed(2))
           console.log("v", v)
         }
@@ -366,11 +379,10 @@ exports.main = async (event, context) => {
     // })
 
     courseFrontImgArray.forEach(v3 => {
-      if (v.name == v3.courseMess.name) {
-        v.frontImg = v3.courseMess.frontImg
+      if (v.name == v3.courseName) {
         //根据名字匹配上后根据有值的进行更新
-        if (v3.courseMess.frontImg) {
-          v.frontImg = v3.courseMess.frontImg
+        if (v3.courseFrontImgUrl) {
+          v.courseFrontImgUrl = v3.courseFrontImgUrl
         }
         if (v3.createrOpenid) {
           v.createrOpenid = v3.createrOpenid
@@ -389,7 +401,7 @@ exports.main = async (event, context) => {
     v.id = num++;
   })
   let otherCourse = {
-    value: jaAllCourse.list.length,
+    value: otherAllCourse.list.length,
     id: 'othercourse',
     name: '其他课程',
     children: nList
@@ -407,6 +419,7 @@ exports.main = async (event, context) => {
     schoolDetail,
     allCourse,
     UserCourseMess,
-    currentOpenid: wxContext.OPENID
+    currentOpenid: wxContext.OPENID,
+    MineCrouseList: MineCrouseList
   }
 }
