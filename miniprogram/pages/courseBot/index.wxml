@@ -48,7 +48,7 @@
           </view>
 
           <!-- ----互动类型---- -->
-          <view class="InteractBox" wx:if="{{item.contentType=='Interact'}}">
+          <view class="InteractBox" wx:if="{{item.contentType=='Interact'}}" >
             <!-- <image src="/images/button/cancel.png" style='position:absoluted;' class="cancel" bindtap=''></image> -->
             <view wx:for="{{centendata[groupindex].detail.interactData}}" wx:key="{{item.index}}">
               <button catchtap="dealInteract" class="setWaitBtn  {{centendata[groupindex].detail.choosed==index?'':''}}" confirm-type="done" hidden="{{centendata[groupindex].detail.choosed!=index&&centendata[groupindex].detail.choosed!=undefined}}" value="{{item}}" data-detail='{{centendata[groupindex].detail}}' data-id='{{index}}' data-growid='{{groupindex}}' disabled="{{centendata[groupindex].detail.choosed!=undefined}}">

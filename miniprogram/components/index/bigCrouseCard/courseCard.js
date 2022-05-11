@@ -14,6 +14,9 @@ Component({
     },
     remind: {
       type: String,
+    },
+    pageType: {
+      type: String
     }
 
 
@@ -32,10 +35,10 @@ Component({
    */
   methods: {
 
-    
+
     swiperBindchange(e) {
       this.setData({
-        
+
         currentSwiperIndex: e.detail.current,
         courseDetail: this.data.corseArray[e.detail.current]
       })
@@ -58,8 +61,8 @@ Component({
         courseId: crouseDetail.data[0].courseId,
         className: crouseDetail.data[0]._id.className,
         chapterName: crouseDetail.data[0]._id.chapterName,
-        id : crouseDetail.data[0].id,
-        reset : false
+        id: crouseDetail.data[0].id,
+        reset: false
       }
       // console.log(CurrentChapter)
 
@@ -85,12 +88,12 @@ Component({
       // }
       // else
       // {
-        // cid = userJaCId
+      // cid = userJaCId
       // }
 
-      
-        // let cid = currentChooseCard == 0 ? userEngCId : userJaCId;
-       
+
+      // let cid = currentChooseCard == 0 ? userEngCId : userJaCId;
+
     },
   }
 })

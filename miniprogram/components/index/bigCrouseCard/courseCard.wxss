@@ -46,6 +46,7 @@
   flex: 1;
   flex-direction: column;
   padding: 30rpx 10rpx;
+  position: relative;
 }
 
 .title{
@@ -64,6 +65,7 @@
 }
 .process{
   padding: 0rpx 10rpx;
+
 }
 .process-data{
   font-size: 25rpx;
@@ -74,6 +76,7 @@
 .top-card-weeksign {
   margin-top: 60rpx;
   font-size: 26rpx;
+
 
   /* display: flex;
   justify-content: center;
@@ -95,4 +98,11 @@
   border-radius: 100rpx;
   position: absolute;
   height: 15rpx;
+}
+.text_state {
+  position: absolute;
+  top:20rpx;
+  right: 22rpx;
+  color: #bdb1b1;
+  font-size: 20rpx;
 }

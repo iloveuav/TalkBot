@@ -380,7 +380,7 @@ button[disabled] {
   border: 1px solid #000;
   font-size: 15px;
   height: 80rpx;
-  width: 80rpx;
+  width: 180rpx;
   position: fixed;
   bottom: 50rpx;
   right: 30rpx;

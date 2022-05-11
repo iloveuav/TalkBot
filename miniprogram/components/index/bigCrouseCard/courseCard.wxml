@@ -2,38 +2,36 @@
 
 
 <view class="Card" catchtap="toCourse">
-<view class="left">
- <!-- mode='aspectFill' 不缩放自动裁切 -->
- <!-- mode='widthFix'保持宽高比例 -->
-  <image  wx:if="{{crouseDetail.frontImg&&crouseDetail.frontImg!==''}}" class="leftImage" src="{{crouseDetail.frontImg}}" ></image>
-  <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png' ></image>
-</view>
-<view class="right">
-<view class="title">{{crouseDetail.name}}</view>
-<view class="detail">开始了解吧</view>
-<view class="process"> 
- <view class="top-card-weeksign">
- <view class="process-data">{{crouseDetail.courseProgress}}</view>
- <!-- {{crouseDetail.progressValue}}{{crouseDetail.data.length}} -->
-<!-- {{crouseDetail.progress}} -->
-      <!-- {{user.weekClock}} / 7 -->
-      <view style="display:flex">
-        <view class="top-card-weeksign-progress">
-          <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);"></view>
-          <!-- <view class="top-card-weeksign-progress-item" style="z-index:1;width:{{1*100}}rpx;background-color: rgb(145,213,255);"></view> -->
+  <view class="left">
+    <!-- mode='aspectFill' 不缩放自动裁切 -->
+    <!-- mode='widthFix'保持宽高比例 -->
+    <image wx:if="{{crouseDetail.frontImg&&crouseDetail.frontImg!==''}}" class="leftImage"
+      src="{{crouseDetail.frontImg}}"></image>
+    <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png'>
+    </image>
+  </view>
+  <view class="right">
+    <view class="title">{{crouseDetail.name}}</view>
+    <view class="detail">开始了解吧</view>
+    <view class="process">
+      <view class="top-card-weeksign">
+        <view class="process-data">{{crouseDetail.courseProgress}}</view>
+        <!-- {{crouseDetail.progressValue}}{{crouseDetail.data.length}} -->
+        <!-- {{crouseDetail.progress}} -->
+        <!-- {{user.weekClock}} / 7 -->
+        <view style="display:flex">
+          <view class="top-card-weeksign-progress">
+            <view class="top-card-weeksign-progress-item"
+              style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);">
+            </view>
+            <!-- <view class="top-card-weeksign-progress-item" style="z-index:1;width:{{1*100}}rpx;background-color: rgb(145,213,255);"></view> -->
+          </view>
+          <!-- <text style="margin-left:10rpx;">1111</text> -->
         </view>
-        <text style="margin-left:10rpx;"></text>
       </view>
+      <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state}}</text>
     </view>
-</view></view>
+  </view>
 
 
 </view>
-
-
-
-
-
-
-
-

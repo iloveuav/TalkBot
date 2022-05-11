@@ -31,7 +31,7 @@
 
     <view wx:for="{{allCourse[0].children}}">
       <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
           bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
@@ -51,7 +51,7 @@
   <scroll-view>
     <view wx:for="{{allCourse[1].children}}">
       <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
           bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
@@ -71,7 +71,7 @@
   <scroll-view>
     <view wx:for="{{allCourse[2].children}}">
       <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index"
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
           bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>

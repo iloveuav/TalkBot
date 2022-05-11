@@ -153,11 +153,13 @@ page {
 }
 
 .InteractBox {
+  /* background-color: rgb(204, 36, 36); */
   background-color: whitesmoke;
-  width: 65%;
+  /* width: 65%; */
+  min-width: 200rpx;
   min-height: 100rpx;
   max-height: 420rpx;
-  padding: 15rpx;
+  padding: 25rpx;
   /* position: absolute; */
   display: flex;
   flex-direction: row-reverse;
@@ -167,22 +169,13 @@ page {
   margin-top: 10rpx;
   margin-left: 260rpx;
   left: 10rpx;
+  margin-right: 10rpx !important;
+
   border-radius: 0rpx 0rpx 100rpx 100rpx;
   /* border: 1px solid #000; */
-  /* align-content: space-around; */
-  justify-content: space-around;
-}
-
-.setBox {
-  /* background-color: grey; */
-  width: 25%;
-  padding: 5rpx;
-  position: fixed;
-  bottom: 150rpx;
-  left: 10rpx;
-  display: flex;
-  flex-direction: row;
-  /* border-radius: 100rpx 0rpx 100rpx 100rpx; *//* justify-content: space-around; */
+  align-content: space-around;
+  /* justify-content: space-around; */
+  /* justify-content: end; */
 }
 
 .setWaitBtn {
@@ -191,15 +184,15 @@ page {
   flex: 1;
   min-width: 60px;
   min-height: 40px;
-  max-height: 60px;
+  /* max-height: 260px; */
   max-width: 350px;
-  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  border-radius: 30rpx 30rpx 30rpx 30rpx;
   flex-wrap: nowrap;
   /* z-index: 999; */
   color: black;
   text-align: center;
   margin-right: 20rpx;
-  padding: 15rpx;
+  padding: 5rpx;
   margin: 15rpx;
 }
 
@@ -288,10 +281,12 @@ button[disabled] {
   /* margin-top: 5rpx; */
   margin-bottom: 25rpx;
 }
-.chatBubbles.Interact  {
+
+.chatBubbles.Interact {
   display: none;
 }
-.chatBubbles.textImg  {
+
+.chatBubbles.textImg {
   display: none;
 }
 
@@ -340,7 +335,7 @@ button[disabled] {
   background: rgba(0, 0, 0, 0.3);
 }
 
-.autoRA{
+.autoRA {
   height: 70rpx;
   width: 60rpx;
   position: fixed;
@@ -352,24 +347,27 @@ button[disabled] {
 /*swtich整体大小及背景色*/
 /*swtich样式-start*/
 /*swtich整体大小*/
-.wx-switch-input{
-  width:82rpx !important;
-  height:45rpx !important;
-  background: #5bc0de !important;
-  }
-  /*白色样式（false的样式）*/
-  .wx-switch-input::before{
-  width:82rpx !important;
+.wx-switch-input {
+  width: 82rpx !important;
   height: 45rpx !important;
-  }
-  /*绿色样式（true的样式）*/
-  .wx-switch-input::after{
+  background: #5bc0de !important;
+}
+
+/*白色样式（false的样式）*/
+.wx-switch-input::before {
+  width: 82rpx !important;
+  height: 45rpx !important;
+}
+
+/*绿色样式（true的样式）*/
+.wx-switch-input::after {
   width: 42rpx !important;
   height: 45rpx !important;
-  }
-  /*swtich样式end*/
-  
-.autoraImg{
+}
+
+/*swtich样式end*/
+
+.autoraImg {
   height: 70rpx;
   width: 60rpx;
   position: fixed;
@@ -381,7 +379,7 @@ button[disabled] {
   border: 1px solid #000;
   font-size: 15px;
   height: 80rpx;
-  width: 80rpx;
+  width: 180rpx;
   position: fixed;
   bottom: 50rpx;
   right: 30rpx;
@@ -392,7 +390,7 @@ button[disabled] {
   background: linear-gradient(to right, grey, rgb(211, 217, 221));
 }
 
-.wordCard{
+.wordCard {
 
   margin-bottom: 60rpx;
 }

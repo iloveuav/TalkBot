@@ -517,7 +517,7 @@ Page({
 
   // ----------------选择图片 ----------------
   uploadimg() {
-    if (this.data.classId == '') {
+    if (this.data.classId == ''&&!this.data.setFrontImg) {
       wx.showModal({
         title: '提示',
         content: '章节id不能为空',
