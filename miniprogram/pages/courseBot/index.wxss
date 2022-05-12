@@ -162,7 +162,8 @@ page {
   padding: 25rpx;
   /* position: absolute; */
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: column;
+  /* flex-direction: row-reverse; */
   flex-wrap: wrap;
   margin-bottom: 60rpx;
   /* left: 120rpx; */
@@ -173,9 +174,9 @@ page {
 
   border-radius: 0rpx 0rpx 100rpx 100rpx;
   /* border: 1px solid #000; */
-  align-content: space-around;
+  /* align-content: space-around; */
   /* justify-content: space-around; */
-  /* justify-content: end; */
+  /* justify-content: start; */
 }
 
 .setWaitBtn {
@@ -225,6 +226,7 @@ button[disabled] {
   margin-right: 20rpx;
   padding: 15rpx;
   margin: 15rpx;
+  margin-left: 30%;
 }
 
 .cancel {

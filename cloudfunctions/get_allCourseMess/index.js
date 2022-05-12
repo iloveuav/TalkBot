@@ -170,6 +170,9 @@ exports.main = async (event, context) => {
         if (v3.state) {
           v.state = v3.state
         }
+        if(v3._id){
+          v._id = v3._id
+        }
       }
       //创作者
 
@@ -274,6 +277,9 @@ exports.main = async (event, context) => {
         //课程审核状态更新
         if (v3.state) {
           v.state = v3.state
+        }
+        if(v3._id){
+          v._id = v3._id
         }
       }
 
@@ -383,6 +389,8 @@ exports.main = async (event, context) => {
         //课程审核状态更新
         if (v3.state) {
           v.state = v3.state
+        } if(v3._id){
+          v._id = v3._id
         }
       }
     })
@@ -407,6 +415,7 @@ exports.main = async (event, context) => {
     schoolDetail,
     allCourse,
     UserCourseMess,
-    currentOpenid: wxContext.OPENID
+    currentOpenid: wxContext.OPENID,
+    courseFrontImgArray
   }
 }

@@ -422,10 +422,11 @@ Component({
       const state = e.currentTarget.dataset.content
 
       wx.cloud.callFunction({
-        name: 'update_visitorForm',
+        name: 'update_adminOperation',
         data: {
           _id: that.data.list_index._id,
-          state:state
+          state:state,
+          operateType:'updateVisitorState'
         },
         success: res => {
           console.log(res.result)

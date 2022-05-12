@@ -95,5 +95,42 @@ Component({
       // let cid = currentChooseCard == 0 ? userEngCId : userJaCId;
 
     },
+
+    updateCrouseState: function (e) {
+
+      let that = this
+      console.log('e', e.currentTarget.dataset.content)
+      console.log('e', this.data.crouseDetail)
+      const state = e.currentTarget.dataset.content
+
+      wx.cloud.callFunction({
+        name: 'update_adminOperation',
+        data: {
+          _id: this.data.crouseDetail._id,
+          state:state,
+          operateType:'updateCourseState'
+        },
+        success: res => {
+          console.log(res.result)
+        },
+        fail: err => {
+          // handle error
+        },
+        complete: res => {
+          console.log('callFunction test result: ', res)
+          wx.hideLoading()
+          if (res.result.mess.sucess) {
+            wx.showToast({
+              title: res.result.mess.sucess,
+              icon: 'success',
+              duration: 1000
+            })
+
+            
+          }
+
+        }
+      })
+    }
   }
 })
