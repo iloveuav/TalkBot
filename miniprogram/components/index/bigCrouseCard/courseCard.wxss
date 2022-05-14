@@ -1,5 +1,4 @@
 .Card{
-  height: 504rpx;
   margin: 15rpx 30rpx;
   box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.12);
   border: 1px solid #d0d0d0;
@@ -17,9 +16,13 @@
 .right{
   padding: 20rpx;
 }
-.detail{
+.title{
   font-size: 32rpx;
   font-weight: 800;
+  margin-bottom: 10rpx;
+}
+.detail{
+  
   margin-bottom: 14rpx;
   display: flex;
   justify-content: space-between;
