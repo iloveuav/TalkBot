@@ -766,7 +766,8 @@ Page({
       },
       success: res => {
         // console.log(res.result)
-        that.data.centendata.push(newInteract);
+        that.data.centendata.push({...contentData,is_show_right:1});
+        // that.data.centendata.push(newInteract);
         // that.data.centendata.push(this.data.newData);
         this.setData({
           // news_input_val: '',
