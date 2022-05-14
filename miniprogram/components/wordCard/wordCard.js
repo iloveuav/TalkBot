@@ -20,6 +20,7 @@ Component({
        */
       data: {
         currentChooseCard2: 0,
+        currentSwiperIndex: 0,
         allItem: [{
             textimgTitle: '加载中',
             src: '加载中',
@@ -46,6 +47,11 @@ Component({
 
         onLoad: function() {
           this.data.paramA // 页面参数 paramA 的值
+        },
+        swiperBindchange(e){
+          this.setData({
+            currentSwiperIndex: e.detail.current
+          })
         },
 
         preimage(e) {

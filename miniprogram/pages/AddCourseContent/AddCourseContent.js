@@ -25,6 +25,7 @@ Page({
     centendata: [],
     interactData: [],
     textImgArray: [],
+    answer: 'a',
 
     tempimg: [], //临时数组  等点击发送的时候一起走
 
@@ -122,6 +123,12 @@ Page({
       imgUrl: '',
       imageObject: '',
       answer: '',
+    })
+  },
+
+  selectedAnswer(e){
+    this.setData({
+      answer: e.currentTarget.dataset.answer
     })
   },
 

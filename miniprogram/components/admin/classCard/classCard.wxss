@@ -71,7 +71,9 @@
 
 .toClass {
   border: 1px solid #4D9BF4;
-  border-radius: 100rpx;
+  border-radius: 44rpx;
   font-size: 30rpx;
   color: #4D9BF4;
+  width: 360rpx;
+  height: 72rpx;
 }

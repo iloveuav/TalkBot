@@ -110,10 +110,12 @@ margin-bottom: 200rpx;
   bottom: 50rpx;
   left: 50%;
   transform: translateX(-50%);
-  height: 80rpx;
+  width: 360rpx;
+  height: 72rpx;
   
   border: 1px solid #4D9BF4;
-  border-radius: 100rpx;
+  border-radius: 44rpx;
+  line-height: 72rpx;
   font-size: 30rpx;
   color: #4D9BF4;
 }

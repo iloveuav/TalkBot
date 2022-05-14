@@ -38,8 +38,14 @@
         <!-- 右边 -->
         <view class='message-right'>
           <!-- 文字消息还是图片消息 -->
-          <text wx:if='{{item.textimgTitle!=""}}' class='message_txtTitle'>{{item.textimgTitle}}</text>
-          <text wx:if='{{item.content!=""}}' class='message_txt'>{{item.content}}</text>
+          <!-- <text wx:if='{{item.textimgTitle!=""}}' class='message_txtTitle'>{{item.textimgTitle}}</text> -->
+          <!-- <text wx:if='{{item.content!=""}}' class='message_txt'>{{item.content}}</text> -->
+          <view wx:if='{{item.content!=""}}' class="message_text">
+            <view class="text_title">换行测试</view>
+            <button class="text_answer {{answer === 'a' ? 'active' : ''}}" bindtap="selectedAnswer" data-answer="a">A、a</button>
+            <button class="text_answer {{answer === 'b' ? 'active' : ''}}" bindtap="selectedAnswer" data-answer="b">B、b</button>
+            <view class="text_title answer_title">正确答案是：A</view>
+          </view>
           <text wx:if='{{item.textImgArray.length>0}}' class='message_txt'>上传一组{{item.textImgArray.length}}个图文</text>
           <image wx:if='{{item.contentType=="img"}}' src='{{item.imgfile}}' class='new_imgtent'></image>
         </view>
