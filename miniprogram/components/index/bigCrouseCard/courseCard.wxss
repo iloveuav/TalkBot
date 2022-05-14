@@ -39,7 +39,9 @@
   font-weight: 400;
 }
 .process{
-  padding: 0rpx 10rpx;
+  display: flex;
+  align-items: center;
+  height: 25rpx;
 
 }
 .process-data{
