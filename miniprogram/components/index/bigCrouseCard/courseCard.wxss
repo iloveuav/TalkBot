@@ -71,3 +71,29 @@
   color: #bdb1b1;
   font-size: 20rpx;
 }
+
+.mineCourseBtns {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-left: 20rpx;
+}
+
+.preview-btn {
+  background: #0088fb;
+  color: #fff;
+  border-radius: 5rpx;
+  font-size: 20rpx;
+  width: 100rpx;
+  height: 50rpx;
+  margin-top: 10px;
+}
+
+.edit-btn {
+  background: #cf9655;
+  color: #fff;
+  border-radius: 5rpx;
+  font-size: 20rpx;
+  width: 100rpx;
+  height: 50rpx;
+  margin-top: 10px;
+}

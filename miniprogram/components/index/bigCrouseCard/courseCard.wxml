@@ -18,6 +18,11 @@
         <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);"></view>
       </view>
       <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state}}</text>
+
+      <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
+          <button class="preview-btn" catchtap="updateCrouseState" data-content='pass'>通过</button>
+          <button class="edit-btn" catchtap="updateCrouseState" data-content='repulse'>打回</button>
+        </view>
     </view>
   </view>
 
