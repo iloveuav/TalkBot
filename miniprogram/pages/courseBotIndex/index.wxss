@@ -2,6 +2,7 @@
 
 .course {
   /* padding: 30rpx; */
+  margin-bottom: 30rpx;
 }
 
 .remind-box {
@@ -46,9 +47,20 @@
 }
 
 .course-center-title {
-  font-size: 44rpx;
-  margin: 30rpx;
-  margin-bottom: 10rpx;
+  margin: 0 30rpx;
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.course-center-title::before{
+  content: "";
+  display: block;
+  height: 36rpx;
+  width: 6rpx;
+  margin-right: 14rpx;
+  background-color: #4D9BF4;
+  border-radius: 10rpx;
 }
 
 .welcomBox {
@@ -63,9 +75,4 @@
 
 .tap {
   height: 50%;
-}
-
-.classCard {
-  height: 100%;
-  margin-bottom: 20rpx;
 }

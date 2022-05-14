@@ -35,7 +35,7 @@
 .title::before{
   content: "";
   display: block;
-  height: 60%;
+  height: 36rpx;
   width: 6rpx;
   margin-right: 14rpx;
   background-color: #4D9BF4;
@@ -45,9 +45,13 @@
 .updateCourseMess {
   width: 130rpx;
   height: 52rpx;
-  background: #78C525;
+  background: #4D9BF4;
   border-radius: 30rpx;
   color: white;
+  font-size: 24rpx;
+  line-height: 52rpx;
+  padding: 0;
+  margin: 0;
 }
 
 ec-canvas {
@@ -60,5 +64,5 @@ ec-canvas {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  height: 920rpx;
+  margin-top: 60rpx;
 } 
