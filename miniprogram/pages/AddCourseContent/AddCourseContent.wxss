@@ -177,9 +177,8 @@ page {
 .message-right {
   max-width: 80%;
   line-height: 40rpx;
-  float: right;
   position: relative;
-  right: 40rpx;
+  /* right: 40rpx; */
   text-align: left;
 }
 
@@ -509,4 +508,57 @@ button[disabled] {
 
 .texeArea{
   height: 800rpx;
+}
+
+.message_text{
+  width: 100%;
+  padding: 42rpx 50rpx 69rpx;
+  border-radius: 10rpx;
+  box-shadow: 0 4rpx 11rpx 0 rgba(55,55,55,.2);
+  background-color: #fff;
+}
+.message_text .text_title{
+    margin-bottom: 50rpx;
+    line-height: 50rpx;
+    color: #666;
+    font-size: 36rpx;
+    word-break: break-word;
+}
+.text_answer{
+    margin-bottom: 40rpx;
+    border-radius: 10rpx;
+    padding: 24rpx 51rpx 24rpx 69rpx;
+    width: 100%;
+    font-size: 36rpx;
+    font-weight: 700;
+    text-align: left;
+    line-height: 46rpx;
+    color: #666;
+    background: #e0e0e0;
+    transition: all .5s;
+    position: relative;
+}
+
+.active{
+  background: linear-gradient(90deg,#2b8af5,#47b8f2);
+  box-shadow: 0 4rpx 11rpx 0 rgba(38,97,240,.3);
+  color: #fff;
+}
+
+.active::before{
+  content: "";
+  display: block;
+  position: absolute;
+  width: 20rpx;
+  height: 20rpx;
+  border: 5rpx solid #fff;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20rpx;
+  border-radius: 50%;
+}
+
+.message_text .answer_title{
+  color: #2b8af5;
+  font-weight: 700;
 }
