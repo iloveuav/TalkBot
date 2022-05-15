@@ -1,0 +1,21 @@
+<!--components/superAdmin/courseAudit.wxml-->
+<view class="view_tupian_wenzi">
+  <view class="view_content">
+    <image class="image_1" src="{{courseInfo.visitorPhoto ? courseInfo.visitorPhoto : '../../images/icon/defaultVisitor.png'}}" />
+    <view class="view_wenzi2">
+      <view>
+        <view class="wenzi_title">标题：{{courseInfo.visitorName}} （{{courseInfo.visitorTeamName}}）</view>
+        <view class="wenzi_desc">
+          {{courseInfo.visitData}}
+        </view>
+      </view>
+      <view style="display: flex;justify-content: space-between;align-items: center;">
+        <text class="text_state">{{courseInfo.state}}</text>
+        <view style="display: flex;">
+          <button class="btn" bindtap="preview">预览</button>
+          <button class="btn" bindtap="edit">编辑</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

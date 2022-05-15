@@ -97,45 +97,38 @@
 		<!-- Visitors页面的条件渲染及待审核Visitors页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 1||pageFlag == 8}}">
 			<view class="Visitors_container">
-				<button class="CSV_export" plain="true" catchtap="getExcel">导出EXcel</button>
 				<!-- 按钮弹窗模态框部分 -->
 				<view class="top_part">
 					<view id="select_buttons">
-						<input class="select_button" plain="true" placeholder="姓名" bindblur="inputVisitorName"></input>
-						<input class="select_button" plain="true" placeholder="组织" bindblur="inputVisitorTeamName"></input>
+          <view class="form_item">
+            <view class="label">姓名：</view>
+						<input class="select_button" placeholder="请输入姓名" bindblur="inputVisitorName"></input>
+          </view>
+          <view  class="form_item">
+            <view class="label">组织：</view>
+						<input class="select_button" placeholder="请输入组织" bindblur="inputVisitorTeamName"></input>
+          </view>
 					</view>
 					<view id="select_buttons">
-						<input class="select_button" plain="true" placeholder="手机号" bindblur="inputVisitorPhonenum"></input>
-						<input class="select_button" plain="true" placeholder="日期"></input>
+          <view class="form_item">
+            <view class="label">手机号：</view>
+						<input class="select_button" placeholder="请输入手机号" bindblur="inputVisitorPhonenum"></input>
+          </view>
+          <view class="form_item">
+            <view class="label">日期：</view>
+						<input class="select_button" placeholder="请输入日期"></input>
+          </view>
 					</view>
+          <button class="CSV_export" catchtap="getExcel">导出EXcel</button>
 				</view>
 				<!-- 列表部分 -->
-				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="true" showScrollbar="false"
-					scroll-with-animation="true" class="bottom_part">
+				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}"
+					scroll-with-animation="{{true}}" class="bottom_part">
 					<!-- <view>数据为空</view> -->
 					<block wx:for="{{list}}" wx:key="index">
-
+            <courseAudit courseInfo="{{item}}"></courseAudit>
 						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
-
-						<view class="view_tupian_wenzi" bindtap="click" bindlongpress="delete" id="{{index}}">
-
-							<image class="image_1"
-								src="{{item.visitorPhoto ? item.visitorPhoto : '../../images/icon/defaultVisitor.png'}}" />
-
-							<!-- 包裹两行文字 -->
-							<view class="view_wenzi2">
-
-								<text>{{item.visitorName}} （{{item.visitorTeamName}}）</text>
-
-								<text class="text_small">{{item.visitorPhonenum}}</text>
-
-								<text class="text_date">{{item.visitData}}</text>
-
-								<text class="text_state">{{item.state}}</text>
-							</view>
-
-						</view>
-
+            <visitorCard visitorInfo="{{item}}"></visitorCard>
 					</block>
 				</scroll-view>
 			</view>

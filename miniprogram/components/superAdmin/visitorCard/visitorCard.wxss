@@ -1,0 +1,55 @@
+/* components/superAdmin/visitorCard/visitorCard.wxss */
+.view_tupian_wenzi {
+  border-radius: 10rpx;
+  background-color: #ffffff;
+  margin: 30rpx 30rpx;
+  padding: 30rpx;
+  box-shadow: 0 3rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.wenzi_title{
+  font-size: 30rpx;
+  margin-bottom: 20rpx;
+  font-weight: bold;
+}
+.view_content{
+  display: flex;
+}
+
+/* 图片 */
+
+.image_1 {
+  margin-right: 20rpx;
+  width: 160rpx;
+    height: 160rpx;
+    box-shadow: 0 3rpx 12rpx rgba(0, 0, 0, 0.06);
+    background-color: skyblue;
+}
+
+/* 包裹两行文字 */
+
+.view_wenzi2 {
+  height: 160rpx;
+  padding: 5rpx 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+/* 小字 */
+
+.text_small {
+  font-size: 28rpx;
+  word-break: break-all;
+}
+
+.text_date {
+  font-size: 28rpx;
+}
+
+.text_state {
+  color: #ff1010;
+  font-size: 24rpx;
+}

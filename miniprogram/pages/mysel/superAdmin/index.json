@@ -8,7 +8,9 @@
     "mp-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
     "mp-badge": "/miniprogram_npm/weui-miniprogram/badge/badge",
     "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
-    "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell"
+    "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
+    "courseAudit": "/components/superAdmin/courseAudit/courseAudit",
+    "visitorCard": "/components/superAdmin/visitorCard/visitorCard"
 
   }
 

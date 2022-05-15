@@ -1,0 +1,13 @@
+<view class="view_tupian_wenzi" bindtap="click" bindlongpress="delete">
+  <view class="wenzi_title">标题：{{visitorInfo.visitorName}} （{{visitorInfo.visitorTeamName}}）</view>
+  <view class="view_content">
+    <image class="image_1" src="{{visitorInfo.visitorPhoto ? visitorInfo.visitorPhoto : '../../images/icon/defaultVisitor.png'}}" />
+    <view class="view_wenzi2">
+      <text class="text_small">{{visitorInfo.visitorPhonenum}}</text>
+      <view style="display: flex;justify-content: space-between;">
+        <text class="text_date">{{visitorInfo.visitData}}</text>
+        <text class="text_state">{{visitorInfo.state}}</text>
+      </view>
+    </view>
+  </view>
+</view>

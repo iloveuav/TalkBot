@@ -4,6 +4,7 @@ page,
 .page {
   height: 100%;
   font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, 'Droid Sans Fallback', 'Microsoft Yahei', sans-serif;
+  background-color: #fff !important;
 }
 
 .page-bottom {
@@ -217,45 +218,49 @@ page,
 
 .top_part {
   position: relative;
-  height: 250rpx;
-  text-align: center;
-  font-size: 20rpx;
-  /* border-bottom: 1px solid #C0C0C0; */
+  padding: 20rpx 30rpx;
+  background-color: #fff;
 }
 
 .bottom_part {
   flex: 1;
   width: 98%;
   margin: 0 auto;
-  border: 4px groove #C0C0C0;
   border-radius: 10rpx;
 }
 
 #select_buttons {
-  margin: 15rpx 40rpx;
+
   display: flex;
-  align-content: flex-start;
-
+  justify-content: space-between;
 }
-
+.label{
+  margin: 14rpx 0;
+  font-size: 30rpx;
+}
+.form_item{
+  width: 272rpx;
+}
 .select_button {
-  width: 290rpx;
-  height: 60rpx;
-  font-size: 20rpx;
-  border: 1px solid grey;
-  border-radius: 10rpx;
-  display: inline-block;
-  margin: 20rpx;
-  margin-bottom: 20rpx;
+  width: 100%;
+  height: 90rpx;
+  border-radius: 16rpx;
+  background: #f3eeee;
+  margin-bottom: 40rpx;
+  font-size: 30rpx;
+  color: #999;
+  padding: 24rpx 30rpx;
+  box-sizing: border-box;
 }
 
 .CSV_export {
-  margin-top: 3px;
-  width: 100rpx;
-  height: 60rpx;
-  font-size: 25rpx;
-  border: 1px solid grey;
-  border-radius: 10rpx;
+  width: 360rpx;
+  height: 72rpx;
+  border: 1px solid #4D9BF4;
+  border-radius: 44rpx;
+  line-height: 72rpx;
+  font-size: 30rpx;
+  color: #4D9BF4;
 }
 
 .input_moudel {
@@ -269,67 +274,7 @@ page,
 
 /* 包裹图片和两行文字 */
 
-.view_tupian_wenzi {
-  height: 80rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 
-  /* 圆角 */
-  border-radius: 20rpx;
-
-  /* 边 */
-  border: 2rpx solid #C0C0C0;
-  box-shadow: 2rpx 2rpx 2rpx 2rpx #C0C0C0;
-
-  background-color: #ffffff;
-  margin: 20rpx 10rpx;
-
-  /* padding使得文字和图片不至于贴着边框 */
-  padding: 15rpx;
-
-}
-
-/* 图片 */
-
-.image_1 {
-  width: 100rpx;
-  height: 100rpx;
-}
-
-/* 包裹两行文字 */
-
-.view_wenzi2 {
-  position: relative;
-  width: 100%;
-  margin-left: 25rpx;
-  display: flex;
-  flex-direction: column;
-}
-
-/* 小字 */
-
-.text_small {
-  font-size: 15rpx;
-  word-break: break-all;
-  color: #7a7878;
-  margin-top: 10rpx
-}
-
-.text_date {
-  position: absolute;
-  right: 5rpx;
-  color: #7a7878;
-  font-size: 15rpx;
-}
-
-.text_state {
-  position: absolute;
-  right: 5rpx;
-  bottom: 2rpx;
-  color: #7a7878;
-  font-size: 15rpx;
-}
 
 .logo {
   position: absolute;
