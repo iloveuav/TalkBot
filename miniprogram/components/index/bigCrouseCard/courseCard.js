@@ -27,7 +27,12 @@ Component({
    */
   data: {
     currentSwiperIndex: 0,
-    remind: ''
+    remind: '',
+    crouseTypeMap:{
+      'ja':'日语课程',
+      'other':'其他课程',
+      'eng':'英语课程'
+    }
   },
 
   /**

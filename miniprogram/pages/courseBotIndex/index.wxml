@@ -30,9 +30,13 @@
   <scroll-view>
 
     <view wx:for="{{allCourse[0].children}}">
-      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
-          bindchangeCourse="getcurrentCourse">
+      <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
+      <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
     </view>
@@ -50,9 +54,12 @@
 
   <scroll-view>
     <view wx:for="{{allCourse[1].children}}">
-      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
-          bindchangeCourse="getcurrentCourse">
+      <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
+      <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
     </view>
@@ -70,9 +77,13 @@
 
   <scroll-view>
     <view wx:for="{{allCourse[2].children}}">
-      <view wx:if="{{item.isMineCourse||pageType ==='studyPage'}}">
-        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
-          bindchangeCourse="getcurrentCourse">
+      <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
+      <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+
+        <courseCard crouseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
     </view>

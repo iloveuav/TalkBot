@@ -10,7 +10,7 @@
     <view class="title">{{crouseDetail.name}}</view>
     <view class="detail">
       <text>开始了解吧</text>
-      <text class="label">日语课程</text>
+      <text class="label">{{crouseTypeMap[crouseDetail.courseType]}}</text>
     </view>
     <view class="process">
       <view class="process-data">{{crouseDetail.courseProgress}}</view>
@@ -19,10 +19,10 @@
       </view>
       <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state||'课程未上传封面'}}</text>
 
-      <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
+      <!-- <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
           <button class="preview-btn" catchtap="updateCrouseState" data-content='pass'>通过</button>
           <button class="edit-btn" catchtap="updateCrouseState" data-content='repulse'>打回</button>
-        </view>
+        </view> -->
     </view>
   </view>
 
