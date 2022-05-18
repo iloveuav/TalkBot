@@ -28,7 +28,7 @@
 				<view class='item'>
 					<view class='key' type='text' maxlength='12' auto-focus="true">公司（团队）名 </view>
 					<input class='in' name='teamName' disabled="{{editFlag}}" placeholder="请输入您的所在公司（团队）"
-						value="{{list_index.visitorTeamName}}"></input>
+						value="{{list_index.VisitorInfo.teamName}}"></input>
 				</view>
 
 				<view class='item'>

@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
         visitorName: event.visitorName,
         visitorPhonenum: event.visitorPhonenum,
         visitorId_num: event.visitorId_num,
+        visitorTeamName:event.visitorTeamName,
 
         ndaSignPath: event.ndaSignPath,
         visitorPhoto: event.visitorPhoto,

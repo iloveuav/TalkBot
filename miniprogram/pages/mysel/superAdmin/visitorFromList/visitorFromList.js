@@ -147,7 +147,7 @@ Page({
             wx.hideLoading()
             wx.showModal({
               title: '提交成功',
-              content: '审核结果将在48小时内发送到您的邮箱，也可在【我的】/【访客申请】查看审核状态',
+              content: '审核结果将在48小时内审核，审核结果可在【我的】/【访客申请】查看',
               cancelText: "返回首页",
               confirmText: "继续申请",
               success(res) {

@@ -39,7 +39,7 @@
           <!-- 包裹两行文字 -->
           <view class="view_wenzi2">
 
-            <text>{{item.visitorName}} （{{item.visitorTeamName}}）</text>
+            <text>{{item.visitorName}} （{{item.VisitorInfo.teamName}}）</text>
 
             <text class="text_small">{{item.visitorPhonenum}}</text>
 
