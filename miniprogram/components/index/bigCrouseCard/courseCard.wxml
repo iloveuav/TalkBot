@@ -17,7 +17,7 @@
       <view class="top-card-weeksign-progress">
         <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);"></view>
       </view>
-      <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state}}</text>
+      <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state||'课程未上传封面'}}</text>
 
       <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
           <button class="preview-btn" catchtap="updateCrouseState" data-content='pass'>通过</button>

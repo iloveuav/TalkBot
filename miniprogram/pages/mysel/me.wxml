@@ -77,6 +77,8 @@
     <view class="title">超级管理员</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
+  <view class="line"></view>
+
 </view>
 <!-- <view class='item'bindtap="addArticle">
   <view class="title">上传文章</view>

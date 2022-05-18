@@ -126,6 +126,57 @@ Page({
     console.log(this.data.list_index)
   },
 
+  delete(e) {
+    let that = this;
+    wx.showModal({
+      cancelColor: 'cancelColor',
+      cancelText: '放弃',
+      confirmColor: 'red',
+      confirmText: '删除',
+      content: '你确定要删除 ' + that.data.list[e.currentTarget.id].visitorName + " 这条记录吗？",
+      showCancel: true,
+      title: '警告',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '删除中',
+            mask: true
+          })
+          wx.cloud.callFunction({
+            name: 'update_userOperation',
+            data: {
+              _id: that.data.list[e.currentTarget.id]._id
+            },
+            success(res) {
+              console.log(res)
+              console.log(that.data.list)
+              wx.hideLoading({
+              })
+              wx.showToast({
+                title: '删除成功',
+              })
+              that.data.list.splice(e.currentTarget.id, 1)
+              that.setData({
+                list: that.data.list
+              })
+            },
+            fail(err) {
+              wx.hideLoading({
+              })
+              console.log(err)
+              wx.showToast({
+                title: '删除失败',
+              })
+            }
+          })
+        } else if (res.cancel) {
+
+        }
+
+      }
+    })
+  },
+
 
   changePage(e) {
     console.log(e)

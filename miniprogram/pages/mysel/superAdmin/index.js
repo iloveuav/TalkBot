@@ -15,7 +15,7 @@ Page({
     staus: 1,
     translate: '',
     // ----------------------------------------以上为yzm data 以下为ss data------------------------------------------------------
-    pageFlag: 0,
+    pageFlag: 0,// 0:Home页 1：Visitors页  2：admin页  3： 4：VisitorEdit页 5：datePicker页  6：废弃中  7：内容审核 8：访客待审核页 9：
     dialogShow: false,
     buttons: [{
       text: '取消'
@@ -300,6 +300,47 @@ Page({
     this.queryVisitorList()
   },
 
+  touchWaitCheckCrouseList: function () {
+    this.setData({
+      pageFlag: 7,
+      translate: 'transform: translateX(0px)',
+    })
+    // this.queryVisitorList()
+    this.getAllCourse();
+  },
+
+
+  getAllCourse() {
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: 'get_allCourseMess',
+      data: {},
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+        wx.setStorageSync('allCourseMess', res.result.allCourse);
+
+        let showCourse = []
+        showCourse = res.result.allCourse
+
+        this.setData({
+          allCourse: showCourse,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+
+
+
   editNda() {
     wx.navigateTo({
       url: '../superAdmin/admin/editNda/index',
@@ -384,7 +425,8 @@ Page({
     console.log("按了：", e.currentTarget.id);
     this.setData({
       pageFlag: 4,
-      list_index: this.data.list[e.currentTarget.id]
+      list_index: this.data.list[e.currentTarget.id],
+      curIndex: e.currentTarget.id
     })
     console.log(this.data.list_index)
   },
@@ -405,9 +447,9 @@ Page({
             mask: true
           })
           wx.cloud.callFunction({
-            name: 'deleteItem',
+            name: 'update_userOperation',
             data: {
-              visitData: that.data.list[e.currentTarget.id].visitData
+              _id: that.data.list[e.currentTarget.id]._id
             },
             success(res) {
               console.log(res)
@@ -550,20 +592,25 @@ Page({
 
   },
 
+  visitorDetailReload() {
+    this.queryVisitorList();
+    setTimeout(() => {
+      this.setData({
+        pageFlag: 4,
+        list_index: this.data.list[this.data.curIndex],
+      })
+    }, 600);
+  },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  courseDetailReload() {
+    this.getAllCourse();
+    setTimeout(() => {
+      this.setData({
+        pageFlag: 7,
+        // allCourse: this.data.allCourse,
+      })
+    }, 600);
+  },
 
 
 

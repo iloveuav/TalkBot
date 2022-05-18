@@ -16,8 +16,8 @@
 				<text>主页 🌈</text>
 			</view>
 
-			<view class="wc {{pageFlag == 7 ? 'active' : ''}}" bindtap="touchAnalyse_Data">
-				<text>运营数据审核 📊</text>
+			<view class="wc {{pageFlag == 7 ? 'active' : ''}}" bindtap="touchWaitCheckCrouseList">
+				<text>审核内容列表 📊</text>
 			</view>
 
 			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
@@ -79,13 +79,14 @@
 		</block>
 		<!-- VisitorEdit页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 4}}">
-			<vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="true">
+			<vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="{{true}}" bind:Reload="visitorDetailReload">
 			</vistorEdit>
 		</block>
 		<!-- datePicker页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 5}}">
 			<datePicker start="" bindchange="dateChange" defaultValue="{{defaultValue}}"></datePicker>
 		</block>
+
 		<block wx:elif="{{pageFlag == 6}}">
 			<view class="classCard">
 				<scroll-view>
@@ -94,45 +95,76 @@
 				</scroll-view>
 			</view>
 		</block>
+
+		<!-- 内容审核页 -->
+		<block wx:elif="{{pageFlag == 7}}">
+			<view class="Visitors_container">
+				<!-- 列表部分 -->
+				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}"
+					scroll-with-animation="{{true}}" class="bottom_part">
+					<!-- <view>数据为空</view> -->
+					<block wx:for="{{allCourse[0].children}}" wx:key="index">
+						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
+						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
+						<!-- <visitorCard visitorInfo="{{item}}"></visitorCard> -->
+					</block>
+					<block wx:for="{{allCourse[1].children}}" wx:key="index">
+						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
+						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
+						<!-- <visitorCard visitorInfo="{{item}}"></visitorCard> -->
+					</block>
+					<block wx:for="{{allCourse[2].children}}" wx:key="index">
+						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
+						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
+						<!-- <visitorCard visitorInfo="{{item}}"></visitorCard> -->
+					</block>
+				</scroll-view>
+			</view>
+		</block>
+
 		<!-- Visitors页面的条件渲染及待审核Visitors页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 1||pageFlag == 8}}">
 			<view class="Visitors_container">
 				<!-- 按钮弹窗模态框部分 -->
 				<view class="top_part">
 					<view id="select_buttons">
-          <view class="form_item">
-            <view class="label">姓名：</view>
-						<input class="select_button" placeholder="请输入姓名" bindblur="inputVisitorName"></input>
-          </view>
-          <view  class="form_item">
-            <view class="label">组织：</view>
-						<input class="select_button" placeholder="请输入组织" bindblur="inputVisitorTeamName"></input>
-          </view>
+						<view class="form_item">
+							<view class="label">姓名：</view>
+							<input class="select_button" placeholder="请输入姓名" bindblur="inputVisitorName"></input>
+						</view>
+						<view class="form_item">
+							<view class="label">组织：</view>
+							<input class="select_button" placeholder="请输入组织" bindblur="inputVisitorTeamName"></input>
+						</view>
 					</view>
 					<view id="select_buttons">
-          <view class="form_item">
-            <view class="label">手机号：</view>
-						<input class="select_button" placeholder="请输入手机号" bindblur="inputVisitorPhonenum"></input>
-          </view>
-          <view class="form_item">
-            <view class="label">日期：</view>
-						<input class="select_button" placeholder="请输入日期"></input>
-          </view>
+						<view class="form_item">
+							<view class="label">手机号：</view>
+							<input class="select_button" placeholder="请输入手机号" bindblur="inputVisitorPhonenum"></input>
+						</view>
+						<view class="form_item">
+							<view class="label">日期：</view>
+							<input class="select_button" placeholder="请输入日期"></input>
+						</view>
 					</view>
-          <button class="CSV_export" catchtap="getExcel">导出EXcel</button>
+					<!-- <button class="CSV_export" catchtap="getExcel">导出EXcel</button> -->
 				</view>
 				<!-- 列表部分 -->
 				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}"
 					scroll-with-animation="{{true}}" class="bottom_part">
 					<!-- <view>数据为空</view> -->
-					<block wx:for="{{list}}" wx:key="index">
-            <courseAudit courseInfo="{{item}}"></courseAudit>
+					<block wx:for="{{list}}" wx:key="index" >
 						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
-            <visitorCard visitorInfo="{{item}}"></visitorCard>
+						<view catchtap="click" bindlongpress="delete" id="{{index}}">
+						<visitorCard visitorInfo="{{item}}" ></visitorCard>
+					</view>
 					</block>
 				</scroll-view>
 			</view>
 		</block>
+
+
+
 
 		<!-- admin页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 2}}">

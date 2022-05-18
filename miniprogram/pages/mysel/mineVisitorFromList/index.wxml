@@ -5,7 +5,7 @@
 </view>
 
 <view wx:if="{{showVisitorDetail}}">
-  <vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="true">
+  <vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="{{false}}" bindReload="queryMineVisitorList">
   </vistorEdit>
 </view>
 

@@ -106,6 +106,12 @@
           "pathName": "pages/mysel/superAdmin/index",
           "query": "identity=2",
           "scene": null
+        },
+        {
+          "name": "pages/mysel/superAdmin/index",
+          "pathName": "pages/mysel/superAdmin/index",
+          "query": "identity=2",
+          "scene": null
         }
       ]
     }

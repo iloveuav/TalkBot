@@ -93,6 +93,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    show: function () {
+      // 页面被展示
+    },
     //点击选中事件，再次点击取消选中  事件
     checked: function (e) {
       var check = this.data.checked;
@@ -348,6 +351,18 @@ Component({
       this.triggerEvent('changePage', { pageflag })
     },
 
+    onLoad: function () {
+      console.log("11222222")
+      this.setData({
+        list_index: this.data.list_index
+      })
+    },
+
+    reload: function () {
+      this.triggerEvent('Reload')
+      this.onLoad();
+    },
+
     addVisitor: function () {
       this.setData({
         hiddenmodalput: true
@@ -415,6 +430,7 @@ Component({
     },
 
 
+
     updateVisitorFormData: function (e) {
       let that = this
       console.log('e', e.currentTarget.dataset.content)
@@ -425,8 +441,8 @@ Component({
         name: 'update_adminOperation',
         data: {
           _id: that.data.list_index._id,
-          state:state,
-          operateType:'updateVisitorState'
+          state: state,
+          operateType: 'updateVisitorState'
         },
         success: res => {
           console.log(res.result)
@@ -443,10 +459,27 @@ Component({
               icon: 'success',
               duration: 1000
             })
+            this.reload();
           }
 
         }
       })
     }
+  },
+  // observers: {	// 设置组件的侦听属性
+  //   list_index(newValue) {
+  //     console.log("newValue", newValue)
+  //     this.setData({
+  //       list_index: newValue
+  //     })
+  //   }
+  // },
+  lifetimes: {
+    created: function () {
+
+      this.setData({
+        list_index: this.data.list_index
+      })
+    },
   }
 })
