@@ -320,72 +320,89 @@ Page({
   },
 
   clickFinish: function (e) {
-    if (this.data.courseName == '') {//上传封面的时候可以不需要输入章节id
-      wx.showModal({
-        title: '提示',
-        content: '给课程取个名字吧~',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.imgUrl == '') {
-      wx.showModal({
-        title: '提示',
-        content: '不要忘记上传封面哦~',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.courseIntroduce == '') {
-      wx.showModal({
-        title: '提示',
-        content: '简单介绍下课程吧~',
-        showCancel: false
-      })
-      return;
-    }
+    const crouseDetail = { name: '111' }
+    let str = JSON.stringify(crouseDetail);
+    wx.navigateTo({
+      //这里传值
+      url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
+      // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+      // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+    })
 
-    const courseMess = {
-      courseUUid: this.data.courseUUid,
-      courseName: this.data.courseName,
-      courseFrontImgUrl: this.data.imgUrl,
-      courseIntroduce: this.data.courseIntroduce,
-      courseType: 'other',
-      creatTime: time.formatTime(new Date, 'Y/M/D'),
-    }
-    console.log("courseMess", courseMess)
-    wx.showLoading({
-      title: '处理中',
-      mask: true
-    })
-    wx.cloud.init({
-      env: 'talkbot-56sn5'
-    })
-    wx.cloud.callFunction({
-      name: 'update_allCourseMess',
-      data: {
-        courseMess: courseMess,
-      },
-      success: res => {
-        wx.showModal({
-          title: '课程添加成功',
-          content: '可以开始添加章节数据了~',
-          showCancel: false,
-        })
-        return;
-      },
-      fail: err => {
-        // handle error
-        wx.showModal({
-          title: '提示',
-          content: '课程信息上传出错 请检查网络',
-          showCancel: false,
-        })
-        return;
-      },
-      complete: res => {
-        console.log('callFunction test result: ', res)
-        wx.hideLoading()
-      }
-    })
+
+    // if (this.data.courseName == '') {//上传封面的时候可以不需要输入章节id
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '给课程取个名字吧~',
+    //     showCancel: false
+    //   })
+    //   return;
+    // } else if (this.data.imgUrl == '') {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '不要忘记上传封面哦~',
+    //     showCancel: false
+    //   })
+    //   return;
+    // } else if (this.data.courseIntroduce == '') {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '简单介绍下课程吧~',
+    //     showCancel: false
+    //   })
+    //   return;
+    // }
+
+    // const courseMess = {
+    //   courseUUid: this.data.courseUUid,
+    //   courseName: this.data.courseName,
+    //   courseFrontImgUrl: this.data.imgUrl,
+    //   courseIntroduce: this.data.courseIntroduce,
+    //   courseType: 'other',
+    //   creatTime: time.formatTime(new Date, 'Y/M/D'),
+    // }
+    // console.log("courseMess", courseMess)
+    // wx.showLoading({
+    //   title: '处理中',
+    //   mask: true
+    // })
+    // wx.cloud.init({
+    //   env: 'talkbot-56sn5'
+    // })
+    // wx.cloud.callFunction({
+    //   name: 'update_CourseMess',
+    //   data: {
+    //     courseMess: courseMess,
+    //   },
+    //   success: res => {
+    //     wx.showModal({
+    //       title: '课程添加成功',
+    //       content: '可以开始添加章节数据了~',
+    //       showCancel: false,
+    //     })
+
+    //     wx.navigateTo({
+    //       //这里传值
+    //       url: "../../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+    //       // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+    //       // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+    //     })
+    //     return;
+    //   },
+    //   fail: err => {
+    //     // handle error
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '课程信息上传出错 请检查网络',
+    //       showCancel: false,
+    //     })
+    //     return;
+    //   },
+    //   complete: res => {
+    //     console.log('callFunction test result: ', res)
+    //     wx.hideLoading()
+    //   }
+    // })
   },
 
   useTecentCloud() {
