@@ -1,0 +1,29 @@
+<view class='tab'>
+  <view class="top-btns">
+    <!-- <text class='fabu'>发布时间: {{tabdata.time_agree}}</text> -->
+    <view class="theme-item">
+      <view class="unRead" wx:if="{{unReadNum}}">
+        <text>{{unReadNum}}</text>
+      </view>
+      <text class="themeKey">课程名</text>
+      <input class="themeInput" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="给课程取个名字吧~"  placeholder-style="color:#fff;"/>
+    </view>  
+  </view>
+</view>
+<view class='message'>
+  <view class='top_txt'>课程内容需要结果审核后才会公开哦~</view>
+  <view class="chapter-item">
+    <view class="btn-item">
+      <text class="chapterKey" >课程封面</text>
+      <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{imgUrl}}' placeholder="粘贴url或点击右侧上传"/>
+      <view class="addimgBox"> <image src="/images/button/upload2.png" class="addimgBtn" bindtap='uploadimg'></image></view>
+    </view>
+    <view class="btn-item">
+      <text class="chapterKey" style="margin-top:35rpx">课程简介</text>
+      <textarea class="input" bindinput="bindChange3" confirm-type="done" value='{{courseIntroduce}}' placeholder="eg:第一章" />
+    </view>
+  </view>
+</view>
+
+<!-- ----------------设置封面区end--------------- -->
+<view class="senMessBox"><button class="senMessButton" catchtap="clickFinish">完成 </button></view>

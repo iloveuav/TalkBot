@@ -4,8 +4,8 @@ const app = getApp()
 Page({
   data: {
     remind: '加载中',
-    islogin:false,
-    login:false,
+    islogin: false,
+    login: false,
     currentSwiperIndex: 0,
     "bnrUrl": [{
       "url": "cloud://uav-001-9213ca.7561-uav-001-9213ca/images/start1.jpg"
@@ -46,26 +46,24 @@ Page({
   onLoad: function (options) {
     var that = this
     var picList = []
-  
+
     picList.push("http://imgchatbot.uavserve.online/6.webp")
     picList.push("http://imgchatbot.uavserve.online/7.webp")
-     picList.push("http://imgchatbot.uavserve.online/5.webp")
+    picList.push("http://imgchatbot.uavserve.online/5.webp")
     picList.push("http://imgchatbot.uavserve.online/1.webp")
     picList.push("http://imgchatbot.uavserve.online/2.webp")
     picList.push("http://imgchatbot.uavserve.online/3.webp")
-   
+
     let login = wx.getStorageSync("islogin")
     console.log(login)
     // ----------------------------这里判断数据库中Member集合里有没有这个用户返回给isnew-----
     var identity = wx.getStorageSync("useridentity");
     console.log(identity);
     var icon2;
-    if(identity==1)
-    {
-       icon2 = '/Images/txl.png'
+    if (identity == 1) {
+      icon2 = '/Images/txl.png'
     }
-    else
-    {
+    else {
       icon2 = "/Images/icon_release.png"
     }
     // ---------全部读取话题--------------
@@ -92,14 +90,14 @@ Page({
       picList: picList,
       isFlyer: wx.getStorageInfoSync("isFlyer"),
       identity: identity,
-      icon2:icon2,
-      islogin: wx.getStorageSync("islogin"), 
+      icon2: icon2,
+      islogin: wx.getStorageSync("islogin"),
     })
   },
 
-    /**
-   * 用户点击右上角分享
-   */
+  /**
+ * 用户点击右上角分享
+ */
   onShareAppMessage: function () {
 
   },
@@ -145,7 +143,7 @@ Page({
   toCrouseBot() {
     wx.navigateTo({
       //这里传值
-      url: '/pages/courseBotIndex/index?pageType='+'studyPage',
+      url: '/pages/courseBotIndex/index?pageType=' + 'studyPage',
     })
   },
   toSendNarrate() {
@@ -158,7 +156,9 @@ Page({
   toSendCrouse() {
     wx.navigateTo({
       //这里传值
-      url: '/pages/mysel/admin/admin',
+      url: '/pages/courseMessForm/index',
+
+      // url: '/pages/mysel/admin/admin',
       // url: '/pages/AddEngClassContent/AddEngClassContent',
     })
   },

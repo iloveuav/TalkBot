@@ -4,8 +4,10 @@
 <view class="Card" catchtap="toCourse">
   <!-- mode='aspectFill' 不缩放自动裁切 -->
   <!-- mode='widthFix'保持宽高比例 -->
-  <image wx:if="{{crouseDetail.frontImg&&crouseDetail.frontImg!==''}}" class="leftImage" src="{{crouseDetail.frontImg}}" mode="aspectFill"></image>
-  <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png' mode="widthFix"></image>
+  <image wx:if="{{crouseDetail.frontImg&&crouseDetail.frontImg!==''}}" class="leftImage" src="{{crouseDetail.frontImg}}"
+    mode="aspectFill"></image>
+  <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png'
+    mode="widthFix"></image>
   <view class="right">
     <view class="title">{{crouseDetail.name}}</view>
     <view class="detail">
@@ -15,7 +17,9 @@
     <view class="process">
       <view class="process-data">{{crouseDetail.courseProgress}}</view>
       <view class="top-card-weeksign-progress">
-        <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);"></view>
+        <view class="top-card-weeksign-progress-item"
+          style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);">
+        </view>
       </view>
       <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state||'课程未上传封面'}}</text>
 
@@ -23,6 +27,11 @@
           <button class="preview-btn" catchtap="updateCrouseState" data-content='pass'>通过</button>
           <button class="edit-btn" catchtap="updateCrouseState" data-content='repulse'>打回</button>
         </view> -->
+
+      <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
+        <button class="preview-btn" catchtap="toCourseChapterPage" data-content='priview'>预览</button>
+        <button class="edit-btn" bindtap="toCourseChapterPage" data-content='edit'>编辑</button>
+      </view>
     </view>
   </view>
 

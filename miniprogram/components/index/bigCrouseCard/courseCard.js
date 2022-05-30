@@ -28,10 +28,10 @@ Component({
   data: {
     currentSwiperIndex: 0,
     remind: '',
-    crouseTypeMap:{
-      'ja':'日语课程',
-      'other':'其他课程',
-      'eng':'英语课程'
+    crouseTypeMap: {
+      'ja': '日语课程',
+      'other': '其他课程',
+      'eng': '英语课程'
     }
   },
 
@@ -112,8 +112,8 @@ Component({
         name: 'update_adminOperation',
         data: {
           _id: this.data.crouseDetail._id,
-          state:state,
-          operateType:'updateCourseState'
+          state: state,
+          operateType: 'updateCourseState'
         },
         success: res => {
           console.log(res.result)
@@ -131,10 +131,74 @@ Component({
               duration: 1000
             })
 
-            
+
           }
 
         }
+      })
+    },
+
+    toCourseChapterPage(e) {
+      let btnType = e.currentTarget.dataset.content
+      let corseArray = this.data.corseArray;
+      let currentSwiperIndex = this.data.currentSwiperIndex;
+
+      const crouseDetail = this.data.crouseDetail
+      console.log("crouseDetail", crouseDetail)
+      // console.log(corseArray[currentSwiperIndex].data)
+      // console.log(corseArray[currentSwiperIndex].data[0]._id)
+      // let CurrentChapter = {
+      //   courseId: crouseDetail.data[0].courseId,
+      //   className: crouseDetail.data[0]._id.className,
+      //   chapterName: crouseDetail.data[0]._id.chapterName,
+      //   id : crouseDetail.data[0].id,
+      //   reset : false
+      // }
+      // console.log(CurrentChapter)
+
+      let str = JSON.stringify(crouseDetail);
+      // let Cc = JSON.stringify(CurrentChapter);
+      // wx.navigateTo({
+      //   //这里传值
+      //   url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
+      // })
+
+      wx.navigateTo({
+        //这里传值
+        url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+      })
+    },
+
+    toEditCourse(e) {
+      let btnType = e.currentTarget.dataset.content
+      let corseArray = this.data.corseArray;
+      let currentSwiperIndex = this.data.currentSwiperIndex;
+
+      const crouseDetail = this.data.crouseDetail
+      console.log("crouseDetail", crouseDetail)
+      // console.log(corseArray[currentSwiperIndex].data)
+      // console.log(corseArray[currentSwiperIndex].data[0]._id)
+      // let CurrentChapter = {
+      //   courseId: crouseDetail.data[0].courseId,
+      //   className: crouseDetail.data[0]._id.className,
+      //   chapterName: crouseDetail.data[0]._id.chapterName,
+      //   id : crouseDetail.data[0].id,
+      //   reset : false
+      // }
+      // console.log(CurrentChapter)
+
+      let str = JSON.stringify(crouseDetail);
+      // let Cc = JSON.stringify(CurrentChapter);
+      // wx.navigateTo({
+      //   //这里传值
+      //   url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
+      // })
+
+      wx.navigateTo({
+        //这里传值
+        url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
       })
     }
   }
