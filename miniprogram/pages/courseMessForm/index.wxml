@@ -1,29 +1,32 @@
-<view class='tab'>
-  <view class="top-btns">
-    <!-- <text class='fabu'>发布时间: {{tabdata.time_agree}}</text> -->
-    <view class="theme-item">
-      <view class="unRead" wx:if="{{unReadNum}}">
-        <text>{{unReadNum}}</text>
-      </view>
-      <text class="themeKey">课程名</text>
-      <input class="themeInput" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="给课程取个名字吧~"  placeholder-style="color:#fff;"/>
-    </view>  
+<view class='courseInfo'>
+  <view class="title">课程信息</view>
+  <view class='tips'>课程内容需要结果审核后才会公开哦~</view>
+  <!-- <view class="unRead" wx:if="{{unReadNum}}">
+    <text>{{unReadNum}}</text>
+  </view> -->
+  <view class="form_item">
+    <image class="icon" src="/images/icon/title.png"></image>
+    <input class="input" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="课程名称" />
   </view>
-</view>
-<view class='message'>
-  <view class='top_txt'>课程内容需要结果审核后才会公开哦~</view>
-  <view class="chapter-item">
-    <view class="btn-item">
-      <text class="chapterKey" >课程封面</text>
-      <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{imgUrl}}' placeholder="粘贴url或点击右侧上传"/>
-      <view class="addimgBox"> <image src="/images/button/upload2.png" class="addimgBtn" bindtap='uploadimg'></image></view>
-    </view>
-    <view class="btn-item">
-      <text class="chapterKey" style="margin-top:35rpx">课程简介</text>
-      <textarea class="input" bindinput="bindChange3" confirm-type="done" value='{{courseIntroduce}}' placeholder="eg:第一章" />
-    </view>
+  <view class="form_item">
+    <image class="icon" src="/images/icon/coverImg.png"></image>
+    <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{imgUrl}}' placeholder="课程封面（粘贴url或点击右侧上传）" />
+    <image src="/images/button/upload2.png" class="addImgBtn" bindtap='uploadimg'></image>
+  </view>
+  <view class="form_item introduce">
+    <text class="chapter">eg:第一章</text>
+    <textarea class="input" bindinput="bindChange3" confirm-type="done" value='{{courseIntroduce}}' placeholder="课程简介" />
   </view>
 </view>
 
-<!-- ----------------设置封面区end--------------- -->
-<view class="senMessBox"><button class="senMessButton" catchtap="clickFinish">完成 </button></view>
+<view class="tagInfo courseInfo">
+  <view class="title">课程标签</view>
+  <view class='tips'>可多选，最后选3个~</view>
+  <view class="tagList">
+    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList}}" wx:key="{{item.value}}" bindtap="handleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+  </view>
+</view>
+
+<view class="sendMessage">
+  <button class="sendMessButton" catchtap="clickFinish">完成</button>
+</view>

@@ -26,7 +26,16 @@ Page({
     textImgArray: [],
 
     tempimg: [], //临时数组  等点击发送的时候一起走
-    courseUUid: util.uuid()
+    courseUUid: util.uuid(),
+
+    tagList: [
+      {label: '成长', value: 1, choose: false},
+      {label: '辅导', value: 2, choose: false},
+      {label: '防疫', value: 3, choose: false},
+      {label: '习惯', value: 4, choose: false},
+      {label: '故事', value: 5, choose: false},
+      {label: '情景', value: 6, choose: false},
+    ]
 
   },
 
@@ -1089,4 +1098,14 @@ Page({
     this.data.mark = 0;
     this.data.newmark = 0;
   },
+
+  handleChoose(e){
+    const { index, choose} = e.target.dataset;
+    const str = `tagList[${index}].choose`
+    const chooseList = this.data.tagList.filter(item=>item.choose);
+    if(chooseList.length >= 3 && !choose) return;
+    this.setData({
+      [str]: !choose
+    })
+  }
 })
