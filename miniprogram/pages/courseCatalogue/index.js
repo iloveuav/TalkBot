@@ -24,6 +24,8 @@ Page({
       crouseDetail: crouseDetail,
       btnType: btnType
     })
+
+    this.getChapterList(btnType);
   },
 
   /**
@@ -79,7 +81,41 @@ Page({
     let str = JSON.stringify(this.data.crouseDetail);
     wx.navigateTo({
       //这里传值
-      url: "../../../../AddCourseContent/AddCourseContent?currentChooseCard=" + 0+ "&courseMess="+str,
+      url: "../../../../AddCourseContent/AddCourseContent?currentChooseCard=" + 0 + "&courseMess=" + str,
     })
-  }
+  },
+
+
+  getChapterList(pageType) {
+    console.log(this.data.crouseDetail)
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    const CourseUUid = this.data.crouseDetail.courseUUid
+    wx.cloud.callFunction({
+      name: 'get_ChapterListByCourseUUid',
+      data: {CourseUUid:CourseUUid},
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+
+        let showChapter = []
+        if (pageType === 'studyPage') {
+          showChapter = res.result.allChapterList
+        } else {
+          showChapter = res.result.allChapterList
+        }
+        this.setData({
+          ChapterList: showChapter,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
 })

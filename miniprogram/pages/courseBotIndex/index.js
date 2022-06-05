@@ -79,7 +79,8 @@ Page({
       pageType: options.pageType || 'studyPage'
     })
     if (options && options.pageType) {
-      this.getAllCourse(options.pageType);
+      this.getAllCourseList(options.pageType);
+      // this.getAllCourse(options.pageType);
     }
     // this.getAllCourse();
 
@@ -97,7 +98,8 @@ Page({
    */
   onShow: function (options) {
     if (this.data.pageType) {
-      this.getAllCourse(this.data.pageType);
+      this.getAllCourseList(this.data.pageType);
+      // this.getAllCourse(this.data.pageType);
     }
 
   },
@@ -153,6 +155,38 @@ Page({
         // console.log(res)
         console.log('callFunction test result: ', res);
         wx.setStorageSync('allCourseMess', res.result.allCourse);
+
+        let showCourse = []
+        if (pageType === 'studyPage') {
+          showCourse = res.result.allCourse
+        } else {
+          showCourse = res.result.allCourse
+        }
+        this.setData({
+          allCourse: showCourse,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+
+  getAllCourseList(pageType) {
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: 'get_CourseList',
+      data: {},
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+        // wx.setStorageSync('allCourseMess', res.result.allCourse);
 
         let showCourse = []
         if (pageType === 'studyPage') {

@@ -375,15 +375,17 @@ Page({
     //     courseMess: courseMess,
     //   },
     //   success: res => {
-    //     wx.showModal({
-    //       title: '课程添加成功',
-    //       content: '可以开始添加章节数据了~',
-    //       showCancel: false,
-    //     })
+    //     // wx.showModal({
+    //     //   title: '课程添加成功',
+    //     //   content: '可以开始添加章节数据了~',
+    //     //   showCancel: false,
+    //     // })
 
+    //     const crouseDetail = courseMess
+    //     let str = JSON.stringify(crouseDetail);
     //     wx.navigateTo({
     //       //这里传值
-    //       url: "../../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+    //       url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
     //       // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
     //       // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
     //     })

@@ -263,12 +263,16 @@ Page({
         var newData = {
           contentType: newcontentType,
           isBot: true,
-          classCollection: ClassCollection,
+          classCollection: 'testCourseContents',
           // classCollection: 'EngClassContents',
           classId: parseInt(that.data.classId),
           className: that.data.className,
           classType: ClassCollection,
           chapterName: this.data.chapterName,
+
+          chapterId: parseInt(that.data.classId),
+          courseUUid: "4902ecd5-d833-4554-b8e2-602ff2505744",
+          // courseUUid: "3567800e-906c-4eff-bb25-2c4b1470d381",
 
           detail: {},
           textimgTitle: that.data.textimgTitle,
@@ -291,7 +295,7 @@ Page({
         //  下面是云函数的调用
         console.log(wx.getStorageSync("openid"));
         wx.cloud.callFunction({
-          name: 'add_classContent',
+          name: 'add_courseContent',
           data: {
             contentData: that.data.newData,
           },
