@@ -96,7 +96,7 @@ page {
   border: 1rpx solid #fff;
   border-radius: 180rpx;
   margin-bottom: 30rpx;
-  margin-right: 40rpx;
+  margin-right: 30rpx;
 }
 
 .tagList text:nth-child(4n) {
