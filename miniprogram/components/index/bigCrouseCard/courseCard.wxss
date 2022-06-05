@@ -1,4 +1,5 @@
 .Card{
+  position: relative;
   margin: 15rpx 30rpx;
   box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.12);
   border: 1px solid #d0d0d0;
@@ -6,32 +7,47 @@
   background-color: white;
   overflow: hidden;
 }
+.coverImg{
+  width: 100%;
+  height: 359rpx;
+  position: relative;
+}
+
+.title{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 48rpx;
+  padding: 0 0 20rpx 20rpx;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: white;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
+}
 
 .leftImage{
   width: 100%;
-  height: 359rpx;
+  height: 100%;
   background-color: skyblue;
+  vertical-align: middle;
 }
 
 .right{
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 30rpx 10rpx;
+  padding: 20rpx 10rpx 0;
   position: relative;
 }
-.title{
-  font-size: 32rpx;
-  font-weight: 800;
-  margin-bottom: 10rpx;
-}
+
 .detail{
-  
-  margin-bottom: 14rpx;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 14rpx;
 }
-.detail .label{
+.label{
   background: #fff0ed;
   border-radius: 10rpx;
   padding: 10rpx 20rpx;
@@ -41,8 +57,13 @@
 .process{
   display: flex;
   align-items: center;
-  height: 25rpx;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
 
+.process_splint{
+  display: flex;
+  align-items: center;
 }
 .process-data{
   font-size: 20rpx;
@@ -65,35 +86,33 @@
   height: 15rpx;
 }
 .text_state {
-  position: absolute;
-  top:20rpx;
-  right: 22rpx;
   color: #bdb1b1;
   font-size: 20rpx;
 }
 
 .mineCourseBtns {
+  height: 72rpx;
   display: flex;
-  flex-wrap: nowrap;
-  margin-left: 20rpx;
+  border-radius: 180rpx;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
+.mineCourseBtns button {
+  border-radius: 0;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .preview-btn {
   background: #0088fb;
   color: #fff;
-  border-radius: 5rpx;
-  font-size: 20rpx;
-  width: 100rpx;
-  height: 50rpx;
-  margin-top: 10px;
+  flex: 1;
 }
 
 .edit-btn {
   background: #cf9655;
   color: #fff;
-  border-radius: 5rpx;
-  font-size: 20rpx;
-  width: 100rpx;
-  height: 50rpx;
-  margin-top: 10px;
+  flex: 1;
 }

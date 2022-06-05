@@ -1,34 +1,29 @@
-<!--miniprogram/pages/courseCatalogue/index.wxml-->
-<view class="Card" >
-  <view class="left">
-    <!-- mode='aspectFill' 不缩放自动裁切 -->
-    <!-- mode='widthFix'保持宽高比例 -->
-    <image wx:if="{{crouseDetail.courseFrontImgUrl&&crouseDetail.courseFrontImgUrl!==''}}" class="leftImage"
-      src="{{crouseDetail.courseFrontImgUrl}}"></image>
-    <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png'>
-    </image>
+<view class="course_catalogue">
+  <view class="basic_info">
+    <image class="info_cover" mode="aspectFill" src="{{courseInfo.coverImage}}"></image>
+    <view class="info_content">
+      <text class="content_title">{{courseInfo.title}}</text>
+      <text class="content_desc">{{courseInfo.desc}}</text>
+      <text class="content_state" wx:if="{{btnType==='edit'}}">审核状态：{{courseInfo.state}}</text>
+    </view>
   </view>
-  <view class="right">
-    <view class="title">{{crouseDetail.courseName}}</view>
-    <view class="detail" wx:if="{{pageType==='studyPage'}}">开始了解吧</view>
-    <view class="process">
-      <view class="top-card-weeksign">
-        <view class="process-data" wx:if="{{pageType==='studyPage'}}">{{crouseDetail.courseProgress}}</view>
-        <!-- <view class="process-data">
- </view> -->
- 简介：{{crouseDetail.courseIntroduce}}
- <view wx:if="{{btnType==='edit'}}"> 审核状态：{{crouseDetail.state}}</view>
-
-
-
+  <view class="chapter">
+    <view class="chapter_header">
+      <view class="header_info">
+        章节信息
+        <text>（共{{7}}个章节）</text>
+      </view>
+      <button wx:if="{{btnType==='edit'}}" class="addChapter_btn" bindtap="toAddChapter" data-content='pass'>新增章节</button>
+    </view>
+    <view class="chapter_list">
+      <view class="chapter_item" wx:for="{{chapterList}}" wx:key="{{item.id}}" data-id="{{item.id}}" bindtap="handleChapterItem">
+        <text class="order">{{index + 1}}</text>
+        {{item.title}}
       </view>
     </view>
   </view>
-
-
-</view>
-
-
-<view class="bottomCard" wx:if="{{btnType==='edit'}}">
-  <button class="addChapter-btn" bindtap="toAddChapter" data-content='pass'>新增章节</button>
+  <view class="course_operate">
+    <button bindtap="deleteCourse">删除课程</button>
+    <button bindtap="editCourse">编辑课程基本信息</button>
+  </view>
 </view>

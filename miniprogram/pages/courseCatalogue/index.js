@@ -1,17 +1,25 @@
-
-// miniprogram/pages/courseCatalogue/index.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    btnType: 'priview'
+    btnType: 'priview',
+    courseInfo: {
+      coverImage: 'cloud://uav-001-9213ca.7561-uav-001-9213ca/images/start1.jpg',
+      title: '课程名称',
+      desc: '简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介',
+      state: '审核中'
+    },
+    chapterList: [
+      { title: '开始学习啦~', id: 1 },
+      { title: '开始学习啦~', id: 2 },
+      { title: '开始学习啦~', id: 3 },
+      { title: '开始学习啦~', id: 4 },
+      { title: '开始学习啦~', id: 5 },
+      { title: '开始学习啦~', id: 6 },
+      { title: '开始学习啦~', id: 7 },
+      { title: '开始学习啦~', id: 8 },
+      { title: '开始学习啦~', id: 9 },
+    ]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     let crouseDetail = JSON.parse(options.courseMess);
     console.log("corseObject", crouseDetail)
@@ -27,56 +35,6 @@ Page({
 
     this.getChapterList(btnType);
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-
   toAddChapter: function () {
     let str = JSON.stringify(this.data.crouseDetail);
     wx.navigateTo({
@@ -94,7 +52,7 @@ Page({
     const CourseUUid = this.data.crouseDetail.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
-      data: {CourseUUid:CourseUUid},
+      data: { CourseUUid: CourseUUid },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -118,4 +76,17 @@ Page({
       }
     })
   },
+  handleChapterItem(e) {
+    const { id } = e.currentTarget.dataset;
+    console.log('点击章节啦~快跳转');
+    // wx.navigateTo({
+    //   url: 'url',
+    // })
+  },
+  deleteCourse() {
+    console.log('删除课程');
+  },
+  editCourse() {
+    console.log('编辑课程');
+  }
 })
