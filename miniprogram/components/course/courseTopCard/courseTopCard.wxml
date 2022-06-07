@@ -3,7 +3,7 @@
 <view class="topCard" style="background-image: url('http://forblog.uavserve.online/courseTopCard.gif'); background-size: 100% 100%;">
 
 <view class="select">
-<Select  courseObject='{{courseObject}}' bindchangeChapter="getcurrentChapter"></Select>
+<Select  courseObject='{{courseObject}}'  ChapterList='{{ChapterList}}' bindchangeChapter="getcurrentChapter"></Select>
 </view>
 
 </view>

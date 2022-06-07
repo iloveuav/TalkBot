@@ -3,16 +3,16 @@
 <view class='com-selectBox'>
   <view class='com-sContent' catchtap='selectToggle'>
     <view class="courseId">
-      {{CurrentChapter.courseId}}
+      {{CurrentChapter.chapterId}}
     </view>
     <view class='com-sTxt'>{{CurrentChapter.chapterName}}</view>
     <image src='../../../images/button/reset.png' class='com-sReset' catchtap="reset"></image>
     <image src='../../../images/button/Newselect.png' class='com-sImg' animation="{{animationData}}"></image>
   </view>
   <view class='com-sList' wx:if="{{selectShow}}">
-    <view wx:for="{{courseObject.data}}" data-index="{{index}}" wx:key='' class='com-sItem' bindtap='setText'>
+    <view wx:for="{{ChapterList}}" data-index="{{index}}" wx:key='' class='com-sItem' bindtap='setText'>
      <view class="courseId">
-      {{index+1}}
+      {{item._id.chapterId}}
     </view>
     <view class='com-sTxt'>{{item._id.chapterName}}</view>
 

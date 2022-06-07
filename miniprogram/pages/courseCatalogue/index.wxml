@@ -1,24 +1,24 @@
 <view class="course_catalogue">
   <view class="basic_info">
-    <image class="info_cover" mode="aspectFill" src="{{courseInfo.coverImage}}"></image>
+    <image class="info_cover" mode="aspectFill" src="{{crouseDetail.courseFrontImgUrl}}"></image>
     <view class="info_content">
-      <text class="content_title">{{courseInfo.title}}</text>
-      <text class="content_desc">{{courseInfo.desc}}</text>
-      <text class="content_state" wx:if="{{btnType==='edit'}}">审核状态：{{courseInfo.state}}</text>
+      <text class="content_title">{{crouseDetail.courseName}}</text>
+      <text class="content_desc">{{crouseDetail.courseIntroduce}}</text>
+      <text class="content_state" wx:if="{{btnType==='edit'}}">审核状态：{{crouseDetail.state||'待审核'}}</text>
     </view>
   </view>
   <view class="chapter">
     <view class="chapter_header">
       <view class="header_info">
         章节信息
-        <text>（共{{7}}个章节）</text>
+        <text>（共{{ChapterList.length}}个章节）</text>
       </view>
       <button wx:if="{{btnType==='edit'}}" class="addChapter_btn" bindtap="toAddChapter" data-content='pass'>新增章节</button>
     </view>
     <view class="chapter_list">
-      <view class="chapter_item" wx:for="{{chapterList}}" wx:key="{{item.id}}" data-id="{{item.id}}" bindtap="handleChapterItem">
+      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}" data-id="{{item._id.chapterId}}" bindtap="handleChapterItem">
         <text class="order">{{index + 1}}</text>
-        {{item.title}}
+        {{item._id.chapterName}}
       </view>
     </view>
   </view>

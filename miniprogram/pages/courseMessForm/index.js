@@ -25,16 +25,18 @@ Page({
     interactData: [],
     textImgArray: [],
 
+    editCourseDetail: {},
+
     tempimg: [], //临时数组  等点击发送的时候一起走
     courseUUid: util.uuid(),
 
     tagList: [
-      {label: '成长', value: 1, choose: false},
-      {label: '辅导', value: 2, choose: false},
-      {label: '防疫', value: 3, choose: false},
-      {label: '习惯', value: 4, choose: false},
-      {label: '故事', value: 5, choose: false},
-      {label: '情景', value: 6, choose: false},
+      { label: '成长', value: 1, choose: false },
+      { label: '辅导', value: 2, choose: false },
+      { label: '防疫', value: 3, choose: false },
+      { label: '习惯', value: 4, choose: false },
+      { label: '故事', value: 5, choose: false },
+      { label: '情景', value: 6, choose: false },
     ]
 
   },
@@ -53,7 +55,18 @@ Page({
       ClassCollection = 'otherClassContents'
     }
 
-    console.log(ClassCollection);
+
+    if (options && options.courseMess) {
+      let crouseDetail = JSON.parse(options.courseMess);
+
+      console.log("crouseDetail-edit", crouseDetail);
+      if (crouseDetail) {
+        this.setData({
+          editCourseDetail: crouseDetail
+        })
+      }
+    }
+
   },
 
   /**
@@ -127,293 +140,93 @@ Page({
   },
 
 
-  //  ------------------addText & addImg & addTextImg -------------
-  //事件处理函数
-  add: function (e) {
-    var that = this;
-    console.log("进入add函数")
-    // 设置封面
-    if (this.data.setFrontImg) {
-      if (this.data.courseName == '') {
-        wx.showModal({
-          title: '提示',
-          content: '课程名不能为空',
-          showCancel: false
-        })
-        return;
-      }
-      if (this.data.textimgTitle != this.data.courseName) {
-        wx.showModal({
-          title: '提示',
-          content: '课程名不一致~',
-          showCancel: false
-        })
-        return;
-      }
-      let courseMess = {
-        name: this.data.courseName,
-        frontImg: this.data.imgUrl,
-      }
-      wx.cloud.init({
-        env: 'talkbot-56sn5'
-      })
-      // wx.cloud.init()
-      //  下面是云函数的调用
-      wx.cloud.callFunction({
-        name: 'update_allCourseMess',
-        data: {
-          courseMess: courseMess,
-        },
-        success: res => {
-          let mess = {
-            content: '成功设置封面'
-          }
-          wx.showModal({
-            title: '操作成功',
-            content: '课程封面已上传',
-            showCancel: false,
-          })
-          return;
-          that.data.centendata.push(mess);
-          this.setData({
-            // news_input_val: '',
-            centendata: that.data.centendata,
-            imgUrl: '',
-            imageObject: '',
-            message: '',
-            setTextImg: false,
-            textimgTitle: '',
-            imgfile: '',
-            btnDie: false,
-            textImgArray: [],
-            answer: '',
-            setFrontImg: '',
-          })
-          this.bottom();
-        },
-        fail: err => {
-          // handle error
-          wx.showModal({
-            title: '提示',
-            content: '课程内容上传出错 请检查网络',
-            showCancel: false,
-          })
-          return;
-        },
-        complete: res => {
-          console.log('callFunction test result: ', res)
-        }
-      })
-    } else { //这个else一直到最后
-
-      // --------设置封面end-----------------------
-      if (this.data.classId == '') {
-        wx.showModal({
-          title: '提示',
-          content: '课程id不能为空,设置封面',
-          showCancel: false
-        })
-        return;
-      } else if (this.data.courseName == '') {
-        wx.showModal({
-          title: '提示',
-          content: '课程名不能为空~',
-          showCancel: false
-        })
-        return;
-      } else if (this.data.message == '' && this.data.imgUrl == null) {
-        wx.showModal({
-          title: '提示',
-          content: '课程内容得有内容 亲~',
-          showCancel: false
-        })
-        return;
-      } else if (this.data.courseIntroduce == '' && this.data.imgUrl == null) {
-        wx.showModal({
-          title: '提示',
-          content: '章节名不能为空~',
-          showCancel: false
-        })
-        return;
-      } else {
-
-        // console.log(this.data.imageObject.imageURL)
-        let imgobj = this.data.imageObject;
-        // console.log(imgobj==null);
-        // console.log(imgobj==undefined);
-        // console.log(imgobj=='');
-        console.log(imgobj);
-        if (imgobj != '' && imgobj != undefined) {
-          this.setData({
-            imgUrl: 'http://' + imgobj.imageURL
-          })
-        }
-        let newcontentType;
-        if (that.data.textImgArray.length <= 0) {
-          newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
-        } else {
-          newcontentType = 'textImg';
-        }
-        var newData = {
-          contentType: newcontentType,
-          isBot: true,
-          classCollection: ClassCollection,
-          // classCollection: 'EngClassContents',
-          classId: parseInt(that.data.classId),
-          courseName: that.data.courseName,
-          classType: ClassCollection,
-          courseIntroduce: this.data.courseIntroduce,
-
-          detail: {},
-          textimgTitle: that.data.textimgTitle,
-          textImgArray: that.data.textImgArray,
-          content: that.data.message,
-          src: that.data.imgUrl,
-          imgfile: that.data.tempimg,
-          time: time.formatTime(new Date, 'Y/M/D'),
-          is_show_right: 1,
-        }
-
-        this.setData({
-          newData: newData,
-        })
-        this.bottom();
-        wx.cloud.init({
-          env: 'talkbot-56sn5'
-        })
-        // wx.cloud.init()
-        //  下面是云函数的调用
-        console.log(wx.getStorageSync("openid"));
-        wx.cloud.callFunction({
-          name: 'add_classContent',
-          data: {
-            contentData: that.data.newData,
-          },
-          success: res => {
-            console.log(res)
-            that.data.centendata.push(this.data.newData);
-            this.setData({
-              // news_input_val: '',
-              centendata: that.data.centendata,
-              imgUrl: '',
-              imageObject: '',
-              message: '',
-              setTextImg: false,
-              textimgTitle: '',
-              imgfile: '',
-              btnDie: false,
-              textImgArray: [],
-              answer: '',
-              setFrontImg: '',
-
-            })
-            this.bottom();
-          },
-          fail: err => {
-            // handle error
-            wx.showModal({
-              title: '提示',
-              content: '课程内容上传出错 请检查网络',
-              showCancel: false,
-            })
-            return;
-          },
-          complete: res => {
-            console.log('callFunction test result: ', res)
-          }
-        })
-
-      }
-
-    }
-  },
 
   clickFinish: function (e) {
-    const crouseDetail = { name: '111' }
-    let str = JSON.stringify(crouseDetail);
-    wx.navigateTo({
-      //这里传值
-      url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
-      // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
-      // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+    // const crouseDetail = { name: '111' }
+    // let str = JSON.stringify(crouseDetail);
+    // wx.navigateTo({
+    //   //这里传值
+    //   url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
+    //   // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+    //   // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+    // })
+
+
+    if (this.data.editCourseDetail.courseName == '') {//上传封面的时候可以不需要输入章节id
+      wx.showModal({
+        title: '提示',
+        content: '给课程取个名字吧~',
+        showCancel: false
+      })
+      return;
+    } else if (this.data.editCourseDetail.courseFrontImgUrl == '') {
+      wx.showModal({
+        title: '提示',
+        content: '不要忘记上传封面哦~',
+        showCancel: false
+      })
+      return;
+    } else if (this.data.editCourseDetail.courseIntroduce == '') {
+      wx.showModal({
+        title: '提示',
+        content: '简单介绍下课程吧~',
+        showCancel: false
+      })
+      return;
+    }
+
+    const courseMess = {
+      courseUUid: this.data.editCourseDetail.courseUUid || this.data.courseUUid,
+      courseName: this.data.editCourseDetail.courseName,
+      courseFrontImgUrl: this.data.editCourseDetail.courseFrontImgUrl,
+      courseIntroduce: this.data.editCourseDetail.courseIntroduce,
+      courseType: 'other',
+      creatTime: time.formatTime(new Date, 'Y/M/D'),
+    }
+    console.log("courseMess", courseMess)
+    wx.showLoading({
+      title: '处理中',
+      mask: true
     })
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: 'operate_CourseMess',
+      data: {
+        courseMess: courseMess,
+      },
+      success: res => {
+        // wx.showModal({
+        //   title: '课程添加成功',
+        //   content: '可以开始添加章节数据了~',
+        //   showCancel: false,
+        // })
 
-
-    // if (this.data.courseName == '') {//上传封面的时候可以不需要输入章节id
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: '给课程取个名字吧~',
-    //     showCancel: false
-    //   })
-    //   return;
-    // } else if (this.data.imgUrl == '') {
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: '不要忘记上传封面哦~',
-    //     showCancel: false
-    //   })
-    //   return;
-    // } else if (this.data.courseIntroduce == '') {
-    //   wx.showModal({
-    //     title: '提示',
-    //     content: '简单介绍下课程吧~',
-    //     showCancel: false
-    //   })
-    //   return;
-    // }
-
-    // const courseMess = {
-    //   courseUUid: this.data.courseUUid,
-    //   courseName: this.data.courseName,
-    //   courseFrontImgUrl: this.data.imgUrl,
-    //   courseIntroduce: this.data.courseIntroduce,
-    //   courseType: 'other',
-    //   creatTime: time.formatTime(new Date, 'Y/M/D'),
-    // }
-    // console.log("courseMess", courseMess)
-    // wx.showLoading({
-    //   title: '处理中',
-    //   mask: true
-    // })
-    // wx.cloud.init({
-    //   env: 'talkbot-56sn5'
-    // })
-    // wx.cloud.callFunction({
-    //   name: 'update_CourseMess',
-    //   data: {
-    //     courseMess: courseMess,
-    //   },
-    //   success: res => {
-    //     // wx.showModal({
-    //     //   title: '课程添加成功',
-    //     //   content: '可以开始添加章节数据了~',
-    //     //   showCancel: false,
-    //     // })
-
-    //     const crouseDetail = courseMess
-    //     let str = JSON.stringify(crouseDetail);
-    //     wx.navigateTo({
-    //       //这里传值
-    //       url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
-    //       // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
-    //       // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
-    //     })
-    //     return;
-    //   },
-    //   fail: err => {
-    //     // handle error
-    //     wx.showModal({
-    //       title: '提示',
-    //       content: '课程信息上传出错 请检查网络',
-    //       showCancel: false,
-    //     })
-    //     return;
-    //   },
-    //   complete: res => {
-    //     console.log('callFunction test result: ', res)
-    //     wx.hideLoading()
-    //   }
-    // })
+        const crouseDetail = courseMess
+        let str = JSON.stringify(crouseDetail);
+        wx.navigateTo({
+          //这里传值
+          url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
+          // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+          // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+        })
+        return;
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '提示',
+          content: '课程信息上传出错 请检查网络',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+      }
+    })
   },
 
   useTecentCloud() {
@@ -435,7 +248,9 @@ Page({
             zhaopian: '图片如下',
             imgUrl: res.fileID,
             cloudimgs: cloudimgs,
+
           })
+          this.data.editCourseDetail.courseFrontImgUrl = res.fileID
 
           wx.hideLoading()
           wx.showToast({
@@ -624,113 +439,7 @@ Page({
     })
   },
 
-  // --------------- 左侧 上传特殊类型功能方法集
 
-  setInteract() {
-    this.setData({
-      setwait: true,
-      btnDie: true,
-    });
-    this.bottom();
-  },
-
-  //、、、、、设置图文
-  setTextImg() {
-    this.setData({
-      setTextImg: true,
-      btnDie: true,
-    });
-    this.bottom();
-  },
-  // 、、、、设置封面
-  setFrontImg() {
-    this.setData({
-      setFrontImg: true,
-      btnDie: true,
-    });
-    this.bottom();
-  },
-
-  getbtnNum: function (e) {
-    this.data.interactData = [] //先清空
-
-    var regNum = new RegExp('[0-9]', 'g');
-    var rsNum = regNum.exec(e.detail.value);
-    console.log(typeof (rsNum))
-
-    // if(!rsNum){
-    //     setTimeout(()=>{
-    //         wx.showToast({
-    //             title: '输入数字',
-    //             icon: 'none'
-    //         })
-    //     },1000);
-    //     return
-    //   }
-
-    let btnNum = e.detail.value
-    if (btnNum > 4) {
-      wx.showModal({
-        title: '超额了',
-        content: '暂时最多支持4个互动按钮',
-        showCancel: false
-      })
-      this.setData({
-        btnNum: 0,
-      });
-      return;
-    }
-    //  else if(typeof(btnNum)!='Number')
-    // {
-
-    //   console.log(typeof(btnNum))
-    //   wx.showModal({
-    //     title: '恐怕不是数字吧',
-    //     content: '皇上请输入数字~',
-    //     showCancel: false
-    //   })
-    // }
-    else {
-      // console.log(typeof(btnNum))
-      this.setData({
-        btnNum: btnNum,
-      });
-    }
-  },
-
-  getAnswer(e) {
-    if (e.detail.value) {
-      let answer = e.detail.value;
-      this.setData({
-        answer: answer,
-      });
-    }
-  },
-
-  getInputValue(e) {
-    // console.log(e);
-    if (e.detail.value) {
-      let interactData = this.data.interactData;
-      interactData[this.data.btnIndex] = e.detail.value;
-      this.setData({
-        interactData: interactData,
-      });
-    }
-  },
-
-  updateInteractData(e) {
-    // console.log(e);
-    let index = e.currentTarget.dataset.i;
-    // console.log(index)
-    // if (e.detail.value)
-    // {
-    //   let interactData = [];
-    //   interactData[index] = e.detail.value;
-    this.setData({
-      btnIndex: index,
-    });
-    // }
-  },
 
   // ----------------上传图文准备---------------
 
@@ -759,111 +468,6 @@ Page({
         imgUrl: value,
       });
     }
-  },
-
-  // ----------  上传互动  -----------------
-  submitInteract() {
-    if (this.data.classId == '') {
-      wx.showModal({
-        title: '提示',
-        content: '课程id不能为空',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.courseName == '') {
-      wx.showModal({
-        title: '提示',
-        content: '课程名不能为空',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.btnNum == null || this.data.btnNum == 0 || this.data.interactData.length <= 0) {
-      wx.showModal({
-        title: '提示',
-        content: '不能没有任何互动按钮',
-        showCancel: false
-      })
-      return;
-    }
-
-    wx.cloud.init({
-      env: 'talkbot-56sn5'
-    })
-    // wx.cloud.init()
-    //  下面是云函数的调用
-    // console.log(wx.getStorageSync("openid"));
-    var btnNum = this.data.btnNum;
-    let contentData = {
-      contentType: 'Interact',
-      isBot: true,
-      classCollection: ClassCollection,
-      classId: parseInt(this.data.classId),
-      courseName: this.data.courseName,
-      courseIntroduce: this.data.courseIntroduce,
-
-      detail: {
-        btnNum: this.data.btnNum,
-        interactData: this.data.interactData,
-        answer: this.data.answer,
-      },
-      time: time.formatTime(new Date, 'Y/M/D'),
-
-    }
-    let that = this;
-
-    var newInteract = {
-      content: 'this is a newInteract which have' + btnNum + '个Btn',
-      src: '',
-      imgfile: '',
-      time: time.formatTime(new Date, 'Y/M/D'),
-      is_show_right: 1,
-    }
-    this.setData({
-      contentData: contentData,
-      interactData: [],
-      btnNum: 0,
-      newData: newInteract
-    })
-
-
-    wx.cloud.callFunction({
-      name: 'add_classContent',
-      data: {
-        contentData: that.data.contentData,
-      },
-      success: res => {
-        // console.log(res.result)
-        that.data.centendata.push(newInteract);
-        // that.data.centendata.push(this.data.newData);
-        this.setData({
-          // news_input_val: '',
-          centendata: that.data.centendata,
-          imgUrl: '',
-          message: '',
-          setwait: false,
-          btnDie: false,
-          answer: '',
-        })
-        this.bottom();
-      },
-      fail: err => {
-        // handle error
-        wx.showModal({
-          title: '提示',
-          content: '课程内容上传出错 请检查网络',
-          showCancel: false
-        })
-        return;
-      },
-      complete: res => {
-        console.log('callFunction test result: ', res)
-      }
-    })
-
-    // this.setData({
-    //   centendata: that.data.centendata,
-    // });
-
   },
 
   close(e) {
@@ -906,10 +510,11 @@ Page({
   },
 
   bindChange2: function (e) {
-    this.data.courseName = e.detail.value
+    // this.data.courseName = e.detail.value
+    this.data.editCourseDetail.courseName = e.detail.value
   },
   bindChange3: function (e) {
-    this.data.courseIntroduce = e.detail.value
+    this.data.editCourseDetail.courseIntroduce = e.detail.value
   },
 
   preimage(e) {
@@ -1101,11 +706,11 @@ Page({
     this.data.newmark = 0;
   },
 
-  handleChoose(e){
-    const { index, choose} = e.target.dataset;
+  handleChoose(e) {
+    const { index, choose } = e.target.dataset;
     const str = `tagList[${index}].choose`
-    const chooseList = this.data.tagList.filter(item=>item.choose);
-    if(chooseList.length >= 3 && !choose) return;
+    const chooseList = this.data.tagList.filter(item => item.choose);
+    if (chooseList.length >= 3 && !choose) return;
     this.setData({
       [str]: !choose
     })

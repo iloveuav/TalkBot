@@ -1,10 +1,10 @@
 <!--components/superAdmin/courseAudit.wxml-->
 <view class="view_tupian_wenzi" catchtap="toCourse">
   <view class="view_content">
-    <image class="image_1" src="{{courseInfo.frontImg ? courseInfo.frontImg : '../../images/icon/defaultVisitor.png'}}" />
+    <image class="image_1" src="{{courseInfo.courseFrontImgUrl ? courseInfo.courseFrontImgUrl : '../../images/icon/defaultVisitor.png'}}" />
     <view class="view_wenzi2">
       <view>
-        <view class="wenzi_title">标题：{{courseInfo.name}} （数量：{{courseInfo.value}}）</view>
+        <view class="wenzi_title">标题：{{courseInfo.courseName}} （数量：{{courseInfo.courseNum||0}}）</view>
         <view class="wenzi_desc">
           {{courseInfo.visitData}}
         </view>

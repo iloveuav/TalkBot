@@ -1,25 +1,26 @@
-<view class="Card" catchtap="toCourse">
+<view class="Card" catchtap="toCourseChapterPage" data-content='priview'>
+  <!-- catchtap="toCourse"  -->
   <!-- mode='aspectFill' 不缩放自动裁切 -->
   <!-- mode='widthFix'保持宽高比例 -->
   <view class="coverImg">
-    <image wx:if="{{crouseDetail.courseFrontImgUrl&&crouseDetail.courseFrontImgUrl!==''}}" class="leftImage" src="{{crouseDetail.courseFrontImgUrl}}" mode="aspectFill"></image>
+    <image wx:if="{{courseDetail.courseFrontImgUrl&&courseDetail.courseFrontImgUrl!==''}}" class="leftImage" src="{{courseDetail.courseFrontImgUrl}}" mode="aspectFill"></image>
     <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png' mode="widthFix"></image>
-    <view class="title">{{crouseDetail.courseName}}</view>
+    <view class="title">{{courseDetail.courseName}}</view>
   </view>
   <view class="right">
     <view class="detail">
       <text>开始了解吧</text>
-      <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{crouseDetail.state||'课程未上传封面'}}</text>
+      <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{courseDetail.state||'课程未上传封面'}}</text>
     </view>
     <view class="process">
       <view class="process_splint">
-        <view class="process-data">{{crouseDetail.courseProgress}}</view>
+        <view class="process-data">{{courseDetail.courseProgress}}</view>
         <view class="top-card-weeksign-progress">
-          <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(crouseDetail.progressValue/crouseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);">
+          <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(courseDetail.progressValue/courseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);">
           </view>
         </view>
       </view>
-      <text class="label">{{crouseTypeMap[crouseDetail.courseType]}}</text>
+      <text class="label">{{crouseTypeMap[courseDetail.courseType]}}</text>
       <!-- <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
           <button class="preview-btn" catchtap="updateCrouseState" data-content='pass'>通过</button>
           <button class="edit-btn" catchtap="updateCrouseState" data-content='repulse'>打回</button>
@@ -28,6 +29,6 @@
   </view>
   <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
     <button class="preview-btn" catchtap="toCourseChapterPage" data-content='priview'>预览</button>
-    <button class="edit-btn" bindtap="toCourseChapterPage" data-content='edit'>编辑</button>
+    <button class="edit-btn" bindtap="toCrouseMessForm" data-content='edit'>编辑</button>
   </view>
 </view>

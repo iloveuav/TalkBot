@@ -50,7 +50,7 @@
   </view> -->
 
 
-  <view class="flex-item" bindtap="toSendCrouse">
+  <view class="flex-item" bindtap="toCrouseMessForm">
     <image src="../../images/index/topic.png"></image>
     <text>传知识</text>
   </view>

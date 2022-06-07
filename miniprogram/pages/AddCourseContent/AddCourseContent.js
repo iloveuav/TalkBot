@@ -865,7 +865,6 @@ Page({
   },
 
   del() {
-
     let that = this;
     if (this.data.className == '') {
       wx.showModal({

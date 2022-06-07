@@ -103,21 +103,16 @@
 				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}"
 					scroll-with-animation="{{true}}" class="bottom_part">
 					<!-- <view>数据为空</view> -->
-					<block wx:for="{{allCourse[0].children}}" wx:key="index">
+
+					<block wx:for="{{allCourse}}" wx:key="index">
 						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
-						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
-						<!-- <visitorCard visitorInfo="{{item}}"></visitorCard> -->
 					</block>
-					<block wx:for="{{allCourse[1].children}}" wx:key="index">
+
+					<!-- <block wx:for="{{allCourse[0].children}}" wx:key="index">
 						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
-						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
-						<!-- <visitorCard visitorInfo="{{item}}"></visitorCard> -->
-					</block>
-					<block wx:for="{{allCourse[2].children}}" wx:key="index">
-						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
-						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
-						<!-- <visitorCard visitorInfo="{{item}}"></visitorCard> -->
-					</block>
+					</block> -->
+
+
 				</scroll-view>
 			</view>
 		</block>

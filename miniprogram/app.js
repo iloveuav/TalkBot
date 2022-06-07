@@ -20,7 +20,9 @@ App({
   globalData: {
 
     appstyleColor: '#0D7DA1',
-    parameter : null
+    parameter : null,
+    CurrentCourseObj:{}, // 当前选择的课程对象
+    CurrentChapter:{}// 当前选择的章节对象
   },
 })
 

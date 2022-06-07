@@ -41,6 +41,7 @@ Page({
       //这里传值
       url: "../../../../AddCourseContent/AddCourseContent?currentChooseCard=" + 0 + "&courseMess=" + str,
     })
+
   },
 
 
@@ -77,16 +78,102 @@ Page({
     })
   },
   handleChapterItem(e) {
-    const { id } = e.currentTarget.dataset;
-    console.log('点击章节啦~快跳转');
+    const { ChapterId } = e.currentTarget.dataset;
+    const crouseDetail = this.data.crouseDetail
+    console.log('点击章节啦~快跳转', ChapterId);
+    console.log('点击章节啦~crouseDetail', this.data.crouseDetail);
+
+
+    let CurrentChapter = {
+      courseUUId: crouseDetail.courseUUid,
+      courseName: crouseDetail.courseName,
+      chapterId: ChapterId,
+      reset: false
+    }
+    // let CurrentChapter = {
+    //   courseId: crouseDetail.data[0].courseId,
+    //   className: crouseDetail.data[0]._id.className,
+    //   chapterName: crouseDetail.data[0]._id.chapterName,
+    //   id: crouseDetail.data[0].id,
+    //   reset: false
+    // }
+    // console.log(CurrentChapter)
+
+    let str = JSON.stringify(crouseDetail);
+    let Cc = JSON.stringify(CurrentChapter);
+    let ChapterList = JSON.stringify(this.data.ChapterList);
+    wx.navigateTo({
+      //这里传值
+      url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc + "&ChapterList=" + ChapterList,
+    })
+
+
     // wx.navigateTo({
     //   url: 'url',
     // })
   },
   deleteCourse() {
     console.log('删除课程');
+    const crouseDetail = this.data.crouseDetail
+    console.log("crouseDetail", crouseDetail);
+    wx.showModal({
+      title: "确认删除？",
+      content: "本次删除不可恢复~",
+      showCancel: true,
+      success: function (res) {
+        if (res.confirm) {
+          //调用云函数
+          wx.cloud.init({
+            env: 'talkbot-56sn5'
+          })
+          wx.cloud.callFunction({
+            name: 'del_course',
+            data: {
+              courseUUid: crouseDetail.courseUUid,
+              classCollection: 'testCourseContents'
+
+            },
+            success: res => {
+              wx.showModal({
+                title: '提示',
+                content: '成功删除该课程~',
+                showCancel: false,
+              })
+              return;
+            },
+            fail: err => {
+              // handle error
+              wx.showModal({
+                title: '提示',
+                content: '删除失败 请检查网络~',
+                showCancel: false,
+              })
+              return;
+            },
+            complete: res => {
+              console.log('callFunction test result: ', res)
+            }
+          })
+
+          // ----------- 云函数 end---------------
+
+        } else {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
   },
   editCourse() {
     console.log('编辑课程');
+    const crouseDetail = this.data.crouseDetail
+    let str = JSON.stringify(crouseDetail);
+    wx.navigateTo({
+      //这里传值
+      url: '/pages/courseMessForm/index?courseMess=' + str,
+
+      // url: '/pages/mysel/admin/admin',
+      // url: '/pages/AddEngClassContent/AddEngClassContent',
+    })
   }
 })

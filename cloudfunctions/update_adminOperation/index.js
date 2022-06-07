@@ -50,7 +50,7 @@ exports.main = async (event, context) => {
   }else if(event.operateType === 'updateCourseState'){
     if (event.state == "pass") {
       try {
-        await db.collection('allCourseMess').where({
+        await db.collection('allCourseBaseMess').where({
           _id: event._id
         }).update({
           data: {
@@ -66,7 +66,7 @@ exports.main = async (event, context) => {
     }
     else if (event.state == "repulse") {
       try {
-        await db.collection('allCourseMess').where({
+        await db.collection('allCourseBaseMess').where({
           _id: event._id
         }).update({
           data: {

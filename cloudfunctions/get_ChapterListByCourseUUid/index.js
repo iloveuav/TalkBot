@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
         courseUUid: '$courseUUid',
         className: '$className',
         chapterName: '$chapterName',
+        chapterId: '$chapterId',
       },
       courseNum: $.sum(1),
       courseId: $.first('$courseUUid'),

@@ -54,23 +54,28 @@ Page({
     chooseList: [1, 2, 3],
 
     classCollection: '',
-    continueBtn: false
+    continueBtn: false,
+    ChapterList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let corseObject = JSON.parse(options.course);
+    let courseObject = JSON.parse(options.course);
     let Cc = JSON.parse(options.Cc);
-    CurrentChapter = Cc //正确获取index页面传过来的课程信息 
+    // let ChapterList = JSON.parse(options.ChapterList);
+    // CurrentChapter = Cc //正确获取index页面传过来的课程信息 
     // console.log(nowclassid);
-    // console.log(corseObject);
+    // console.log(courseObject);
 
     var that = this;
     this.setData({
-      corseObject: corseObject,
+      courseObject: courseObject,
+      // ChapterList: ChapterList
     })
+    this.getChapterList()
+
 
 
     // this.getNewClassContent(classCollection);
@@ -117,13 +122,14 @@ Page({
     // let JaLeftOverClassConten = wx.getStorageSync('JaloClassContent');
     // // let EngLeftOverClassConten = [];
     // // let JaLeftOverClassConten = [];
+    this.getChapterList()
 
-    let corseObject = this.data.corseObject;
+    let courseObject = this.data.courseObject;
     // --------------新历史缓存--------------------
     // 从缓存中找当前课本的缓存记录 并注入
-    LeftOverClassConten = wx.getStorageSync(corseObject.name);
+    LeftOverClassConten = wx.getStorageSync(courseObject.courseName);
     //注入当前课本的历史数据
-    Centendata = wx.getStorageSync('history' + corseObject.name)
+    Centendata = wx.getStorageSync('history' + courseObject.courseName)
     let cen = Centendata.length
     console.log("cen" + cen)
     if (cen <= 0) {
@@ -132,19 +138,20 @@ Page({
     }
     // ------------新历史缓存end----------------
 
-    // console.log(corseObject);
+    // console.log(courseObject);
     var classCollection = '';
     let continueBtn = false;
     var that = this;
     // console.log('是否还能继续' + LeftOverClassConten.length);
 
-    if (corseObject.courseType == 'eng') {
+    if (courseObject.courseType == 'eng') {
       classCollection = "EngClassContents";
-    } else if (corseObject.courseType == 'ja') {
+    } else if (courseObject.courseType == 'ja') {
       classCollection = "JaClassContents";
-    } else if (corseObject.courseType == 'other') {
-      classCollection = "otherClassContents";
-    } else if (corseObject.courseType == 'schoolDetail') {
+    } else if (courseObject.courseType == 'other') {
+      classCollection = "testCourseContents";//临时
+      // classCollection = "otherClassContents";
+    } else if (courseObject.courseType == 'schoolDetail') {
       classCollection = "SchoolDetail";
     }
     let hisdataLength = LeftOverClassConten.length
@@ -169,7 +176,7 @@ Page({
       hisclassLength: Centendata.length,
       continueBtn: continueBtn,
       classLength: LeftOverClassConten.length,
-      className: this.data.corseObject.name
+      className: this.data.courseObject.courseName
     })
 
     this.bottom();
@@ -210,6 +217,38 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  getChapterList() {
+    console.log(this.data.courseObject)
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    const CourseUUid = this.data.courseObject.courseUUid
+    wx.cloud.callFunction({
+      name: 'get_ChapterListByCourseUUid',
+      data: { CourseUUid: CourseUUid },
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+
+        let showChapter = []
+
+        showChapter = res.result.allChapterList
+        console.log('callFunction test result-showChapter: ', showChapter);
+
+        this.setData({
+          ChapterList: showChapter,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
   },
 
   changeautoRA: function () {
@@ -288,9 +327,9 @@ Page({
           this.bottom();
           this.sleep(100);
           // 更新本地历史记录
-          wx.setStorageSync('history' + this.data.corseObject.name, this.data.centendata)
+          wx.setStorageSync('history' + this.data.courseObject.courseName, this.data.centendata)
           //剩余内容更新
-          wx.setStorageSync(this.data.corseObject.name, LeftOverClassConten)
+          wx.setStorageSync(this.data.courseObject.courseName, LeftOverClassConten)
         }
         this.sleep(500);
       }
@@ -330,14 +369,29 @@ Page({
       //  下面是云函数的调用
       // console.log(wx.getStorageSync("openid"));
       // console.log(this.data.classCollection);
+
+      // let CurrentChapter = {
+      //   courseUUId: courseDetail.courseUUid,
+      //   courseName: courseDetail.courseName,
+      //   chapterId: ChapterId,
+      //   reset: false
+      // }
+      const params = {
+        classCollection: this.data.classCollection,
+        courseUUId: CurrentChapter.courseUUId,
+        courseName: CurrentChapter.courseName,
+        chapterId: CurrentChapter.chapterId,
+      }
+      console.log('getContentParams', params)
+
       wx.cloud.callFunction({
-        name: 'getClassContent',
+        name: 'getCrouseContent',
         data: {
           // classCollection:'EngClassContents',
           classCollection: this.data.classCollection,
-          classId: CurrentChapter.courseId,
-          className: CurrentChapter.className,
-          chapterName: CurrentChapter.chapterName,
+          courseUUId: CurrentChapter.courseUUId,
+          courseName: CurrentChapter.courseName,
+          chapterId: CurrentChapter.chapterId,
         },
         success: res => {
           let classContent = res.result.classContent.data;
@@ -354,10 +408,10 @@ Page({
 
             if (UserCourseMess == '' || null || undefined) {
               UserCourseMess = [{
-                className: CurrentChapter.className,
-                courseId: CurrentChapter.courseId,
-                chapterName: CurrentChapter.chapterName,
-                id: CurrentChapter.id,
+                classCollection: this.data.classCollection,
+                courseUUId: CurrentChapter.courseUUId,
+                courseName: CurrentChapter.courseName,
+                chapterId: CurrentChapter.chapterId,
               }]
               console.log(UserCourseMess)
               wx.setStorageSync('UserCourseMess', UserCourseMess);
@@ -366,10 +420,10 @@ Page({
               //更新 用户课程使用记录
               console.log("更新 用户课程使用记录  exit:" + exit)
               UserCourseMess.forEach(v => {
-                if (v.className == CurrentChapter.className) {
-                  v.courseId = CurrentChapter.courseId
-                  v.chapterName = CurrentChapter.chapterName
-                  v.id = CurrentChapter.id
+                if (v.courseName == CurrentChapter.courseName) {
+                  v.chapterId = CurrentChapter.chapterId
+                  v.courseName = CurrentChapter.courseName
+                  v.courseUUId = CurrentChapter.courseUUId
                   exit = true;
                   return
                 }
@@ -377,10 +431,9 @@ Page({
               console.log(exit);
               if (exit == false) {
                 let newCrouseMess = {
-                  className: CurrentChapter.className,
-                  courseId: CurrentChapter.courseId,
-                  chapterName: CurrentChapter.chapterName,
-                  id: CurrentChapter.id,
+                  courseUUId: CurrentChapter.courseUUId,
+                  courseName: CurrentChapter.courseName,
+                  chapterId: CurrentChapter.chapterId,
                 }
                 UserCourseMess.push(newCrouseMess);
               }
@@ -393,8 +446,8 @@ Page({
             wx.cloud.callFunction({
               name: 'update_userInfo',
               data: {
-                type:'update',
-                params:{UserCourseMess},
+                type: 'update',
+                params: { UserCourseMess },
               },
               success: res => {
                 // console.log(res)
@@ -652,9 +705,9 @@ Page({
     this.bottom();
     // this.toScrollBottom();
     // 更新历史缓存
-    wx.setStorageSync('history' + this.data.corseObject.name, this.data.centendata)
+    wx.setStorageSync('history' + this.data.courseObject.courseName, this.data.centendata)
     //剩余内容更新
-    wx.setStorageSync(this.data.corseObject.name, LeftOverClassConten)
+    wx.setStorageSync(this.data.courseObject.courseName, LeftOverClassConten)
 
   },
 
@@ -667,12 +720,26 @@ Page({
     //   nowclassid: this.data.nowclassid + 1
     // })
     let lastCc = CurrentChapter
-    if (lastCc.courseId < this.data.corseObject.data.length) {
+    if (lastCc.chapterId < this.data.ChapterList.length) {
+      // CurrentChapter = {
+      //   className: this.data.courseObject.data[lastCc.courseId]._id.className,
+      //   chapterName: this.data.courseObject.data[lastCc.courseId]._id.chapterName,
+      //   courseId: lastCc.courseId + 1,
+      // }
+
       CurrentChapter = {
-        className: this.data.corseObject.data[lastCc.courseId]._id.className,
-        chapterName: this.data.corseObject.data[lastCc.courseId]._id.chapterName,
-        courseId: lastCc.courseId + 1,
+        courseUUId: this.data.courseObject.courseUUid,
+        courseName: this.data.courseObject.courseName,
+        chapterId: lastCc.chapterId + 1,
+        reset: false
       }
+
+      // let CurrentChapter = {
+      //   courseUUId: courseDetail.courseUUid,
+      //   courseName: courseDetail.courseName,
+      //   chapterId: ChapterId,
+      //   reset: false
+      // }
       console.log(CurrentChapter)
       this.getNewClassContent();
     } else {

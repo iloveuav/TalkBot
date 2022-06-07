@@ -153,7 +153,7 @@ Page({
     })
   },
 
-  toSendCrouse() {
+  toCrouseMessForm() {
     wx.navigateTo({
       //这里传值
       url: '/pages/courseMessForm/index',

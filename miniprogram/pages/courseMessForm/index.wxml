@@ -6,16 +6,16 @@
   </view> -->
   <view class="form_item">
     <image class="icon" src="/images/icon/title.png"></image>
-    <input class="input" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="请输入课程名称" />
+    <input class="input" bindinput="bindChange2" confirm-type="done" value='{{editCourseDetail.courseName||className}}' placeholder="请输入课程名称" />
   </view>
   <view class="form_item">
     <image class="icon" src="/images/icon/coverImg.png"></image>
-    <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{imgUrl}}' placeholder="课程封面（粘贴url或点击右侧上传）" />
+    <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{editCourseDetail.courseFrontImgUrl||imgUrl}}' placeholder="课程封面（粘贴url或点击右侧上传）" />
     <image src="/images/button/upload2.png" class="addImgBtn" bindtap='uploadimg'></image>
   </view>
   <view class="form_item introduce">
     <text class="chapter">eg:第一章</text>
-    <textarea class="input" bindinput="bindChange3" confirm-type="done" value='{{courseIntroduce}}' placeholder="请输入课程简介" />
+    <textarea class="input" bindinput="bindChange3" confirm-type="done" value='{{editCourseDetail.courseIntroduce||courseIntroduce}}' placeholder="请输入课程简介" />
   </view>
 </view>
 

@@ -6,6 +6,9 @@ Component({
   properties: {
     courseObject:{
       type:Object,
+    },
+    ChapterList:{
+      type:Array,
     }
   },
 

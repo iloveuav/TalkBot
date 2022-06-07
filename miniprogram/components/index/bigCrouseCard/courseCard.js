@@ -4,7 +4,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    crouseDetail: {
+    courseDetail: {
       type: Object,
       value: '数据加载有误',
     },
@@ -59,59 +59,32 @@ Component({
       let corseArray = this.data.corseArray;
       let currentSwiperIndex = this.data.currentSwiperIndex;
 
-      const crouseDetail = this.data.crouseDetail
-      // console.log(corseArray[currentSwiperIndex].data)
-      // console.log(corseArray[currentSwiperIndex].data[0]._id)
+      const courseDetail = this.data.courseDetail
       let CurrentChapter = {
-        courseId: crouseDetail.data[0].courseId,
-        className: crouseDetail.data[0]._id.className,
-        chapterName: crouseDetail.data[0]._id.chapterName,
-        id: crouseDetail.data[0].id,
+        courseUUId: courseDetail.courseUUid,
+        courseName: courseDetail.courseName,
+        chapterId: 1,
         reset: false
       }
-      // console.log(CurrentChapter)
-
-      let str = JSON.stringify(crouseDetail);
+      let str = JSON.stringify(courseDetail);
       let Cc = JSON.stringify(CurrentChapter);
       wx.navigateTo({
         //这里传值
         url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
       })
-
-      // let userEngCId = 1;
-      // let userJaCId = 1;
-      // let cid = 1;
-      // if (wx.getStorageSync('userEngclassId')) {
-      //   userEngCId = wx.getStorageSync('userEngclassId');
-      // }
-      // if (wx.getStorageSync('userJaclassId')) {
-      //   userJaCId = wx.getStorageSync('userJaclassId');
-      // }
-      // if (corseArray[currentSwiperIndex].courseType=='eng')
-      // {
-      //   cid = userEngCId
-      // }
-      // else
-      // {
-      // cid = userJaCId
-      // }
-
-
-      // let cid = currentChooseCard == 0 ? userEngCId : userJaCId;
-
     },
 
     updateCrouseState: function (e) {
 
       let that = this
       console.log('e', e.currentTarget.dataset.content)
-      console.log('e', this.data.crouseDetail)
+      console.log('e', this.data.courseDetail)
       const state = e.currentTarget.dataset.content
 
       wx.cloud.callFunction({
         name: 'update_adminOperation',
         data: {
-          _id: this.data.crouseDetail._id,
+          _id: this.data.courseDetail._id,
           state: state,
           operateType: 'updateCourseState'
         },
@@ -139,24 +112,24 @@ Component({
     },
 
     toCourseChapterPage(e) {
-      let btnType = e.currentTarget.dataset.content
+      let btnType = e.currentTarget.dataset.content || e
       let corseArray = this.data.corseArray;
       let currentSwiperIndex = this.data.currentSwiperIndex;
 
-      const crouseDetail = this.data.crouseDetail
-      console.log("crouseDetail", crouseDetail)
+      const courseDetail = this.data.courseDetail
+      console.log("courseDetail", courseDetail)
       // console.log(corseArray[currentSwiperIndex].data)
       // console.log(corseArray[currentSwiperIndex].data[0]._id)
       // let CurrentChapter = {
-      //   courseId: crouseDetail.data[0].courseId,
-      //   className: crouseDetail.data[0]._id.className,
-      //   chapterName: crouseDetail.data[0]._id.chapterName,
-      //   id : crouseDetail.data[0].id,
+      //   courseId: courseDetail.data[0].courseId,
+      //   className: courseDetail.data[0]._id.className,
+      //   chapterName: courseDetail.data[0]._id.chapterName,
+      //   id : courseDetail.data[0].id,
       //   reset : false
       // }
       // console.log(CurrentChapter)
 
-      let str = JSON.stringify(crouseDetail);
+      let str = JSON.stringify(courseDetail);
       // let Cc = JSON.stringify(CurrentChapter);
       // wx.navigateTo({
       //   //这里传值
@@ -170,25 +143,37 @@ Component({
       })
     },
 
+    toCrouseMessForm() {
+
+      console.log("courseDetail111",this.data.courseDetail)
+      // wx.navigateTo({
+      //   //这里传值
+      //   url: '/pages/courseMessForm/index',
+
+      //   // url: '/pages/mysel/admin/admin',
+      //   // url: '/pages/AddEngClassContent/AddEngClassContent',
+      // })
+    },
+
     toEditCourse(e) {
       let btnType = e.currentTarget.dataset.content
       let corseArray = this.data.corseArray;
       let currentSwiperIndex = this.data.currentSwiperIndex;
 
-      const crouseDetail = this.data.crouseDetail
-      console.log("crouseDetail", crouseDetail)
+      const courseDetail = this.data.courseDetail
+      console.log("courseDetail", courseDetail)
       // console.log(corseArray[currentSwiperIndex].data)
       // console.log(corseArray[currentSwiperIndex].data[0]._id)
       // let CurrentChapter = {
-      //   courseId: crouseDetail.data[0].courseId,
-      //   className: crouseDetail.data[0]._id.className,
-      //   chapterName: crouseDetail.data[0]._id.chapterName,
-      //   id : crouseDetail.data[0].id,
+      //   courseId: courseDetail.data[0].courseId,
+      //   className: courseDetail.data[0]._id.className,
+      //   chapterName: courseDetail.data[0]._id.chapterName,
+      //   id : courseDetail.data[0].id,
       //   reset : false
       // }
       // console.log(CurrentChapter)
 
-      let str = JSON.stringify(crouseDetail);
+      let str = JSON.stringify(courseDetail);
       // let Cc = JSON.stringify(CurrentChapter);
       // wx.navigateTo({
       //   //这里传值

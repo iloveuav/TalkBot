@@ -306,7 +306,8 @@ Page({
       translate: 'transform: translateX(0px)',
     })
     // this.queryVisitorList()
-    this.getAllCourse();
+    // this.getAllCourse();
+    this.getAllCourseList();
   },
 
 
@@ -325,6 +326,38 @@ Page({
         let showCourse = []
         showCourse = res.result.allCourse
 
+        this.setData({
+          allCourse: showCourse,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+
+  getAllCourseList(pageType) {
+    wx.cloud.init({
+      env: 'talkbot-56sn5'
+    })
+    wx.cloud.callFunction({
+      name: 'get_CourseList',
+      data: {},
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+        // wx.setStorageSync('allCourseMess', res.result.allCourse);
+
+        let showCourse = []
+        if (pageType === 'studyPage') {
+          showCourse = res.result.allCourse.data
+        } else {
+          showCourse = res.result.allCourse.data
+        }
         this.setData({
           allCourse: showCourse,
           remind: '',
@@ -603,7 +636,8 @@ Page({
   },
 
   courseDetailReload() {
-    this.getAllCourse();
+    // this.getAllCourse();
+    this.getAllCourseList();
     setTimeout(() => {
       this.setData({
         pageFlag: 7,

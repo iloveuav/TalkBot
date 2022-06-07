@@ -26,6 +26,7 @@ Component({
     },
     updateCrouseState: function (e) {
       const state = e.currentTarget.dataset.content
+      // console.log('this.data.courseInfo', this.data.courseInfo)
       wx.cloud.callFunction({
         name: 'update_adminOperation',
         data: {
@@ -58,18 +59,31 @@ Component({
     toCourse(e) {
       // console.log(this.data.corseArray);
       // let corseArray = this.data.courseInfo;
-      const crouseDetail = this.data.courseInfo
-      console.log("crouseDetail", crouseDetail)
+      const courseDetail = this.data.courseInfo
+
+      // let CurrentChapter = {
+      //   courseUUId: courseDetail.courseUUid,
+      //   courseName: courseDetail.courseName,
+      //   chapterId: ChapterId,
+      //   reset: false
+      // }
+
       let CurrentChapter = {
-        courseId: crouseDetail.data[0].courseId,
-        className: crouseDetail.data[0]._id.className,
-        chapterName: crouseDetail.data[0]._id.chapterName,
-        id: crouseDetail.data[0].id,
+        courseUUId: courseDetail.courseUUid,
+        courseName: courseDetail.courseName,
+        chapterId: 1,
         reset: false
       }
+      // let CurrentChapter = {
+      //   courseId: crouseDetail.data[0].courseId,
+      //   className: crouseDetail.data[0]._id.className,
+      //   chapterName: crouseDetail.data[0]._id.chapterName,
+      //   id: crouseDetail.data[0].id,
+      //   reset: false
+      // }
       // console.log(CurrentChapter)
 
-      let str = JSON.stringify(crouseDetail);
+      let str = JSON.stringify(courseDetail);
       let Cc = JSON.stringify(CurrentChapter);
       wx.navigateTo({
         //这里传值
