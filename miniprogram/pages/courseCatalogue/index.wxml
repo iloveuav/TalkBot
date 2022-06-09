@@ -22,12 +22,12 @@
         <text class="order">{{index + 1}}</text>
         <text catchtap="handleChapterItem">{{item._id.chapterName}}</text>
 
-        <text class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">🖊</text>
+        <text wx:if="{{btnType==='edit'}}" class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">🖊</text>
       </view>
       
     </view>
   </view>
-  <view class="course_operate">
+  <view class="course_operate" wx:if="{{btnType==='edit'}}">
     <button bindtap="deleteCourse">删除课程</button>
     <button bindtap="editCourse">编辑课程基本信息</button>
   </view>
