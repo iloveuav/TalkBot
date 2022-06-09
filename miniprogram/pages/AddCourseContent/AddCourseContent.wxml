@@ -7,20 +7,21 @@
         <text>{{unReadNum}}</text>
       </view>
       <text class="themeKey">课程名</text>
-      <input class="themeInput" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="eg:初级日语"
-        placeholder-style="color:#fff;" />
+      <input disabled="true" class="themeInput" bindinput="bindChange2" confirm-type="done"
+        value='{{className}}' placeholder="eg:初级日语" placeholder-style="color:#fff;" />
     </view>
 
     <view class="chapter-item">
       <view class="btn-item">
         <text class="chapterKey">章节ID</text>
-        <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{classId}}'
-          placeholder="eg:>=1" />
+        <input disabled="true" class="input" type="number" bindinput="bindChange1" confirm-type="done"
+          value='{{chapterId}}' placeholder="eg:>=1" />
       </view>
 
       <view class="btn-item">
         <text class="chapterKey">章节名</text>
-        <input class="input" bindinput="bindChange3" confirm-type="done" value='{{chapterName}}' placeholder="eg:第一章" />
+        <input class="input" bindinput="bindChange3" confirm-type="done" value='{{chapterName}}'
+          placeholder="eg:第一章" />
       </view>
     </view>
 

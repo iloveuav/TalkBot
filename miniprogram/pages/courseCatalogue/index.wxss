@@ -76,10 +76,11 @@
 }
 
 .chapter_list{
-
+width: 90%;
 }
 
 .chapter_item {
+  position: relative;
   display: flex;
   align-items: center;
   margin: 20rpx 0;
@@ -92,6 +93,11 @@
   line-height: 50rpx;
   margin-right: 20rpx;
   color: #666666;
+}
+
+.fail{
+  position: absolute;
+  left: 340px;
 }
 
 .course_operate{

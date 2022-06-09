@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk');
 cloud.init({
   traceUser: true,
-  env: 'talkbot-56sn5'
+  env: 'huixue-3g4h1ydg1dedcaf3'
 })
 
 const db = cloud.database();

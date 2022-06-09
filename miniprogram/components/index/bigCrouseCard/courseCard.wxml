@@ -1,10 +1,11 @@
-<view class="Card" catchtap="toCourseChapterPage" data-content='priview'>
+<view class="Card" >
+  <!-- catchtap="toCourseChapterPage" data-content='priview' -->
   <!-- catchtap="toCourse"  -->
   <!-- mode='aspectFill' 不缩放自动裁切 -->
   <!-- mode='widthFix'保持宽高比例 -->
   <view class="coverImg">
     <image wx:if="{{courseDetail.courseFrontImgUrl&&courseDetail.courseFrontImgUrl!==''}}" class="leftImage" src="{{courseDetail.courseFrontImgUrl}}" mode="aspectFill"></image>
-    <image wx:else class="leftImage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png' mode="widthFix"></image>
+    <image wx:else class="leftImage" src='cloud://huixue-3g4h1ydg1dedcaf3.7461-huixue-3g4h1ydg1dedcaf3-1258960420/1591649188560.png' mode="widthFix"></image>
     <view class="title">{{courseDetail.courseName}}</view>
   </view>
   <view class="right">
@@ -29,6 +30,6 @@
   </view>
   <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
     <button class="preview-btn" catchtap="toCourseChapterPage" data-content='priview'>预览</button>
-    <button class="edit-btn" bindtap="toCrouseMessForm" data-content='edit'>编辑</button>
+    <button class="edit-btn" bindtap="toCourseChapterPage" data-content='edit'>编辑</button>
   </view>
 </view>

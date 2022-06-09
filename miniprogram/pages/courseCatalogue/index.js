@@ -37,9 +37,21 @@ Page({
   },
   toAddChapter: function () {
     let str = JSON.stringify(this.data.crouseDetail);
+    let chapterList = JSON.stringify(this.data.ChapterList);
     wx.navigateTo({
       //这里传值
-      url: "../../../../AddCourseContent/AddCourseContent?currentChooseCard=" + 0 + "&courseMess=" + str,
+      url: "../../../../AddCourseContent/AddCourseContent?type=" + 'add' + "&courseMess=" + str + "&chapterList=" + chapterList,
+    })
+
+  },
+  toEditChapter: function (e) {
+    console.log('chapterObj', e.target.dataset.chapterobj)
+    let chapterobj = JSON.stringify(e.target.dataset.chapterobj)
+    let str = JSON.stringify(this.data.crouseDetail);
+    let chapterList = JSON.stringify(this.data.ChapterList);
+    wx.navigateTo({
+      //这里传值
+      url: "../../../../AddCourseContent/AddCourseContent?type=" + 'edit' + "&courseMess=" + str + "&chapterList=" + chapterList + "&chapterobj=" + chapterobj,
     })
 
   },
@@ -48,7 +60,7 @@ Page({
   getChapterList(pageType) {
     console.log(this.data.crouseDetail)
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     const CourseUUid = this.data.crouseDetail.courseUUid
     wx.cloud.callFunction({
@@ -124,7 +136,7 @@ Page({
         if (res.confirm) {
           //调用云函数
           wx.cloud.init({
-            env: 'talkbot-56sn5'
+            env: 'huixue-3g4h1ydg1dedcaf3'
           })
           wx.cloud.callFunction({
             name: 'del_course',

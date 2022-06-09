@@ -222,7 +222,7 @@ Page({
   getChapterList() {
     console.log(this.data.courseObject)
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     const CourseUUid = this.data.courseObject.courseUUid
     wx.cloud.callFunction({
@@ -363,7 +363,7 @@ Page({
     if (LeftOverClassConten == '' || null || undefined) {
       // console.log("get class----" + e);
       wx.cloud.init({
-        env: 'talkbot-56sn5'
+        env: 'huixue-3g4h1ydg1dedcaf3'
       })
       // wx.cloud.init()
       //  下面是云函数的调用
@@ -441,7 +441,7 @@ Page({
             }
             //进行云同步 更新当前用户课程使用情况
             wx.cloud.init({
-              env: 'talkbot-56sn5'
+              env: 'huixue-3g4h1ydg1dedcaf3'
             })
             wx.cloud.callFunction({
               name: 'update_userInfo',

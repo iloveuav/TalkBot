@@ -112,6 +112,12 @@
           "pathName": "pages/mysel/superAdmin/index",
           "query": "identity=2",
           "scene": null
+        },
+        {
+          "name": "pages/courseBotIndex/index",
+          "pathName": "pages/courseBotIndex/index",
+          "query": "pageType=mineCoursePage",
+          "scene": null
         }
       ]
     }

@@ -13,13 +13,18 @@
         章节信息
         <text>（共{{ChapterList.length}}个章节）</text>
       </view>
-      <button wx:if="{{btnType==='edit'}}" class="addChapter_btn" bindtap="toAddChapter" data-content='pass'>新增章节</button>
+      <button wx:if="{{btnType==='edit'}}" class="addChapter_btn" bindtap="toAddChapter"
+        data-content='pass'>新增章节</button>
     </view>
     <view class="chapter_list">
-      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}" data-id="{{item._id.chapterId}}" bindtap="handleChapterItem">
+      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}"
+        data-id="{{item._id.chapterId}}" >
         <text class="order">{{index + 1}}</text>
-        {{item._id.chapterName}}
+        <text catchtap="handleChapterItem">{{item._id.chapterName}}</text>
+
+        <text class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">🖊</text>
       </view>
+      
     </view>
   </view>
   <view class="course_operate">

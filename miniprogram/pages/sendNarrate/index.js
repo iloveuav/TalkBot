@@ -154,7 +154,7 @@ Page({
         frontImg: this.data.imgUrl,
       }
       wx.cloud.init({
-        env: 'talkbot-56sn5'
+        env: 'huixue-3g4h1ydg1dedcaf3'
       })
       // wx.cloud.init()
       //  下面是云函数的调用
@@ -281,7 +281,7 @@ Page({
         this.bottom();
 
         wx.cloud.init({
-          env: 'talkbot-56sn5'
+          env: 'huixue-3g4h1ydg1dedcaf3'
         })
         // wx.cloud.init()
         //  下面是云函数的调用
@@ -720,7 +720,7 @@ Page({
     }
 
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     // wx.cloud.init()
     //  下面是云函数的调用
@@ -901,7 +901,7 @@ Page({
 
             //调用云函数
             wx.cloud.init({
-              env: 'talkbot-56sn5'
+              env: 'huixue-3g4h1ydg1dedcaf3'
             })
             console.log(that.data.className)
             console.log(ClassCollection)

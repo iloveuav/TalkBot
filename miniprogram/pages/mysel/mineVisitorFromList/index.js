@@ -94,7 +94,7 @@ Page({
     }
     console.log("test-params", params)
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     wx.cloud.callFunction({
       name: "query_visitorRecord",

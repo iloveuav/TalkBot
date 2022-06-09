@@ -5,7 +5,7 @@ var time = require('../../utils/util.js');
 
 const qiniuUploader = require("../../utils/qiniuUploader");
 const ImgUrl = '';
-let ClassCollection = '';
+let ClassCollection = 'testCourseContents';
 
 var message = '';
 Page({
@@ -15,7 +15,7 @@ Page({
    */
   data: {
     message: '',
-    classId: '',
+    chapterId: '',
     className: '',
     chapterName: '',
     value: '',
@@ -26,6 +26,10 @@ Page({
     interactData: [],
     textImgArray: [],
     answer: 'a',
+
+    crouseDetail: {},
+    chapterList: [],
+    curChapter: {},
 
     tempimg: [], //临时数组  等点击发送的时候一起走
 
@@ -52,8 +56,43 @@ Page({
       //其他课程
       ClassCollection = 'otherClassContents'
     }
+    ClassCollection = 'testCourseContents'
 
-    console.log(ClassCollection);
+    if (options && options.type === 'add' && options.courseMess) {
+      let crouseDetail = JSON.parse(options.courseMess);
+      let chapterList = JSON.parse(options.chapterList);
+      let curChapter = {}
+      console.log(crouseDetail);
+      this.setData({
+        crouseDetail: crouseDetail,
+
+        className: crouseDetail.courseName,
+        chapterName: '',
+        chapterList: chapterList,
+        chapterId: chapterList.length + 1,
+
+        curChapter: {}
+      })
+    }
+
+    if (options && options.type === 'edit' && options.chapterobj) {
+      let crouseDetail = JSON.parse(options.courseMess);
+      let chapterList = JSON.parse(options.chapterList);
+      let chapterobj = JSON.parse(options.chapterobj);
+      let curChapter = {}
+      console.log(crouseDetail);
+      this.setData({
+        crouseDetail: crouseDetail,
+
+        className: crouseDetail.courseName,
+        chapterName: chapterobj.chapterName || '',
+        chapterList: chapterList,
+        chapterId: chapterobj.id || chapterList.length + 1,
+
+        curChapter: chapterobj
+      })
+    }
+
   },
 
   /**
@@ -126,7 +165,7 @@ Page({
     })
   },
 
-  selectedAnswer(e){
+  selectedAnswer(e) {
     this.setData({
       answer: e.currentTarget.dataset.answer
     })
@@ -161,7 +200,7 @@ Page({
         frontImg: this.data.imgUrl,
       }
       wx.cloud.init({
-        env: 'talkbot-56sn5'
+        env: 'huixue-3g4h1ydg1dedcaf3'
       })
       // wx.cloud.init()
       //  下面是云函数的调用
@@ -213,7 +252,7 @@ Page({
     } else { //这个else一直到最后
 
       // --------设置封面end-----------------------
-      if (this.data.classId == '') {
+      if (this.data.chapterId == '') {
         wx.showModal({
           title: '提示',
           content: '课程id不能为空,设置封面',
@@ -265,13 +304,13 @@ Page({
           isBot: true,
           classCollection: 'testCourseContents',
           // classCollection: 'EngClassContents',
-          classId: parseInt(that.data.classId),
+          chapterId: parseInt(that.data.chapterId),
           className: that.data.className,
           classType: ClassCollection,
           chapterName: this.data.chapterName,
 
-          chapterId: parseInt(that.data.classId),
-          courseUUid: "4902ecd5-d833-4554-b8e2-602ff2505744",
+          chapterId: parseInt(that.data.chapterId),
+          courseUUid: this.data.crouseDetail.courseUUid || '',
           // courseUUid: "3567800e-906c-4eff-bb25-2c4b1470d381",
 
           detail: {},
@@ -289,7 +328,7 @@ Page({
         })
         this.bottom();
         wx.cloud.init({
-          env: 'talkbot-56sn5'
+          env: 'huixue-3g4h1ydg1dedcaf3'
         })
         // wx.cloud.init()
         //  下面是云函数的调用
@@ -525,7 +564,7 @@ Page({
 
   // ----------------选择图片 ----------------
   uploadimg() {
-    if (this.data.classId == ''&&!this.data.setFrontImg) {//上传封面的时候可以不需要输入章节id
+    if (this.data.chapterId == '' && !this.data.setFrontImg) {//上传封面的时候可以不需要输入章节id
       wx.showModal({
         title: '提示',
         content: '章节id不能为空',
@@ -700,7 +739,7 @@ Page({
 
   // ----------  上传互动  -----------------
   submitInteract() {
-    if (this.data.classId == '') {
+    if (this.data.chapterId == '') {
       wx.showModal({
         title: '提示',
         content: '课程id不能为空',
@@ -724,7 +763,7 @@ Page({
     }
 
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     // wx.cloud.init()
     //  下面是云函数的调用
@@ -732,9 +771,10 @@ Page({
     var btnNum = this.data.btnNum;
     let contentData = {
       contentType: 'Interact',
+      courseUUid: this.data.crouseDetail.courseUUid || '',
       isBot: true,
       classCollection: ClassCollection,
-      classId: parseInt(this.data.classId),
+      chapterId: parseInt(this.data.chapterId),
       className: this.data.className,
       chapterName: this.data.chapterName,
 
@@ -764,13 +804,13 @@ Page({
 
 
     wx.cloud.callFunction({
-      name: 'add_classContent',
+      name: 'add_courseContent',
       data: {
         contentData: that.data.contentData,
       },
       success: res => {
         // console.log(res.result)
-        that.data.centendata.push({...contentData,is_show_right:1});
+        that.data.centendata.push({ ...contentData, is_show_right: 1 });
         // that.data.centendata.push(newInteract);
         // that.data.centendata.push(this.data.newData);
         this.setData({
@@ -840,7 +880,7 @@ Page({
   },
 
   bindChange1: function (e) {
-    this.data.classId = e.detail.value
+    this.data.chapterId = e.detail.value
   },
 
   bindChange2: function (e) {
@@ -873,7 +913,7 @@ Page({
         showCancel: false
       })
       return;
-    } else if (this.data.classId == '') {
+    } else if (this.data.chapterId == '') {
       wx.showModal({
         title: '提示',
         content: '章节ID不能为空',
@@ -906,7 +946,7 @@ Page({
 
             //调用云函数
             wx.cloud.init({
-              env: 'talkbot-56sn5'
+              env: 'huixue-3g4h1ydg1dedcaf3'
             })
 
             console.log(that.data.className)
@@ -915,7 +955,7 @@ Page({
               name: 'del_chapter',
               data: {
                 classCollection: ClassCollection,
-                classId: parseInt(that.data.classId),
+                chapterId: parseInt(that.data.chapterId),
                 className: that.data.className,
                 chapterName: that.data.chapterName,
               },

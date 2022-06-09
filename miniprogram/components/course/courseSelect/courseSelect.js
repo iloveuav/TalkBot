@@ -162,7 +162,7 @@ Component({
     //获取章节信息
     getChapterList() {
       wx.cloud.init({
-        env: 'talkbot-56sn5'
+        env: 'huixue-3g4h1ydg1dedcaf3'
       })
       const CourseUUid = this.data.courseObject.courseUUid
       wx.cloud.callFunction({

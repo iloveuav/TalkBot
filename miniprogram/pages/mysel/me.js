@@ -142,7 +142,7 @@ Page({
       // select_flag: this.data.dialogFlag || '',
     }
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     wx.cloud.callFunction({
       name: "get_allCourseMess",
@@ -373,7 +373,7 @@ Page({
 
   getAllCourse() {
     wx.cloud.init({
-      env: 'talkbot-56sn5'
+      env: 'huixue-3g4h1ydg1dedcaf3'
     })
     wx.cloud.init()
     //  下面是云函数的调用

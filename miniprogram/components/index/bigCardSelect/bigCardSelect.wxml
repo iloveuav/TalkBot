@@ -19,7 +19,7 @@
         <block wx:for="{{corseArray}}" wx:key="index" wx:for-index="index" >
           <swiper-item>
             <image bindtap="preimage" src='{{item.frontImg}}' class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}" wx:if="{{item.frontImg&&item.frontImg!==''}}"></image>
-						  <image bindtap="preimage" src='cloud://talkbot-56sn5.7461-talkbot-56sn5-1258960420/1591649188560.png' class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}" wx:else></image>
+						  <image bindtap="preimage" src='cloud://huixue-3g4h1ydg1dedcaf3.7461-huixue-3g4h1ydg1dedcaf3-1258960420/1591649188560.png' class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}" wx:else></image>
           </swiper-item>
         </block>
         <view class="remind-box" wx:if="{{remind}}">
