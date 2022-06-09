@@ -87,7 +87,7 @@ Page({
         className: crouseDetail.courseName,
         chapterName: chapterobj.chapterName || '',
         chapterList: chapterList,
-        chapterId: chapterobj.id || chapterList.length + 1,
+        chapterId: chapterobj.chapterId|| chapterList.length + 1,
 
         curChapter: chapterobj
       })
