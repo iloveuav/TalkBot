@@ -93,19 +93,22 @@
 .mineCourseBtns {
   height: 72rpx;
   display: flex;
-  border-radius: 180rpx;
+  /* border-radius: 180rpx; */
   overflow: hidden;
   box-sizing: border-box;
 }
 
 .mineCourseBtns button {
-  border-radius: 0;
+  /* border-radius: 0; */
   font-size: 30rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .preview-btn {
+  border: 1rpx solid rgb(204, 198, 198);
+  /* border: 1rpx solid rgb(204, 198, 198); */
+  border-left:1rpx solid rgb(204, 198, 198);
   background: #0088fb;
   color: #fff;
   flex: 1;

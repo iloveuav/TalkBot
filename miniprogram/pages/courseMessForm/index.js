@@ -501,12 +501,9 @@ Page({
     })
   },
 
-  bindChange: function (e) {
-    this.data.message = e.detail.value
-  },
-
   bindChange1: function (e) {
-    this.data.imgUrl = e.detail.value
+    // this.data.imgUrl = e.detail.value
+    this.data.editCourseDetail.courseFrontImgUrl = e.detail.value
   },
 
   bindChange2: function (e) {

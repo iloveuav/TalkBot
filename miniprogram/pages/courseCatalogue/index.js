@@ -62,10 +62,11 @@ Page({
     wx.cloud.init({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
-    const CourseUUid = this.data.crouseDetail.courseUUid
+    const courseUUid = this.data.crouseDetail.courseUUid
+    console.log('yyzzmm-courseUUid',courseUUid)
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
-      data: { CourseUUid: CourseUUid },
+      data: { courseUUid: courseUUid },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -77,7 +78,7 @@ Page({
           showChapter = res.result.allChapterList
         }
         this.setData({
-          ChapterList: showChapter,
+          ChapterList: showChapter.reverse(),
           remind: '',
         })
       },
@@ -90,17 +91,18 @@ Page({
     })
   },
   handleChapterItem(e) {
-    const { ChapterId } = e.currentTarget.dataset;
+    const { chapterId, chapterName } = e.currentTarget.dataset.clickchapter._id;
     const crouseDetail = this.data.crouseDetail
-    console.log('点击章节啦~快跳转', ChapterId);
+    console.log('点击章节啦~快跳转', chapterId);
     console.log('点击章节啦~crouseDetail', this.data.crouseDetail);
 
 
     let CurrentChapter = {
-      courseUUId: crouseDetail.courseUUid,
+      courseUUid: crouseDetail.courseUUid,
       courseName: crouseDetail.courseName,
-      chapterId: ChapterId,
-      reset: false
+      chapterId: chapterId,
+      chapterName: chapterName,
+      reset: false,
     }
     // let CurrentChapter = {
     //   courseId: crouseDetail.data[0].courseId,

@@ -80,9 +80,7 @@ Page({
     })
     if (options && options.pageType) {
       this.getAllCourseList(options.pageType);
-      // this.getAllCourse(options.pageType);
     }
-    // this.getAllCourse();
 
   },
 
@@ -99,9 +97,9 @@ Page({
   onShow: function (options) {
     if (this.data.pageType) {
       this.getAllCourseList(this.data.pageType);
+      console.log('show-getCourseList')
       // this.getAllCourse(this.data.pageType);
     }
-
   },
 
   /**
@@ -144,37 +142,37 @@ Page({
   },
 
 
-  getAllCourse(pageType) {
-    wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
-    })
-    wx.cloud.callFunction({
-      name: 'get_allCourseMess',
-      data: {},
-      success: res => {
-        // console.log(res)
-        console.log('callFunction test result: ', res);
-        wx.setStorageSync('allCourseMess', res.result.allCourse);
+  // getAllCourse(pageType) {
+  //   wx.cloud.init({
+  //     env: 'huixue-3g4h1ydg1dedcaf3'
+  //   })
+  //   wx.cloud.callFunction({
+  //     name: 'get_allCourseMess',
+  //     data: {},
+  //     success: res => {
+  //       // console.log(res)
+  //       console.log('callFunction test result: ', res);
+  //       wx.setStorageSync('allCourseMess', res.result.allCourse);
 
-        let showCourse = []
-        if (pageType === 'studyPage') {
-          showCourse = res.result.allCourse
-        } else {
-          showCourse = res.result.allCourse
-        }
-        this.setData({
-          allCourse: showCourse,
-          remind: '',
-        })
-      },
-      fail: err => {
-        // handle error
-      },
-      complete: res => {
-        console.log(res)
-      }
-    })
-  },
+  //       let showCourse = []
+  //       if (pageType === 'studyPage') {
+  //         showCourse = res.result.allCourse
+  //       } else {
+  //         showCourse = res.result.allCourse
+  //       }
+  //       this.setData({
+  //         allCourse: showCourse,
+  //         remind: '',
+  //       })
+  //     },
+  //     fail: err => {
+  //       // handle error
+  //     },
+  //     complete: res => {
+  //       console.log(res)
+  //     }
+  //   })
+  // },
 
   getAllCourseList(pageType) {
     wx.cloud.init({
@@ -187,12 +185,43 @@ Page({
         // console.log(res)
         console.log('callFunction test result: ', res);
         // wx.setStorageSync('allCourseMess', res.result.allCourse);
+        // console.log("testCourseContents",res.result.testCourseContents)
+        const allChapter = res.result.testCourseContents.list.map(item => {
+          return item._id
+        })
+        console.log("testCourseContents", allChapter)
+
+
+        const userCourseProgressObj = res.result.UserCourseMess || [];
+        const resultCourse = res.result.allCourse.data
+        if (userCourseProgressObj[0] && userCourseProgressObj[0].UserCourseMess) {//有云缓存记录
+          const progressArr = userCourseProgressObj[0].UserCourseMess
+          resultCourse.forEach(courseItem => {
+            progressArr.forEach(progressItem => {
+              console.log('aaa1-courseItem: ', courseItem);
+              console.log('aaa1-progressItem: ', progressItem);
+              if (courseItem.courseUUid === progressItem.courseUUid) {//根据课程UUid 赋值进度
+                let progressChapter = {}
+                allChapter.forEach(item => {
+                  if (item.courseUUid === progressItem.courseUUid && item.chapterId === progressItem.chapterId) {
+                    progressChapter = item
+                  }
+                })
+                console.log('testCourseContents-progressChapter: ', progressChapter);
+
+                courseItem.currentProgress = progressItem
+              }
+            })
+
+
+          });
+        }
 
         let showCourse = []
         if (pageType === 'studyPage') {
-          showCourse = res.result.allCourse
+          showCourse = resultCourse
         } else {
-          showCourse = res.result.allCourse
+          showCourse = resultCourse
         }
         this.setData({
           allCourse: showCourse,

@@ -47,11 +47,42 @@ exports.main = async (event, context) => {
     } catch (err) {
       return handleErr(err)
     }
-  } else {
-    const data = db.collection('user-info').where({
-      openid: wxContext.OPENID
-    }).get()
-    return { success: true, data }
+  } else if (event.type === 'get' || event.type === 'login') {
+    try {
+      return db.collection('user-info').where({
+        openid: wxContext.OPENID
+      }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            db.collection('user-info').add({
+              data: {
+                openid: wxContext.OPENID,
+                info: event.info
+              }
+            })
+            return {
+              success: true,
+              isNewUser: true
+            }
+          } else {
+            const data = db.collection('user-info').where({
+              openid: wxContext.OPENID
+            }).get()
+            return { success: true, data }
+          }
+        })
+        .then(res => {
+          return db.collection('user-info').where({
+            openid: wxContext.OPENID
+          }).get()
+        })
+        .then(res => {
+          return handleSuccess(res.data)
+        })
+    } catch (err) {
+      return handleErr(err)
+    }
 
   }
 

@@ -29,7 +29,7 @@
 
   <scroll-view>
 
-    <view wx:for="{{allCourse.data}}">
+    <view wx:for="{{allCourse}}">
       <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
         <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>

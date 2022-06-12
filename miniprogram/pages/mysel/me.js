@@ -126,7 +126,7 @@ Page({
   toMineCourseList: function (e) {
     wx.navigateTo({
       //这里传值
-      url: '/pages/courseBotIndex/index?pageType='+'mineCoursePage',
+      url: '/pages/courseBotIndex/index?pageType=' + 'mineCoursePage',
     })
     // this.queryMineCourseList();
   },
@@ -295,22 +295,52 @@ Page({
     let that = this;
     // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    console.log(111)
     wx.getUserProfile({
       desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       success: (res) => {
         console.log(res)
         wx.setStorageSync("info", res.userInfo);
         wx.setStorageSync("islogin", true);
-        // that.updateUserInfo(res.userInfo);
         that.setData({
           remind: '加载中',
           islogin: true,
           userInfo: res.userInfo,
           hasUserInfo: true
         })
-        that.onLoad();
-        that.onShow();
+
+        wx.cloud.callFunction({
+          name: 'operate_userInfo',
+          data: {
+            type: 'login',
+            info: res.userInfo,
+          },
+          success: res => {
+            // console.log(res)
+            console.log('callFunction test result: ', res)
+            const result = res.result.data[0]
+            console.log("result",result)
+            if (result.isAdmin) {
+              wx.setStorageSync("isAdmin", true);
+              this.setData({
+                isAdmin: true
+              })
+            }
+
+          },
+          fail: err => {
+            // handle error
+          },
+          complete: res => {
+            console.log(res)
+            that.onLoad();
+            that.onShow();
+          }
+        })
+
+
+        // // that.updateUserInfo(res.userInfo);
+
+
       }
     })
   },

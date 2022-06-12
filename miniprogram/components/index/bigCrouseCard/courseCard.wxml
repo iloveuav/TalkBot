@@ -15,17 +15,13 @@
     </view>
     <view class="process">
       <view class="process_splint">
-        <view class="process-data">{{courseDetail.courseProgress}}</view>
-        <view class="top-card-weeksign-progress">
+        <view class="process-data">{{courseDetail.currentProgress.chapterId?'当前体验章节id：'+courseDetail.currentProgress.chapterId:'暂无课程进度'}}</view>
+        <!-- <view class="top-card-weeksign-progress">
           <view class="top-card-weeksign-progress-item" style="z-index:99;width:{{(courseDetail.progressValue/courseDetail.data.length)*200}}rpx;background-color: rgb(23,144,255);">
           </view>
-        </view>
+        </view> -->
       </view>
       <text class="label">{{crouseTypeMap[courseDetail.courseType]}}</text>
-      <!-- <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">
-          <button class="preview-btn" catchtap="updateCrouseState" data-content='pass'>通过</button>
-          <button class="edit-btn" catchtap="updateCrouseState" data-content='repulse'>打回</button>
-        </view> -->
     </view>
   </view>
   <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'}}">

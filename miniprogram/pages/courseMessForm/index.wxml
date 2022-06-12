@@ -10,7 +10,7 @@
   </view>
   <view class="form_item">
     <image class="icon" src="/images/icon/coverImg.png"></image>
-    <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{editCourseDetail.courseFrontImgUrl||imgUrl}}' placeholder="课程封面（粘贴url或点击右侧上传）" />
+    <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{editCourseDetail.courseFrontImgUrl}}' placeholder="课程封面（粘贴url或点击右侧上传）" />
     <image src="/images/button/upload2.png" class="addImgBtn" bindtap='uploadimg'></image>
   </view>
   <view class="form_item introduce">

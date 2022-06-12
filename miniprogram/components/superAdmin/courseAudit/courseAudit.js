@@ -62,14 +62,14 @@ Component({
       const courseDetail = this.data.courseInfo
 
       // let CurrentChapter = {
-      //   courseUUId: courseDetail.courseUUid,
+      //   courseUUid: courseDetail.courseUUid,
       //   courseName: courseDetail.courseName,
       //   chapterId: ChapterId,
       //   reset: false
       // }
 
       let CurrentChapter = {
-        courseUUId: courseDetail.courseUUid,
+        courseUUid: courseDetail.courseUUid,
         courseName: courseDetail.courseName,
         chapterId: 1,
         reset: false

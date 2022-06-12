@@ -73,7 +73,7 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
-  <view class='item' bindtap="toSuperAdmin" wx:if="{{!isAdmin}}">
+  <view class='item' bindtap="toSuperAdmin" wx:if="{{isAdmin}}">
     <view class="title">超级管理员</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>

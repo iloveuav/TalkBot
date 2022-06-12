@@ -4,19 +4,23 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    courseObject:{
-      type:Object,
+    courseObject: {
+      type: Object,
     },
-    ChapterList:{
-      type:Array,
-    }
+    ChapterList: {
+      type: Array,
+    },
+    currentSelect: {
+      type: Object,
+    },
+
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    
+
     selectArray: []
   },
 

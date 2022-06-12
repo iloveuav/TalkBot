@@ -65,16 +65,21 @@ Page({
     let courseObject = JSON.parse(options.course);
     let Cc = JSON.parse(options.Cc);
     // let ChapterList = JSON.parse(options.ChapterList);
-    // CurrentChapter = Cc //正确获取index页面传过来的课程信息 
+    CurrentChapter = Cc //正确获取index页面传过来的课程信息 
     // console.log(nowclassid);
     // console.log(courseObject);
 
     var that = this;
     this.setData({
       courseObject: courseObject,
+      userSelect: Cc || null
       // ChapterList: ChapterList
     })
     this.getChapterList()
+
+
+
+    // console.log()
 
 
 
@@ -183,6 +188,78 @@ Page({
     if (continueBtn == false && this.data.classLength != 0) {
       this.showTeach();
     }
+
+    // console.log("11122currentSelect",this.data.currentSelect)//
+    // console.log("11122courseObject",this.data.courseObject)//
+
+
+
+    // this.setData({
+    //   currentSelect: this.data.userSelect
+    // })
+
+
+
+    if (courseObject.currentProgress) {//用户对课程有进度 弹出模态框确认是变更章节还是留着当前章节
+      console.log("courseObject.currentProgress", courseObject.currentProgress)
+      const userSelect = this.data.userSelect
+      if (courseObject.currentProgress.chapterId !== userSelect.chapterId)//用户选择的课程与之前课程章节不同
+      {
+        wx.showModal({
+          title: '准备好上课了吗？',
+          content: '（切换章节会让你失去目前的进度）',
+          cancelText: "取消",
+          confirmText: "继续",
+          success(res) {
+            if (res.cancel == true) {
+              console.log("cancel-CurrentChapter", CurrentChapter)
+              console.log("cancel-courseObject", that.data.courseObject)
+              that.setData({
+                currentSelect: CurrentChapter
+              })
+              return;
+            }
+            if (res.confirm == true) {
+              // 更新章节
+              CurrentChapter = userSelect
+              Centendata = []
+              LeftOverClassConten = [] //得把已经注入的待上课内容清空 不然会导致新内容排在后面
+              that.setData({
+                currentSelect: userSelect,
+                centendata: Centendata
+              })
+              // 调用获取课程内容的函数
+              that.getNewClassContent();
+            }
+          }
+        })
+      } else {//虽然有进度 但是用户选择的和进度一致
+
+        CurrentChapter = this.data.userSelect
+        this.setData({
+          // currentSelect: {}
+          currentSelect: this.data.userSelect
+        })
+      }
+
+    } else {
+      //第一次进入此课程 直接按照用户选择的章节进行加载
+
+      console.log('第一次进入此课程 直接按照用户选择的章节进行加载')
+      CurrentChapter = that.data.userSelect
+      // CurrentChapter = {
+      //   courseUUid: courseObject.courseUUid,
+      //   courseName: courseObject.courseName,
+      //   chapterId: courseObject.currentProgress?courseObject.currentProgress.chapterId:1,//刚进入 先根据云缓存里的章节Id注入
+      //   chapterName: 'name',
+      //   reset: false
+      // }
+      this.setData({
+        // currentSelect: {}
+        currentSelect: that.data.userSelect
+      })
+
+    }
   },
 
   /**
@@ -221,21 +298,24 @@ Page({
 
   getChapterList() {
     console.log(this.data.courseObject)
+    let that = this
     wx.cloud.init({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
-    const CourseUUid = this.data.courseObject.courseUUid
+    const courseUUid = this.data.courseObject.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
-      data: { CourseUUid: CourseUUid },
+      data: { courseUUid: courseUUid },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
 
         let showChapter = []
 
-        showChapter = res.result.allChapterList
+        showChapter = res.result.allChapterList.reverse();
         console.log('callFunction test result-showChapter: ', showChapter);
+
+
 
         this.setData({
           ChapterList: showChapter,
@@ -247,6 +327,11 @@ Page({
       },
       complete: res => {
         console.log(res)
+
+        // that.setData({
+        //   // currentSelect: {}
+        //   currentSelect: that.data.userSelect
+        // })
       }
     })
   },
@@ -371,17 +456,18 @@ Page({
       // console.log(this.data.classCollection);
 
       // let CurrentChapter = {
-      //   courseUUId: courseDetail.courseUUid,
+      //   courseUUid: courseDetail.courseUUid,
       //   courseName: courseDetail.courseName,
       //   chapterId: ChapterId,
       //   reset: false
       // }
       const params = {
         classCollection: this.data.classCollection,
-        courseUUId: CurrentChapter.courseUUId,
+        courseUUid: CurrentChapter.courseUUid,
         courseName: CurrentChapter.courseName,
         chapterId: CurrentChapter.chapterId,
       }
+      console.log('yyy-CurrentChapter', CurrentChapter)
       console.log('getContentParams', params)
 
       wx.cloud.callFunction({
@@ -389,7 +475,7 @@ Page({
         data: {
           // classCollection:'EngClassContents',
           classCollection: this.data.classCollection,
-          courseUUId: CurrentChapter.courseUUId,
+          courseUUid: CurrentChapter.courseUUid,
           courseName: CurrentChapter.courseName,
           chapterId: CurrentChapter.chapterId,
         },
@@ -406,10 +492,10 @@ Page({
             // wx.setStorageSync('loClassContent', classContent)
             LeftOverClassConten = classContent;
 
-            if (UserCourseMess == '' || null || undefined) {
+            if (UserCourseMess == '' || null || undefined) {//初始化
               UserCourseMess = [{
                 classCollection: this.data.classCollection,
-                courseUUId: CurrentChapter.courseUUId,
+                courseUUid: CurrentChapter.courseUUid,
                 courseName: CurrentChapter.courseName,
                 chapterId: CurrentChapter.chapterId,
               }]
@@ -422,8 +508,9 @@ Page({
               UserCourseMess.forEach(v => {
                 if (v.courseName == CurrentChapter.courseName) {
                   v.chapterId = CurrentChapter.chapterId
+                  v.chapterId = CurrentChapter.chapterId
                   v.courseName = CurrentChapter.courseName
-                  v.courseUUId = CurrentChapter.courseUUId
+                  v.courseUUid = CurrentChapter.courseUUid
                   exit = true;
                   return
                 }
@@ -431,9 +518,10 @@ Page({
               console.log(exit);
               if (exit == false) {
                 let newCrouseMess = {
-                  courseUUId: CurrentChapter.courseUUId,
+                  courseUUid: CurrentChapter.courseUUid,
                   courseName: CurrentChapter.courseName,
                   chapterId: CurrentChapter.chapterId,
+                  classCollection: this.data.classCollection,
                 }
                 UserCourseMess.push(newCrouseMess);
               }
@@ -444,7 +532,7 @@ Page({
               env: 'huixue-3g4h1ydg1dedcaf3'
             })
             wx.cloud.callFunction({
-              name: 'update_userInfo',
+              name: 'operate_userInfo',
               data: {
                 type: 'update',
                 params: { UserCourseMess },
@@ -728,14 +816,14 @@ Page({
       // }
 
       CurrentChapter = {
-        courseUUId: this.data.courseObject.courseUUid,
+        courseUUid: this.data.courseObject.courseUUid,
         courseName: this.data.courseObject.courseName,
         chapterId: lastCc.chapterId + 1,
         reset: false
       }
 
       // let CurrentChapter = {
-      //   courseUUId: courseDetail.courseUUid,
+      //   courseUUid: courseDetail.courseUUid,
       //   courseName: courseDetail.courseName,
       //   chapterId: ChapterId,
       //   reset: false
@@ -841,7 +929,7 @@ Page({
 
   //根据顶部信息 动态改变课程内容
   getcurrentChapter: function (e) {
-    console.log(e.detail)
+    console.log('getcurrentChapter', e.detail)
     CurrentChapter = e.detail
     var that = this
     //由于第一次进入页面会自动调用这个函数  需要先判断排除

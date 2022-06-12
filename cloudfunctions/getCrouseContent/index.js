@@ -13,14 +13,13 @@ exports.main = async (event, context) => {
   // wxContext.OPENID
   var classContent = await db.collection(event.classCollection)
     .where({
-      courseUUId: event.courseUUid,
-      className: event.courseName,
+      courseUUid: event.courseUUid,
         chapterId: event.chapterId,
     })
     .get()
 
     // let CurrentChapter = {
-      //   courseUUId: crouseDetail.courseUUid,
+      //   courseUUid: crouseDetail.courseUUid,
       //   courseName: crouseDetail.courseName,
       //   chapterId: ChapterId,
       //   reset: false
@@ -28,7 +27,7 @@ exports.main = async (event, context) => {
 
   return {
     // event,
-    classContent,
+    classContent:classContent,
     // openid: wxContext.OPENID,
     // appid: wxContext.APPID,
     // unionid: wxContext.UNIONID,

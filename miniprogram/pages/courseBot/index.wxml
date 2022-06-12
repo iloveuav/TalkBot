@@ -1,6 +1,6 @@
 <!--miniprogram/pages/TalkBot/TalkBot.wxml-->
 <view class="topCard">
-<topCard courseObject="{{courseObject}}"  ChapterList="{{ChapterList||[]}}" bindchangeChapter="getcurrentChapter">
+<topCard courseObject="{{courseObject}}" currentSelect="{{currentSelect||null}}"  ChapterList="{{ChapterList||[]}}" bindchangeChapter="getcurrentChapter">
 </topCard>
 </view>
 

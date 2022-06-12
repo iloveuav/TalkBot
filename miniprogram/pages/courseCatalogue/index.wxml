@@ -20,7 +20,7 @@
       <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}"
         data-id="{{item._id.chapterId}}" >
         <text class="order">{{index + 1}}</text>
-        <text catchtap="handleChapterItem">{{item._id.chapterName}}</text>
+        <text catchtap="handleChapterItem" data-clickChapter="{{item}}">{{item._id.chapterName}}</text>
 
         <text wx:if="{{btnType==='edit'}}" class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">🖊</text>
       </view>

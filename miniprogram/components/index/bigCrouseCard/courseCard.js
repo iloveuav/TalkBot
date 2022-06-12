@@ -61,7 +61,7 @@ Component({
 
       const courseDetail = this.data.courseDetail
       let CurrentChapter = {
-        courseUUId: courseDetail.courseUUid,
+        courseUUid: courseDetail.courseUUid,
         courseName: courseDetail.courseName,
         chapterId: 1,
         reset: false

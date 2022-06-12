@@ -118,6 +118,12 @@
           "pathName": "pages/courseBotIndex/index",
           "query": "pageType=mineCoursePage",
           "scene": null
+        },
+        {
+          "name": "pages/mysel/me",
+          "pathName": "pages/mysel/me",
+          "query": "",
+          "scene": null
         }
       ]
     }

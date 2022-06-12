@@ -18,6 +18,10 @@ Component({
       type: Array,
       value: '数据加载有误',
     },
+    currentSelect: {
+      type: Object,
+      value: '数据加载有误',
+    },
 
   },
 
@@ -26,17 +30,24 @@ Component({
   lifetimes: {
     ready() {
       // console.log('1111')
-    
-      let ChapterList = this.data.ChapterList || []
-      console.log('ChapterList', ChapterList)
+
+      // let ChapterList = this.data.ChapterList || []
+
       // let CurrentChapter = {
-      //   courseUUId: crouseDetail.courseUUid,
+      //   courseUUid: crouseDetail.courseUUid,
       //   courseName: crouseDetail.courseName,
       //   chapterId: ChapterId,
       //   reset: false
       // }
-      this.getChapterList()
-   
+
+      let currentSelect = this.data.currentSelect || []
+      if (currentSelect) {
+        this.setData({
+          CurrentChapter: currentSelect
+        })
+      }
+      // this.getChapterList()
+
 
     },
     detached() {
@@ -127,14 +138,14 @@ Component({
         let ChapterList = this.data.ChapterList
 
         // let CurrentChapter = {
-        //   courseUUId: crouseDetail.courseUUid,
+        //   courseUUid: crouseDetail.courseUUid,
         //   courseName: crouseDetail.courseName,
         //   chapterId: ChapterId,
         //   reset: false
         // }
 
         CurrentChapter = {
-          courseUUId: crouseDetail.courseUUid,
+          courseUUid: crouseDetail.courseUUid,
           courseName: crouseDetail.courseName,
           chapterId: ChapterList[nowIdx]._id.chapterId,
           chapterName: ChapterList[nowIdx]._id.chapterName,
@@ -164,24 +175,24 @@ Component({
       wx.cloud.init({
         env: 'huixue-3g4h1ydg1dedcaf3'
       })
-      const CourseUUid = this.data.courseObject.courseUUid
+      const courseUUid = this.data.courseObject.courseUUid
       wx.cloud.callFunction({
-        name: 'get_ChapterListByCourseUUid',
-        data: { CourseUUid: CourseUUid },
+        name: 'get_ChapterListBycourseUUid',
+        data: { courseUUid: courseUUid },
         success: res => {
           // console.log(res)
           console.log('callFunction test result: ', res);
-          
-  
+
+
           let showChapter = []
-  
+
           showChapter = res.result.allChapterList
 
           let crouseDetail = this.data.courseObject || {}
           if (crouseDetail && showChapter.length >= 1) {
-           
+
             CurrentChapter = {
-              courseUUId: crouseDetail.courseUUid,
+              courseUUid: crouseDetail.courseUUid,
               courseName: crouseDetail.courseName,
               chapterId: showChapter[0]._id.chapterId,
               chapterName: showChapter[0]._id.chapterName,
@@ -194,7 +205,7 @@ Component({
           }
 
           console.log('callFunction test result-showChapter: ', showChapter);
-  
+
           this.setData({
             ChapterList: showChapter,
             remind: '',

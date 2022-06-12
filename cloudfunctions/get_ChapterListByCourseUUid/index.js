@@ -24,6 +24,8 @@ exports.main = async (event, context) => {
       },
       courseNum: $.sum(1),
       courseId: $.first('$courseUUid'),
+      // chapterName:'$chapterName',
+      // chapterId: '$chapterId',
     })
     .end()
 
@@ -38,7 +40,7 @@ exports.main = async (event, context) => {
 
 
     testCourseContents.list.forEach(mess => {
-      if (event.CourseUUid === mess._id.courseUUid) {
+      if (event.courseUUid === mess._id.courseUUid) {
         allChapterList.push(mess)
       }
     })
@@ -52,7 +54,7 @@ exports.main = async (event, context) => {
     allChapterList,
     UserCourseMess,
     currentOpenid: wxContext.OPENID,
-    courseUUid:event.CourseUUid
+    courseUUid:event.courseUUid
 
   }
 }
