@@ -3,9 +3,9 @@
 <view class='com-selectBox'>
   <view class='com-sContent' catchtap='selectToggle'>
     <view class="courseId">
-      {{CurrentChapter.chapterId}}
+      {{currentSelect.chapterId}}
     </view>
-    <view class='com-sTxt'>{{CurrentChapter.chapterName}}</view>
+    <view class='com-sTxt'>{{currentSelect.chapterName}}</view>
     <image src='../../../images/button/reset.png' class='com-sReset' catchtap="reset"></image>
     <image src='../../../images/button/Newselect.png' class='com-sImg' animation="{{animationData}}"></image>
   </view>

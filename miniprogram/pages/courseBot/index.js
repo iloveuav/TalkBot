@@ -75,7 +75,7 @@ Page({
       userSelect: Cc || null
       // ChapterList: ChapterList
     })
-    this.getChapterList()
+    // this.getChapterList()
 
 
 
@@ -189,17 +189,6 @@ Page({
       this.showTeach();
     }
 
-    // console.log("11122currentSelect",this.data.currentSelect)//
-    // console.log("11122courseObject",this.data.courseObject)//
-
-
-
-    // this.setData({
-    //   currentSelect: this.data.userSelect
-    // })
-
-
-
     if (courseObject.currentProgress) {//用户对课程有进度 弹出模态框确认是变更章节还是留着当前章节
       console.log("courseObject.currentProgress", courseObject.currentProgress)
       const userSelect = this.data.userSelect
@@ -244,16 +233,8 @@ Page({
 
     } else {
       //第一次进入此课程 直接按照用户选择的章节进行加载
-
       console.log('第一次进入此课程 直接按照用户选择的章节进行加载')
       CurrentChapter = that.data.userSelect
-      // CurrentChapter = {
-      //   courseUUid: courseObject.courseUUid,
-      //   courseName: courseObject.courseName,
-      //   chapterId: courseObject.currentProgress?courseObject.currentProgress.chapterId:1,//刚进入 先根据云缓存里的章节Id注入
-      //   chapterName: 'name',
-      //   reset: false
-      // }
       this.setData({
         // currentSelect: {}
         currentSelect: that.data.userSelect
@@ -328,10 +309,6 @@ Page({
       complete: res => {
         console.log(res)
 
-        // that.setData({
-        //   // currentSelect: {}
-        //   currentSelect: that.data.userSelect
-        // })
       }
     })
   },
@@ -929,8 +906,9 @@ Page({
 
   //根据顶部信息 动态改变课程内容
   getcurrentChapter: function (e) {
-    console.log('getcurrentChapter', e.detail)
-    CurrentChapter = e.detail
+    console.log('getcurrentChapter', e)
+    CurrentChapter = e
+    // CurrentChapter = e.detail
     var that = this
     //由于第一次进入页面会自动调用这个函数  需要先判断排除
     if (this.data.start != false) {

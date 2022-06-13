@@ -40,12 +40,12 @@ Component({
       //   reset: false
       // }
 
-      let currentSelect = this.data.currentSelect || []
-      if (currentSelect) {
-        this.setData({
-          CurrentChapter: currentSelect
-        })
-      }
+      // let currentSelect = this.data.currentSelect || []
+      // if (currentSelect) {
+      //   this.setData({
+      //     CurrentChapter: currentSelect
+      //   })
+      // }
       // this.getChapterList()
 
 
@@ -123,7 +123,8 @@ Component({
         this.setData({
           reset: true
         })
-        CurrentChapter.reset = true
+        this.data.currentSelect.reset = true
+        // CurrentChapter.reset = true
       } else {
         var nowData = this.data.courseObject; //课程对象
         // console.log(nowData);
@@ -151,16 +152,10 @@ Component({
           chapterName: ChapterList[nowIdx]._id.chapterName,
           reset: this.data.reset
         }
-        // CurrentChapter = {
-        //   courseId: nowData[nowIdx].courseId,
-        //   className: nowData[nowIdx]._id.className,
-        //   chapterName: nowData[nowIdx]._id.chapterName,
-        //   reset: this.data.reset
-        // }
 
         this.setData({
           selectShow: false,
-          CurrentChapter: CurrentChapter,
+          // CurrentChapter: CurrentChapter,
           animationData: this.animation.export(),
           reset: this.data.reset
         })

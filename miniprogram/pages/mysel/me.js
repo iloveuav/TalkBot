@@ -319,7 +319,7 @@ Page({
             console.log('callFunction test result: ', res)
             const result = res.result.data[0]
             console.log("result",result)
-            if (result.isAdmin) {
+            if (result&&result.isAdmin) {
               wx.setStorageSync("isAdmin", true);
               this.setData({
                 isAdmin: true
