@@ -1,13 +1,9 @@
-/* miniprogram/pages/AddCourseContent/AddCourseContent.wxss */
-
 page {
   background-color: #F3F3F3;
 }
 
 .tab {
   height: 220rpx;
-  /* background-color: #4d9bf4; */
-  /* border-radius: 0 0 20% 20%; */
 }
 
 .top-btns {
@@ -19,12 +15,6 @@ page {
 
   display: flex;
   flex-direction: row;
-  /* justify-content: center;
-  align-items: center; */
-  /* box-shadow: 0 0 10rpx #ccc;
-  background-color: white; */
-
-  /* border: 1px solid rgb(173, 31, 31); */
 }
 
 .theme-item {
@@ -33,17 +23,15 @@ page {
   display: flex;
   font-size: 28rpx;
   flex-direction: column;
-  /* margin: 8% 10%; */
-  /* align-items: center; */
   align-content: center;
   border: 1px solid grey;
   border-radius: 20rpx;
   background-color: #318FFF;
 }
+
 .themeKey {
   flex: 1;
   color: #FFFFFF;
-  /* border: 1px solid rgb(72, 63, 199); */
   height: 100rpx;
   background: transparent;
   margin: 5% 10%;
@@ -51,19 +39,22 @@ page {
   align-items: center;
   text-align: center;
 }
-.themeInput{
+
+.themeInput {
   color: #FFFFFF;
   width: 80%;
   margin: 7% 10%;
   text-align: center;
 }
-.chapter-item{
+
+.chapter-item {
   width: 50%;
   height: 46%;
   display: flex;
   flex-direction: column;
   margin-left: 20rpx;
 }
+
 .btn-item {
   width: 100%;
   height: 100%;
@@ -77,14 +68,9 @@ page {
   border-radius: 20rpx;
   box-shadow: 0 0 10rpx #ccc;
   background-color: white;
-
-  /* background-image: linear-gradient(to right, #ccc 0%, #ccc 50%, transparent 50%);
-  background-size: 8px 1px ;
-  background-repeat: repeat-x; */
-  /* border-style: dotted */
 }
 
-.chapterKey{
+.chapterKey {
   width: 120rpx;
   margin: 9% 10rpx;
   margin-left: 20rpx;
@@ -95,13 +81,12 @@ page {
 }
 
 .input {
-  width:88%;
+  width: 88%;
   margin: 7% 5rpx;
   text-align: left;
 }
 
 .top-btns image {
-  /* display: inline-block; */
   width: 50rpx;
   height: 50rpx;
 }
@@ -111,12 +96,6 @@ page {
   height: 100rpx;
   background-color: #ddd;
 }
-
-
-
-
-
-
 
 .btn::after {
   border: none;
@@ -163,7 +142,6 @@ page {
 }
 
 /* 聊天内容 */
-
 .message {
   margin-top: 30rpx;
   text-align: center;
@@ -171,9 +149,7 @@ page {
 }
 
 /* 聊天 */
-
 /* 对定位：position:relative;如果一个元素的设置该属性为relative，那么就激活了该元素left和top属性，利用这两个属性，该元素就相对于它自身原本在普通文档流中的位置进行偏移，但无论如何进行移动，元素仍然占据原来的空间，仍然属于普通流。 */
-
 .message-right {
   max-width: 80%;
   line-height: 40rpx;
@@ -183,7 +159,6 @@ page {
 }
 
 /* 浮动模型。浮动的元素脱离普通文档流，向左或者向右移动，直到它的边缘碰到包含框或者另一个浮动框的边缘。因为浮动框不在文档的普通流中，所以文档的普通流中的块框表现得就像浮动框不存在一样。 */
-
 .message-left {
   max-width: 80%;
   line-height: 40rpx;
@@ -220,11 +195,9 @@ page {
   height: 550rpx;
   padding: 20rpx;
   position: relative;
-  /* position: absolute; */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* bottom: 380rpx; */
   margin-bottom: 80%;
   left: 20rpx;
   margin-top: 10rpx;
@@ -233,19 +206,16 @@ page {
   font-size: 20rpx;
   z-index: 99;
 }
+
 .btnArrayBox {
   background-color: #FFFFFF;
-  /* border: 1px solid red; */
   margin-top: 30rpx;
   width: 85%;
   height: 300rpx;
   padding: 30rpx;
-  /* position: absolute; */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* bottom: 380rpx; */
-  /* margin-bottom: 60%; */
   left: 20rpx;
   margin-top: 80rpx;
   border-radius: 100rpx 100rpx 100rpx 100rpx;
@@ -256,7 +226,6 @@ page {
 
 .setLBox {
   background-color: #BEDCFF;
-  /* width: 100%; */
   width: 22%;
   padding: 5rpx;
   position: fixed;
@@ -270,7 +239,6 @@ page {
 }
 
 .modelBtn {
-  /* border: 1px solid #000; */
   font-size: 10px;
   flex: 1;
   min-width: 100px;
@@ -282,10 +250,9 @@ page {
   color: #318FFF;
   background-color: #DEEDFF;
   text-align: center;
-  /* padding: 15rpx; */
- /* left: 25rpx; */
- margin-left: 30rpx;
+  margin-left: 30rpx;
 }
+
 .modelSubmitBtn {
   font-size: 10px;
   max-height: 40px;
@@ -297,7 +264,7 @@ page {
   text-align: center;
 }
 
-.answerModelSubmitBtn{
+.answerModelSubmitBtn {
   min-width: 100px;
   min-height: 30px;
   max-height: 40px;
@@ -313,61 +280,52 @@ page {
 }
 
 .deleteChaBtn {
-  /* border: 1px solid #000; */
   font-size: 10px;
   flex: 1;
   min-width: 60px;
   min-height: 30px;
   max-height: 40px;
   max-width: 80px;
-  /* border-radius: 100rpx 100rpx 100rpx 0rpx; */
   color: #318FFF;
   text-align: center;
   padding: 15rpx;
- left: -2rpx;
+  left: -2rpx;
 }
 
 button[disabled] {
   color: #fff !important;
   background: #acb7bb !important;
   border-color: #acb7bb !important;
-  }
+}
 
 .rightBtnBox {
-  /* background-color: pink; */
-  /* width: 100%; */
   width: 100%;
-  /* padding: 5rpx; */
   position: fixed;
   bottom: 150rpx;
   right: -3rpx;
   height: 25%;
   display: flex;
   flex-direction: column;
-  /* border-radius: 100rpx 0rpx 100rpx 100rpx; */
   justify-content: space-around;
-  /* border: 1px solid black; */
 }
 
-.rightBtnItem{
+.rightBtnItem {
   font-size: 10px;
   flex: 1;
   height: 30pt;
-  /* width: 100%; */
   z-index: 999;
-  /* border: 1px solid pink; */
   text-align: right;
   position: relative;
 }
 
-.r-itemImgBox{
+.r-itemImgBox {
   width: 83pt;
   height: 34pt;
 }
-.r-itemName{
+
+.r-itemName {
   color: #fff;
   position: absolute;
-  /* border: 1px solid red; */
   top: 8%;
   right: 2%;
   width: 32px;
@@ -413,12 +371,11 @@ button[disabled] {
   z-index: 99999;
 }
 
-.modelTitle{
+.modelTitle {
   font-size: 30rpx;
   color: #000;
   font-weight: 800;
-  /* border: 1px solid red; */
-  position:absoluted;
+  position: absoluted;
   top: -5rpx;
   z-index: 999;
   text-align: center;
@@ -446,25 +403,27 @@ button[disabled] {
   border: none;
 }
 
-.addimgBox{
+.addimgBox {
   flex: 1;
   width: 115rpx;
   height: 100rpx;
 }
+
 .addimgBtn {
   width: 60rpx;
   height: 60rpx;
-  margin:0 auto;
+  margin: 0 auto;
   padding: 25%;
 }
-.senMessBox{
+
+.senMessBox {
   flex: 1.8;
   width: 200rpx;
   height: 120rpx;
-  /* border:1px solid red; */
   position: relative
 }
-.senMessButton{
+
+.senMessButton {
   position: absolute;
   top: 20%;
   right: 10rpx;
@@ -473,7 +432,7 @@ button[disabled] {
   background-color: #BFDCFF;
   border-radius: 100rpx 100rpx 100rpx 100rpx;
   color: #fff;
-  margin:0 auto;
+  margin: 0 auto;
   font-size: 26rpx;
 }
 
@@ -482,70 +441,48 @@ button[disabled] {
   height: 1rpx;
 }
 
-.unRead {
-  position: relative;
-}
-
-.unRead text {
-  position: absolute;
-  left: 160rpx;
-  top: -26rpx;
-  height: 32rpx;
-  min-width: 32rpx;
-  line-height: 32rpx;
-  padding: 3rpx 5rpx 4rpx;
-  font-size: 24rpx;
-  font-family: tahoma;
-  border-radius: 32rpx;
-  background: #f44;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  z-index: 10;
-  box-sizing: content-box;
-}
-
-
-.texeArea{
+.texeArea {
   height: 800rpx;
 }
 
-.message_text{
+.message_text {
   width: 100%;
   padding: 42rpx 50rpx 69rpx;
   border-radius: 10rpx;
-  box-shadow: 0 4rpx 11rpx 0 rgba(55,55,55,.2);
+  box-shadow: 0 4rpx 11rpx 0 rgba(55, 55, 55, .2);
   background-color: #fff;
 }
-.message_text .text_title{
-    margin-bottom: 50rpx;
-    line-height: 50rpx;
-    color: #666;
-    font-size: 36rpx;
-    word-break: break-word;
-}
-.text_answer{
-    margin-bottom: 40rpx;
-    border-radius: 10rpx;
-    padding: 24rpx 51rpx 24rpx 69rpx;
-    width: 100%;
-    font-size: 36rpx;
-    font-weight: 700;
-    text-align: left;
-    line-height: 46rpx;
-    color: #666;
-    background: #e0e0e0;
-    transition: all .5s;
-    position: relative;
+
+.message_text .text_title {
+  margin-bottom: 50rpx;
+  line-height: 50rpx;
+  color: #666;
+  font-size: 36rpx;
+  word-break: break-word;
 }
 
-.active{
-  background: linear-gradient(90deg,#2b8af5,#47b8f2);
-  box-shadow: 0 4rpx 11rpx 0 rgba(38,97,240,.3);
+.text_answer {
+  margin-bottom: 40rpx;
+  border-radius: 10rpx;
+  padding: 24rpx 51rpx 24rpx 69rpx;
+  width: 100%;
+  font-size: 36rpx;
+  font-weight: 700;
+  text-align: left;
+  line-height: 46rpx;
+  color: #666;
+  background: #e0e0e0;
+  transition: all .5s;
+  position: relative;
+}
+
+.active {
+  background: linear-gradient(90deg, #2b8af5, #47b8f2);
+  box-shadow: 0 4rpx 11rpx 0 rgba(38, 97, 240, .3);
   color: #fff;
 }
 
-.active::before{
+.active::before {
   content: "";
   display: block;
   position: absolute;
@@ -558,7 +495,7 @@ button[disabled] {
   border-radius: 50%;
 }
 
-.message_text .answer_title{
+.message_text .answer_title {
   color: #2b8af5;
   font-weight: 700;
 }
