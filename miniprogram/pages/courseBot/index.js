@@ -23,6 +23,16 @@ let JaLeftOverClassConten = [];
 //用户课程记录
 let UserCourseMess = wx.getStorageSync('UserCourseMess');
 
+
+//阿里云tts
+const SpeechSynthesizer = require("../../tts/tts")
+const formatTime = require("../../tts/util").formatTime
+const sleep = require("../../tts/util").sleep
+const getToken = require("../../tts/token").getToken
+const fs = wx.getFileSystemManager()
+
+
+
 Page({
   /**
    * 页面的初始数据
@@ -55,19 +65,22 @@ Page({
 
     classCollection: '',
     continueBtn: false,
-    ChapterList: []
+    ChapterList: [],
+
+    //阿里tts
+    ttsStart: false,
+    ttsText: "",
+
+    tts: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
     let courseObject = JSON.parse(options.course);
     let Cc = JSON.parse(options.Cc);
-    // let ChapterList = JSON.parse(options.ChapterList);
     CurrentChapter = Cc //正确获取index页面传过来的课程信息 
-    // console.log(nowclassid);
-    // console.log(courseObject);
 
     var that = this;
     this.setData({
@@ -75,15 +88,105 @@ Page({
       userSelect: Cc || null
       // ChapterList: ChapterList
     })
-    // this.getChapterList()
 
+    //阿里tts
+    try {
+      this.data.token = await getToken(app.globalData.AKID,
+        app.globalData.AKKEY)
+      // this.data.token = 'a9a57218797b40ca9c9414703128e456'//临时token
+      console.log('token', this.data.token)
+    } catch (e) {
+      console.log("error on get token:", JSON.stringify(e))
+      return
+    }
 
+    let tts = new SpeechSynthesizer({
+      url: app.globalData.URL,
+      appkey: app.globalData.JPAPPKEY,//JPAPPKEY   CEAPPKEY
+      token: this.data.token
+    })
 
-    // console.log()
+    tts.on("meta", (msg) => {
+      console.log("Client recv metainfo:", msg)
+    })
 
+    tts.on("data", (msg) => {
+      console.log(`recv size: ${msg.byteLength}`)
+      //console.log(dumpFile.write(msg, "binary"))
+      if (this.data.saveFile) {
+        try {
+          fs.appendFileSync(
+            this.data.saveFile,
+            msg,
+            "binary"
+          )
+          console.log(`append ${msg.byteLength}`)
+        } catch (e) {
+          console.error(e)
+        }
+      } else {
+        console.log("save file empty")
+      }
+    })
 
+    tts.on("completed", async (msg) => {
+      console.log("Client recv completed:", msg)
+      await sleep(500)
+      fs.close({
+        fd: this.data.saveFd,
+        success: (res) => {
+          let ctx = wx.createInnerAudioContext()
+          ctx.autoplay = true
+          ctx.src = this.data.saveFile
+          ctx.onPlay(() => {
+            console.log('start playing..')
+          })
+          ctx.onError((res) => {
+            console.log(res.errMsg)
+            console.log(res.errCode)
+            fs.unlink({
+              filePath: this.data.saveFile,
+              success: (res) => {
+                console.log(`remove ${this.data.saveFile} done`)
+                this.data.saveFile = null
+                this.data.saveFd = null
+              },
+              failed: (res) => {
+                console.log("remove failed:" + res.errMsg)
+              }
+            })
+          })
+          ctx.onEnded((res) => {
+            console.log("play done...")
+            fs.unlink({
+              filePath: this.data.saveFile,
+              success: (res) => {
+                console.log(`remove ${this.data.saveFile} done`)
+                this.data.saveFile = null
+                this.data.saveFd = null
+              },
+              failed: (res) => {
+                console.log("remove failed:" + res.errMsg)
+              }
+            })
+          })
+        },
+        fail: (res) => {
+          console.log("saved file error:" + res.errMsg)
+        }
+      })
+    })
 
-    // this.getNewClassContent(classCollection);
+    tts.on("closed", () => {
+      console.log("Client recv closed")
+    })
+
+    tts.on("failed", (msg) => {
+      console.log("Client recv failed:", msg)
+    })
+
+    this.data.tts = tts
+
   },
 
   onShareAppMessage: function () {
@@ -277,6 +380,79 @@ Page({
 
   },
 
+  //阿里tts
+  onTtsSpeach: function (e) {
+    let content = ''
+    // console.log(e);
+
+    if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
+      content = e
+      // console.log(e);
+    } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
+      content = e.currentTarget.dataset.content;
+
+    } else {
+      if (e.currentTarget.dataset.content != undefined && this.data.autoReadingAloud == false) {
+        content = e.currentTarget.dataset.content;
+        console.log(content)
+      }
+      if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {
+        content = e
+      }
+    }
+
+    var that = this
+    if (!content || !this.data.tts) {
+      console.log("text empty")
+      wx.showToast({
+        title: "文本为空",
+        icon: "error",
+        duration: 1000,
+        mask: true
+      })
+      return
+    }
+    if (this.data.ttsStart) {
+      wx.showToast({
+        title: "正在合成请稍候",
+        icon: "error",
+        duration: 1000,
+        mask: true
+      })
+      return
+    } else {
+      this.data.ttsStart = true
+    }
+    console.log("try to synthesis:" + content)
+    let save = formatTime(new Date()) + ".wav"
+    let savePath = wx.env.USER_DATA_PATH + "/" + save
+    console.log(`save to ${savePath}`)
+    fs.open({
+      filePath: savePath,
+      flag: "a+",
+      success: async (res) => {
+        console.log(`open ${savePath} done`)
+        this.data.saveFd = res.fd
+        this.data.saveFile = savePath
+        // voice 中英混女声 Rosa   日语女声 tomoka
+        let param = this.data.tts.defaultStartParams('tomoka')
+        // let param = this.data.tts.defaultStartParams('Rosa')
+        param.text = content
+        param.voice = "tomoka"
+        try {
+          await this.data.tts.start(param)
+          console.log("tts done")
+          this.data.ttsStart = false
+        } catch (e) {
+          console.log("tts start error:" + e)
+        }
+      },
+      fail: (res) => {
+        console.log(`open ${savePath} failed: ${res.errMsg}`)
+      }
+    })
+  },
+
   getChapterList() {
     console.log(this.data.courseObject)
     let that = this
@@ -384,7 +560,8 @@ Page({
             centendata: Centendata
           })
           if (this.data.autoReadingAloud) {
-            this.speach(data.content);
+            // this.speach(data.content);
+            this.onTtsSpeach(data.content);
           }
           this.bottom();
           this.sleep(100);
@@ -907,7 +1084,9 @@ Page({
   //根据顶部信息 动态改变课程内容
   getcurrentChapter: function (e) {
     console.log('getcurrentChapter', e)
-    CurrentChapter = e
+    this.setData({
+
+    })
     // CurrentChapter = e.detail
     var that = this
     //由于第一次进入页面会自动调用这个函数  需要先判断排除
@@ -927,7 +1106,8 @@ Page({
             Centendata = []
             LeftOverClassConten = [] //得把已经注入的待上课内容清空 不然会导致新内容排在后面
             that.setData({
-              centendata: Centendata
+              centendata: Centendata,
+              currentSelect: CurrentChapter
             })
             // 调用获取课程内容的函数
             that.getNewClassContent();

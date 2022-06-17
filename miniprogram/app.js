@@ -1,7 +1,7 @@
 //app.js
 App({
   onLaunch: function () {
-    
+
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -15,14 +15,25 @@ App({
       })
     }
 
-    this.globalData = {}
+    // this.globalData = {}//这个会导致全局对象获取不到
   },
   globalData: {
 
     appstyleColor: '#0D7DA1',
-    parameter : null,
-    CurrentCourseObj:{}, // 当前选择的课程对象
-    CurrentChapter:{}// 当前选择的章节对象
+    parameter: null,
+
+
+    AKID: 'LTAI5tQ5bpzaUzrHej6BBBEU',
+    AKKEY: 'qJIBqAklM2dLgkKxRZiibMyQUXoCDg',
+    CEAPPKEY: 'vZGa4IgAxYBX3TUQ',
+    JPAPPKEY: 'r4dw1Se1lf9NFYvl',
+    URL: "wss://nls-gateway.cn-shanghai.aliyuncs.com/ws/v1",
+
+    CurrentCourseObj: {}, // 当前选择的课程对象
+    CurrentChapter: {}// 当前选择的章节对象
+
+
+
   },
 })
 
