@@ -100,41 +100,6 @@
         },
         {
           "name": "",
-          "pathName": "pages/AddCourseContent/AddCourseContent",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/courseBotIndex/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/courseBot/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/mysel/admin/admin",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/courseCatalogue/index",
-          "query": "courseMess=%7B%22_id%22%3A%220ab5303b62a5a9ee08f5922258e5d171%22%2C%22courseName%22%3A%22test%2B1%22%2C%22courseUUid%22%3A%22c9b70884-35a1-40c8-b6f2-164c22bc862a%22%2C%22courseFrontImgUrl%22%3A%22cloud%3A%2F%2Fhuixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818%2F1655024090420.png%22%2C%22courseIntroduce%22%3A%22%E6%B7%BB%E5%8A%A0%E8%AF%BE%E7%A8%8B%22%2C%22courseType%22%3A%22other%22%2C%22creatTime%22%3A%222022%2F06%2F12%2016%3A55%3A08%22%2C%22createrOpenid%22%3A%22oL-lI5e0-qFCMFBpBNRIirpDUQuc%22%2C%22state%22%3A%22%E5%BE%85%E5%AE%A1%E6%A0%B8%22%2C%22isMineCourse%22%3Atrue%7D&btnType=edit",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
           "pathName": "pages/courseBotIndex/index",
           "query": "pageType=mineCoursePage",
           "launchMode": "default",

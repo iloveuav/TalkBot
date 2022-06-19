@@ -16,7 +16,10 @@ Page({
     centendata: [],
     interactData: [],
     textImgArray: [],
-    answer: 'a',
+    answer: '',
+    btnNum: '',
+    editStatus: false,
+    editIndex: '',
 
     crouseDetail: {},
     chapterList: [],
@@ -35,6 +38,30 @@ Page({
   },
 
   onLoad: function (options) {
+    if(options.type == 'edit'){
+      wx.cloud.init({
+        env: 'huixue-3g4h1ydg1dedcaf3'
+      })
+      const courseUUid = JSON.parse(options.chapterobj).courseUUid
+      wx.cloud.callFunction({
+        name: 'getCrouseContent',
+        data: {
+          // classCollection:'EngClassContents',
+          classCollection: 'testCourseContents',
+          courseUUid: courseUUid,
+          courseName: JSON.parse(options.chapterobj).courseName,
+          chapterId: JSON.parse(options.chapterobj).chapterId,
+        },
+        success: res => {
+          this.setData({
+            centendata: res.result.classContent.data.map(item=>{
+              return {...item,is_show_right:1}
+            })
+          })
+        }
+      })
+    }
+
     if (options.currentChooseCard == "0") {
       ClassCollection = 'EngClassContents'
     } else if (options.currentChooseCard == "1") {
@@ -158,6 +185,32 @@ Page({
   //事件处理函数
   add: function (e) {
     var that = this;
+    const { editStatus, editIndex, message, centendata, setTextImg, imgUrl, textimgTitle } = this.data;
+    if(editStatus){
+      if(!setTextImg){
+        let newValue = centendata;
+        newValue[editIndex]['content'] = message;
+        this.setData({
+          editStatus: false,
+          centendata: newValue,
+          message: ''
+        })
+      }else{
+        let newValue = centendata;
+        newValue[editIndex]['content'] = message;
+        newValue[editIndex]['textimgTitle'] = textimgTitle;
+        newValue[editIndex]['src'] = imgUrl;
+        this.setData({
+          editStatus: false,
+          centendata: newValue,
+          message: '',
+          setTextImg: false
+        })
+      }
+      return ;
+    }
+    
+    console.log("进入add函数")
     // 设置封面
     if (this.data.setFrontImg) {
       if (this.data.className == '') {
@@ -525,10 +578,56 @@ Page({
     })
   },
 
-  
+  // --------------- 左侧 上传特殊类型功能方法集
+
+  setInteract() {
+    this.setData({
+      setwait: true,
+      btnDie: true,
+      btnNum: 0,
+      answer: '',
+      interactData: []
+    });
+    this.bottom();
+  },
+
+  //、、、、、设置图文
+  setTextImg() {
+    console.log('setimg')
+    this.setData({
+      setTextImg: true,
+      btnDie: true,
+      textimgTitle: '',
+      imgUrl: '',
+      content: ''
+    });
+    this.bottom();
+  },
+  // 、、、、设置封面
+  setFrontImg() {
+    this.setData({
+      setFrontImg: true,
+      btnDie: true,
+    });
+    this.bottom();
+  },
 
   getbtnNum: function (e) {
-    this.data.interactData = [] //先清空
+    // this.data.interactData = [] //先清空
+
+    var regNum = new RegExp('[0-9]', 'g');
+    var rsNum = regNum.exec(e.detail.value);
+
+
+    // if(!rsNum){
+    //     setTimeout(()=>{
+    //         wx.showToast({
+    //             title: '输入数字',
+    //             icon: 'none'
+    //         })
+    //     },1000);
+    //     return
+    //   }
 
     let btnNum = e.detail.value
     if (btnNum > 4) {
@@ -545,6 +644,8 @@ Page({
     else {
       this.setData({
         btnNum: btnNum,
+        interactData: [],
+        answer: ''
       });
     }
   },
@@ -628,7 +729,25 @@ Page({
       return;
     }
 
-    //  下面是云函数的调用
+    if(this.data.editStatus){
+      const {editIndex, centendata, answer, btnNum, interactData} = this.data;
+      let newValue = centendata;
+      newValue[editIndex] = {
+        ...centendata[editIndex],
+        detail: {
+          answer,
+          btnNum,
+          interactData
+        }
+      }
+      this.setData({
+        centendata: newValue,
+        setwait: false,
+        editStatus: false
+      })
+      return;
+    }
+
     wx.cloud.init({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
@@ -705,6 +824,7 @@ Page({
       setTextImg: false,
       btnDie: false,
       setFrontImg: false,
+      editStatus: false
     });
   },
 
@@ -726,13 +846,38 @@ Page({
   },
 
   preimage(e) {
-    var imgurl = this.data.centendata[e.currentTarget.dataset.i];
-    if (this.data.tempimg.length != 0) {
-      wx.previewImage({
-        current: imgurl,
-        urls: [this.data.tempimg],
+    const contentIndex = e.currentTarget.dataset.index;
+    const contentItem = this.data.centendata[contentIndex];
+    const contentType = contentItem['contentType']
+    if(contentType == 'text'){
+      const { content } = contentItem;
+      this.setData({
+        message: content,
+        editStatus: true
+      })
+    }else if(contentType == 'Interact'){  
+      const {btnNum, answer, interactData} = contentItem.detail;
+      this.setInteract();
+      this.setData({
+        btnNum,
+        answer,
+        interactData,
+        editStatus: true,
+        message: ''
+      })
+    }else if(contentType == 'img'){
+      const {textimgTitle, src,content} = contentItem;
+      this.setTextImg();
+      this.setData({
+        textimgTitle,
+        message:content,
+        imgUrl: src,
+        editStatus: true,
       })
     }
+    this.setData({
+      editIndex: contentIndex
+    })
   },
 
   // --------------- 左侧 上传特殊类型功能方法集

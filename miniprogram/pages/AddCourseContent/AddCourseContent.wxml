@@ -19,7 +19,8 @@
 <view class='message'>
   <view class='top_txt'>喂食前请确保上方信息填写正确</view>
   <view class="historycon">
-    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key='' bindtap="preimage">
+    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key='' data-index="{{index}}"
+      bindtap="preimage">
       <!-- 时间 -->
       <view>
         <text class='time'>{{item.time}}</text>
@@ -34,14 +35,14 @@
           <view wx:if='{{item.contentType==="Interact"}}' class="message_text">
             <view class="text_title">答题组件</view>
             <view wx:for="{{item.detail.interactData}}" wx:key="{{item.time}}">
-              <button class="text_answer {{answer === 'a' ? 'active' : ''}}">{{item}}</button>
+              <button class="text_answer ">{{item}}</button>
             </view>
             <view class="text_title answer_title">正确答案是：{{item.detail.answer}}</view>
           </view>
-          <text wx:if='{{item.textImgArray.length>0&&!item.contentType==="Interact"}}' class='message_txt'>
-            上传一组{{item.textImgArray.length}}个图文
-          </text>
-          <image wx:if='{{item.contentType=="img"}}' src='{{item.imgfile}}' class='new_imgtent'></image>
+
+          <text wx:if='{{item.textImgArray.length>0&&!item.contentType==="Interact"}}'
+            class='message_txt'>上传一组{{item.textImgArray.length}}个图文</text>
+          <image wx:if='{{item.contentType=="img"}}' src='{{item.src}}' class='new_imgtent'></image>
         </view>
       </block>
       <block wx:else>
@@ -75,11 +76,14 @@
 <view class="setwaitData" style="height:{{btnBox}}rpx;width:{{btnBox}}rpx" wx:if="{{setwait}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="btnArrayBox">
-    <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{}}' placeholder="输入按钮个数" placeholder-style="color:#318FFF;" />
+    <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}' placeholder="输入按钮个数"
+      placeholder-style="color:#318FFF;" />
     <view wx:for="{{btnNum-0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
-      <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥" placeholder-style="color:#318FFF;" />
+      <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥" value="{{interactData[groupindex]}}"
+        placeholder-style="color:#318FFF;" />
     </view>
-    <input bindinput="getAnswer" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{}}' placeholder="正确答案" placeholder-style="color:#318FFF;" />
+    <input bindinput="getAnswer" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{answer}}'
+      placeholder="正确答案" placeholder-style="color:#318FFF;" />
   </view>
   <button class="answerModelSubmitBtn" catchtap="submitInteract">提交</button>
 </view>
@@ -89,11 +93,16 @@
 <view class="setwaitData" style="flex-direction: column; " wx:if="{{setTextImg}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="modelTitle">新增图文</view>
-  <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'></view>
-  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textimgTitle}}' placeholder="标题" placeholder-style="color:#318FFF;" />
-  <input bindinput='getContent' maxlength="1000" style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{message}}' placeholder="内容" placeholder-style="color:#318FFF;" />
-  <input bindinput='getSrc' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{imgUrl}}' placeholder="图片src（可为空）" />
-  <button class="modelSubmitBtn" catchtap="addOneItem">+1（不提交）</button>
+  <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
+  </view>
+  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textimgTitle}}'
+    placeholder="标题" placeholder-style="color:#318FFF;" />
+  <input bindinput='getContent' maxlength="1000" style="max-width: 90%;" class="modelBtn" confirm-type="done"
+    value='{{message}}' placeholder="内容" placeholder-style="color:#318FFF;" />
+  <input bindinput='getSrc' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
+    confirm-type="done" value='{{imgUrl}}' placeholder="图片src（可为空）" />
+
+  <button class="modelSubmitBtn" wx:if="{{!editStatus}}" catchtap="addOneItem">+1（不提交）</button>
   <button class="modelSubmitBtn" catchtap="add">提交</button>
 </view>
 <!-- ----------------设置图文参数区end--------------- -->
