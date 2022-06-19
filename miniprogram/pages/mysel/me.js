@@ -130,6 +130,13 @@ Page({
     })
     // this.queryMineCourseList();
   },
+  toMineNarrateList: function (e) {
+    wx.navigateTo({
+      //这里传值
+      url: '/pages/narrateIndex/index?pageType=' + 'mineNarratePage',
+    })
+    // this.queryMineCourseList();
+  },
 
   queryMineCourseList() {
     // wx.showLoading({

@@ -1,0 +1,52 @@
+<!--miniprogram/pages/index/index.wxml-->
+
+<view class="weclowBox">
+  <!-- <text class="hello">> 欢迎</text> -->
+</view>
+
+
+<!-- ---------用户欢迎及个人信息展示卡片-------------------------------------- -->
+<!-- <view class="tap">
+  <indexCard user="{{user}}">
+  </indexCard>
+</view> -->
+<!-- ------------------每日一句-------------------------------------------------- -->
+<dailySentence sentence="点击进入">
+</dailySentence>
+<!-- ------------------------------------------------------------------------------- -->
+
+<!-- ---------------------------------------------------------------------------- -->
+<view class="course">
+  <view class="course-center-title" wx:if="{{pageType ==='studyPage'}}">课程中心</view>
+  <view class="course-center-title" wx:if="{{pageType ==='mineCoursePage'}}">我上传的课程</view>
+</view>
+<!-- -----------------英语课程卡片组件------------------------------------------ -->
+<view class="classCard">
+
+  <view class="remind-box" wx:if="{{remind}}">
+    <image class="remind-img" src="/images/loading_blue.gif"></image>
+  </view>
+
+  <scroll-view>
+
+    <view wx:for="{{allCourse}}">
+      <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
+      <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+        </courseCard>
+      </view>
+    </view>
+  </scroll-view>
+  <!-- <view class="crouseType">英语课程</view> -->
+</view>
+<!-- ------------------------------------------------- -->
+
+
+<view>
+  <scroll-view>
+  </scroll-view>
+</view>

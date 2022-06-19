@@ -63,6 +63,11 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
+  <view class='item' bindtap="toMineNarrateList">
+    <view class="title">我上传的山村介绍</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
   <view class='item' bindtap="toSendCrouse">
     <view class="title">发布课程</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
