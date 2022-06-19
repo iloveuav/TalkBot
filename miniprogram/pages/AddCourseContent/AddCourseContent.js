@@ -1,18 +1,9 @@
-// miniprogram/pages/AddCourseContent/AddCourseContent.js
-var app = getApp();
-var util = require("../../utils/util.js")
-var time = require('../../utils/util.js');
-
+const time = require('../../utils/util.js');
 const qiniuUploader = require("../../utils/qiniuUploader");
-const ImgUrl = '';
+
 let ClassCollection = 'testCourseContents';
 
-var message = '';
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     message: '',
     chapterId: '',
@@ -25,7 +16,10 @@ Page({
     centendata: [],
     interactData: [],
     textImgArray: [],
-    answer: 'a',
+    answer: '',
+    btnNum: '',
+    editStatus: false,
+    editIndex: '',
 
     crouseDetail: {},
     chapterList: [],
@@ -43,37 +37,32 @@ Page({
     translate: '',
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     console.log(options)
     const pageType = options.pageType ? options.pageType : 'course'
 
+    //选择集合
     if (pageType === 'course') {
-      if (options.currentChooseCard == "0") {
-        ClassCollection = 'EngClassContents'
-      } else if (options.currentChooseCard == "1") {
-        ClassCollection = 'JaClassContents'
-      } else if (options.currentChooseCard == "2") {
-        //其他课程
-        ClassCollection = 'otherClassContents'
-      }
+      // if (options.currentChooseCard == "0") {
+      //   ClassCollection = 'EngClassContents'
+      // } else if (options.currentChooseCard == "1") {
+      //   ClassCollection = 'JaClassContents'
+      // } else if (options.currentChooseCard == "2") {
+      //   //其他课程
+      //   ClassCollection = 'otherClassContents'
+      // }
       ClassCollection = 'testCourseContents'
     } else if (pageType === 'narrate') {
       ClassCollection = 'NarrateContents'
     }
 
+    //新增章节
     if (options && options.type === 'add' && options.courseMess) {
       let crouseDetail = JSON.parse(options.courseMess);
       let chapterList = JSON.parse(options.chapterList);
-      let curChapter = {}
-      console.log(crouseDetail);
       this.setData({
         crouseDetail: crouseDetail,
-
         className: crouseDetail.courseName,
-        chapterName: '',
         chapterList: chapterList,
         chapterId: chapterList.length + 1,
 
@@ -81,13 +70,11 @@ Page({
         pageType: pageType,
       })
     }
-
+    //编辑章节
     if (options && options.type === 'edit' && options.chapterobj) {
       let crouseDetail = JSON.parse(options.courseMess);
       let chapterList = JSON.parse(options.chapterList);
       let chapterobj = JSON.parse(options.chapterobj);
-      let curChapter = {}
-      console.log(crouseDetail);
       this.setData({
         crouseDetail: crouseDetail,
 
@@ -99,69 +86,98 @@ Page({
         curChapter: chapterobj,
         pageType: pageType
       })
+
+
+
+      wx.cloud.init({
+        env: 'huixue-3g4h1ydg1dedcaf3'
+      })
+      const courseUUid = JSON.parse(options.chapterobj).courseUUid
+      wx.cloud.callFunction({
+        name: 'getCrouseContent',
+        data: {
+          // classCollection:'EngClassContents',
+          classCollection: 'testCourseContents',
+          courseUUid: courseUUid,
+          courseName: JSON.parse(options.chapterobj).courseName,
+          chapterId: JSON.parse(options.chapterobj).chapterId,
+        },
+        success: res => {
+          this.setData({
+            centendata: res.result.classContent.data.map(item => {
+              return { ...item, is_show_right: 1 }
+            })
+          })
+        }
+      })
+
     }
-
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  bindChangeChapterName: function (e) {
+    this.data.chapterName = e.detail.value;
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  delChapter() {
+    if (this.data.chapterName == '') {
+      wx.showModal({
+        title: '提示',
+        content: '章节名不能为空',
+        showCancel: false
+      })
+      return;
+    } else {
+      wx.showModal({
+        title: "确认删除？",
+        content: "本次删除不可恢复~",
+        showCancel: true,
+        success: (res) => {
+          if (res.confirm) {
+            //调用云函数
+            wx.cloud.init({
+              env: 'huixue-3g4h1ydg1dedcaf3'
+            })
+            wx.cloud.callFunction({
+              name: 'del_chapter',
+              data: {
+                classCollection: ClassCollection,
+                chapterId: parseInt(this.data.chapterId),
+                className: this.data.className,
+                chapterName: this.data.chapterName,
+              },
+              success: res => {
+                wx.showModal({
+                  title: '提示',
+                  content: '成功删除该章节~',
+                  showCancel: false,
+                })
+                return;
+              },
+              fail: err => {
+                wx.showModal({
+                  title: '提示',
+                  content: '删除失败 请检查网络~',
+                  showCancel: false,
+                })
+                return;
+              },
+            })
+            // ----------- 云函数 end---------------
+          }
+        }
+      })
+    }
   },
 
   // 把当前图文Data放到数组中  等待触发submit一起上传
   addOneItem: function (e) {
-    var newData = {
+    let textImgArray = this.data.textImgArray;
+    textImgArray.push({
       textimgTitle: this.data.textimgTitle,
       chapterName: this.data.chapterName,
       content: this.data.message,
       src: this.data.imgUrl,
-    }
-    let textImgArray = this.data.textImgArray;
-    textImgArray.push(newData);
+    });
 
     this.setData({
       textImgArray: textImgArray,
@@ -184,6 +200,31 @@ Page({
   //事件处理函数
   add: function (e) {
     var that = this;
+    const { editStatus, editIndex, message, centendata, setTextImg, imgUrl, textimgTitle } = this.data;
+    if (editStatus) {
+      if (!setTextImg) {
+        let newValue = centendata;
+        newValue[editIndex]['content'] = message;
+        this.setData({
+          editStatus: false,
+          centendata: newValue,
+          message: ''
+        })
+      } else {
+        let newValue = centendata;
+        newValue[editIndex]['content'] = message;
+        newValue[editIndex]['textimgTitle'] = textimgTitle;
+        newValue[editIndex]['src'] = imgUrl;
+        this.setData({
+          editStatus: false,
+          centendata: newValue,
+          message: '',
+          setTextImg: false
+        })
+      }
+      return;
+    }
+
     console.log("进入add函数")
     // 设置封面
     if (this.data.setFrontImg) {
@@ -227,22 +268,6 @@ Page({
             showCancel: false,
           })
           return;
-          that.data.centendata.push(mess);
-          this.setData({
-            // news_input_val: '',
-            centendata: that.data.centendata,
-            imgUrl: '',
-            imageObject: '',
-            message: '',
-            setTextImg: false,
-            textimgTitle: '',
-            imgfile: '',
-            btnDie: false,
-            textImgArray: [],
-            answer: '',
-            setFrontImg: '',
-          })
-          this.bottom();
         },
         fail: err => {
           // handle error
@@ -263,7 +288,7 @@ Page({
       if (this.data.chapterId == '') {
         wx.showModal({
           title: '提示',
-          content: '课程id不能为空,设置封面',
+          content: '课程id不能为空',
           showCancel: false
         })
         return;
@@ -289,13 +314,7 @@ Page({
         })
         return;
       } else {
-
-        // console.log(this.data.imageObject.imageURL)
         let imgobj = this.data.imageObject;
-        // console.log(imgobj==null);
-        // console.log(imgobj==undefined);
-        // console.log(imgobj=='');
-        console.log(imgobj);
         if (imgobj != '' && imgobj != undefined) {
           this.setData({
             imgUrl: 'http://' + imgobj.imageURL
@@ -311,7 +330,6 @@ Page({
           contentType: newcontentType,
           isBot: true,
           classCollection: 'testCourseContents',
-          // classCollection: 'EngClassContents',
           chapterId: parseInt(that.data.chapterId),
           className: that.data.className,
           classType: ClassCollection,
@@ -319,7 +337,6 @@ Page({
 
           chapterId: parseInt(that.data.chapterId),
           courseUUid: this.data.crouseDetail.courseUUid || '',
-          // courseUUid: "3567800e-906c-4eff-bb25-2c4b1470d381",
 
           detail: {},
           textimgTitle: that.data.textimgTitle,
@@ -335,22 +352,18 @@ Page({
           newData: newData,
         })
         this.bottom();
+        //  下面是云函数的调用
         wx.cloud.init({
           env: 'huixue-3g4h1ydg1dedcaf3'
         })
-        // wx.cloud.init()
-        //  下面是云函数的调用
-        console.log(wx.getStorageSync("openid"));
         wx.cloud.callFunction({
           name: 'add_courseContent',
           data: {
             contentData: that.data.newData,
           },
           success: res => {
-            console.log(res)
             that.data.centendata.push(this.data.newData);
             this.setData({
-              // news_input_val: '',
               centendata: that.data.centendata,
               imgUrl: '',
               imageObject: '',
@@ -387,7 +400,6 @@ Page({
 
 
   useTecentCloud() {
-    // wx.cloud.init()
     let timestamp = (new Date()).valueOf();
     var cloudimgs = [];
     wx.cloud.uploadFile({
@@ -447,15 +459,11 @@ Page({
   // ----------------上传图片上传src  返回-------------
 
   addimgToCloud() {
-    //init!!!!!!!!!!!!!!!!
-
     wx.showLoading({
       title: '上传中',
     })
     var that = this;
     // ===============上传图片==================
-
-
     // 方式一 用七牛云  上传到自己的仓库------------------
 
     /**
@@ -477,14 +485,12 @@ Page({
         })
         initQiniu(result.data);
         qiniuUploader.upload(that.data.tempimg, (res) => {
-          // let that = this
           var obj = JSON.stringify(res.imageURL)
           that.setData({
             'imageObject': res,
           })
 
           let imgobj = that.data.imageObject;
-          // console.log(imgobj);
           if (imgobj != '') {
             that.setData({
               imgUrl: 'http://' + imgobj.imageURL
@@ -510,18 +516,8 @@ Page({
         },
           // null, // 可以使用上述参数，或者使用 null 作为参数占位符
           progress => {
-            console.log("上传进度", progress.progress);
-            console.log("已经上传的数据长度", progress.totalBytesSent);
-            console.log(
-              "预期需要上传的数据总长度",
-              progress.totalBytesExpectedToSend
-            );
             that.log = "上传进度" + progress.progress;
           },
-          cancelTask => {
-            // that.setData({ cancelTask });
-            // this.cancelTask = cancelTask;
-          }
         );
 
         wx.hideLoading()
@@ -539,21 +535,11 @@ Page({
           content: '七牛token获取失败 转腾讯云备用上传',
           showCancel: false
         })
-
         that.useTecentCloud();
-        return;
       },
-      complete: res => {
-
-        // that.add();
-      }
     })
 
-
-
     // ------------七牛官方sdk--------------
-
-    // var url = app.globalData.url
     // // 初始化七牛相关参数
     function initQiniu(res) {
       var options = {
@@ -588,7 +574,6 @@ Page({
       return;
     }
     var that = this;
-    // that.data.imgnum
     wx.chooseImage({
       count: 1,
       //最多4个
@@ -614,15 +599,22 @@ Page({
     this.setData({
       setwait: true,
       btnDie: true,
+      btnNum: 0,
+      answer: '',
+      interactData: []
     });
     this.bottom();
   },
 
   //、、、、、设置图文
   setTextImg() {
+    console.log('setimg')
     this.setData({
       setTextImg: true,
       btnDie: true,
+      textimgTitle: '',
+      imgUrl: '',
+      content: ''
     });
     this.bottom();
   },
@@ -636,11 +628,11 @@ Page({
   },
 
   getbtnNum: function (e) {
-    this.data.interactData = [] //先清空
+    // this.data.interactData = [] //先清空
 
     var regNum = new RegExp('[0-9]', 'g');
     var rsNum = regNum.exec(e.detail.value);
-    console.log(typeof (rsNum))
+
 
     // if(!rsNum){
     //     setTimeout(()=>{
@@ -664,20 +656,11 @@ Page({
       });
       return;
     }
-    //  else if(typeof(btnNum)!='Number')
-    // {
-
-    //   console.log(typeof(btnNum))
-    //   wx.showModal({
-    //     title: '恐怕不是数字吧',
-    //     content: '皇上请输入数字~',
-    //     showCancel: false
-    //   })
-    // }
     else {
-      // console.log(typeof(btnNum))
       this.setData({
         btnNum: btnNum,
+        interactData: [],
+        answer: ''
       });
     }
   },
@@ -692,7 +675,6 @@ Page({
   },
 
   getInputValue(e) {
-    // console.log(e);
     if (e.detail.value) {
       let interactData = this.data.interactData;
       interactData[this.data.btnIndex] = e.detail.value;
@@ -703,21 +685,13 @@ Page({
   },
 
   updateInteractData(e) {
-    // console.log(e);
     let index = e.currentTarget.dataset.i;
-    // console.log(index)
-    // if (e.detail.value)
-    // {
-    //   let interactData = [];
-    //   interactData[index] = e.detail.value;
     this.setData({
       btnIndex: index,
     });
-    // }
   },
 
   // ----------------上传图文准备---------------
-
   getTitle(e) {
     if (e.detail.value) {
       let value = e.detail.value;
@@ -770,12 +744,28 @@ Page({
       return;
     }
 
+    if (this.data.editStatus) {
+      const { editIndex, centendata, answer, btnNum, interactData } = this.data;
+      let newValue = centendata;
+      newValue[editIndex] = {
+        ...centendata[editIndex],
+        detail: {
+          answer,
+          btnNum,
+          interactData
+        }
+      }
+      this.setData({
+        centendata: newValue,
+        setwait: false,
+        editStatus: false
+      })
+      return;
+    }
+
     wx.cloud.init({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
-    // wx.cloud.init()
-    //  下面是云函数的调用
-    // console.log(wx.getStorageSync("openid"));
     var btnNum = this.data.btnNum;
     let contentData = {
       contentType: 'Interact',
@@ -817,12 +807,8 @@ Page({
         contentData: that.data.contentData,
       },
       success: res => {
-        // console.log(res.result)
         that.data.centendata.push({ ...contentData, is_show_right: 1 });
-        // that.data.centendata.push(newInteract);
-        // that.data.centendata.push(this.data.newData);
         this.setData({
-          // news_input_val: '',
           centendata: that.data.centendata,
           imgUrl: '',
           message: '',
@@ -845,11 +831,6 @@ Page({
         console.log('callFunction test result: ', res)
       }
     })
-
-    // this.setData({
-    //   centendata: that.data.centendata,
-    // });
-
   },
 
   close(e) {
@@ -858,146 +839,86 @@ Page({
       setTextImg: false,
       btnDie: false,
       setFrontImg: false,
+      editStatus: false
     });
   },
 
-
-
-
   // -------------辅助交互 自动化调用方法------------
-
   // 获取hei的id节点然后屏幕焦点调转到这个节点
   bottom: function () {
     var query = wx.createSelectorQuery() // 创建节点查询器 query
     query.select('#hei').boundingClientRect() //获取节点位置信息的查询请求
     query.selectViewport().scrollOffset() //这段代码的意思是获取页面滑动位置的查询请求
     query.exec(function (res) {
-      console.log("function-bottom:", res)
-      console.log("function-bottom:", res[0].bottom)
       wx.pageScrollTo({
-        // scrollTop: res[0].bottom  // #the-id节点的下边界坐标
-        // scrollTop: res[0].bottom ,// #the-id节点的下边界坐标
         scrollTop: res[1].scrollHeight + 50 // 显示区域的竖直滚动位置
       })
-      // res[1].scrollTop // 显示区域的竖直滚动位置
     })
   },
 
-  bindChange: function (e) {
+  bindChangeMessage: function (e) {
     this.data.message = e.detail.value
   },
 
-  bindChange1: function (e) {
-    this.data.chapterId = e.detail.value
-  },
-
-  bindChange2: function (e) {
-    this.data.className = e.detail.value
-  },
-  bindChange3: function (e) {
-    this.data.chapterName = e.detail.value
-  },
-
   preimage(e) {
-    var imgurl = this.data.centendata[e.currentTarget.dataset.i];
-    var final_url = JSON.stringify(imgurl);
-    if (this.data.tempimg.length != 0) {
-      wx.previewImage({
-        current: imgurl,
-        urls: [this.data.tempimg],
+    const contentIndex = e.currentTarget.dataset.index;
+    const contentItem = this.data.centendata[contentIndex];
+    const contentType = contentItem['contentType']
+    if (contentType == 'text') {
+      const { content } = contentItem;
+      this.setData({
+        message: content,
+        editStatus: true
+      })
+    } else if (contentType == 'Interact') {
+      const { btnNum, answer, interactData } = contentItem.detail;
+      this.setInteract();
+      this.setData({
+        btnNum,
+        answer,
+        interactData,
+        editStatus: true,
+        message: ''
+      })
+    } else if (contentType == 'img') {
+      const { textimgTitle, src, content } = contentItem;
+      this.setTextImg();
+      this.setData({
+        textimgTitle,
+        message: content,
+        imgUrl: src,
+        editStatus: true,
       })
     }
-    // console.log(final_url);
-    // console.log(e);
-    // console.log(this.data.tempimg[e.currentTarget.dataset.i]);
+    this.setData({
+      editIndex: contentIndex
+    })
   },
 
-  del() {
-    let that = this;
-    if (this.data.className == '') {
-      wx.showModal({
-        title: '提示',
-        content: '课程名不能为空',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.chapterId == '') {
-      wx.showModal({
-        title: '提示',
-        content: '章节ID不能为空',
-        showCancel: false
-      })
-      return;
-    } else if (this.data.chapterName == '') {
-      wx.showModal({
-        title: '提示',
-        content: '章节名不能为空',
-        showCancel: false
-      })
-      return;
-    } else {
-      wx.showModal({
-        title: "确认删除？",
-        content: "本次删除不可恢复~",
-        showCancel: true,
-        success: function (res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
+  // --------------- 左侧 上传特殊类型功能方法集
+  setInteract() {
+    this.setData({
+      setwait: true,
+      btnDie: true,
+    });
+    this.bottom();
+  },
 
-            // wx.showModal({
-            //   title: '提示',
-            //   content: '没有权限',
-            //   showCancel: false
-            // })
-            // return;
-
-
-            //调用云函数
-            wx.cloud.init({
-              env: 'huixue-3g4h1ydg1dedcaf3'
-            })
-
-            console.log(that.data.className)
-            console.log(ClassCollection)
-            wx.cloud.callFunction({
-              name: 'del_chapter',
-              data: {
-                classCollection: ClassCollection,
-                chapterId: parseInt(that.data.chapterId),
-                className: that.data.className,
-                chapterName: that.data.chapterName,
-              },
-              success: res => {
-                wx.showModal({
-                  title: '提示',
-                  content: '成功删除该章节~',
-                  showCancel: false,
-                })
-                return;
-              },
-              fail: err => {
-                // handle error
-                wx.showModal({
-                  title: '提示',
-                  content: '删除失败 请检查网络~',
-                  showCancel: false,
-                })
-                return;
-              },
-              complete: res => {
-                console.log('callFunction test result: ', res)
-              }
-            })
-
-            // ----------- 云函数 end---------------
-
-          } else {
-            console.log('用户点击取消')
-          }
-        }
-      })
-    }
-
+  // 设置图文
+  setTextImg() {
+    this.setData({
+      setTextImg: true,
+      btnDie: true,
+    });
+    this.bottom();
+  },
+  // 设置封面
+  setFrontImg() {
+    this.setData({
+      setFrontImg: true,
+      btnDie: true,
+    });
+    this.bottom();
   },
 
   // 编辑抽屉拖拽
@@ -1017,7 +938,6 @@ Page({
      * 正在用日期组件时 不执行
      * 
      */
-    // if(useselectByDate)x
     /*
      * 手指从左向右移动
      * @newmark是指移动的最新点的x轴坐标 ， @mark是指原点x轴坐标
@@ -1043,16 +963,12 @@ Page({
           translate: 'transform: translateX(' + (this.data.newmark - this.data.startmark) + 'px)'
         })
       } else if (this.data.staus == 2 && Math.abs(this.data.startmark - this.data.newmark) > this.data.windowWidth * 0.2) {
-        // console.log( Math.abs(this.data.startmark - this.data.newmark))
         this.setData({
           translate: 'transform: translateX(' + (this.data.newmark + this.data.windowWidth * 0.4 - this.data.startmark) + 'px)'
         })
       }
-
     }
-
     this.data.mark = this.data.newmark;
-
   },
   tap_end: function (e) {
     if (this.data.staus == 1 && this.data.startmark < this.data.newmark) {
@@ -1081,7 +997,6 @@ Page({
         this.data.staus = 1;
       }
     }
-
     this.data.mark = 0;
     this.data.newmark = 0;
   },
