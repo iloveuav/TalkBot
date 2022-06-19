@@ -138,6 +138,7 @@ Page({
           ndaSignPath: that.data.NPHOTO || '',
           visitorPhoto: that.data.VPHOTO,
           visitData: nowtime,
+          mountainVillage_selected:that.data.step1.mountainVillage_selected,
           state:'待审核',
         },
         success(res) {

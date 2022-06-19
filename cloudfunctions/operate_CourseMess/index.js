@@ -12,14 +12,21 @@ const $ = db.command.aggregate
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 
+  let Collection = 'allCourseBaseMess'
+  if (event.type === 'course') {
+    Collection = 'allCourseBaseMess'
+  } else if (event.type === 'narrate') {
+    Collection = 'allNarrateBaseMess'
+  }
+
   try {
-    return db.collection('allCourseBaseMess').where({
+    return db.collection(Collection).where({
       courseUUid: event.courseMess.courseUUid,
     }).count()
       .then(res => {
         console.log('count', res)
         if (res.total <= 0) {
-          return db.collection('allCourseBaseMess').add({
+          return db.collection(Collection).add({
             data: {
               courseName: event.courseMess.courseName,
               courseUUid: event.courseMess.courseUUid,
@@ -32,7 +39,7 @@ exports.main = async (event, context) => {
             }
           })
         } else {
-          return db.collection('allCourseBaseMess').where({
+          return db.collection(Collection).where({
             courseUUid: event.courseMess.courseUUid
           }).update({
             data: {

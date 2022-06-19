@@ -21,26 +21,27 @@ Page({
   },
 
   onLoad: function (options) {
-    let crouseDetail = JSON.parse(options.courseMess);
-    console.log("corseObject", crouseDetail)
-    let btnType = options.btnType
-    console.log("btnType", btnType)
-    console.log("corseObject", crouseDetail)
-    // let Cc = JSON.parse(options.Cc);
-    // CurrentChapter = Cc //正确获取index页面传过来的课程信息 
-    this.setData({
-      crouseDetail: crouseDetail,
-      btnType: btnType
-    })
+    console.log("courseCatalogue-options", options)
+    if (options.courseMess && options.btnType && options.type) {
+      let crouseDetail = JSON.parse(options.courseMess);
+      let btnType = options.btnType
+      this.setData({
+        crouseDetail: crouseDetail,
+        btnType: btnType,
+        pageType: options.type
+      })
+      this.getChapterList(btnType);
 
-    this.getChapterList(btnType);
+    }
+
   },
   toAddChapter: function () {
     let str = JSON.stringify(this.data.crouseDetail);
     let chapterList = JSON.stringify(this.data.ChapterList);
+    const pageType = this.data.pageType
     wx.navigateTo({
       //这里传值
-      url: "../../../../AddCourseContent/AddCourseContent?type=" + 'add' + "&courseMess=" + str + "&chapterList=" + chapterList,
+      url: "../../../../AddCourseContent/AddCourseContent?type=" + 'add' + "&courseMess=" + str + "&chapterList=" + chapterList + "&pageType=" + pageType
     })
 
   },
@@ -49,9 +50,10 @@ Page({
     let chapterobj = JSON.stringify(e.target.dataset.chapterobj)
     let str = JSON.stringify(this.data.crouseDetail);
     let chapterList = JSON.stringify(this.data.ChapterList);
+    const pageType = this.data.pageType
     wx.navigateTo({
       //这里传值
-      url: "../../../../AddCourseContent/AddCourseContent?type=" + 'edit' + "&courseMess=" + str + "&chapterList=" + chapterList + "&chapterobj=" + chapterobj,
+      url: "../../../../AddCourseContent/AddCourseContent?type=" + 'edit' + "&courseMess=" + str + "&chapterList=" + chapterList + "&chapterobj=" + chapterobj + "&pageType=" + pageType,
     })
 
   },
@@ -63,10 +65,13 @@ Page({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
     const courseUUid = this.data.crouseDetail.courseUUid
-    console.log('yyzzmm-courseUUid',courseUUid)
+    console.log('yyzzmm-courseUUid', courseUUid)
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
-      data: { courseUUid: courseUUid },
+      data: {
+        courseUUid: courseUUid,
+        type: this.data.type
+      },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -93,9 +98,6 @@ Page({
   handleChapterItem(e) {
     const { chapterId, chapterName } = e.currentTarget.dataset.clickchapter._id;
     const crouseDetail = this.data.crouseDetail
-    console.log('点击章节啦~快跳转', chapterId);
-    console.log('点击章节啦~crouseDetail', this.data.crouseDetail);
-
 
     let CurrentChapter = {
       courseUUid: crouseDetail.courseUUid,

@@ -153,10 +153,12 @@ Page({
     })
   },
 
-  toCrouseMessForm() {
+  toCreateMessForm(e) {
+    console.log(e.currentTarget.dataset.type)
+    const type = e.currentTarget.dataset.type || 'course'
     wx.navigateTo({
       //这里传值
-      url: '/pages/courseMessForm/index',
+      url: '/pages/courseMessForm/index?type=' + type,
 
       // url: '/pages/mysel/admin/admin',
       // url: '/pages/AddEngClassContent/AddEngClassContent',

@@ -6,6 +6,10 @@
 	<!-- <button class="back" bindtap='jump'> 返回 </button> -->
 	<form bindsubmit="formSubmit">
 
+		<picker mode="selector" range="{{mountainVillageArr}}" bindchange="selectMountainVillage">
+          <button class="btn-view btn-assignment">{{mountainVillage_selected?mountainVillage_selected:'点击选择访问山村'}}</button>
+        </picker>
+
 		<view class='section' wx:if="{{pageMess.step==1}}">
 			<view class='seciton-title'>个人/团队信息</view>
 			<view class='item'>

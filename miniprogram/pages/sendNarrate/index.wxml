@@ -6,7 +6,7 @@
       <view class="unRead" wx:if="{{unReadNum}}">
         <text>{{unReadNum}}</text>
       </view>
-      <text class="themeKey">主题</text>
+      <text class="themeKey">标题</text>
       <input class="themeInput" bindinput="bindChange2" confirm-type="done" value='{{className}}' placeholder="eg:学校食堂"  placeholder-style="color:#fff;"/>
     </view>  
    

@@ -4,7 +4,8 @@
 <swiper indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
   <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
     <swiper-item class="swiper-item">
-      <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
+      <image bindtap="preimage" src='{{item}}' mode="aspectFill"
+        class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
     </swiper-item>
   </block>
   <view class="remind-box" wx:if="{{remind}}">
@@ -29,7 +30,7 @@
 <view class="flex-box">
   <view class="flex-item" bindtap="toHelper">
     <image src="../../images/index/discuss.png"></image>
-    <text>来问我</text>
+    <text>客服答疑</text>
   </view>
 
 
@@ -37,12 +38,12 @@
 
   <view class="flex-item" bindtap='toNarrate'>
     <image src="../../images/index/messge.png"></image>
-    <text>快解说</text>
+    <text>山村介绍</text>
   </view>
 
   <view class="flex-item" bindtap="toCrouseBot">
     <image src="../../images/index/love.png"></image>
-    <text>来学习</text>
+    <text>课程中心</text>
   </view>
   <!-- <view class="flex-item" bindtap="tonearby" >
     <image src="../../Images/index/shequ.png"></image>
@@ -50,26 +51,25 @@
   </view> -->
 
 
-  <view class="flex-item" bindtap="toCrouseMessForm">
+  <view class="flex-item" bindtap="toCreateMessForm" data-type="course">
     <image src="../../images/index/topic.png"></image>
-    <text>传知识</text>
+    <text>创作课程</text>
   </view>
 
-  <view class="flex-item" bindtap="toSendNarrate">
+  <view class="flex-item" bindtap="toCreateMessForm" data-type="narrate">
     <image src="../../images/index/plane.png"></image>
-    <text>发解说</text>
+    <text>介绍山村</text>
   </view>
 
 
   <view class="flex-item" bindtap="toExtend">
     <image src="../../images/index/xxzx.png"></image>
-    <text>小扩展</text>
+    <text>扩展功能</text>
   </view>
 
 
 </view>
 
 <view>
-  <button class="continueBtn"  catchtap="touchAddVisitorApply">访客入校申请</button>
+  <button class="continueBtn" catchtap="touchAddVisitorApply">访客入村申请</button>
 </view>
-

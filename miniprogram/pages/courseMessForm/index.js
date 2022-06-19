@@ -30,6 +30,16 @@ Page({
     tempimg: [], //临时数组  等点击发送的时候一起走
     courseUUid: util.uuid(),
 
+    type: 'course',
+
+    pageTitle: '课程信息',
+    pageRowText: '课程内容需要结果审核后才会公开哦',
+    firstPlaceholder: '请输入课程名称',
+    secondPlaceholder: '课程封面（粘贴url或点击右侧上传）',
+    thirdPlaceholder: '请输入课程简介',
+    bottomTitle: '课程标签',
+
+
     tagList: [
       { label: '成长', value: 1, choose: false },
       { label: '辅导', value: 2, choose: false },
@@ -45,7 +55,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
+
     if (options.currentChooseCard == "0") {
       ClassCollection = 'EngClassContents'
     } else if (options.currentChooseCard == "1") {
@@ -58,13 +68,42 @@ Page({
 
     if (options && options.courseMess) {
       let crouseDetail = JSON.parse(options.courseMess);
-
       console.log("crouseDetail-edit", crouseDetail);
       if (crouseDetail) {
         this.setData({
-          editCourseDetail: crouseDetail
+          editCourseDetail: crouseDetail,
+          type: options.type
         })
       }
+    }
+
+    if (options && options.type) {
+      console.log(options)
+      const type = options.type
+      if (type === 'course') {
+        this.setData({
+          pageTitle: '课程信息',
+          pageRowText: '课程内容需要通过审核后才会公开哦',
+          firstPlaceholder: '请输入课程名称',
+          secondPlaceholder: '课程封面（粘贴url或点击右侧上传）',
+          thirdPlaceholder: '请输入课程简介',
+          bottomTitle: '课程标签',
+        })
+      } else if (type === 'narrate') {
+        this.setData({
+          pageTitle: '基本信息',
+          pageRowText: '内容需要通过审核后才会公开哦',
+          firstPlaceholder: '请输入介绍的山村名称',
+          secondPlaceholder: '山村封面（粘贴url或点击右侧上传）',
+          thirdPlaceholder: '请输入山村简介',
+          bottomTitle: '山村标签',
+        })
+
+      }
+
+      this.setData({
+        type: options.type
+      })
     }
 
   },
@@ -150,12 +189,10 @@ Page({
     //   // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
     //   // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
     // })
-
-
     if (this.data.editCourseDetail.courseName == '') {//上传封面的时候可以不需要输入章节id
       wx.showModal({
         title: '提示',
-        content: '给课程取个名字吧~',
+        content: '给取个名字吧~',
         showCancel: false
       })
       return;
@@ -169,11 +206,12 @@ Page({
     } else if (this.data.editCourseDetail.courseIntroduce == '') {
       wx.showModal({
         title: '提示',
-        content: '简单介绍下课程吧~',
+        content: '简单介绍下吧~',
         showCancel: false
       })
       return;
     }
+
 
     const courseMess = {
       courseUUid: this.data.editCourseDetail.courseUUid || this.data.courseUUid,
@@ -188,6 +226,12 @@ Page({
       title: '处理中',
       mask: true
     })
+    // let collection = 'operate_CourseMess'
+    // if(this.data.type==='course'){
+    //   collection = 'operate_CourseMess'
+    // }else if(this.data.type==='narrate'){
+    //   collection = 'operate_CourseMess'
+    // }
     wx.cloud.init({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
@@ -195,6 +239,7 @@ Page({
       name: 'operate_CourseMess',
       data: {
         courseMess: courseMess,
+        type: this.data.type
       },
       success: res => {
         // wx.showModal({
@@ -207,7 +252,7 @@ Page({
         let str = JSON.stringify(crouseDetail);
         wx.navigateTo({
           //这里传值
-          url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
+          url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit' + "&type=" + this.data.type,
           // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
           // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
         })

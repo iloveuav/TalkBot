@@ -48,15 +48,21 @@ Page({
    */
   onLoad: function (options) {
     console.log(options)
-    if (options.currentChooseCard == "0") {
-      ClassCollection = 'EngClassContents'
-    } else if (options.currentChooseCard == "1") {
-      ClassCollection = 'JaClassContents'
-    } else if (options.currentChooseCard == "2") {
-      //其他课程
-      ClassCollection = 'otherClassContents'
+    const pageType = options.pageType ? options.pageType : 'course'
+
+    if (pageType === 'course') {
+      if (options.currentChooseCard == "0") {
+        ClassCollection = 'EngClassContents'
+      } else if (options.currentChooseCard == "1") {
+        ClassCollection = 'JaClassContents'
+      } else if (options.currentChooseCard == "2") {
+        //其他课程
+        ClassCollection = 'otherClassContents'
+      }
+      ClassCollection = 'testCourseContents'
+    } else if (pageType === 'narrate') {
+      ClassCollection = 'NarrateContents'
     }
-    ClassCollection = 'testCourseContents'
 
     if (options && options.type === 'add' && options.courseMess) {
       let crouseDetail = JSON.parse(options.courseMess);
@@ -71,7 +77,8 @@ Page({
         chapterList: chapterList,
         chapterId: chapterList.length + 1,
 
-        curChapter: {}
+        curChapter: {},
+        pageType: pageType,
       })
     }
 
@@ -87,9 +94,10 @@ Page({
         className: crouseDetail.courseName,
         chapterName: chapterobj.chapterName || '',
         chapterList: chapterList,
-        chapterId: chapterobj.chapterId|| chapterList.length + 1,
+        chapterId: chapterobj.chapterId || chapterList.length + 1,
 
-        curChapter: chapterobj
+        curChapter: chapterobj,
+        pageType: pageType
       })
     }
 

@@ -1,29 +1,33 @@
 <view class='courseInfo'>
-  <view class="title">课程信息</view>
-  <view class='tips'>课程内容需要结果审核后才会公开哦~</view>
+  <view class="title">{{pageTitle}}</view>
+  <view class='tips'>{{pageRowText}}</view>
   <!-- <view class="unRead" wx:if="{{unReadNum}}">
     <text>{{unReadNum}}</text>
   </view> -->
   <view class="form_item">
     <image class="icon" src="/images/icon/title.png"></image>
-    <input class="input" bindinput="bindChange2" confirm-type="done" value='{{editCourseDetail.courseName||className}}' placeholder="请输入课程名称" />
+    <input class="input" bindinput="bindChange2" confirm-type="done" value='{{editCourseDetail.courseName||className}}'
+      placeholder="{{firstPlaceholder}}" />
   </view>
   <view class="form_item">
     <image class="icon" src="/images/icon/coverImg.png"></image>
-    <input class="input" type="number" bindinput="bindChange1" confirm-type="done" value='{{editCourseDetail.courseFrontImgUrl}}' placeholder="课程封面（粘贴url或点击右侧上传）" />
+    <input class="input" type="number" bindinput="bindChange1" confirm-type="done"
+      value='{{editCourseDetail.courseFrontImgUrl}}' placeholder="{{secondPlaceholder}}" />
     <image src="/images/button/upload2.png" class="addImgBtn" bindtap='uploadimg'></image>
   </view>
   <view class="form_item introduce">
     <text class="chapter">eg:第一章</text>
-    <textarea class="input" bindinput="bindChange3" confirm-type="done" value='{{editCourseDetail.courseIntroduce||courseIntroduce}}' placeholder="请输入课程简介" />
+    <textarea class="input" bindinput="bindChange3" confirm-type="done"
+      value='{{editCourseDetail.courseIntroduce||courseIntroduce}}' placeholder="{{thirdPlaceholder}}" />
   </view>
 </view>
 
 <view class="tagInfo courseInfo">
-  <view class="title">课程标签</view>
+  <view class="title">{{bottomTitle}}</view>
   <view class='tips'>可多选，最后选3个~</view>
   <view class="tagList">
-    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList}}" wx:key="{{item.value}}" bindtap="handleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList}}" wx:key="{{item.value}}" bindtap="handleChoose"
+      data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
   </view>
 </view>
 

@@ -6,6 +6,12 @@
 		<!-- <image class='background' src='/Images/uavfire01.png'> </image> -->
 		<view class='head' wx:if="{{isSuperAdmin}}">访客登记</view>
 		<!-- <button class="back" bindtap='jump'> 返回 </button> -->
+
+		<picker mode="selector" range="{{mountainVillageArr}}" bindchange="selectMountainVillage">
+			<button
+				class="btn-view btn-assignment">{{list_index.mountainVillage_selected?list_index.mountainVillage_selected:'无数据'}}</button>
+		</picker>
+
 		<form bindsubmit="formSubmit">
 
 			<view class='section'>
@@ -117,8 +123,8 @@
 					<view class="question-images">
 
 						<view style="font-size:25rpx;">当前状态：{{list_index.state}}
-							<button class="confirm-btn" bindtap="updateVisitorFormData" data-content='pass'>同意访校</button>
-							<button class="decline-btn" bindtap="updateVisitorFormData" data-content='cancel'>暂缓访校</button>
+							<button class="confirm-btn" bindtap="updateVisitorFormData" data-content='pass'>同意访问</button>
+							<button class="decline-btn" bindtap="updateVisitorFormData" data-content='cancel'>暂缓访问</button>
 						</view>
 					</view>
 				</view>
@@ -135,8 +141,8 @@
 				</view>
 
 			</view>
-			<view class="backBox" bindtap="flagset" data-pageFlag="1" >
-				<view class="back" >返回</view>
+			<view class="backBox" bindtap="flagset" data-pageFlag="1">
+				<view class="back">返回</view>
 			</view>
 
 

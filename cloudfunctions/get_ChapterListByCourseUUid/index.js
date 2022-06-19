@@ -13,7 +13,13 @@ const $ = db.command.aggregate
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 
-  var testCourseContents = await db.collection('testCourseContents').aggregate()
+  if (event.type === 'course') {
+    Collection = 'testCourseContents'
+  } else if (event.type === 'narrate') {
+    Collection = 'testNarrateContents'
+  }
+
+  var testCourseContents = await db.collection(Collection).aggregate()
     .group({
       // 按 category 字段分组
       _id: {
@@ -39,11 +45,11 @@ exports.main = async (event, context) => {
   allChapterList = []
 
 
-    testCourseContents.list.forEach(mess => {
-      if (event.courseUUid === mess._id.courseUUid) {
-        allChapterList.push(mess)
-      }
-    })
+  testCourseContents.list.forEach(mess => {
+    if (event.courseUUid === mess._id.courseUUid) {
+      allChapterList.push(mess)
+    }
+  })
 
 
 
@@ -54,7 +60,7 @@ exports.main = async (event, context) => {
     allChapterList,
     UserCourseMess,
     currentOpenid: wxContext.OPENID,
-    courseUUid:event.courseUUid
+    courseUUid: event.courseUUid
 
   }
 }

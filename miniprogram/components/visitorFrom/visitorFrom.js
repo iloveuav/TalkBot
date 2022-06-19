@@ -5,7 +5,7 @@ Component({
    * 组件的属性列表
    */
 
-   
+
   properties: {
     pageMess: {
       type: Object,
@@ -33,9 +33,9 @@ Component({
     // “继续”按钮的点击事件
     bindconfirm: "",
 
-    tempFilePaths:'',//合成后本地url
+    tempFilePaths: '',//合成后本地url
 
-    fourteenValues:'',
+    fourteenValues: '',
     fourteenDayList: [{
       value: '居住/途经高风险地区',
       selected: false,
@@ -54,50 +54,53 @@ Component({
       title: '无上述情况'
     }],
 
-    healthValues:'',
+    healthValues: '',
     healthList: [{
-        value: '发热/咳嗽',
-        selected: false,
-        title: '发热/咳嗽'
-      }, {
-        value: '咳嗽/咽疼',
-        selected: false,
-        title: '咳嗽/咽疼'
-      }, {
-        value: '胸痛/肌肉关节痛',
-        selected: false,
-        title: '胸痛/肌肉关节痛'
-      }, {
-        value: '气促',
-        selected: false,
-        title: '气促'
-      }, {
-        value: '腹泻',
-        selected: false,
-        title: '腹泻'
-      },
-      {
-        value: '无上述情况',
-        selected: false,
-        title: '无上述情况'
-      }
+      value: '发热/咳嗽',
+      selected: false,
+      title: '发热/咳嗽'
+    }, {
+      value: '咳嗽/咽疼',
+      selected: false,
+      title: '咳嗽/咽疼'
+    }, {
+      value: '胸痛/肌肉关节痛',
+      selected: false,
+      title: '胸痛/肌肉关节痛'
+    }, {
+      value: '气促',
+      selected: false,
+      title: '气促'
+    }, {
+      value: '腹泻',
+      selected: false,
+      title: '腹泻'
+    },
+    {
+      value: '无上述情况',
+      selected: false,
+      title: '无上述情况'
+    }
     ],
 
-    newVisitor:{},
-    visitorName:'',
-    visitorPhone:'',
-    visitorIdCard:'',
-    visitorTeamName:'',
-    visitorEmail:'',
-    Interviewee:'',
-    Cause:'',
+    newVisitor: {},
+    visitorName: '',
+    visitorPhone: '',
+    visitorIdCard: '',
+    visitorTeamName: '',
+    visitorEmail: '',
+    Interviewee: '',
+    Cause: '',
 
     images: [],
     cloudimgs: [],
     hint: "点击方框上传照片",
 
-    takePhoto:false //默认不自动拍照 点击触发后才自动拍照
-    
+    takePhoto: false, //默认不自动拍照 点击触发后才自动拍照
+
+    mountainVillageArr: ["辽宁省新宾满族自治县小学", "辽宁省昌图县小学", "辽宁省康平县小学", "辽宁省法库县小学"],
+    mountainVillage_selected: ''
+
 
   },
 
@@ -105,6 +108,16 @@ Component({
    * 组件的方法列表
    */
   methods: {
+
+    //选择山村
+    selectMountainVillage(e) {
+      let that = this;
+      console.log(e.detail.value)
+      that.setData({
+        mountainVillage_selected: this.data.mountainVillageArr[e.detail.value],
+      })
+    },
+
     //点击选中事件，再次点击取消选中  事件
     checked: function (e) {
       var check = this.data.checked;
@@ -157,25 +170,23 @@ Component({
     //14天多选框
     fourtityboxChange(e) {
       console.log('checkboxChange e:', e);
-      
+
       let string = "fourteenDayList[" + e.target.dataset.index + "].selected"
       this.setData({
         [string]: !this.data.fourteenDayList[e.target.dataset.index].selected
       })
       let detailValue = this.data.fourteenDayList.filter(it => it.selected).map(it => it.value)
       console.log('所有选中的值为：', detailValue)
-      if(detailValue.indexOf("无上述情况")>=0)
-      {
-        this.data.fourteenDayList.forEach(v=>{
-          if(v.title!="无上述情况")
-          {
+      if (detailValue.indexOf("无上述情况") >= 0) {
+        this.data.fourteenDayList.forEach(v => {
+          if (v.title != "无上述情况") {
             v.selected = false
           }
         })
       }
-    
+
       this.setData({
-        fourteenDayList : this.data.fourteenDayList
+        fourteenDayList: this.data.fourteenDayList
       })
       detailValue = this.data.fourteenDayList.filter(it => it.selected).map(it => it.value)
       this.data.fourteenValues = detailValue;
@@ -192,18 +203,16 @@ Component({
       console.log('所有选中的值为：', detailValue)
       this.data.healthValues = detailValue;
 
-      if(detailValue.indexOf("无上述情况")>=0)
-      {
-        this.data.healthList.forEach(v=>{
-          if(v.title!="无上述情况")
-          {
+      if (detailValue.indexOf("无上述情况") >= 0) {
+        this.data.healthList.forEach(v => {
+          if (v.title != "无上述情况") {
             v.selected = false
           }
         })
       }
-    
+
       this.setData({
-        healthList : this.data.healthList
+        healthList: this.data.healthList
       })
       detailValue = this.data.healthList.filter(it => it.selected).map(it => it.value)
       this.data.healthValues = detailValue;
@@ -217,8 +226,8 @@ Component({
       this.hint();
       this.setData({
         images: [],
-        localImage:'',
-        imgUrl:""
+        localImage: '',
+        imgUrl: ""
       })
       // $digest(this)
     },
@@ -245,9 +254,9 @@ Component({
     },
 
 
-    takePhoto(){
+    takePhoto() {
       this.setData({
-        takePhoto:true
+        takePhoto: true
       })
       console.log('1')
       wx.navigateTo({
@@ -267,7 +276,7 @@ Component({
           imgs2.push(imgUrl)
 
           that.setData({
-            images:imgs2,
+            images: imgs2,
             localImage: imgUrl,
           })
           that.uploadImgweb(imgUrl)
@@ -276,8 +285,7 @@ Component({
           var myEventOption = {} // 触发事件的选项
           that.triggerEvent('callHelp', myEventDetail, myEventOption) //成功解决bug
         },
-        fail(res)
-        {
+        fail(res) {
           var myEventDetail = {} // detail对象，提供给事件监听函数
           var myEventOption = {} // 触发事件的选项
           that.triggerEvent('callHelp', myEventDetail, myEventOption) //成功解决bug
@@ -286,7 +294,7 @@ Component({
       var myEventDetail = {} // detail对象，提供给事件监听函数
       var myEventOption = {} // 触发事件的选项
       that.triggerEvent('callHelp', myEventDetail, myEventOption) //成功解决bug
-  
+
 
     },
 
@@ -315,194 +323,88 @@ Component({
     },
 
     // 检查表单手机号格式
-  blurPhone: function(phone) {
-    // var phone = this.data;
-    // console.log(e);
-    if (!(/^1[34578]\d{9}$/.test(phone))) {
-      return false;
-      if (phone.length >= 11) {
-        // wx.showToast({
-        //   title: '手机号有误',
-        //   icon: 'success',
-        //   duration: 2000
-        // })
+    blurPhone: function (phone) {
+      // var phone = this.data;
+      // console.log(e);
+      if (!(/^1[34578]\d{9}$/.test(phone))) {
         return false;
+        if (phone.length >= 11) {
+          // wx.showToast({
+          //   title: '手机号有误',
+          //   icon: 'success',
+          //   duration: 2000
+          // })
+          return false;
+        }
+      } else {
+        return true;
+
       }
-    } else {
-      return true;
+    },
 
-    }
-  },
+    // input双向绑定的方法
 
-  // input双向绑定的方法
-
-  getName(e){
-    // console.log(e);
+    getName(e) {
+      // console.log(e);
       this.setData({
         visitorName: e.detail.value,
       })
-  },
-  getID(e){
-    // console.log(e);
+    },
+    getID(e) {
+      // console.log(e);
       this.setData({
         visitorIdCard: e.detail.value,
       })
-  },
-  getEmail(e){
+    },
+    getEmail(e) {
       this.setData({
-        visitorEmail:  e.detail.value,
+        visitorEmail: e.detail.value,
       })
-  },
-  getPhoneNum(e){
+    },
+    getPhoneNum(e) {
       this.setData({
         visitorPhone: e.detail.value,
       })
-  },
-  getTeamName(e){
+    },
+    getTeamName(e) {
       this.setData({
-        visitorTeamName:  e.detail.value,
+        visitorTeamName: e.detail.value,
       })
-  },
-  getInterviewee(e){
+    },
+    getInterviewee(e) {
       this.setData({
-        Interviewee:  e.detail.value,
+        Interviewee: e.detail.value,
       })
-  },
-  getCause(e){
+    },
+    getCause(e) {
       this.setData({
-        Cause:  e.detail.value,
+        Cause: e.detail.value,
       })
-  },
+    },
 
-  tostep2(e){
-    // 先检查step1中是否信息都填了
-    // console.log(this.data.visitorName)
-    if (this.data.visitorName == "") {
-      wx.showModal({
-        title: '提示',
-        content: '你没有填写姓名，请重试',
-        showCancel: false
-      })
-      return;
-    }
+    tostep2(e) {
+      // 先检查step1中是否信息都填了
+      // console.log(this.data.visitorName)
 
-    if (this.data.visitorIdCard == "") {
-      wx.showModal({
-        title: '提示',
-        content: '您没有输入身份证号，请重试',
-        showCancel: false
-      })
-      return;
-    }
-    if (this.data.visitorEmail == "") {
-      wx.showModal({
-        title: '提示',
-        content: '您没有输入您的Email，请重试',
-        showCancel: false
-      })
-      return;
-    }
-
-    if (this.data.visitorPhone == "" || this.blurPhone(this.data.visitorPhone) != true) {
-      wx.showModal({
-        title: '提示',
-        content: '手机号为空或格式有误，请重试',
-        showCancel: false
-      })
-      return;
-    }
-
-    if (this.data.visitorTeamName == "") {
-      wx.showModal({
-        title: '提示',
-        content: '请输入您所在的公司（团队）',
-        showCancel: false
-      })
-      return;
-    }
-    if (this.data.Interviewee == "") {
-      wx.showModal({
-        title: '提示',
-        content: '请输入被访人的姓名',
-        showCancel: false
-      })
-      return;
-    }
-    if (this.data.Cause == "") {
-      wx.showModal({
-        title: '提示',
-        content: '请输入您来访事由',
-        showCancel: false
-      })
-      return;
-    }
-
-   
-
-
-    if (this.data.fourteenValues == "") {
-      wx.showModal({
-        title: '提示',
-        content: '14天内多选框请选择您的情况',
-        showCancel: false
-      })
-      return;
-    }
-
-    if (this.data.healthValues == "") {
-      wx.showModal({
-        title: '提示',
-        content: '健康状况多选框请选择您的情况',
-        showCancel: false
-      })
-      return;
-    }
-
-    //初始化visitor step1 获取的数据  打包成对象
-    let newVisitor = {};
-    newVisitor.name = this.data.visitorName
-    newVisitor.id_num = this.data.visitorIdCard
-
-    newVisitor.email = this.data.visitorEmail  //新增 邮箱
-    newVisitor.phonenum = this.data.visitorPhone
-    newVisitor.teamName = this.data.visitorTeamName
-
-    newVisitor.Interviewee = this.data.Interviewee  //新增 被访人
-    newVisitor.cause = this.data.Cause  //新增 事由
-    newVisitor.fourteenValues = this.data.fourteenValues
-    newVisitor.healthValues = this.data.healthValues
-    // newVisitor.image = this.data.imgUrl;
-
-    this.triggerEvent('getStep1',newVisitor);
-
-  },
-
-
-  toStep3(e){
-   
-    this.triggerEvent('toStep3',"toStep3");
-  },
-
-  // -----------------到手写板页面----------------------
-
-  signature(){
-    wx.navigateTo({
-      url: '/pages/signature/signature',
-    })
-  },
-
-    formSubmit(e) {
-      console.log(e);
-      if (this.data.name == "") {
+      if (this.data.mountainVillage_selected == undefined || this.data.mountainVillage_selected == "") {
         wx.showModal({
           title: '提示',
-          content: '你没有填写姓名，请重试',
+          content: '您还没有选择山村，请重试',
           showCancel: false
         })
         return;
       }
-  
-      if (this.data.id_num == "") {
+
+      if (this.data.visitorName == "") {
+        wx.showModal({
+          title: '提示',
+          content: '您没有填写姓名，请重试',
+          showCancel: false
+        })
+        return;
+      }
+
+      if (this.data.visitorIdCard == "") {
         wx.showModal({
           title: '提示',
           content: '您没有输入身份证号，请重试',
@@ -510,16 +412,15 @@ Component({
         })
         return;
       }
-  
-      if (this.data.teamName == "") {
+      if (this.data.visitorEmail == "") {
         wx.showModal({
           title: '提示',
-          content: '请输入您所在的公司（团队）',
+          content: '您没有输入您的Email，请重试',
           showCancel: false
         })
         return;
       }
-  
+
       if (this.data.visitorPhone == "" || this.blurPhone(this.data.visitorPhone) != true) {
         wx.showModal({
           title: '提示',
@@ -528,16 +429,35 @@ Component({
         })
         return;
       }
-  
-      // if (this.data.localImage =='') {
-      //   wx.showModal({
-      //     title: '提示',
-      //     content: '您还有图片没有上传，请重试',
-      //     showCancel: false
-      //   })
-      //   return;
-      // }
-  
+
+      if (this.data.visitorTeamName == "") {
+        wx.showModal({
+          title: '提示',
+          content: '请输入您所在的公司（团队）',
+          showCancel: false
+        })
+        return;
+      }
+      if (this.data.Interviewee == "") {
+        wx.showModal({
+          title: '提示',
+          content: '请输入被访人的姓名',
+          showCancel: false
+        })
+        return;
+      }
+      if (this.data.Cause == "") {
+        wx.showModal({
+          title: '提示',
+          content: '请输入您来访事由',
+          showCancel: false
+        })
+        return;
+      }
+
+
+
+
       if (this.data.fourteenValues == "") {
         wx.showModal({
           title: '提示',
@@ -555,24 +475,48 @@ Component({
         })
         return;
       }
-  
-     //初始化visitor
-       let newVisitor = {};
-        newVisitor.name = this.data.name
-        newVisitor.id_num = this.data.id_num
-        newVisitor.phonenum = this.data.visitorPhone
-        newVisitor.teamName = this.data.teamName
-        newVisitor.fourteenValues = this.data.fourteenValues
-        newVisitor.healthValues = this.data.healthValues
-        newVisitor.image = this.data.imgUrl;
-      this.setData({
-        hiddenmodalput: false,
-        newVisitor:newVisitor
-      });
+
+      //初始化visitor step1 获取的数据  打包成对象
+      let newVisitor = {};
+      newVisitor.name = this.data.visitorName
+      newVisitor.id_num = this.data.visitorIdCard
+
+      newVisitor.email = this.data.visitorEmail  //新增 邮箱
+      newVisitor.phonenum = this.data.visitorPhone
+      newVisitor.teamName = this.data.visitorTeamName
+
+      newVisitor.Interviewee = this.data.Interviewee  //新增 被访人
+      newVisitor.cause = this.data.Cause  //新增 事由
+      newVisitor.fourteenValues = this.data.fourteenValues
+      newVisitor.healthValues = this.data.healthValues
+      newVisitor.mountainVillage_selected = this.data.mountainVillage_selected
+      // newVisitor.image = this.data.imgUrl;
+
+      this.triggerEvent('getStep1', newVisitor);
+
     },
 
 
-     addVisitor: function () {
+    toStep3(e) {
+
+      this.triggerEvent('toStep3', "toStep3");
+    },
+
+    // -----------------到手写板页面----------------------
+
+    signature() {
+      wx.navigateTo({
+        url: '/pages/signature/signature',
+      })
+    },
+
+    formSubmit(e) {
+      console.log(e)
+      //表单提交在父组件里
+    },
+
+
+    addVisitor: function () {
       this.setData({
         hiddenmodalput: true
       });
@@ -584,26 +528,26 @@ Component({
         mask: true
       })
       wx.cloud.init()
-     
+
       // var mynotes = wx.getStorageSync("openid");
       let teamName = this.data.newVisitor.teamName
       var that = this;
       let allimgs = []
-        let timestamp = (new Date()).valueOf();
-    
-      var waittime = setTimeout(function() {
-       
+      let timestamp = (new Date()).valueOf();
+
+      var waittime = setTimeout(function () {
+
         var time = require('../../utils/util');
         let nowtime = time.formatTime(new Date, 'Y/M/D h:m:s');
         wx.cloud.callFunction({
           name: 'add_visitor',
           data: {
-            newVisitor:that.data.newVisitor,
-            visitorName:that.data.newVisitor.name,
-            visitorPhonenum:that.data.newVisitor.phonenum,
-            visitorId_num : that.data.newVisitor.id_num,
+            newVisitor: that.data.newVisitor,
+            visitorName: that.data.newVisitor.name,
+            visitorPhonenum: that.data.newVisitor.phonenum,
+            visitorId_num: that.data.newVisitor.id_num,
             visitorTeamName: that.data.newVisitor.teamName,
-            visitData :  nowtime,
+            visitData: nowtime,
           },
           success(res) {
             console.log(res.result);
@@ -624,38 +568,38 @@ Component({
                   }
                   if (res.confirm == true) {
                     //清空数据 遍历多选按钮
-                    that.data.fourteenDayList.forEach(v=>{
+                    that.data.fourteenDayList.forEach(v => {
                       v.selected = false
                     })
-                    that.data.healthList.forEach(v=>{
+                    that.data.healthList.forEach(v => {
                       v.selected = false
                     })
                   }
                   that.setData({
-                    newVisitor:{},
-                    visitorName:'',
-                    visitorPhone:'',
-                    visitorId:'',
-                    visitorTeamName:'',
-                    fourteenDayList:that.data.fourteenDayList,
-                    healthList:that.data.healthList,
-                
+                    newVisitor: {},
+                    visitorName: '',
+                    visitorPhone: '',
+                    visitorId: '',
+                    visitorTeamName: '',
+                    fourteenDayList: that.data.fourteenDayList,
+                    healthList: that.data.healthList,
+
                     images: [],
                     cloudimgs: [],
                   })
                 }
-                
+
               })
-               
+
             }
-            else{
+            else {
               wx.showModal({
                 title: '提交失败',
                 content: '请检查网络后重新提交',
                 showCancel: false
               })
             }
-  
+
           },
           fail(err) {
             console.log(err);
