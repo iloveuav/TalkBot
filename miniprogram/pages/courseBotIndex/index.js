@@ -97,7 +97,6 @@ Page({
   onShow: function (options) {
     if (this.data.pageType) {
       this.getAllCourseList(this.data.pageType);
-      console.log('show-getCourseList')
       // this.getAllCourse(this.data.pageType);
     }
   },
@@ -198,8 +197,6 @@ Page({
           const progressArr = userCourseProgressObj[0].UserCourseMess
           resultCourse.forEach(courseItem => {
             progressArr.forEach(progressItem => {
-              console.log('aaa1-courseItem: ', courseItem);
-              console.log('aaa1-progressItem: ', progressItem);
               if (courseItem.courseUUid === progressItem.courseUUid) {//根据课程UUid 赋值进度
                 let progressChapter = {}
                 allChapter.forEach(item => {
@@ -207,8 +204,6 @@ Page({
                     progressChapter = item
                   }
                 })
-                console.log('testCourseContents-progressChapter: ', progressChapter);
-
                 courseItem.currentProgress = progressItem
               }
             })

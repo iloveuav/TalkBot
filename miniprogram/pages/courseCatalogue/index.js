@@ -21,7 +21,6 @@ Page({
   },
 
   onLoad: function (options) {
-    console.log("courseCatalogue-options", options)
     if (options.courseMess && options.btnType ) {
       let crouseDetail = JSON.parse(options.courseMess);
       let btnType = options.btnType
@@ -46,7 +45,6 @@ Page({
 
   },
   toEditChapter: function (e) {
-    console.log('chapterObj', e.target.dataset.chapterobj)
     let chapterobj = JSON.stringify(e.target.dataset.chapterobj)
     let str = JSON.stringify(this.data.crouseDetail);
     let chapterList = JSON.stringify(this.data.ChapterList);
@@ -60,12 +58,10 @@ Page({
 
 
   getChapterList(pageType) {
-    console.log(this.data.crouseDetail)
     wx.cloud.init({
       env: 'huixue-3g4h1ydg1dedcaf3'
     })
     const courseUUid = this.data.crouseDetail.courseUUid
-    console.log('yyzzmm-courseUUid', courseUUid)
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
       data: {
@@ -73,9 +69,6 @@ Page({
         type: this.data.type
       },
       success: res => {
-        // console.log(res)
-        console.log('callFunction test result: ', res);
-
         let showChapter = []
         if (pageType === 'studyPage') {
           showChapter = res.result.allChapterList
@@ -113,7 +106,6 @@ Page({
     //   id: crouseDetail.data[0].id,
     //   reset: false
     // }
-    // console.log(CurrentChapter)
 
     let str = JSON.stringify(crouseDetail);
     let Cc = JSON.stringify(CurrentChapter);
@@ -129,9 +121,7 @@ Page({
     // })
   },
   deleteCourse() {
-    console.log('删除课程');
     const crouseDetail = this.data.crouseDetail
-    console.log("crouseDetail", crouseDetail);
     wx.showModal({
       title: "确认删除？",
       content: "本次删除不可恢复~",

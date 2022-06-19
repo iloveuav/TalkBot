@@ -117,7 +117,6 @@ Component({
       let currentSwiperIndex = this.data.currentSwiperIndex;
 
       const courseDetail = this.data.courseDetail
-      console.log("courseDetail", courseDetail)
       // console.log(corseArray[currentSwiperIndex].data)
       // console.log(corseArray[currentSwiperIndex].data[0]._id)
       // let CurrentChapter = {
@@ -157,29 +156,11 @@ Component({
 
     toEditCourse(e) {
       let btnType = e.currentTarget.dataset.content
-      let corseArray = this.data.corseArray;
-      let currentSwiperIndex = this.data.currentSwiperIndex;
-
+      // let corseArray = this.data.corseArray;
+      // let currentSwiperIndex = this.data.currentSwiperIndex;
       const courseDetail = this.data.courseDetail
       console.log("courseDetail", courseDetail)
-      // console.log(corseArray[currentSwiperIndex].data)
-      // console.log(corseArray[currentSwiperIndex].data[0]._id)
-      // let CurrentChapter = {
-      //   courseId: courseDetail.data[0].courseId,
-      //   className: courseDetail.data[0]._id.className,
-      //   chapterName: courseDetail.data[0]._id.chapterName,
-      //   id : courseDetail.data[0].id,
-      //   reset : false
-      // }
-      // console.log(CurrentChapter)
-
       let str = JSON.stringify(courseDetail);
-      // let Cc = JSON.stringify(CurrentChapter);
-      // wx.navigateTo({
-      //   //这里传值
-      //   url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
-      // })
-
       wx.navigateTo({
         //这里传值
         url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,

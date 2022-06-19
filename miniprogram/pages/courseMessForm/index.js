@@ -68,7 +68,6 @@ Page({
 
     if (options && options.courseMess) {
       let crouseDetail = JSON.parse(options.courseMess);
-      console.log("crouseDetail-edit", crouseDetail);
       if (crouseDetail) {
         this.setData({
           editCourseDetail: crouseDetail,
@@ -78,7 +77,6 @@ Page({
     }
 
     if (options && options.type) {
-      console.log(options)
       const type = options.type
       if (type === 'course') {
         this.setData({
@@ -221,7 +219,6 @@ Page({
       courseType: 'other',
       creatTime: time.formatTime(new Date, 'Y/M/D'),
     }
-    console.log("courseMess", courseMess)
     wx.showLoading({
       title: '处理中',
       mask: true
@@ -303,8 +300,6 @@ Page({
             icon: 'success',
             duration: 1000
           })
-          console.log('that.data.textimgTitle');
-          console.log(this.data.textimgTitle);
           // 设置封面
           if (this.data.setFrontImg) {
             if (this.data.courseName == '') {
@@ -568,9 +563,6 @@ Page({
         urls: [this.data.tempimg],
       })
     }
-    // console.log(final_url);
-    // console.log(e);
-    // console.log(this.data.tempimg[e.currentTarget.dataset.i]);
   },
 
   del() {
@@ -604,8 +596,6 @@ Page({
         showCancel: true,
         success: function (res) {
           if (res.confirm) {
-            console.log('用户点击确定')
-
             // wx.showModal({
             //   title: '提示',
             //   content: '没有权限',
@@ -619,8 +609,6 @@ Page({
               env: 'huixue-3g4h1ydg1dedcaf3'
             })
 
-            console.log(that.data.courseName)
-            console.log(ClassCollection)
             wx.cloud.callFunction({
               name: 'del_chapter',
               data: {
@@ -705,7 +693,6 @@ Page({
           translate: 'transform: translateX(' + (this.data.newmark - this.data.startmark) + 'px)'
         })
       } else if (this.data.staus == 2 && Math.abs(this.data.startmark - this.data.newmark) > this.data.windowWidth * 0.2) {
-        // console.log( Math.abs(this.data.startmark - this.data.newmark))
         this.setData({
           translate: 'transform: translateX(' + (this.data.newmark + this.data.windowWidth * 0.4 - this.data.startmark) + 'px)'
         })
