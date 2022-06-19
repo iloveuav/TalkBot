@@ -22,13 +22,13 @@ Page({
 
   onLoad: function (options) {
     console.log("courseCatalogue-options", options)
-    if (options.courseMess && options.btnType && options.type) {
+    if (options.courseMess && options.btnType ) {
       let crouseDetail = JSON.parse(options.courseMess);
       let btnType = options.btnType
       this.setData({
         crouseDetail: crouseDetail,
         btnType: btnType,
-        pageType: options.type
+        pageType: options.type?options.type:'course'
       })
       this.getChapterList(btnType);
 
