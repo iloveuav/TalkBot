@@ -325,8 +325,8 @@ Page({
             // console.log(res)
             console.log('callFunction test result: ', res)
             const result = res.result.data[0]
-            console.log("result",result)
-            if (result&&result.isAdmin) {
+            console.log("result", result)
+            if (result && result.isAdmin) {
               wx.setStorageSync("isAdmin", true);
               this.setData({
                 isAdmin: true
@@ -380,13 +380,13 @@ Page({
       })
       return;
     }
-    // wx.showLoading({
-    //   title: '加载中',
-    // })
-    // wx.navigateTo({
-    //   url: '/pages/mysel/FeedBack/FeedBack',
-    // })
-    // wx.hideLoading()
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.navigateTo({
+      url: '/pages/mysel/FeedBack/FeedBack',
+    })
+    wx.hideLoading()
   },
 
   tomy_TakeOrder() {
@@ -565,10 +565,12 @@ Page({
     })
   },
 
-  toSendCrouse() {
+  toCreateMessForm(e) {
+    const type = e.currentTarget.dataset.type || 'course'
     wx.navigateTo({
       //这里传值
-      url: '/pages/mysel/admin/admin',
+      url: '/pages/courseMessForm/index?type=' + type,
+      // url: '/pages/mysel/admin/admin',
       // url: '/pages/AddEngClassContent/AddEngClassContent',
     })
   },

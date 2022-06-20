@@ -12,8 +12,19 @@ const $ = db.command.aggregate
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
+  let contentCollection = 'testCourseContents'
+  let baseMessCollection = 'allCourseBaseMess'
+  if (event.pageType && event.pageType === 'studyPage' || event.pageType === 'mineCoursePage') {
+    contentCollection = 'testCourseContents'
+    baseMessCollection = 'allCourseBaseMess'
+  }
 
-  var testCourseContents = await db.collection('testCourseContents').aggregate()
+  if (event.pageType && event.pageType === 'publicPage' || event.pageType === 'mineNarratePage') {
+    contentCollection = 'NarrateContents'
+    baseMessCollection = 'allNarrateBaseMess'
+  }
+
+  var testCourseContents = await db.collection(contentCollection).aggregate()
     .group({
       // 按 category 字段分组
       _id: {
@@ -41,14 +52,14 @@ exports.main = async (event, context) => {
     })
     .end()
 
-  var allCourseBaseMess = await db.collection('allCourseBaseMess')
+  var allCourseBaseMess = await db.collection(baseMessCollection)
     .get()
 
   var tempUserCourseMess = await db.collection('user-info').where({
     openid: wxContext.OPENID
   }).get()
   var UserCourseMess = tempUserCourseMess.data
-  
+
 
   allCourse = []
 

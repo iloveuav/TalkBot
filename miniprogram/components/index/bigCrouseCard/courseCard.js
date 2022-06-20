@@ -1,4 +1,6 @@
 // components/index/indexCourseCard/courseCard.js
+var app = getApp();
+
 Component({
   /**
    * 组件的属性列表
@@ -135,16 +137,19 @@ Component({
       //   url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
       // })
 
+      app.globalData.CurrentCourseObj = courseDetail
+
       wx.navigateTo({
         //这里传值
-        url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+        url: "../../pages/courseCatalogue/index?btnType=" + btnType,
+        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
         // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
       })
     },
 
     toCrouseMessForm() {
 
-      console.log("courseDetail111",this.data.courseDetail)
+      console.log("courseDetail111", this.data.courseDetail)
       // wx.navigateTo({
       //   //这里传值
       //   url: '/pages/courseMessForm/index',
@@ -161,10 +166,13 @@ Component({
       const courseDetail = this.data.courseDetail
       console.log("courseDetail", courseDetail)
       let str = JSON.stringify(courseDetail);
+
+      //试着用全局变量传递参数
+      app.globalData.CurrentCourseObj = this.data.courseDetail
       wx.navigateTo({
         //这里传值
-        url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
-        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+        url: "../../pages/courseCatalogue/index?btnType=" + btnType,
+        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
       })
     }
   }

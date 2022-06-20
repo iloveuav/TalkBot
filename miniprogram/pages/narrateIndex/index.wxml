@@ -17,8 +17,8 @@
 
 <!-- ---------------------------------------------------------------------------- -->
 <view class="course">
-  <view class="course-center-title" wx:if="{{pageType ==='studyPage'}}">课程中心</view>
-  <view class="course-center-title" wx:if="{{pageType ==='mineCoursePage'}}">我上传的课程</view>
+  <view class="course-center-title" wx:if="{{pageType ==='publicPage'}}">解说中心</view>
+  <view class="course-center-title" wx:if="{{pageType ==='mineNarratePage'}}">我上传的</view>
 </view>
 <!-- -----------------英语课程卡片组件------------------------------------------ -->
 <view class="classCard">
@@ -30,13 +30,16 @@
   <scroll-view>
 
     <view wx:for="{{allCourse}}">
-      <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
-        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+      <view wx:if="{{pageType ==='publicPage'&&item.state==='审核通过'}}">
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
+          bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
-      <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+      <view
+        wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineNarratePage')||item.isMineCourse&&pageType ==='mineNarratePage'}}">
 
-        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
+          bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
     </view>

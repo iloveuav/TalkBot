@@ -179,7 +179,7 @@ Page({
     })
     wx.cloud.callFunction({
       name: 'get_CourseList',
-      data: {},
+      data: { pageType: pageType},
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);

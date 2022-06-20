@@ -245,30 +245,24 @@ Page({
 
   //事件处理函数
   add: function (e) {
+    // content: "猜你想问：\n 1、在本小程序发布课程，有什么奖励吗？\n2、课程内容如何才能审核通过？\n 3、可以参考借鉴或者搬运其他人创作的内容上传吗？\n4、访问山村的具体流程？\n5、这个小程序是公益性质的吗？\n 9、随机英语短句 \n回复数字即可",
+
     if (message == "1") {
-      message = "食堂的开关门时间？"
+      message = "在本小程序发布课程，有什么奖励吗？"
     }
     if (message == "2") {
-      message = "充饭卡的地点？"
+      message = "课程内容如何才能审核通过？"
     }
     if (message == "3") {
-      message = "图书馆闭馆时间？"
+      message = "可以参考借鉴或者搬运其他人创作的内容上传吗？"
     }
     if (message == "4") {
-      message = "普通话照片怎么上传？"
+      message = "访问山村的具体流程？"
     }
     if (message == "5") {
-      message = "无课表哪里能看？"
+      message = "这个小程序是公益性质的吗？"
     }
-    if (message == "6") {
-      message = "澡堂的开关门时间？"
-    }
-    if (message == "7") {
-      message = "选修课除了学习通哪里能看"
-    }
-    if (message == "8") {
-      message = "捐赠衣物"
-    }
+
     //录入英语短句 下标2 到 1362
     if (message == "9") {
       message = this.TakeRandomNumber(3, 1361)

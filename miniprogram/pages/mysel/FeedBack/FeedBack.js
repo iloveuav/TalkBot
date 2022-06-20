@@ -31,7 +31,7 @@ Page({
     wx.cloud.init()
     wx.cloud.callFunction({
 
-      name: 'addFeedback',
+      name: 'add_FeedBack',
       data: {
         text: text,
         number: number,

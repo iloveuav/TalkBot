@@ -6,6 +6,7 @@ let ClassCollection = 'testCourseContents';
 Page({
   data: {
     message: '',
+    edit_id: null,
     chapterId: '',
     className: '',
     chapterName: '',
@@ -206,9 +207,9 @@ Page({
         let newValue = centendata;
         newValue[editIndex]['content'] = message;
         this.setData({
-          editStatus: false,
+          // editStatus: false,
           centendata: newValue,
-          message: ''
+          // message: ''
         })
       } else {
         let newValue = centendata;
@@ -216,13 +217,13 @@ Page({
         newValue[editIndex]['textimgTitle'] = textimgTitle;
         newValue[editIndex]['src'] = imgUrl;
         this.setData({
-          editStatus: false,
+          // editStatus: false,
           centendata: newValue,
-          message: '',
-          setTextImg: false
+          // message: '',//和新增一致云函数调用后再置空
+          // setTextImg: false
         })
       }
-      return;
+      // return;
     }
 
     console.log("进入add函数")
@@ -302,7 +303,7 @@ Page({
       } else if (this.data.message == '' && this.data.imgUrl == null) {
         wx.showModal({
           title: '提示',
-          content: '课程内容得有内容 亲~',
+          content: '课程内容不能为空~',
           showCancel: false
         })
         return;
@@ -351,20 +352,33 @@ Page({
         this.setData({
           newData: newData,
         })
-        this.bottom();
+
+        if (!this.data.editStatus) {
+          this.bottom();
+        }
+
         //  下面是云函数的调用
         wx.cloud.init({
           env: 'huixue-3g4h1ydg1dedcaf3'
         })
         wx.cloud.callFunction({
-          name: 'add_courseContent',
+          name: 'operate_courseContent',
           data: {
             contentData: that.data.newData,
+            edit_id: this.data.edit_id
           },
           success: res => {
-            that.data.centendata.push(this.data.newData);
+            if (!this.data.editStatus) {
+              that.data.centendata.push(this.data.newData);
+            }
+
             this.setData({
               centendata: that.data.centendata,
+            })
+            if (!this.data.editStatus) {
+              this.bottom();
+            }
+            this.setData({
               imgUrl: '',
               imageObject: '',
               message: '',
@@ -375,9 +389,15 @@ Page({
               textImgArray: [],
               answer: '',
               setFrontImg: '',
+              editStatus: false,//编辑状态关闭
+
+              edit_id: null//编辑id置空
+
 
             })
-            this.bottom();
+
+
+
           },
           fail: err => {
             // handle error
@@ -757,10 +777,7 @@ Page({
       }
       this.setData({
         centendata: newValue,
-        setwait: false,
-        editStatus: false
       })
-      return;
     }
 
     wx.cloud.init({
@@ -802,21 +819,32 @@ Page({
 
 
     wx.cloud.callFunction({
-      name: 'add_courseContent',
+      name: 'operate_courseContent',
       data: {
         contentData: that.data.contentData,
+        edit_id: this.data.edit_id
       },
       success: res => {
-        that.data.centendata.push({ ...contentData, is_show_right: 1 });
+        if (!this.data.editStatus) {
+          that.data.centendata.push({ ...contentData, is_show_right: 1 });
+          this.bottom();
+        }
         this.setData({
           centendata: that.data.centendata,
+        })
+        
+        this.setData({
           imgUrl: '',
           message: '',
           setwait: false,
           btnDie: false,
           answer: '',
+
+          editStatus: false,//编辑状态关闭
+
+          edit_id: null//编辑id置空
         })
-        this.bottom();
+       
       },
       fail: err => {
         // handle error
@@ -864,6 +892,7 @@ Page({
     const contentIndex = e.currentTarget.dataset.index;
     const contentItem = this.data.centendata[contentIndex];
     const contentType = contentItem['contentType']
+    const edit_id = contentItem['_id']
     if (contentType == 'text') {
       const { content } = contentItem;
       this.setData({
@@ -878,7 +907,8 @@ Page({
         answer,
         interactData,
         editStatus: true,
-        message: ''
+        message: '',
+        edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
       })
     } else if (contentType == 'img') {
       const { textimgTitle, src, content } = contentItem;
@@ -888,10 +918,12 @@ Page({
         message: content,
         imgUrl: src,
         editStatus: true,
+        edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
       })
     }
     this.setData({
-      editIndex: contentIndex
+      editIndex: contentIndex,
+      edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
     })
   },
 

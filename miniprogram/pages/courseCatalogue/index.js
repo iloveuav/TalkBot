@@ -1,3 +1,5 @@
+var app = getApp();
+
 Page({
   data: {
     btnType: 'priview',
@@ -21,13 +23,15 @@ Page({
   },
 
   onLoad: function (options) {
-    if (options.courseMess && options.btnType ) {
-      let crouseDetail = JSON.parse(options.courseMess);
+    if (options.btnType) {
+      // let crouseDetail = JSON.parse(options.courseMess);
+      let crouseDetail = app.globalData.CurrentCourseObj;
+      console.log("globalData-crouseDetail", crouseDetail)
       let btnType = options.btnType
       this.setData({
         crouseDetail: crouseDetail,
         btnType: btnType,
-        pageType: options.type?options.type:'course'
+        pageType: options.type ? options.type : 'course'
       })
       this.getChapterList(btnType);
 

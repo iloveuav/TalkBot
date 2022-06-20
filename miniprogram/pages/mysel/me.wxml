@@ -68,12 +68,17 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
-  <view class='item' bindtap="toSendCrouse">
-    <view class="title">发布课程</view>
+  <view class='item' bindtap="toCreateMessForm" data-type="course">
+    <view class="title">创作课程</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
-  <view class='item' bindtap='unopen'>
+  <view class='item' bindtap="toCreateMessForm" data-type="narrate">
+    <view class="title">推广山村</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
+  <view class='item' bindtap='feedBack'>
     <view class="title">我要反馈</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>

@@ -10,7 +10,7 @@ Page({
 
     // -------------用户卡片本地假数据--------
     currentIndex: 0,
-    pageType: 'studyPage'//当前页面类型 studyPage为公开课程页  mineCoursePage为个人上传课程页
+    pageType: 'publicPage'//当前页面类型 publicPage为公开课程页  mineNarratePage为个人上传课程页
 
 
   },
@@ -22,7 +22,7 @@ Page({
 
     this.setData({
       remind: '加载中',
-      pageType: options.pageType || 'studyPage'
+      pageType: options.pageType || 'publicPage'
     })
     if (options && options.pageType) {
       this.getAllCourseList(options.pageType);
@@ -100,7 +100,7 @@ Page({
   //       wx.setStorageSync('allCourseMess', res.result.allCourse);
 
   //       let showCourse = []
-  //       if (pageType === 'studyPage') {
+  //       if (pageType === 'publicPage') {
   //         showCourse = res.result.allCourse
   //       } else {
   //         showCourse = res.result.allCourse
@@ -125,7 +125,7 @@ Page({
     })
     wx.cloud.callFunction({
       name: 'get_CourseList',
-      data: {},
+      data: { pageType: pageType},
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -159,7 +159,7 @@ Page({
         }
 
         let showCourse = []
-        if (pageType === 'studyPage') {
+        if (pageType === 'publicPage') {
           showCourse = resultCourse
         } else {
           showCourse = resultCourse
