@@ -5,6 +5,7 @@ let ClassCollection = 'testCourseContents';
 
 Page({
   data: {
+    multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'], ['猪肉绦虫', '吸血虫']],
     message: '',
     edit_id: null,
     chapterId: '',
@@ -1032,4 +1033,8 @@ Page({
     this.data.mark = 0;
     this.data.newmark = 0;
   },
+
+  bindMultiPickerChange(e){
+    console.log(e.detail.value)
+  }
 })

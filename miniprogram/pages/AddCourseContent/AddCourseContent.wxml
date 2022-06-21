@@ -53,8 +53,10 @@
 </view>
 <view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" style="{{translate}}">
   <view class="rightBtnItem">
-    <image class="r-itemImgBox" catchtap="setFrontImg" src="../../images/button/addCoverBtn.png"></image>
-    <view class="r-itemName" catchtap="setFrontImg">设置封面</view>
+    <picker mode="multiSelector" class="picker" range="{{multiArray}}" bindchange="bindMultiPickerChange">
+      <image class="r-itemImgBox"  src="../../images/button/addCoverBtn.png"></image>
+      <view class="r-itemName" >设置封面</view>
+    </picker>
   </view>
   <view class="rightBtnItem">
     <image class="r-itemImgBox" catchtap="setInteract" src="../../images/button/addAnswerBtn.png"></image>
