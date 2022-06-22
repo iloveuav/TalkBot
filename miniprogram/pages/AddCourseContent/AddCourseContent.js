@@ -6,6 +6,47 @@ let ClassCollection = 'testCourseContents';
 Page({
   data: {
     multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'], ['猪肉绦虫', '吸血虫']],
+    multiVoiceArray: [
+      [{ name: '方言', value: 'fy', id: 0 }, { name: '治愈童声', value: 'ts', id: 1 }, { name: '美式发音', value: 'ms', id: 2 }, { name: '其他语种', value: 'qt', id: 3 }],
+
+
+      [//方言
+        { name: '姗姗(粤语女生)', value: 'shanshan', id: 0 },
+        { name: '佳佳(粤语女生)', value: 'jiajia', id: 1 },
+        { name: '桃子(粤语女生)', value: 'taozi', id: 12 },
+        { name: '大虎(东北话男声)', value: 'dahu', id: 3 },
+        { name: '老铁(东北老铁)', value: 'laotie', id: 4 },
+        { name: '艾侃(天津话)', value: 'aikan', id: 5 },
+        { name: '青青(中国台湾话女声)', value: 'qingqing', id: 6 }
+      ],
+
+      [//童声
+        { name: '艾彤(萝莉女声)', value: 'aitong' },
+        { name: '思彤(萝莉女声)', value: 'sitong' },
+        { name: '小北(萝莉女声)', value: 'xiaobei' },
+        { name: '杰力豆(治愈童声)', value: 'jielidou' }
+      ],
+
+      [//美式发音
+        { name: 'Lydia(英中双语)', value: 'lydia' },
+        { name: 'Abby(美音女声)', value: 'abby' },
+        { name: 'Wendy(英音女声)', value: 'wendy' },
+        { name: 'Annie(美语女声)', value: 'annie' },
+        { name: 'Emily(英音女声)', value: 'emily' },
+        { name: 'Andy(美音男声)', value: 'andy' },
+        { name: 'William(英音男声)', value: 'william' }
+      ],
+
+      [//多语种
+        { name: 'Tien(越南语女声)', value: 'tien' },
+        { name: '智香(日语女声)', value: 'tomoka' },
+        { name: '智也(日语男声)', value: 'tomoya' },
+        { name: 'Indah(印尼女声)', value: 'indah' },
+        { name: 'Farah(马来语女声)', value: 'farah' }
+      ]
+    ],
+
+    multiIndex: [0, 0, 0],
     message: '',
     edit_id: null,
     chapterId: '',
@@ -833,7 +874,7 @@ Page({
         this.setData({
           centendata: that.data.centendata,
         })
-        
+
         this.setData({
           imgUrl: '',
           message: '',
@@ -845,7 +886,7 @@ Page({
 
           edit_id: null//编辑id置空
         })
-       
+
       },
       fail: err => {
         // handle error
@@ -1034,7 +1075,10 @@ Page({
     this.data.newmark = 0;
   },
 
-  bindMultiPickerChange(e){
+  bindMultiPickerChange(e) {
     console.log(e.detail.value)
+  },
+  bindcolumnchange(e) {
+    console.log("bindcolumnchange",e.detail.value)
   }
 })

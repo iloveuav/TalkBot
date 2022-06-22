@@ -11,7 +11,8 @@
       </view>
       <view class="btn-item">
         <text class="chapterKey">章节名</text>
-        <input class="input" bindinput="bindChangeChapterName" confirm-type="done" value='{{chapterName}}' placeholder="eg:第一章" />
+        <input class="input" bindinput="bindChangeChapterName" confirm-type="done" value='{{chapterName}}'
+          placeholder="eg:第一章" />
       </view>
     </view>
   </view>
@@ -19,8 +20,8 @@
 <view class='message'>
   <view class='top_txt'>喂食前请确保上方信息填写正确</view>
   <view class="historycon">
-    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key='' data-index="{{index}}"
-      bindtap="preimage">
+    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key=''
+      data-index="{{index}}" bindtap="preimage">
       <!-- 时间 -->
       <view>
         <text class='time'>{{item.time}}</text>
@@ -51,11 +52,14 @@
     </scroll-view>
   </view>
 </view>
-<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" style="{{translate}}">
+<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start"
+  style="{{translate}}">
   <view class="rightBtnItem">
-    <picker mode="multiSelector" class="picker" range="{{multiArray}}" bindchange="bindMultiPickerChange">
-      <image class="r-itemImgBox"  src="../../images/button/addCoverBtn.png"></image>
-      <view class="r-itemName" >设置封面</view>
+    <picker mode="multiSelector" class="picker" range="{{multiVoiceArray}}" value="multiIndex" range-key='name'
+      bindchange="bindMultiPickerChange" bindcolumnchange="bindcolumnchange">
+
+      <image class="r-itemImgBox" src="../../images/button/addCoverBtn.png"></image>
+      <view class="r-itemName">设置封面</view>
     </picker>
   </view>
   <view class="rightBtnItem">
@@ -78,11 +82,11 @@
 <view class="setwaitData" style="height:{{btnBox}}rpx;width:{{btnBox}}rpx" wx:if="{{setwait}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="btnArrayBox">
-    <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}' placeholder="输入按钮个数"
-      placeholder-style="color:#318FFF;" />
+    <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}'
+      placeholder="输入按钮个数" placeholder-style="color:#318FFF;" />
     <view wx:for="{{btnNum-0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
-      <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥" value="{{interactData[groupindex]}}"
-        placeholder-style="color:#318FFF;" />
+      <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥"
+        value="{{interactData[groupindex]}}" placeholder-style="color:#318FFF;" />
     </view>
     <input bindinput="getAnswer" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{answer}}'
       placeholder="正确答案" placeholder-style="color:#318FFF;" />
@@ -114,9 +118,11 @@
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="modelTitle">设置封面</view>
   <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'></view>
-  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textimgTitle}}' placeholder="请再次输入课程名以确认课程名" placeholder-style="color:#318FFF;" />
+  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textimgTitle}}'
+    placeholder="请再次输入课程名以确认课程名" placeholder-style="color:#318FFF;" />
   <!-- <input bindinput='getContent' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{message}}' placeholder="课程难度系数" /> -->
-  <input bindinput='getSrc' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{imgUrl}}' placeholder="图片src（本地上传时可为空" placeholder-style="color:#318FFF;" />
+  <input bindinput='getSrc' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{imgUrl}}'
+    placeholder="图片src（本地上传时可为空" placeholder-style="color:#318FFF;" />
   <button class="modelSubmitBtn" catchtap="add">提交</button>
 </view>
 <!-- ----------------设置封面区end--------------- -->
@@ -125,7 +131,8 @@
   <view class="addimgBox">
     <image src="/images/button/upload2.png" class="addimgBtn" bindtap='uploadimg'></image>
   </view>
-  <textarea class="texeArea" maxlength="" type="emoji" bindinput="bindChangeMessage" confirm-type="done" value='{{message}}' />
+  <textarea class="texeArea" maxlength="" type="emoji" bindinput="bindChangeMessage" confirm-type="done"
+    value='{{message}}' />
   <view class="senMessBox">
     <button class="senMessButton" catchtap="add">发送</button>
   </view>
