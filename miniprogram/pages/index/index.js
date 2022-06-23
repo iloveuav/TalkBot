@@ -47,12 +47,16 @@ Page({
     var that = this
     var picList = []
 
-    picList.push("http://imgchatbot.uavserve.online/6.webp")
-    picList.push("http://imgchatbot.uavserve.online/7.webp")
-    picList.push("http://imgchatbot.uavserve.online/5.webp")
-    picList.push("http://imgchatbot.uavserve.online/1.webp")
-    picList.push("http://imgchatbot.uavserve.online/2.webp")
-    picList.push("http://imgchatbot.uavserve.online/3.webp")
+    // picList.push("http://imgchatbot.uavserve.online/6.webp")
+    // picList.push("http://imgchatbot.uavserve.online/7.webp")
+    // picList.push("http://imgchatbot.uavserve.online/5.webp")
+    // picList.push("http://imgchatbot.uavserve.online/1.webp")
+    // picList.push("http://imgchatbot.uavserve.online/2.webp")
+    // picList.push("http://imgchatbot.uavserve.online/3.webp")
+
+
+
+    picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/1654701789977.png")
 
     let login = wx.getStorageSync("islogin")
     console.log(login)

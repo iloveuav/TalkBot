@@ -3,10 +3,18 @@ const qiniuUploader = require("../../utils/qiniuUploader");
 
 let ClassCollection = 'testCourseContents';
 
+//阿里云tts
+const SpeechSynthesizer = require("../../tts/tts")
+const formatTime = require("../../tts/util").formatTime
+const sleep = require("../../tts/util").sleep
+const getToken = require("../../tts/token").getToken
+const fs = wx.getFileSystemManager()
+const app = getApp();
+
 Page({
   data: {
     multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'], ['猪肉绦虫', '吸血虫']],
- 
+
 
     multiIndex: [0, 0, 0],
     message: '',
@@ -40,58 +48,75 @@ Page({
     windowWidth: wx.getSystemInfoSync().windowWidth,
     staus: 1,
     translate: '',
-  
+
     //发音人相关
-    categoryCur:0,
-    roleCur:0,
+    categoryCur: 0,
+    roleCur: 0,
 
+    ttsStart: false,
+    ttsText: "",
+    tts: {},
+
+    curTTsRoleString:'Lydia',
+    curTTsTestText:'',
+
+
+    autoReadingAloud:false,
     multiVoiceArray: [
-      [{ name: '方言', value: 'fy', id: 0 }, { name: '治愈童声', value: 'ts', id: 1 }, { name: '美式发音', value: 'ms', id: 2 }, { name: '其他语种', value: 'qt', id: 3 }],
-
 
       [//方言
-        { name: '姗姗(粤语女生)', value: 'shanshan', id: 0 },
-        { name: '佳佳(粤语女生)', value: 'jiajia', id: 1 },
-        { name: '桃子(粤语女生)', value: 'taozi', id: 12 },
-        { name: '大虎(东北话男声)', value: 'dahu', id: 3 },
-        { name: '老铁(东北老铁)', value: 'laotie', id: 4 },
-        { name: '艾侃(天津话)', value: 'aikan', id: 5 },
-        { name: '青青(中国台湾话女声)', value: 'qingqing', id: 6 }
+        { name: '姗姗',intro:'(粤语女生)', value: 'shanshan', icon: 'voice_girl.png' },
+        { name: '佳佳',intro:'(粤语女生)',  value: 'jiajia', icon: 'voice_girl.png' },
+        { name: '桃子',intro:'(粤语女生)',  value: 'taozi', icon: 'voice_girl.png' },
+        { name: '大虎',intro:'(东北话男声)',  value: 'dahu', icon: 'voice_man.png' },
+        { name: '老铁',intro:'(东北老铁)',  value: 'laotie', icon: 'voice_man.png' },
+        { name: '艾侃',intro:'(天津话)',  value: 'aikan', icon: 'voice_man.png' },
+        { name: '青青', intro:'(中国台湾话女声)', value: 'qingqing', icon: 'voice_girl.png' }
       ],
 
       [//童声
-        { name: '艾彤(萝莉女声)', value: 'aitong' },
-        { name: '思彤(萝莉女声)', value: 'sitong' },
-        { name: '小北(萝莉女声)', value: 'xiaobei' },
-        { name: '杰力豆(治愈童声)', value: 'jielidou' }
+        { name: '艾彤',intro:'(萝莉女声)',  value: 'aitong', icon: 'girl.png' },
+        { name: '思彤', intro:'(萝莉女声)', value: 'sitong', icon: 'girl.png' },
+        { name: '小北', intro:'(萝莉女声)', value: 'xiaobei', icon: 'girl.png' },
+        { name: '杰力豆',intro:'(治愈童声)',  value: 'jielidou', icon: 'boy.png' }
       ],
 
       [//美式发音
-        { name: 'Lydia(英中双语)', value: 'lydia' },
-        { name: 'Abby(美音女声)', value: 'abby' },
-        { name: 'Wendy(英音女声)', value: 'wendy' },
-        { name: 'Annie(美语女声)', value: 'annie' },
-        { name: 'Emily(英音女声)', value: 'emily' },
-        { name: 'Andy(美音男声)', value: 'andy' },
-        { name: 'William(英音男声)', value: 'william' }
+        { name: 'Lydia',intro:'(英中双语)',  value: 'lydia', icon: 'voice_girl.png' },
+        { name: 'Abby', intro:'(美音女声)', value: 'abby', icon: 'voice_girl.png' },
+        { name: 'Wendy',intro:'(英音女声)',  value: 'wendy', icon: 'voice_girl.png' },
+        { name: 'Annie', intro:'(美语女声)', value: 'annie', icon: 'voice_girl.png' },
+        { name: 'Emily',intro:'(英音女声)',  value: 'emily', icon: 'voice_girl.png' },
+        { name: 'Andy',intro:'(美音男声)',  value: 'andy', icon: 'voice_man.png' },
+        { name: 'William',intro:'(英音男声)',  value: 'william', icon: 'voice_man.png' }
       ],
 
       [//多语种
-        { name: 'Tien(越南语女声)', value: 'tien' },
-        { name: '智香(日语女声)', value: 'tomoka' },
-        { name: '智也(日语男声)', value: 'tomoya' },
-        { name: 'Indah(印尼女声)', value: 'indah' },
-        { name: 'Farah(马来语女声)', value: 'farah' }
+        { name: 'Tien',intro:'(越南语女声)', value: 'tien', icon: 'voice_girl.png' },
+        { name: '智香',intro:'(日语女声)', value: 'tomoka', icon: 'voice_girl.png' },
+        { name: '智也',intro:'(日语男声)', value: 'tomoya', icon: 'voice_man.png' },
+        { name: 'Indah', intro:'(印尼女声)',value: 'indah', icon: 'voice_girl.png' },
+        { name: 'Farah',intro:'(马来语女声)', value: 'farah', icon: 'voice_girl.png' }
       ]
     ],
 
 
-    category:[{name:'方言'},{name:'童声'},{name:'美式发音'},{name:'多语种'}]
+    category: [{ name: '方言', icon: '../../images/icon/china.jpeg' }, { name: '童声', icon: '../../images/icon/child.png' }, { name: '美式发音', icon: '../../images/icon/eng.png' }, { name: '多语种', icon: '../../images/icon/more_language.png' }],
+
+    curmultiVoiceArray: []
+
+
   },
 
-  onLoad: function (options) {
+  onLoad: async function (options) {
     console.log(options)
     const pageType = options.pageType ? options.pageType : 'course'
+
+    // console.log("111",this.data.multiVoiceArray[0][0])
+    this.setData({
+      curmultiVoiceArray: this.data.multiVoiceArray[0],
+      curTTsRoleString:this.data.multiVoiceArray[0][0].value
+    })
 
     //选择集合
     if (pageType === 'course') {
@@ -164,18 +189,209 @@ Page({
       })
 
     }
+
+
+    //阿里tts
+    try {
+      this.data.token = await getToken(app.globalData.AKID,
+        app.globalData.AKKEY)
+      // this.data.token = 'a9a57218797b40ca9c9414703128e456'//临时token
+      console.log('token', this.data.token)
+    } catch (e) {
+      console.log("error on get token:", JSON.stringify(e))
+      return
+    }
+
+    let tts = new SpeechSynthesizer({
+      url: app.globalData.URL,
+      appkey: app.globalData.JPAPPKEY,//JPAPPKEY   CEAPPKEY
+      token: this.data.token
+    })
+
+    tts.on("meta", (msg) => {
+      console.log("Client recv metainfo:", msg)
+    })
+
+    tts.on("data", (msg) => {
+      console.log(`recv size: ${msg.byteLength}`)
+      //console.log(dumpFile.write(msg, "binary"))
+      if (this.data.saveFile) {
+        try {
+          fs.appendFileSync(
+            this.data.saveFile,
+            msg,
+            "binary"
+          )
+          console.log(`append ${msg.byteLength}`)
+        } catch (e) {
+          console.error(e)
+        }
+      } else {
+        console.log("save file empty")
+      }
+    })
+
+    tts.on("completed", async (msg) => {
+      console.log("Client recv completed:", msg)
+      await sleep(500)
+      fs.close({
+        fd: this.data.saveFd,
+        success: (res) => {
+          let ctx = wx.createInnerAudioContext()
+          ctx.autoplay = true
+          ctx.src = this.data.saveFile
+          ctx.onPlay(() => {
+            console.log('start playing..')
+          })
+          ctx.onError((res) => {
+            console.log(res.errMsg)
+            console.log(res.errCode)
+            fs.unlink({
+              filePath: this.data.saveFile,
+              success: (res) => {
+                console.log(`remove ${this.data.saveFile} done`)
+                this.data.saveFile = null
+                this.data.saveFd = null
+              },
+              failed: (res) => {
+                console.log("remove failed:" + res.errMsg)
+              }
+            })
+          })
+          ctx.onEnded((res) => {
+            console.log("play done...")
+            fs.unlink({
+              filePath: this.data.saveFile,
+              success: (res) => {
+                console.log(`remove ${this.data.saveFile} done`)
+                this.data.saveFile = null
+                this.data.saveFd = null
+              },
+              failed: (res) => {
+                console.log("remove failed:" + res.errMsg)
+              }
+            })
+          })
+        },
+        fail: (res) => {
+          console.log("saved file error:" + res.errMsg)
+        }
+      })
+    })
+
+    tts.on("closed", () => {
+      console.log("Client recv closed")
+    })
+
+    tts.on("failed", (msg) => {
+      console.log("Client recv failed:", msg)
+    })
+
+    this.data.tts = tts
+  },
+
+   // ----------------上传图文准备---------------
+   getSpeachText(e) {
+    if (e.detail.value) {
+      let value = e.detail.value;
+      this.setData({
+        curTTsTestText: value,
+      });
+    }
+  },
+
+    //阿里tts
+  onTtsSpeach: function (e) {
+    let content = ''
+    let that = this
+    console.log('tts1',e);
+
+    if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
+      content = e
+      // console.log(e);
+    } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
+      content = e.currentTarget.dataset.content;
+
+    } else {
+      if (e.currentTarget.dataset.content != undefined && this.data.autoReadingAloud == false) {
+        content = e.currentTarget.dataset.content;
+        console.log(content)
+      }
+      if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {
+        content = e
+      }
+    }
+
+    console.log('tts',content)
+    if (!content || !this.data.tts) {
+      console.log("text empty")
+      wx.showToast({
+        title: "文本为空",
+        icon: "error",
+        duration: 1000,
+        mask: true
+      })
+      return
+    }
+    if (this.data.ttsStart) {
+      wx.showToast({
+        title: "正在合成请稍候",
+        icon: "error",
+        duration: 1000,
+        mask: true
+      })
+      return
+    } else {
+      this.data.ttsStart = true
+    }
+    console.log("try to synthesis:" + content)
+    let save = formatTime(new Date()) + ".wav"
+    let savePath = wx.env.USER_DATA_PATH + "/" + save
+    console.log(`save to ${savePath}`)
+    fs.open({
+      filePath: savePath,
+      flag: "a+",
+      success: async (res) => {
+        console.log(`open ${savePath} done`)
+        this.data.saveFd = res.fd
+        this.data.saveFile = savePath
+        console.log("tts3",this.data.tts)
+        console.log("tts3",that.data.tts)
+
+        // voice 中英混女声 Rosa   日语女声 tomoka
+        let param = this.data.tts.defaultStartParams('tomoka')
+        // let param = this.data.tts.defaultStartParams('Rosa')
+        param.text = content
+        // param.voice = "tomoka"
+        param.voice = this.data.curTTsRoleString
+        try {
+          await this.data.tts.start(param)
+          console.log("tts done")
+          this.data.ttsStart = false
+        } catch (e) {
+          console.log("tts start error:" + e)
+        }
+      },
+      fail: (res) => {
+        console.log(`open ${savePath} failed: ${res.errMsg}`)
+      }
+    })
   },
 
   swiperCategoryChange: function (e) {
     console.log(e)
     this.setData({
-      categoryCur: e.detail.current
+      categoryCur: e.detail.current,
+      curmultiVoiceArray: this.data.multiVoiceArray[e.detail.current],
+      curTTsRoleString:this.data.multiVoiceArray[e.detail.current][0].value
     })
   },
   swiperRoleChange: function (e) {
-    console.log(e)
+    console.log('role',this.data.curmultiVoiceArray[e.detail.current])
+    const roleObj = this.data.curmultiVoiceArray[e.detail.current]
     this.setData({
-      roleCur: e.detail.current
+      roleCur: e.detail.current,
+      curTTsRoleString:roleObj.value
     })
   },
 
@@ -411,6 +627,7 @@ Page({
           imgfile: that.data.tempimg,
           time: time.formatTime(new Date, 'Y/M/D'),
           is_show_right: 1,
+          curTTsRoleString:this.data.curTTsRoleString
         }
 
         this.setData({
@@ -857,6 +1074,8 @@ Page({
       className: this.data.className,
       chapterName: this.data.chapterName,
 
+      curTTsRoleString:this.data.curTTsRoleString,
+
       detail: {
         btnNum: this.data.btnNum,
         interactData: this.data.interactData,
@@ -1101,6 +1320,6 @@ Page({
     console.log(e.detail.value)
   },
   bindcolumnchange(e) {
-    console.log("bindcolumnchange",e.detail.value)
+    console.log("bindcolumnchange", e.detail.value)
   }
 })

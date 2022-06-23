@@ -40,10 +40,10 @@
               <!-- 文字消息 content有值才显示 如果为语音消息content应为语音消息长度-->
 
               <!-- 图片消息 contentType为img时显示 src为数据对象中的src catchtap="speach" -->
-              <text style="font-size:38rpx;font-weight:600;" v-if='{{item.textimgTitle!=""}}' data-content="{{item.textimgTitle}}" catchtap="onTtsSpeach">{{item.textimgTitle}}\n</text>
+              <text style="font-size:38rpx;font-weight:600;" v-if='{{item.textimgTitle!=""}}' data-content="{{item.textimgTitle}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.textimgTitle}}\n</text>
               <image wx:if='{{item.contentType=="img"}}' src="{{item.src}}"  mode="aspectFill" data-i="{{groupindex}}" catchtap="preimage" lazy-load></image>
 
-              <text v-if='{{item.content!=""&&item.content!=undefined}}' data-content="{{item.content}}" catchtap="onTtsSpeach">{{item.content}}</text>
+              <text v-if='{{item.content!=""&&item.content!=undefined}}' data-content="{{item.content}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.content}}</text>
             </view>
           </view>
 
@@ -61,7 +61,7 @@
           <!-- -----------------单词横向轮播卡片组件------------------------------------------ -->
           <view class="wordCard" wx-if="{{item.textImgArray.length>0}}">
             <scroll-view>
-              <wordCard allItem="{{item.textImgArray}}" bindspeach="onTtsSpeach">
+              <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" bindspeach="onTtsSpeach">
               </wordCard>
             </scroll-view>
           </view>

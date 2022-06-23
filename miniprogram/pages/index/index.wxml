@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <!-- <view class="myswiper"> -->
 
-<swiper indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
+<swiper style="height:600rpx" indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
   <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
     <swiper-item class="swiper-item">
       <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
@@ -61,14 +61,14 @@
   </view> -->
 
 
-  <view class="flex-item" bindtap="toExtend">
+  <!-- <view class="flex-item" bindtap="toExtend">
     <image src="../../images/index/xxzx.png"></image>
     <text>扩展功能</text>
-  </view>
+  </view> -->
 
 
 </view>
 
 <view>
-  <button class="continueBtn" catchtap="touchAddVisitorApply">访客入村申请</button>
+  <!-- <button class="continueBtn" catchtap="touchAddVisitorApply">访客入村申请</button> -->
 </view>

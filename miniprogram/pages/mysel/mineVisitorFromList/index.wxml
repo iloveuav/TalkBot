@@ -19,9 +19,9 @@
       <image class="remind-img" src="/images/loading_blue.gif"></image>
     </view>
 
-    <view class="course" wx:if="{{!remind}}">
+    <!-- <view class="course" wx:if="{{!remind}}">
       <view class="course-center-title">我的访客申请列表</view>
-    </view>
+    </view> -->
 
     <!-- 列表部分 -->
     <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="true" showScrollbar="false"

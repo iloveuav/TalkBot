@@ -245,12 +245,31 @@ page {
   color: #318FFF;
   background-color: #DEEDFF;
   text-align: left;
-  margin-left: 60rpx;
-  padding: 10rpx;
-  max-height: 120rpx;
-  max-width: 280rpx;
+  margin-left: 20rpx;
+  padding: 20rpx;
+  max-height: 145rpx;
+  max-width: 240rpx;
 
 }
+
+
+.modelBtn {
+  font-size: 10px;
+  flex: 1;
+  min-width: 100px;
+  min-height: 30px;
+  max-height: 40px;
+  max-width: 120px;
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  z-index: 9999;
+  color: #318FFF;
+  background-color: #DEEDFF;
+  text-align: center;
+  margin-left: 30rpx;
+}
+
+
+
 
 .modelSubmitBtn {
   font-size: 10px;
@@ -504,8 +523,8 @@ button[disabled] {
 .voice_category_swiper {
   margin: 0rpx;
   height: 160rpx;
-  width: 300rpx;
-  margin-left: 42%;
+  width: 320rpx;
+  margin-left: 40%;
   border-radius: 20rpx;
   overflow: hidden;
   /* border: 1rpx solid red; */
@@ -515,9 +534,9 @@ button[disabled] {
 
 .voice_role_swiper {
   margin: 0rpx;
-  height: 160rpx;
-  width: 220rpx;
-  margin-left: 5%;
+  height: 220rpx;
+  width: 320rpx;
+  margin-left: 1%;
   border-radius: 20rpx;
   overflow: hidden;
   /* border-right: 1rpx solid rgb(131, 120, 120); */
@@ -527,17 +546,31 @@ button[disabled] {
 
 /* 当前播放图片的大小 */
 .now {
-  transform: scaleY(1)
+  transform: scaleY(1.1);
+  transform: scaleX(1);
+  /* border-bottom: 1px solid #2b8af5; */
 }
 
 /* 未播放图片的大小 */
 .next {
-  transform: scaleY(0.8);
+  transform: scaleY(0.2);
+  transform: scaleX(0.6);
 }
 
 .voice_row {
   display: flex;
   flex-direction: row;
+  position: relative;
+}
+
+.role_Speak{
+  width: 100rpx;
+  height: 100rpx;
+  position:absolute;
+  right: 20rpx;
+  bottom:-130rpx;
+  z-index: 9999;
+
 }
 
 .img {
@@ -546,13 +579,26 @@ button[disabled] {
   /* border: 1rpx solid red; */
 }
 
-.voice_category_Btn {
+.voice_modal_text_cur {
   font-size: 22rpx;
   max-height: 220rpx;
   max-width: 120rpx;
   border-radius: 100rpx 100rpx 100rpx 100rpx;
   z-index: 9999;
-  color: rgb(48, 43, 43);
+  color: #689af0;
+  font-weight: 1000;
+  /* background-color: #318FFF; */
+  text-align: center;
+}
+
+.voice_modal_text_next {
+  font-size: 22rpx;
+  max-height: 220rpx;
+  max-width: 120rpx;
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  z-index: 9999;
+  color: rgb(161, 163, 165);
+  font-weight: 600;
   /* background-color: #318FFF; */
   text-align: center;
 }

@@ -70,6 +70,7 @@ Page({
     //阿里tts
     ttsStart: false,
     ttsText: "",
+    curTTsRoleString: '',//不同文本里面设置的发音人字段
 
     tts: {}
   },
@@ -382,11 +383,13 @@ Page({
 
   //阿里tts
   onTtsSpeach: function (e) {
-    let content = ''
-    // console.log(e);
-
-    if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
-      content = e
+    let content = ''//获取文本内容
+    let curTTsRoleString = ''//获取文本发音人
+    console.log("curTTsRoleString---e",e);
+    if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {//自动朗读
+      content = e.content
+      curTTsRoleString = e.curTTsRoleString|| "Rosa"
+      this.data.curTTsRoleString = curTTsRoleString
       // console.log(e);
     } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
       content = e.currentTarget.dataset.content;
@@ -396,10 +399,24 @@ Page({
         content = e.currentTarget.dataset.content;
         console.log(content)
       }
-      if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {
-        content = e
+      if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {//关闭了自动朗读
+        content = e.content
+        curTTsRoleString = e.curTTsRoleString|| "Rosa"
+        this.data.curTTsRoleString = curTTsRoleString
       }
     }
+    if (e.currentTarget?.dataset?.curttsrolestring !== undefined) {//如果是用户点击文本朗读
+      curTTsRoleString = e.currentTarget?.dataset?.curttsrolestring
+      this.data.curTTsRoleString = curTTsRoleString
+    }
+    // if (e.currentTarget?.dataset?.curttsrolestring !== undefined) {//如果是系统自动朗读
+    //   curTTsRoleString = e.currentTarget?.dataset?.curttsrolestring|| "Rosa"
+    //   this.data.curTTsRoleString = curTTsRoleString
+    // }
+
+    console.log('curTTsRoleString', e.currentTarget?.dataset?.curttsrolestring)
+    console.log('curTTsRoleString2', this.data.curTTsRoleString)
+
 
     var that = this
     if (!content || !this.data.tts) {
@@ -434,11 +451,11 @@ Page({
         console.log(`open ${savePath} done`)
         this.data.saveFd = res.fd
         this.data.saveFile = savePath
-        // voice 中英混女声 Rosa   日语女声 tomoka
+        // voice 中英混女声 Rosa/Lydia   日语女声 tomoka
         let param = this.data.tts.defaultStartParams('tomoka')
         // let param = this.data.tts.defaultStartParams('Rosa')
         param.text = content
-        param.voice = "tomoka"
+        param.voice = this.data.curTTsRoleString || "Rosa"
         try {
           await this.data.tts.start(param)
           console.log("tts done")
@@ -561,7 +578,7 @@ Page({
           })
           if (this.data.autoReadingAloud) {
             // this.speach(data.content);
-            this.onTtsSpeach(data.content);
+            this.onTtsSpeach({ content: data.content, curTTsRoleString: data.curTTsRoleString });
           }
           this.bottom();
           this.sleep(100);

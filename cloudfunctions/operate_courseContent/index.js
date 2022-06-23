@@ -34,6 +34,7 @@ exports.main = async (event, context) => {
         
         detail: event.contentData.detail,
         openid: wxContext.OPENID,
+        // curTTsRoleString:event.contentData.curTTsRoleString,
 
         Collection: event.contentData.classCollection
       },
@@ -56,6 +57,7 @@ exports.main = async (event, context) => {
         time: event.contentData.time,
         detail: event.contentData.detail,
         openid: wxContext.OPENID,
+        curTTsRoleString:event.contentData.curTTsRoleString,
 
         Collection: event.contentData.classCollection
       }
