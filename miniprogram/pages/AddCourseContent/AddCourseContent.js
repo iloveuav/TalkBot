@@ -6,6 +6,45 @@ let ClassCollection = 'testCourseContents';
 Page({
   data: {
     multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'], ['猪肉绦虫', '吸血虫']],
+ 
+
+    multiIndex: [0, 0, 0],
+    message: '',
+    edit_id: null,
+    chapterId: '',
+    className: '',
+    chapterName: '',
+    value: '',
+    imgUrl: '',
+    textimgTitle: '',
+    uptoken: '',
+    centendata: [],
+    interactData: [],
+    textImgArray: [],
+    answer: '',
+    btnNum: '',
+    editStatus: false,
+    editIndex: '',
+
+    crouseDetail: {},
+    chapterList: [],
+    curChapter: {},
+
+    tempimg: [], //临时数组  等点击发送的时候一起走
+
+    //拖拽相关
+    mark: 0,
+    newmark: 0,
+    startmark: 0,
+    endmark: 0,
+    windowWidth: wx.getSystemInfoSync().windowWidth,
+    staus: 1,
+    translate: '',
+  
+    //发音人相关
+    categoryCur:0,
+    roleCur:0,
+
     multiVoiceArray: [
       [{ name: '方言', value: 'fy', id: 0 }, { name: '治愈童声', value: 'ts', id: 1 }, { name: '美式发音', value: 'ms', id: 2 }, { name: '其他语种', value: 'qt', id: 3 }],
 
@@ -46,38 +85,8 @@ Page({
       ]
     ],
 
-    multiIndex: [0, 0, 0],
-    message: '',
-    edit_id: null,
-    chapterId: '',
-    className: '',
-    chapterName: '',
-    value: '',
-    imgUrl: '',
-    textimgTitle: '',
-    uptoken: '',
-    centendata: [],
-    interactData: [],
-    textImgArray: [],
-    answer: '',
-    btnNum: '',
-    editStatus: false,
-    editIndex: '',
 
-    crouseDetail: {},
-    chapterList: [],
-    curChapter: {},
-
-    tempimg: [], //临时数组  等点击发送的时候一起走
-
-    //拖拽相关
-    mark: 0,
-    newmark: 0,
-    startmark: 0,
-    endmark: 0,
-    windowWidth: wx.getSystemInfoSync().windowWidth,
-    staus: 1,
-    translate: '',
+    category:[{name:'方言'},{name:'童声'},{name:'美式发音'},{name:'多语种'}]
   },
 
   onLoad: function (options) {
@@ -155,6 +164,19 @@ Page({
       })
 
     }
+  },
+
+  swiperCategoryChange: function (e) {
+    console.log(e)
+    this.setData({
+      categoryCur: e.detail.current
+    })
+  },
+  swiperRoleChange: function (e) {
+    console.log(e)
+    this.setData({
+      roleCur: e.detail.current
+    })
   },
 
   bindChangeChapterName: function (e) {

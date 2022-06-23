@@ -238,19 +238,18 @@ page {
   z-index: 99999999;
 }
 
-.modelBtn {
+.audio_txt_textarea {
   font-size: 10px;
-  flex: 1;
-  min-width: 100px;
-  min-height: 30px;
-  max-height: 40px;
-  max-width: 120px;
-  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  border-radius: 10rpx;
   z-index: 9999;
   color: #318FFF;
   background-color: #DEEDFF;
-  text-align: center;
-  margin-left: 30rpx;
+  text-align: left;
+  margin-left: 60rpx;
+  padding: 10rpx;
+  max-height: 120rpx;
+  max-width: 280rpx;
+
 }
 
 .modelSubmitBtn {
@@ -499,4 +498,61 @@ button[disabled] {
 .message_text .answer_title {
   color: #2b8af5;
   font-weight: 700;
+}
+
+/* //发音人 选择模态框 */
+.voice_category_swiper {
+  margin: 0rpx;
+  height: 160rpx;
+  width: 300rpx;
+  margin-left: 42%;
+  border-radius: 20rpx;
+  overflow: hidden;
+  /* border: 1rpx solid red; */
+  /* border-bottom: 1rpx solid rgb(131, 120, 120); */
+
+}
+
+.voice_role_swiper {
+  margin: 0rpx;
+  height: 160rpx;
+  width: 220rpx;
+  margin-left: 5%;
+  border-radius: 20rpx;
+  overflow: hidden;
+  /* border-right: 1rpx solid rgb(131, 120, 120); */
+
+  /* border: 1rpx solid red; */
+}
+
+/* 当前播放图片的大小 */
+.now {
+  transform: scaleY(1)
+}
+
+/* 未播放图片的大小 */
+.next {
+  transform: scaleY(0.8);
+}
+
+.voice_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.img {
+  width: 120rpx;
+  height: 100rpx;
+  /* border: 1rpx solid red; */
+}
+
+.voice_category_Btn {
+  font-size: 22rpx;
+  max-height: 220rpx;
+  max-width: 120rpx;
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  z-index: 9999;
+  color: rgb(48, 43, 43);
+  /* background-color: #318FFF; */
+  text-align: center;
 }

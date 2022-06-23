@@ -4,8 +4,7 @@
 <swiper indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
   <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
     <swiper-item class="swiper-item">
-      <image bindtap="preimage" src='{{item}}' mode="aspectFill"
-        class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
+      <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
     </swiper-item>
   </block>
   <view class="remind-box" wx:if="{{remind}}">
@@ -36,10 +35,10 @@
 
 
 
-  <view class="flex-item" bindtap='toNarrate'>
+  <!-- <view class="flex-item" bindtap='toNarrate'>
     <image src="../../images/index/messge.png"></image>
     <text>山村介绍</text>
-  </view>
+  </view> -->
 
   <view class="flex-item" bindtap="toCrouseBot">
     <image src="../../images/index/love.png"></image>
@@ -56,10 +55,10 @@
     <text>创作课程</text>
   </view>
 
-  <view class="flex-item" bindtap="toCreateMessForm" data-type="narrate">
+  <!-- <view class="flex-item" bindtap="toCreateMessForm" data-type="narrate">
     <image src="../../images/index/plane.png"></image>
     <text>介绍山村</text>
-  </view>
+  </view> -->
 
 
   <view class="flex-item" bindtap="toExtend">

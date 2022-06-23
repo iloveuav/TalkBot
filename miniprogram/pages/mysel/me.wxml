@@ -63,20 +63,20 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
-  <view class='item' bindtap="toMineNarrateList">
+  <!-- <view class='item' bindtap="toMineNarrateList">
     <view class="title">我上传的山村介绍</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
-  </view>
+  </view> -->
 
   <view class='item' bindtap="toCreateMessForm" data-type="course">
     <view class="title">创作课程</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
-  <view class='item' bindtap="toCreateMessForm" data-type="narrate">
+  <!-- <view class='item' bindtap="toCreateMessForm" data-type="narrate">
     <view class="title">推广山村</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
-  </view>
+  </view> -->
 
   <view class='item' bindtap='feedBack'>
     <view class="title">我要反馈</view>
