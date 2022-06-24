@@ -31,7 +31,6 @@ Page({
     centendata: [],
     interactData: [],
     textImgArray: [{
-
     }],
     answer: '',
     btnNum: '',
@@ -647,7 +646,7 @@ Page({
         if (that.data.setTextImg) {
           newcontentType = 'textImg';
         } else {
-          newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
+          newcontentType = that.data.imgUrl == null ? 'text' : 'img';
         }
 
         var newData = {
