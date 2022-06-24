@@ -17,13 +17,13 @@ Page({
 
 
     multiIndex: [0, 0, 0],
-    message: '',
+    message: null,
     edit_id: null,
     chapterId: '',
     className: '',
     chapterName: '',
     value: '',
-    imgUrl: '',
+    imgUrl: null,
     textimgTitle: '',
     curTextImg: {},
     curTextImgIndex: 0,
@@ -433,9 +433,12 @@ Page({
               success: res => {
                 wx.showModal({
                   title: '提示',
-                  content: '成功删除该章节~',
+                  content: '已根据章节Id删除对应章节数据~',
                   showCancel: false,
                 })
+                wx.navigateBack({
+                  delta: 2//返回的页面数
+                });
                 return;
               },
               fail: err => {
@@ -496,7 +499,7 @@ Page({
       imgUrl: '',
       imageObject: '',
       answer: '',
-      curTextImgIndex: textImgArray.length-1
+      curTextImgIndex: textImgArray.length - 1
 
     })
   },
@@ -596,6 +599,7 @@ Page({
       })
     } else { //这个else一直到最后
 
+      console.log("this.data.message", this.data.message)
       // --------设置封面end-----------------------
       if (this.data.chapterId == '') {
         wx.showModal({
@@ -611,14 +615,14 @@ Page({
           showCancel: false
         })
         return;
-      } else if (this.data.message == '' && this.data.imgUrl == null) {
+      } else if ((this.data.message == '' || this.data.message == null||!this.data.message) && this.data.imgUrl == null) {
         wx.showModal({
           title: '提示',
           content: '课程内容不能为空~',
           showCancel: false
         })
         return;
-      } else if (this.data.chapterName == '' && this.data.imgUrl == null) {
+      } else if (this.data.chapterName == '') {
         wx.showModal({
           title: '提示',
           content: '章节名不能为空~',
@@ -633,11 +637,19 @@ Page({
           })
         }
         let newcontentType;
-        if (that.data.textImgArray.length <= 0) {
-          newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
-        } else {
+        // if (that.data.textImgArray.length <= 0) {
+        //   newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
+        // } else {
+        //   newcontentType = 'textImg';
+        // }
+
+        //add函数 只给上传文字、图片、图文使用
+        if (that.data.setTextImg) {
           newcontentType = 'textImg';
+        } else {
+          newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
         }
+
         var newData = {
           contentType: newcontentType,
           isBot: true,
@@ -703,7 +715,7 @@ Page({
               textimgTitle: '',
               imgfile: '',
               btnDie: false,
-              textImgArray: [],
+              textImgArray: [{}],
               answer: '',
               setFrontImg: '',
               editStatus: false,//编辑状态关闭
@@ -1401,7 +1413,7 @@ Page({
       textimgTitle: '',
       imgfile: '',
       btnDie: false,
-      textImgArray: [],
+      textImgArray: [{}],
       answer: '',
       setFrontImg: '',
       editStatus: false,//编辑状态关闭

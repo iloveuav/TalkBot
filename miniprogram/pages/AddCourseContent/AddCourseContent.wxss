@@ -293,9 +293,9 @@ page {
 
 .modelSubmitBtn {
   font-size: 10px;
-  max-height: 40rpx;
-  max-width: 280rpx;
-  width: 200rpx;
+  max-height: 60rpx;
+  max-width: 180rpx;
+  width: 150rpx;
   border-radius: 100rpx 100rpx 100rpx 100rpx;
   z-index: 9999;
   color: #fff;

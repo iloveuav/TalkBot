@@ -33,6 +33,7 @@ Page({
     courseUUid: util.uuid(),
 
     type: 'course',
+    isPageEdit: false,
 
     pageTitle: '课程信息',
     pageRowText: '课程内容需要结果审核后才会公开哦',
@@ -73,12 +74,13 @@ Page({
       if (crouseDetail) {
         this.setData({
           editCourseDetail: crouseDetail,
-          type: options.type
+          type: options.type,
+          isPageEdit: true
         })
       }
     }
 
-    let islogin = wx.getStorageSync(islogin);
+    let islogin = wx.getStorageSync('islogin');
     if (islogin == false || islogin == undefined) {
       wx.showModal({
         title: '提示',
@@ -242,21 +244,23 @@ Page({
         type: this.data.type
       },
       success: res => {
-        // wx.showModal({
-        //   title: '课程添加成功',
-        //   content: '可以开始添加章节数据了~',
-        //   showCancel: false,
-        // })
+        if (this.data.isPageEdit) {
+          wx.navigateBack({
+            delta: 2//返回的页面数
+          });
+          return;
+        } else {
+          const crouseDetail = courseMess
+          app.globalData.CurrentCourseObj = crouseDetail
+          wx.navigateTo({
+            //这里传值
+            url: "../../pages/courseCatalogue/index?btnType=" + 'edit' + "&type=" + this.data.type,
+            // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+            // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+          })
+          return;
+        }
 
-        const crouseDetail = courseMess
-        app.globalData.CurrentCourseObj = crouseDetail
-        wx.navigateTo({
-          //这里传值
-          url: "../../pages/courseCatalogue/index?btnType=" + 'edit' + "&type=" + this.data.type,
-          // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
-          // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
-        })
-        return;
       },
       fail: err => {
         // handle error

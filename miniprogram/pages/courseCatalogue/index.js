@@ -60,7 +60,7 @@ Page({
 
   },
 
-  up(x,y){
+  up(x, y) {
     return x._id.chapterId - y._id.chapterId
   },
 
@@ -142,6 +142,9 @@ Page({
                 content: '成功删除该课程~',
                 showCancel: false,
               })
+              wx.navigateBack({
+                delta: 1//返回的页面数
+              });
               return;
             },
             fail: err => {

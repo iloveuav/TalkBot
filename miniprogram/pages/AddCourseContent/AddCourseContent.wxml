@@ -11,7 +11,7 @@
       </view>
       <view class="btn-item">
         <text class="chapterKey">章节名</text>
-        <input class="input" bindinput="bindChangeChapterName" confirm-type="done" value='{{chapterName}}'
+        <input disabled="{{!!chapterName}}" class="input" bindinput="bindChangeChapterName" confirm-type="done" value='{{chapterName}}'
           placeholder="eg:第一章" />
       </view>
     </view>
@@ -122,7 +122,7 @@
   <input bindinput='getSrc' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
     confirm-type="done" value='{{textImgArray[curTextImgIndex].src}}' placeholder="图片src（可为空）" />
 
-  <button class="modelSubmitBtn" style="max-width:420rpx;width:420rpx" catchtap="addOneItem">新增图文项</button>
+  <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItem">新增图文项</button>
   <image wx:if="{{textImgArray.length>1&&curTextImgIndex>=1}}" catchtap="leftTextImg" class="left_textimg" src="../../images/icon/left.png" alt=""/>
   <button class="modelSubmitBtn" catchtap="add">提交</button>
   <image  wx:if="{{textImgArray.length>1&&curTextImgIndex<textImgArray.length-1}}" catchtap="rightTextImg" class="right_textimg" src="../../images/icon/right.png" alt=""/>
