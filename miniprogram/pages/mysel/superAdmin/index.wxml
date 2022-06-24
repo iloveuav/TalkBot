@@ -24,9 +24,9 @@
 				<text>访客待审核列表🎫 </text>
 			</view> -->
 
-			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
+			<!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
 				<text>访客申请日志📕 </text>
-			</view>
+			</view> -->
 
 
 
@@ -79,8 +79,7 @@
 		</block>
 		<!-- VisitorEdit页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 4}}">
-			<vistorEdit list_index="{{list_index}}" bindchangePage="changePage" isSuperAdmin="{{true}}" bind:Reload="visitorDetailReload">
-			</vistorEdit>
+
 		</block>
 		<!-- datePicker页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 5}}">

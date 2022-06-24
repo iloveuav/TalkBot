@@ -3,7 +3,6 @@
   "usingComponents": {
     "indexCard": "/components/superAdmin/index/indexCard/indexCard",
     "datePicker": "/components/superAdmin/datePicker/index",
-    "vistorEdit": "/components/superAdmin/visitorEdit/visitorEdit",
     "districtCard": "/components/admin/districtCard/districtCard",
     "mp-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
     "mp-badge": "/miniprogram_npm/weui-miniprogram/badge/badge",

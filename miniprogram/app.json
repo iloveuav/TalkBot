@@ -14,9 +14,7 @@
     "pages/notification/notification",
     "pages/mysel/superAdmin/index",
     "pages/mysel/superAdmin/admin/train/train",
-    "pages/mysel/takePhoto/index",
-    "pages/mysel/superAdmin/visitorFromList/visitorFromList",
-    "pages/mysel/mineVisitorFromList/index",
+
     "pages/courseMessForm/index",
     "pages/courseCatalogue/index"
   ],
