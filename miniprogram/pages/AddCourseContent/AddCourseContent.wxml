@@ -30,7 +30,7 @@
         <!-- 右边 -->
         <view class='message-right'>
           <!-- 文字消息还是图片消息 -->
-          <text wx:if='{{item.content&&item.content!=""}}' class='message_txt' data-content="{{item.content}}" catchtap="onTtsSpeach"> 
+          <text wx:if='{{item.content&&item.content!=""}}' class='message_txt' data-content="{{item.content}}" > 
             {{item.content}}
           </text>
           <view wx:if='{{item.contentType==="Interact"}}' class="message_text">

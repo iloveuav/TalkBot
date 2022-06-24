@@ -80,7 +80,7 @@ Page({
           showChapter = res.result.allChapterList
         }
         this.setData({
-          ChapterList: showChapter.reverse(),
+          ChapterList: showChapter,
           remind: '',
         })
       },
