@@ -7,9 +7,9 @@
       <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
     </swiper-item>
   </block>
-  <view class="remind-box" wx:if="{{remind}}">
+  <!-- <view class="remind-box" wx:if="{{remind}}">
     <image class="remind-img" src="/images/loading_blue.gif"></image>
-  </view>
+  </view> -->
 </swiper>
 
 <!-- </view> -->

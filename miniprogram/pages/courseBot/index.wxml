@@ -58,7 +58,7 @@
           <!-- ----互动类型end---- -->
 
 
-          <!-- -----------------单词横向轮播卡片组件------------------------------------------ -->
+          <!-- -----------------横向轮播卡片组件------------------------------------------ -->
           <view class="wordCard" wx-if="{{item.textImgArray.length>0}}">
             <scroll-view>
               <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" bindspeach="onTtsSpeach">

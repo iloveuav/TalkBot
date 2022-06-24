@@ -108,6 +108,7 @@ page {
   display: flex;
   margin-top: 20rpx;
   border-top: 0px;
+
 }
 
 .history {
@@ -117,6 +118,7 @@ page {
   font-size: 14px;
   line-height: 40px;
   word-break: break-all;
+  background-color: #f3eded;
 }
 
 .time {
@@ -268,13 +270,32 @@ page {
   margin-left: 30rpx;
 }
 
+.left_textimg {
+  position: absolute;
+  /* border: 1px solid red; */
+  bottom: 3%;
+  left: 60rpx;
+  width: 80rpx;
+  height: 80rpx;
+  z-index: 99999;
+}
 
+.right_textimg {
+  position: absolute;
+  /* border: 1px solid red; */
+  bottom: 3%;
+  right: 70rpx;
+  width: 80rpx;
+  height: 80rpx;
+  z-index: 99999;
+}
 
 
 .modelSubmitBtn {
   font-size: 10px;
-  max-height: 40px;
-  max-width: 120px;
+  max-height: 40rpx;
+  max-width: 280rpx;
+  width: 200rpx;
   border-radius: 100rpx 100rpx 100rpx 100rpx;
   z-index: 9999;
   color: #fff;
@@ -321,7 +342,7 @@ button[disabled] {
   position: fixed;
   bottom: 150rpx;
   right: -3rpx;
-  height: 25%;
+  height: 35%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -351,6 +372,37 @@ button[disabled] {
   height: 75rpx;
   font-size: 26rpx;
 }
+
+.r-itemSwitch {
+  color: #fff;
+  position: absolute;
+  top: 23%;
+  right: 55%;
+  width: 32px;
+  height: 25rpx;
+  font-size: 26rpx;
+}
+
+/* //开关checked为true时，开关的框框的样式 */
+.wx-switch-input {
+  width: 86rpx !important;
+  height: 46rpx !important;
+  background: rgb(112, 174, 248) !important;
+}
+
+/* //开关checked为false时，开关的框框的样式 */
+.wx-switch-input::before {
+  width: 84rpx !important;
+  height: 46rpx !important;
+  /* background: lightgray!important; */
+}
+
+/* //白圈的样式 */
+.wx-switch-input::after {
+  width: 40rpx !important;
+  height: 46rpx !important;
+}
+
 
 .setRBtn {
   border: 1px solid #000;
@@ -393,6 +445,16 @@ button[disabled] {
 .modelTitle {
   font-size: 30rpx;
   color: #000;
+  font-weight: 800;
+  position: absoluted;
+  top: -5rpx;
+  z-index: 999;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+.textImgNumTitle {
+  font-size: 20rpx;
+  color: rgb(134, 126, 126);
   font-weight: 800;
   position: absoluted;
   top: -5rpx;
@@ -563,12 +625,12 @@ button[disabled] {
   position: relative;
 }
 
-.role_Speak{
+.role_Speak {
   width: 100rpx;
   height: 100rpx;
-  position:absolute;
+  position: absolute;
   right: 260rpx;
-  bottom:-70rpx;
+  bottom: -70rpx;
   z-index: 9999;
 
 }
@@ -601,4 +663,8 @@ button[disabled] {
   font-weight: 600;
   /* background-color: #318FFF; */
   text-align: center;
+}
+
+.wordCard {
+  margin-bottom: 60rpx;
 }

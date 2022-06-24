@@ -118,12 +118,13 @@ Component({
 
     //设置内容
     setText: function (e) {
-      // 要通知父组建 reset
+      // 要通知父组件  reset
       if (this.data.reset == true) {
         this.setData({
           reset: true
         })
         this.data.currentSelect.reset = true
+        CurrentChapter = this.data.currentSelect
         // CurrentChapter.reset = true
       } else {
         var nowData = this.data.courseObject; //课程对象

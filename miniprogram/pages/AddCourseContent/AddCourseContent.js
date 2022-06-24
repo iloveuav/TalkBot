@@ -25,10 +25,14 @@ Page({
     value: '',
     imgUrl: '',
     textimgTitle: '',
+    curTextImg: {},
+    curTextImgIndex: 0,
     uptoken: '',
     centendata: [],
     interactData: [],
-    textImgArray: [],
+    textImgArray: [{
+
+    }],
     answer: '',
     btnNum: '',
     editStatus: false,
@@ -57,46 +61,46 @@ Page({
     ttsText: "",
     tts: {},
 
-    curTTsRoleString:'Lydia',
-    curTTsTestText:'',
+    curTTsRoleString: 'Lydia',
+    curTTsTestText: '',
 
 
-    autoReadingAloud:false,
+    autoReadingAloud: false,
     multiVoiceArray: [
 
       [//方言
-        { name: '姗姗',intro:'(粤语女生)', value: 'shanshan', icon: 'voice_girl.png' },
-        { name: '佳佳',intro:'(粤语女生)',  value: 'jiajia', icon: 'voice_girl.png' },
-        { name: '桃子',intro:'(粤语女生)',  value: 'taozi', icon: 'voice_girl.png' },
-        { name: '大虎',intro:'(东北话男声)',  value: 'dahu', icon: 'voice_man.png' },
-        { name: '老铁',intro:'(东北老铁)',  value: 'laotie', icon: 'voice_man.png' },
-        { name: '艾侃',intro:'(天津话)',  value: 'aikan', icon: 'voice_man.png' },
-        { name: '青青', intro:'(中国台湾话女声)', value: 'qingqing', icon: 'voice_girl.png' }
+        { name: '姗姗', intro: '(粤语女生)', value: 'shanshan', icon: 'voice_girl.png' },
+        { name: '佳佳', intro: '(粤语女生)', value: 'jiajia', icon: 'voice_girl.png' },
+        { name: '桃子', intro: '(粤语女生)', value: 'taozi', icon: 'voice_girl.png' },
+        { name: '大虎', intro: '(东北话男声)', value: 'dahu', icon: 'voice_man.png' },
+        { name: '老铁', intro: '(东北老铁)', value: 'laotie', icon: 'voice_man.png' },
+        { name: '艾侃', intro: '(天津话)', value: 'aikan', icon: 'voice_man.png' },
+        { name: '青青', intro: '(中国台湾话女声)', value: 'qingqing', icon: 'voice_girl.png' }
       ],
 
       [//童声
-        { name: '艾彤',intro:'(萝莉女声)',  value: 'aitong', icon: 'girl.png' },
-        { name: '思彤', intro:'(萝莉女声)', value: 'sitong', icon: 'girl.png' },
-        { name: '小北', intro:'(萝莉女声)', value: 'xiaobei', icon: 'girl.png' },
-        { name: '杰力豆',intro:'(治愈童声)',  value: 'jielidou', icon: 'boy.png' }
+        { name: '艾彤', intro: '(萝莉女声)', value: 'aitong', icon: 'girl.png' },
+        { name: '思彤', intro: '(萝莉女声)', value: 'sitong', icon: 'girl.png' },
+        { name: '小北', intro: '(萝莉女声)', value: 'xiaobei', icon: 'girl.png' },
+        { name: '杰力豆', intro: '(治愈童声)', value: 'jielidou', icon: 'boy.png' }
       ],
 
       [//美式发音
-        { name: 'Lydia',intro:'(英中双语)',  value: 'lydia', icon: 'voice_girl.png' },
-        { name: 'Abby', intro:'(美音女声)', value: 'abby', icon: 'voice_girl.png' },
-        { name: 'Wendy',intro:'(英音女声)',  value: 'wendy', icon: 'voice_girl.png' },
-        { name: 'Annie', intro:'(美语女声)', value: 'annie', icon: 'voice_girl.png' },
-        { name: 'Emily',intro:'(英音女声)',  value: 'emily', icon: 'voice_girl.png' },
-        { name: 'Andy',intro:'(美音男声)',  value: 'andy', icon: 'voice_man.png' },
-        { name: 'William',intro:'(英音男声)',  value: 'william', icon: 'voice_man.png' }
+        { name: 'Lydia', intro: '(英中双语)', value: 'lydia', icon: 'voice_girl.png' },
+        { name: 'Abby', intro: '(美音女声)', value: 'abby', icon: 'voice_girl.png' },
+        { name: 'Wendy', intro: '(英音女声)', value: 'wendy', icon: 'voice_girl.png' },
+        { name: 'Annie', intro: '(美语女声)', value: 'annie', icon: 'voice_girl.png' },
+        { name: 'Emily', intro: '(英音女声)', value: 'emily', icon: 'voice_girl.png' },
+        { name: 'Andy', intro: '(美音男声)', value: 'andy', icon: 'voice_man.png' },
+        { name: 'William', intro: '(英音男声)', value: 'william', icon: 'voice_man.png' }
       ],
 
       [//多语种
-        { name: 'Tien',intro:'(越南语女声)', value: 'tien', icon: 'voice_girl.png' },
-        { name: '智香',intro:'(日语女声)', value: 'tomoka', icon: 'voice_girl.png' },
-        { name: '智也',intro:'(日语男声)', value: 'tomoya', icon: 'voice_man.png' },
-        { name: 'Indah', intro:'(印尼女声)',value: 'indah', icon: 'voice_girl.png' },
-        { name: 'Farah',intro:'(马来语女声)', value: 'farah', icon: 'voice_girl.png' }
+        { name: 'Tien', intro: '(越南语女声)', value: 'tien', icon: 'voice_girl.png' },
+        { name: '智香', intro: '(日语女声)', value: 'tomoka', icon: 'voice_girl.png' },
+        { name: '智也', intro: '(日语男声)', value: 'tomoya', icon: 'voice_man.png' },
+        { name: 'Indah', intro: '(印尼女声)', value: 'indah', icon: 'voice_girl.png' },
+        { name: 'Farah', intro: '(马来语女声)', value: 'farah', icon: 'voice_girl.png' }
       ]
     ],
 
@@ -115,7 +119,7 @@ Page({
     // console.log("111",this.data.multiVoiceArray[0][0])
     this.setData({
       curmultiVoiceArray: this.data.multiVoiceArray[0],
-      curTTsRoleString:this.data.multiVoiceArray[0][0].value
+      curTTsRoleString: this.data.multiVoiceArray[0][0].value
     })
 
     //选择集合
@@ -290,8 +294,8 @@ Page({
     this.data.tts = tts
   },
 
-   // ----------------上传图文准备---------------
-   getSpeachText(e) {
+  // ----------------上传图文准备---------------
+  getSpeachText(e) {
     if (e.detail.value) {
       let value = e.detail.value;
       this.setData({
@@ -300,11 +304,11 @@ Page({
     }
   },
 
-    //阿里tts
+  //阿里tts
   onTtsSpeach: function (e) {
     let content = ''
     let that = this
-    console.log('tts1',e);
+    console.log('tts1', e);
 
     if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
       content = e
@@ -322,7 +326,7 @@ Page({
       }
     }
 
-    console.log('tts',content)
+    console.log('tts', content)
     if (!content || !this.data.tts) {
       console.log("text empty")
       wx.showToast({
@@ -355,8 +359,8 @@ Page({
         console.log(`open ${savePath} done`)
         this.data.saveFd = res.fd
         this.data.saveFile = savePath
-        console.log("tts3",this.data.tts)
-        console.log("tts3",that.data.tts)
+        console.log("tts3", this.data.tts)
+        console.log("tts3", that.data.tts)
 
         // voice 中英混女声 Rosa   日语女声 tomoka
         let param = this.data.tts.defaultStartParams('tomoka')
@@ -383,15 +387,15 @@ Page({
     this.setData({
       categoryCur: e.detail.current,
       curmultiVoiceArray: this.data.multiVoiceArray[e.detail.current],
-      curTTsRoleString:this.data.multiVoiceArray[e.detail.current][0].value
+      curTTsRoleString: this.data.multiVoiceArray[e.detail.current][0].value
     })
   },
   swiperRoleChange: function (e) {
-    console.log('role',this.data.curmultiVoiceArray[e.detail.current])
+    console.log('role', this.data.curmultiVoiceArray[e.detail.current])
     const roleObj = this.data.curmultiVoiceArray[e.detail.current]
     this.setData({
       roleCur: e.detail.current,
-      curTTsRoleString:roleObj.value
+      curTTsRoleString: roleObj.value
     })
   },
 
@@ -450,15 +454,40 @@ Page({
     }
   },
 
-  // 把当前图文Data放到数组中  等待触发submit一起上传
+  leftTextImg: function () {
+    const curTextImgIndex = this.data.curTextImgIndex
+    this.setData({
+      curTextImgIndex: curTextImgIndex - 1
+      // curTextImg: this.data.textImgArray[curTextImg.index - 1]
+    })
+  },
+
+  rightTextImg: function () {
+    const curTextImgIndex = this.data.curTextImgIndex
+    this.setData({
+      curTextImgIndex: curTextImgIndex + 1
+      // curTextImg: this.data.textImgArray[curTextImg.index - 1]
+    })
+  },
+
+  // 初始化一个图文放入数组
   addOneItem: function (e) {
-    let textImgArray = this.data.textImgArray;
-    textImgArray.push({
-      textimgTitle: this.data.textimgTitle,
+    const textImgArray = this.data.textImgArray
+    textImgArray.push({//初始化一个新的
+      textimgTitle: '',
       chapterName: this.data.chapterName,
-      content: this.data.message,
-      src: this.data.imgUrl,
+      content: '',
+      src: '',
+      index: textImgArray.length
     });
+    // textImgArray.push({
+    //   textimgTitle: this.data.curTextImg.textimgTitle,
+    //   chapterName: this.data.chapterName,
+    //   content: this.data.curTextImg.content,
+    //   src: this.data.curTextImg.src || this.data.imgUrl,
+    //   index: this.data.textImgArray.length
+    // });
+
 
     this.setData({
       textImgArray: textImgArray,
@@ -467,6 +496,8 @@ Page({
       imgUrl: '',
       imageObject: '',
       answer: '',
+      curTextImgIndex: textImgArray.length-1
+
     })
   },
 
@@ -627,7 +658,7 @@ Page({
           imgfile: that.data.tempimg,
           time: time.formatTime(new Date, 'Y/M/D'),
           is_show_right: 1,
-          curTTsRoleString:this.data.curTTsRoleString
+          curTTsRoleString: this.data.curTTsRoleString
         }
 
         this.setData({
@@ -637,6 +668,11 @@ Page({
         if (!this.data.editStatus) {
           this.bottom();
         }
+
+        console.log('this.add cloud params', {
+          contentData: that.data.newData,
+          edit_id: this.data.edit_id
+        })
 
         //  下面是云函数的调用
         wx.cloud.init({
@@ -673,8 +709,6 @@ Page({
               editStatus: false,//编辑状态关闭
 
               edit_id: null//编辑id置空
-
-
             })
 
 
@@ -742,14 +776,18 @@ Page({
             }
 
           }
-          //单个图片
-          else if (this.data.textimgTitle == '' || this.data.textimgTitle == undefined) {
-            console.log("上传单个图片或封面");
-            this.add();
-          }
           //图文 
+          else if (this.data.setTextImg) {
+            console.log("图文 this.data.curTextImg", this.data.curTextImg)
+            this.data.textImgArray[this.data.curTextImgIndex].src = this.data.imgUrl
+            this.setData({
+              textImgArray: this.data.textImgArray
+            })
+            // this.addOneItem();
+          }
+          //单个图片
           else {
-            this.addOneItem();
+            this.add();
           }
           return;
         }
@@ -798,10 +836,10 @@ Page({
             })
           }
 
-          if (that.data.textimgTitle == '') {
-            that.add();
-          } else {
+          if (that.data.setTextImg) {
             that.addOneItem();
+          } else {
+            that.add();
           }
 
           // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
@@ -994,30 +1032,37 @@ Page({
 
   // ----------------上传图文准备---------------
   getTitle(e) {
+    const curTextImgIndex = this.data.curTextImgIndex
     if (e.detail.value) {
       let value = e.detail.value;
+      this.data.textImgArray[curTextImgIndex].textimgTitle = value
       this.setData({
-        textimgTitle: value,
+        textImgArray: this.data.textImgArray
       });
     }
   },
 
   getContent(e) {
+    const curTextImgIndex = this.data.curTextImgIndex
     if (e.detail.value) {
       let value = e.detail.value;
+      this.data.textImgArray[curTextImgIndex].content = value
       this.setData({
-        message: value,
+        textImgArray: this.data.textImgArray
       });
     }
   },
 
   getSrc(e) {
+    const curTextImgIndex = this.data.curTextImgIndex
     if (e.detail.value) {
       let value = e.detail.value;
+      this.data.textImgArray[curTextImgIndex].src = value
       this.setData({
-        imgUrl: value,
+        textImgArray: this.data.textImgArray
       });
     }
+
   },
 
   // ----------  上传互动  -----------------
@@ -1074,7 +1119,7 @@ Page({
       className: this.data.className,
       chapterName: this.data.chapterName,
 
-      curTTsRoleString:this.data.curTTsRoleString,
+      curTTsRoleString: this.data.curTTsRoleString,
 
       detail: {
         btnNum: this.data.btnNum,
@@ -1150,7 +1195,13 @@ Page({
       setTextImg: false,
       btnDie: false,
       setFrontImg: false,
-      editStatus: false
+      editStatus: false,
+
+      curTextImg: { index: 0 },
+      textImgArray: [{
+
+      }]
+
     });
   },
 
@@ -1176,6 +1227,16 @@ Page({
     const contentItem = this.data.centendata[contentIndex];
     const contentType = contentItem['contentType']
     const edit_id = contentItem['_id']
+    console.log('edit_id', edit_id)
+    if (edit_id == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '刚刚新增的课程内容暂时无法编辑，开发人员后续将进行优化',
+        showCancel: false
+      })
+      return;
+    }
+
     if (contentType == 'text') {
       const { content } = contentItem;
       this.setData({
@@ -1200,6 +1261,20 @@ Page({
         textimgTitle,
         message: content,
         imgUrl: src,
+        editStatus: true,
+        edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
+      })
+    }
+    else if (contentType == 'textImg') {
+      const { textimgTitle, src, content, textImgArray } = contentItem;
+      this.setTextImg();
+      this.setData({
+        textimgTitle,
+        message: content,
+        imgUrl: src,
+
+        curTextImg: textImgArray[0],
+        textImgArray: textImgArray,
         editStatus: true,
         edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
       })
@@ -1314,6 +1389,25 @@ Page({
     }
     this.data.mark = 0;
     this.data.newmark = 0;
+  },
+
+  //设置当前为新增课程内容模式
+  changeautoRA: function () {
+    this.setData({
+      imgUrl: '',
+      imageObject: '',
+      message: '', // 目前普通文本 图文的文  都是这个字段 后期优化掉变成两个字段 不然容易出现bug
+      setTextImg: false,
+      textimgTitle: '',
+      imgfile: '',
+      btnDie: false,
+      textImgArray: [],
+      answer: '',
+      setFrontImg: '',
+      editStatus: false,//编辑状态关闭
+
+      edit_id: null//编辑id置空
+    })
   },
 
   bindMultiPickerChange(e) {

@@ -137,6 +137,18 @@
           "pathName": "pages/courseBotIndex/index",
           "query": "pageType=mineCoursePage",
           "scene": null
+        },
+        {
+          "name": "pages/AddCourseContent/AddCourseContent",
+          "pathName": "pages/AddCourseContent/AddCourseContent",
+          "query": "type=edit&courseMess=%7B%22_id%22%3A%22058dfefe62a521570858b4a7533dc1fd%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22courseIntroduce%22%3A%22222%22%2C%22courseType%22%3A%22other%22%2C%22creatTime%22%3A%222022%2F06%2F12%2007%3A17%3A45%22%2C%22createrOpenid%22%3A%22oL-lI5SqYECOWBNuxuE73IhtR4Qc%22%2C%22state%22%3A%22%E5%BE%85%E5%AE%A1%E6%A0%B8%22%2C%22courseFrontImgUrl%22%3A%22cloud%3A%2F%2Fhuixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818%2F1654718368799.png%22%2C%22courseNum%22%3A7%2C%22isMineCourse%22%3Atrue%2C%22currentProgress%22%3A%7B%22chapterId%22%3A2%2C%22classCollection%22%3A%22testCourseContents%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%7D&chapterList=%5B%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22it%20is%20first%22%2C%22chapterId%22%3A1%7D%2C%22courseNum%22%3A7%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%2C%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D%2C%22courseNum%22%3A9%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%2C%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22third%22%2C%22chapterId%22%3A3%7D%2C%22courseNum%22%3A22%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%5D&chapterobj=%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D&pageType=course",
+          "scene": null
+        },
+        {
+          "name": "pages/courseBotIndex/index",
+          "pathName": "pages/courseBotIndex/index",
+          "query": "pageType=mineCoursePage",
+          "scene": null
         }
       ]
     }
