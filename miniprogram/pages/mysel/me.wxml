@@ -14,49 +14,9 @@
   </view>
 </view>
 
-<!-- <view class='item' bindtap='unopen'>
-  <view class="title">我发布的</view>
-  <view class="detail2">
-    <text>></text>
-  </view>
-</view> -->
-
-<!-- <view class='item' wx-if="{{identity==1}}" bindtap='toorderlist'>
-  <view class="title" >我的约飞</view>
-  <view class="detail2">
-    <text>></text>
-  </view>
-</view> -->
-
-<!-- <view class='item' bindtap='unopen'>
-  <view class="title">姓名</view>
-  <view class="detail2">
-    <text>{{info.nickName}}</text>
-  </view>
-</view>
-
-<view class='item' bindtap='unopen'>
-  <view class="title">语言</view>
-  <view class="detail2">
-    <text>{{info.language}}</text>
-  </view>
-</view> -->
-
-<!-- <view class="line"></view>
-<view class="item" bindtap='unopen'>
-  <view class="title">设置我的个人信息</view>
-  <view class="detail2">
-    <text> ></text>
-  </view>
-</view>
-<view class="line"></view> -->
 
 <view class="func_list">
 
-  <!-- <view class='item' bindtap="toMineVisitorFormList">
-    <view class="title">我的访客申请</view>
-    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
-  </view> -->
 
   <view class='item' bindtap="toMineCourseList">
     <view class="title">我上传的课程</view>

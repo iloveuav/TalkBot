@@ -20,9 +20,9 @@
 				<text>审核内容列表 📊</text>
 			</view>
 
-			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
+			<!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
 				<text>访客待审核列表🎫 </text>
-			</view>
+			</view> -->
 
 			<view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
 				<text>访客申请日志📕 </text>
@@ -117,49 +117,7 @@
 			</view>
 		</block>
 
-		<!-- Visitors页面的条件渲染及待审核Visitors页面的条件渲染 -->
-		<block wx:elif="{{pageFlag == 1||pageFlag == 8}}">
-			<view class="Visitors_container">
-				<!-- 按钮弹窗模态框部分 -->
-				<view class="top_part">
-					<view id="select_buttons">
-						<view class="form_item">
-							<view class="label">姓名：</view>
-							<input class="select_button" placeholder="请输入姓名" bindblur="inputVisitorName"></input>
-						</view>
-						<view class="form_item">
-							<view class="label">组织：</view>
-							<input class="select_button" placeholder="请输入组织" bindblur="inputVisitorTeamName"></input>
-						</view>
-					</view>
-					<view id="select_buttons">
-						<view class="form_item">
-							<view class="label">手机号：</view>
-							<input class="select_button" placeholder="请输入手机号" bindblur="inputVisitorPhonenum"></input>
-						</view>
-						<view class="form_item">
-							<view class="label">日期：</view>
-							<input class="select_button" placeholder="请输入日期"></input>
-						</view>
-					</view>
-					<!-- <button class="CSV_export" catchtap="getExcel">导出EXcel</button> -->
-				</view>
-				<!-- 列表部分 -->
-				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}"
-					scroll-with-animation="{{true}}" class="bottom_part">
-					<!-- <view>数据为空</view> -->
-					<block wx:for="{{list}}" wx:key="index" >
-						<!-- 包裹图片+两行文字 id="{{index}}"是给按下了那个item记录-->
-						<view catchtap="click" bindlongpress="delete" id="{{index}}">
-						<visitorCard visitorInfo="{{item}}" ></visitorCard>
-					</view>
-					</block>
-				</scroll-view>
-			</view>
-		</block>
-
-
-
+	
 
 		<!-- admin页面的条件渲染 -->
 		<block wx:elif="{{pageFlag == 2}}">
