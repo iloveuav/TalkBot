@@ -567,8 +567,8 @@ button[disabled] {
   width: 100rpx;
   height: 100rpx;
   position:absolute;
-  right: 20rpx;
-  bottom:-130rpx;
+  right: 260rpx;
+  bottom:-70rpx;
   z-index: 9999;
 
 }
