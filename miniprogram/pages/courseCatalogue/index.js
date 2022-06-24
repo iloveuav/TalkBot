@@ -4,7 +4,7 @@ Page({
   data: {
     btnType: 'priview',
     courseInfo: {
-      coverImage: 'cloud://uav-001-9213ca.7561-uav-001-9213ca/images/start1.jpg',
+      coverImage: 'cloud://uav-001-9213ca.7561-uav-001-9213ca/images.jpg',
       title: '课程名称',
       desc: '简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介',
       state: '审核中'
@@ -60,6 +60,10 @@ Page({
 
   },
 
+  up(x,y){
+    return x._id.chapterId - y._id.chapterId
+  },
+
 
   getChapterList(pageType) {
     wx.cloud.init({
@@ -80,7 +84,7 @@ Page({
           showChapter = res.result.allChapterList
         }
         this.setData({
-          ChapterList: showChapter.reverse(),
+          ChapterList: showChapter.sort(this.up),
           remind: '',
         })
       },
@@ -103,13 +107,6 @@ Page({
       chapterName: chapterName,
       reset: false,
     }
-    // let CurrentChapter = {
-    //   courseId: crouseDetail.data[0].courseId,
-    //   className: crouseDetail.data[0]._id.className,
-    //   chapterName: crouseDetail.data[0]._id.chapterName,
-    //   id: crouseDetail.data[0].id,
-    //   reset: false
-    // }
 
     let str = JSON.stringify(crouseDetail);
     let Cc = JSON.stringify(CurrentChapter);
@@ -119,10 +116,6 @@ Page({
       url: "../../pages/courseBot/index?course=" + str + "&Cc=" + Cc + "&ChapterList=" + ChapterList,
     })
 
-
-    // wx.navigateTo({
-    //   url: 'url',
-    // })
   },
   deleteCourse() {
     const crouseDetail = this.data.crouseDetail

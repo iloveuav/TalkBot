@@ -389,6 +389,13 @@ Page({
     wx.hideLoading()
   },
 
+  logout() {
+    wx.setStorageSync('islogin', false);
+    this.setData({
+      islogin: false
+    })
+  },
+
   tomy_TakeOrder() {
     if (this.data.islogin == false) {
       wx.showModal({

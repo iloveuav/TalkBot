@@ -7,6 +7,8 @@ const ImgUrl = '';
 let ClassCollection = '';
 
 var message = '';
+
+var app = getApp();
 Page({
 
   /**
@@ -74,6 +76,15 @@ Page({
           type: options.type
         })
       }
+    }
+
+    let islogin = wx.getStorageSync(islogin);
+    if (islogin == false || islogin == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录，上传的课程内容将保存在临时账号内，为避免数据丢失，建议您在【我的】中进行登录',
+        showCancel: false
+      })
     }
 
     if (options && options.type) {
@@ -179,14 +190,6 @@ Page({
 
 
   clickFinish: function (e) {
-    // const crouseDetail = { name: '111' }
-    // let str = JSON.stringify(crouseDetail);
-    // wx.navigateTo({
-    //   //这里传值
-    //   url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit',
-    //   // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
-    //   // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
-    // })
     if (this.data.editCourseDetail.courseName == '') {//上传封面的时候可以不需要输入章节id
       wx.showModal({
         title: '提示',
@@ -246,10 +249,10 @@ Page({
         // })
 
         const crouseDetail = courseMess
-        let str = JSON.stringify(crouseDetail);
+        app.globalData.CurrentCourseObj = crouseDetail
         wx.navigateTo({
           //这里传值
-          url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + 'edit' + "&type=" + this.data.type,
+          url: "../../pages/courseCatalogue/index?btnType=" + 'edit' + "&type=" + this.data.type,
           // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
           // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
         })
@@ -286,13 +289,14 @@ Page({
         console.log('腾讯云上传成功', res)
         if (res.fileID) {
           cloudimgs.push(res.fileID);
+          this.data.editCourseDetail.courseFrontImgUrl = res.fileID
           this.setData({
             zhaopian: '图片如下',
             imgUrl: res.fileID,
             cloudimgs: cloudimgs,
-
+            editCourseDetail: this.data.editCourseDetail
           })
-          this.data.editCourseDetail.courseFrontImgUrl = res.fileID
+
 
           wx.hideLoading()
           wx.showToast({
@@ -300,29 +304,7 @@ Page({
             icon: 'success',
             duration: 1000
           })
-          // 设置封面
-          if (this.data.setFrontImg) {
-            if (this.data.courseName == '') {
-              wx.showModal({
-                title: '提示',
-                content: '课程名不能为空',
-                showCancel: false
-              })
-              return;
-            } else {
-              this.add();
-            }
 
-          }
-          //单个图片
-          else if (this.data.textimgTitle == '' || this.data.textimgTitle == undefined) {
-            console.log("上传单个图片或封面");
-            this.add();
-          }
-          //图文 
-          else {
-            this.addOneItem();
-          }
           return;
         }
       },

@@ -8,7 +8,7 @@
     </swiper-item>
   </block>
   <view class="remind-box" wx:if="{{remind}}">
-    <image class="remind-img" src="/Images/start1/loading_blue.gif"></image>
+    <image class="remind-img" src="/images/loading_blue.gif"></image>
   </view>
 </swiper>
 

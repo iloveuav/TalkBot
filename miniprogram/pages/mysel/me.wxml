@@ -53,10 +53,10 @@
 
 <view class="func_list">
 
-  <view class='item' bindtap="toMineVisitorFormList">
+  <!-- <view class='item' bindtap="toMineVisitorFormList">
     <view class="title">我的访客申请</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
-  </view>
+  </view> -->
 
   <view class='item' bindtap="toMineCourseList">
     <view class="title">我上传的课程</view>
@@ -85,6 +85,12 @@
 
   <view class='item' bindtap="toSuperAdmin" wx:if="{{isAdmin}}">
     <view class="title">超级管理员</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+  <view class="line"></view>
+
+  <view class='item' bindtap="logout" wx:if="{{islogin}}">
+    <view class="title">退出登录</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
   <view class="line"></view>

@@ -8,7 +8,7 @@ Page({
     login: false,
     currentSwiperIndex: 0,
     "bnrUrl": [{
-      "url": "cloud://uav-001-9213ca.7561-uav-001-9213ca/images/start1.jpg"
+      "url": "cloud://uav-001-9213ca.7561-uav-001-9213ca/images.jpg"
     }, {
       "url": "img/1242x366_djj_0706-1530871651.jpg"
     }, {
