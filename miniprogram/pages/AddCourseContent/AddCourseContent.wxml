@@ -65,8 +65,8 @@
 <view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start"
   style="{{translate}}">
   <view class="rightBtnItem">
-    <image class="r-itemImgBox" catchtap="setFrontImg" src="../../images/button/addCoverBtn.png"></image>
-    <view class="r-itemName" catchtap="setFrontImg">选发音人</view>
+    <image class="r-itemImgBox" catchtap="setVoiceRole" src="../../images/button/addCoverBtn.png"></image>
+    <view class="r-itemName" catchtap="setVoiceRole">选发音人</view>
   </view>
   <view class="rightBtnItem">
     <image class="r-itemImgBox" catchtap="setInteract" src="../../images/button/addAnswerBtn.png"></image>
@@ -130,7 +130,7 @@
 <!-- ----------------设置图文参数区end--------------- -->
 <view class='hei' id="hei"></view>
 <!-- -------------设置发音人------------ -->
-<view class="setwaitData" style="flex-direction: column;height:720rpx;margin-bottom: 50%;" wx:if="{{setFrontImg}}">
+<view class="setwaitData" style="flex-direction: column;height:720rpx;margin-bottom: 50%;" wx:if="{{setVoiceRole||false}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="modelTitle">设置发音人<view style="font-size: 8pt;color:rgb(158, 158, 154);">（只对设置后上传的文本生效~）</view>
   </view>

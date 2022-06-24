@@ -628,8 +628,11 @@ Page({
           showCancel: false
         })
         return;
-      } else {
+      } 
+      
+      else {
         let imgobj = this.data.imageObject;
+        console.log('imgobj',imgobj)
         if (imgobj != '' && imgobj != undefined) {
           this.setData({
             imgUrl: 'http://' + imgobj.imageURL
@@ -707,7 +710,7 @@ Page({
               this.bottom();
             }
             this.setData({
-              imgUrl: '',
+              imgUrl: null,
               imageObject: '',
               message: '',
               setTextImg: false,
@@ -963,7 +966,7 @@ Page({
       setTextImg: true,
       btnDie: true,
       textimgTitle: '',
-      imgUrl: '',
+      imgUrl: null,
       content: ''
     });
     this.bottom();
@@ -972,6 +975,14 @@ Page({
   setFrontImg() {
     this.setData({
       setFrontImg: true,
+      btnDie: true,
+    });
+    this.bottom();
+  },
+  // 、、、、设置发言人模态框弹出
+  setVoiceRole() {
+    this.setData({
+      setVoiceRole: true,
       btnDie: true,
     });
     this.bottom();
@@ -1173,7 +1184,7 @@ Page({
         })
 
         this.setData({
-          imgUrl: '',
+          imgUrl: null,
           message: '',
           setwait: false,
           btnDie: false,
@@ -1211,7 +1222,8 @@ Page({
       curTextImg: { index: 0 },
       textImgArray: [{
 
-      }]
+      }],
+      setVoiceRole:false
 
     });
   },
@@ -1405,7 +1417,7 @@ Page({
   //设置当前为新增课程内容模式
   changeautoRA: function () {
     this.setData({
-      imgUrl: '',
+      imgUrl: null,
       imageObject: '',
       message: '', // 目前普通文本 图文的文  都是这个字段 后期优化掉变成两个字段 不然容易出现bug
       setTextImg: false,
