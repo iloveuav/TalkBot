@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/door/door",
     "pages/index/index",
     "pages/courseBotIndex/index",
     "pages/courseBot/index",

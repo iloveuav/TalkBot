@@ -213,11 +213,17 @@ Page({
         }
 
         let showCourse = []
-        if (pageType === 'studyPage') {
-          showCourse = resultCourse
-        } else {
-          showCourse = resultCourse
-        }
+        // showCourse = resultCourse
+
+        resultCourse.forEach(item=>{
+          if (pageType ==='studyPage'&&item.state==='审核通过') {
+            showCourse.push(item)
+          }
+
+          if((item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'){
+            showCourse.push(item)
+          }
+        })
         this.setData({
           allCourse: showCourse,
           remind: '',

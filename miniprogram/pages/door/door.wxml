@@ -1,0 +1,50 @@
+<!--miniprogram/pages/door/door.wxml-->
+<!-- <wxs src="./index.wxs" module="m1" /> -->
+<wxs module="m1">
+  var time = function () {
+    var time = getDate();
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var date = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
+    var second = time.getSeconds();
+    month = month < 10 ? "0" + month : month;
+    date = date < 10 ? "0" + date : date;
+    hour = hour < 10 ? "0" + hour : hour;
+    minute = minute < 10 ? "0" + minute : minute;
+    second = second < 10 ? "0" + second : second;
+    return year + "年" + month + "月" + date + "日 " + hour + "时" + minute + "分" + second + "秒";
+  }
+  module.exports.time = time;
+</wxs>
+<view class="container">
+  <view class="remind-box" wx:if="{{remind}}">
+    <image class="remind-img" src="/Images/start1/loading.gif"></image>
+  </view>
+  <block wx:else>
+    <text class="smalltitle" >一起为乡村数字教育出份力~</text>
+    <!-- <image class="smalltitle" src="/Images/start1/text1.png"></image> -->
+
+    <image class="start" src="cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/微信图片_20220627044758.jpg"></image>    
+    <!-- <image class="start" src="cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/door1.gif"></image>     -->
+     <!-- <image class="backuav" src="cloud://uav-001-9213ca.7561-uav-001-9213ca-1258960420/images/樊峻洁-无人机插画-没有螺旋桨3.png" mode="scaleToFill"></image>  -->
+
+      <!-- <image class="startdetailLeUp" style="-webkit-transform:translate3d({{transformX}}px,0,0)" src="cloud://uav-001-9213ca.7561-uav-001-9213ca-1258960420/images/右上.png" mode="scaleToFill"></image> -->
+
+      <image class="img1" bindtap='init1' style="-webkit-transition: transform .5s ease-out;-webkit-transform:translate3d({{transformX}}px,{{transformY}}px,0)" src="/images/index/discuss.png"></image>
+
+      
+    <!-- <image class="startdetail2RiUp" src="cloud://uav-001-9213ca.7561-uav-001-9213ca-1258960420/images/右上.png"  mode="scaleToFill"></image>  
+     <image class="startdetail3" src="cloud://uav-001-9213ca.7561-uav-001-9213ca-1258960420/images/右上.png"   mode="scaleToFill"></image> 
+      <image class="startdetail4" src="cloud://uav-001-9213ca.7561-uav-001-9213ca-1258960420/images/右上.png"  mode="scaleToFill"></image>  -->
+      
+      <button class="confirm-user"  bindtap='init1'>进入汇聊</button>
+      <!-- <button class="confirm-user"  bindtap='init1'>我想学习</button>
+       <button class="confirm-flyer"  bindtap='init2'>我想分享</button> -->
+       <!-- open-type="getUserInfo" -->
+        <text class="copyright">@汇聊开发小队</text>
+  </block>
+</view>
+
+

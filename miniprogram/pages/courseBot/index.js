@@ -55,7 +55,7 @@ Page({
 
     // chatHistory: chatHistory,
     currentDataItem: {},
-    isVoicePlay: true,
+    isVoicePlaying: false,
     // 后两个用来设置scroll-view的scroll-into-view
     scrollHeight: '',
     startPageX: 0,
@@ -141,6 +141,7 @@ Page({
           ctx.src = this.data.saveFile
           ctx.onPlay(() => {
             console.log('start playing..')
+            this.data.isVoicePlaying = true
           })
           ctx.onError((res) => {
             console.log(res.errMsg)
@@ -159,6 +160,7 @@ Page({
           })
           ctx.onEnded((res) => {
             console.log("play done...")
+            this.data.isVoicePlaying = false
             fs.unlink({
               filePath: this.data.saveFile,
               success: (res) => {
@@ -385,10 +387,10 @@ Page({
   onTtsSpeach: function (e) {
     let content = ''//获取文本内容
     let curTTsRoleString = ''//获取文本发音人
-    console.log("curTTsRoleString---e",e);
+    console.log("curTTsRoleString---e", e);
     if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {//自动朗读
       content = e.content
-      curTTsRoleString = e.curTTsRoleString|| "Rosa"
+      curTTsRoleString = e.curTTsRoleString || "Rosa"
       this.data.curTTsRoleString = curTTsRoleString
       // console.log(e);
     } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
@@ -401,7 +403,7 @@ Page({
       }
       if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {//关闭了自动朗读
         content = e.content
-        curTTsRoleString = e.curTTsRoleString|| "Rosa"
+        curTTsRoleString = e.curTTsRoleString || "Rosa"
         this.data.curTTsRoleString = curTTsRoleString
       }
     }
@@ -429,46 +431,59 @@ Page({
       })
       return
     }
-    if (this.data.ttsStart) {
-      wx.showToast({
-        title: "正在合成请稍候",
-        icon: "error",
-        duration: 1000,
-        mask: true
-      })
-      return
-    } else {
-      this.data.ttsStart = true
-    }
-    console.log("try to synthesis:" + content)
-    let save = formatTime(new Date()) + ".wav"
-    let savePath = wx.env.USER_DATA_PATH + "/" + save
-    console.log(`save to ${savePath}`)
-    fs.open({
-      filePath: savePath,
-      flag: "a+",
-      success: async (res) => {
-        console.log(`open ${savePath} done`)
-        this.data.saveFd = res.fd
-        this.data.saveFile = savePath
-        // voice 中英混女声 Rosa/Lydia   日语女声 tomoka
-        let param = this.data.tts.defaultStartParams('tomoka')
-        // let param = this.data.tts.defaultStartParams('Rosa')
-        param.text = content
-        param.voice = this.data.curTTsRoleString || "Rosa"
-        try {
-          await this.data.tts.start(param)
-          console.log("tts done")
-          this.data.ttsStart = false
-        } catch (e) {
-          console.log("tts start error:" + e)
+    // if (this.data.ttsStart) {
+    //   wx.showToast({
+    //     title: "正在合成请稍候",
+    //     icon: "error",
+    //     duration: 1000,
+    //     mask: true
+    //   })
+    //   return
+    // } else {
+    //   this.data.ttsStart = true
+    // }
+
+    if (!this.data.isVoicePlaying) {
+      console.log("try to synthesis:" + content)
+      let save = formatTime(new Date()) + ".wav"
+      let savePath = wx.env.USER_DATA_PATH + "/" + save
+      console.log(`save to ${savePath}`)
+      fs.open({
+        filePath: savePath,
+        flag: "a+",
+        success: async (res) => {
+          console.log(`open ${savePath} done`)
+          this.data.saveFd = res.fd
+          this.data.saveFile = savePath
+          // voice 中英混女声 Rosa/Lydia   日语女声 tomoka
+          let param = this.data.tts.defaultStartParams('tomoka')
+          // let param = this.data.tts.defaultStartParams('Rosa')
+          param.text = content
+          param.voice = this.data.curTTsRoleString || "Rosa"
+          try {
+            console.log('this.data.tts', this.data.tts)
+            await this.data.tts.start(param)
+
+            console.log("tts done")
+            this.data.ttsStart = false
+          } catch (e) {
+            console.log("tts start error:" + e)
+          }
+        },
+        fail: (res) => {
+          console.log(`open ${savePath} failed: ${res.errMsg}`)
         }
-      },
-      fail: (res) => {
-        console.log(`open ${savePath} failed: ${res.errMsg}`)
-      }
-    })
+      })
+    }
+
+    // else{
+    //    this.data.tts.
+    // }
   },
+
+  // ttsSpeachStop:function(e){
+
+  // },
 
   getChapterList() {
     console.log(this.data.courseObject)
@@ -506,8 +521,9 @@ Page({
     })
   },
 
-  changeautoRA: function () {
-    this.data.autoReadingAloud = !this.data.autoReadingAloud
+  changeautoRA: async function () {
+    this.data.autoReadingAloud = !this.data.autoReadingAloud;
+    // await this.data.tts.stop();
     this.end();
   },
 
