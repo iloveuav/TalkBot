@@ -30,7 +30,7 @@ const formatTime = require("../../tts/util").formatTime
 const sleep = require("../../tts/util").sleep
 const getToken = require("../../tts/token").getToken
 const fs = wx.getFileSystemManager()
-
+const ctx = wx.createInnerAudioContext()
 
 
 Page({
@@ -136,8 +136,9 @@ Page({
       fs.close({
         fd: this.data.saveFd,
         success: (res) => {
-          let ctx = wx.createInnerAudioContext()
+          //  ctx = wx.createInnerAudioContext()
           ctx.autoplay = true
+          ctx.play();
           ctx.src = this.data.saveFile
           ctx.onPlay(() => {
             console.log('start playing..')
@@ -181,7 +182,8 @@ Page({
     })
 
     tts.on("closed", () => {
-      console.log("Client recv closed")
+
+      console.log("Client recv closed1111")
     })
 
     tts.on("failed", (msg) => {
@@ -360,6 +362,8 @@ Page({
    */
   onUnload: function () {
     this.end();
+    ctx.pause();
+    this.data.isVoicePlaying = false
   },
 
   /**
@@ -443,38 +447,41 @@ Page({
     //   this.data.ttsStart = true
     // }
 
-    if (!this.data.isVoicePlaying) {
-      console.log("try to synthesis:" + content)
-      let save = formatTime(new Date()) + ".wav"
-      let savePath = wx.env.USER_DATA_PATH + "/" + save
-      console.log(`save to ${savePath}`)
-      fs.open({
-        filePath: savePath,
-        flag: "a+",
-        success: async (res) => {
-          console.log(`open ${savePath} done`)
-          this.data.saveFd = res.fd
-          this.data.saveFile = savePath
-          // voice 中英混女声 Rosa/Lydia   日语女声 tomoka
-          let param = this.data.tts.defaultStartParams('tomoka')
-          // let param = this.data.tts.defaultStartParams('Rosa')
-          param.text = content
-          param.voice = this.data.curTTsRoleString || "Rosa"
-          try {
-            console.log('this.data.tts', this.data.tts)
-            await this.data.tts.start(param)
-
-            console.log("tts done")
-            this.data.ttsStart = false
-          } catch (e) {
-            console.log("tts start error:" + e)
-          }
-        },
-        fail: (res) => {
-          console.log(`open ${savePath} failed: ${res.errMsg}`)
-        }
-      })
+    if (this.data.isVoicePlaying) {
+      ctx.pause();
     }
+
+
+    console.log("try to synthesis:" + content)
+    let save = formatTime(new Date()) + ".wav"
+    let savePath = wx.env.USER_DATA_PATH + "/" + save
+    console.log(`save to ${savePath}`)
+    fs.open({
+      filePath: savePath,
+      flag: "a+",
+      success: async (res) => {
+        console.log(`open ${savePath} done`)
+        this.data.saveFd = res.fd
+        this.data.saveFile = savePath
+        // voice 中英混女声 Rosa/Lydia   日语女声 tomoka
+        let param = this.data.tts.defaultStartParams('tomoka')
+        // let param = this.data.tts.defaultStartParams('Rosa')
+        param.text = content
+        param.voice = this.data.curTTsRoleString || "Rosa"
+        try {
+          console.log('this.data.tts', this.data.tts)
+          await this.data.tts.start(param)
+
+          console.log("tts done")
+          this.data.ttsStart = false
+        } catch (e) {
+          console.log("tts start error:" + e)
+        }
+      },
+      fail: (res) => {
+        console.log(`open ${savePath} failed: ${res.errMsg}`)
+      }
+    })
 
     // else{
     //    this.data.tts.
@@ -524,7 +531,13 @@ Page({
   changeautoRA: async function () {
     this.data.autoReadingAloud = !this.data.autoReadingAloud;
     // await this.data.tts.stop();
-    this.end();
+    // console.log('shutdown',this.data.tts.closed())
+    if (!this.data.autoReadingAloud) {
+      ctx.pause();
+      this.data.isVoicePlaying = false
+      this.end();
+    }
+
   },
 
   // ============================================================
