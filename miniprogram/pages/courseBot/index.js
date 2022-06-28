@@ -809,7 +809,7 @@ Page({
             data = {
               contentType: 'text',
               isBot: true,
-              content: '小铭告诉你正确答案是：' + answer,
+              content: '呐，正确答案是：' + answer,
             }
           }
         }

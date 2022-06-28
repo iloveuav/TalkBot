@@ -329,12 +329,20 @@ page {
   text-align: center;
   padding: 15rpx;
   left: -2rpx;
+  z-index: 99999999;
+  background-color: #bedcff;
 }
 
 button[disabled] {
   color: #fff !important;
   background: #acb7bb !important;
-  border-color: #acb7bb !important;
+  border: transparent;
+
+  /* border-color: #ee4d13 !important; */
+  /* border-color: #bbb0ac !important; */
+  width: 100%;
+  z-index: 99999999;
+
 }
 
 .rightBtnBox {
@@ -452,6 +460,7 @@ button[disabled] {
   text-align: center;
   margin-bottom: 20rpx;
 }
+
 .textImgNumTitle {
   font-size: 20rpx;
   color: rgb(134, 126, 126);
@@ -482,6 +491,7 @@ button[disabled] {
 
 .sendmessage button::after {
   border: none;
+  color: white;
 }
 
 .addimgBox {
@@ -512,7 +522,7 @@ button[disabled] {
   height: 60rpx;
   background-color: #BFDCFF;
   border-radius: 100rpx 100rpx 100rpx 100rpx;
-  color: #fff;
+  color: #fff !important;
   margin: 0 auto;
   font-size: 26rpx;
 }
@@ -625,14 +635,21 @@ button[disabled] {
   position: relative;
 }
 
+.role_SpeakSwitch {
+  width: 100rpx;
+  height: 100rpx;
+  position: absolute;
+  left: 120rpx;
+  bottom: -100rpx;
+  z-index: 9999;
+}
 .role_Speak {
   width: 100rpx;
   height: 100rpx;
   position: absolute;
-  right: 260rpx;
+  right: 100rpx;
   bottom: -70rpx;
   z-index: 9999;
-
 }
 
 .img {

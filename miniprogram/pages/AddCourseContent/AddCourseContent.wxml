@@ -80,7 +80,7 @@
   <view class="rightBtnItem">
     <image class="r-itemImgBox" catchtap="setTextImg" src="../../images/button/addTextImg.png"></image>
     <switch class="r-itemSwitch" checked="{{!edit_id}}" bindchange="changeautoRA"></switch>
-    <view class="r-itemName" catchtap="setTextImg">新增模式</view>
+    <view class="r-itemName">新增模式</view>
 
   </view>
 </view>
@@ -157,7 +157,6 @@
 
 
   <view class="voice_row">
-
     <swiper class="voice_role_swiper" circular='true' bindchange="swiperRoleChange" data-detail="{{item}}"
       previousMargin='5px' nextMargin='150rpx' current="{{roleCur}}">
       <block wx:for="{{curmultiVoiceArray}}" wx:key="index" wx:for-index="index" data-detail="item">
@@ -180,6 +179,9 @@
 
     <textarea bindinput='getSpeachText' class="audio_txt_textarea" confirm-type="done" value='{{curTTsTestText}}'
       placeholder="写点什么让我读吧~" placeholder-style="color:#318FFF;" />
+
+
+      <switch class="role_SpeakSwitch" checked="{{!edit_id}}" bindchange="changeautoRA"></switch>
 
     <image class="role_Speak" src="../../images/icon/role_Speak.png" data-content="{{curTTsTestText}}"
       catchtap="onTtsSpeach"> </image>
