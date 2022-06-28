@@ -16,7 +16,7 @@ page {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #4D9BF4;
+  /* background: #4D9BF4; */
   /* background: #4D9BF4; */
   align-items: stretch;
   padding: 0;
@@ -43,8 +43,8 @@ page {
   animation: rise 3s cubic-bezier(0.19, 1, 0.22, 1) 0.25s forwards;
 }
 
-.backuav{
-   position: absolute;
+.backuav {
+  position: absolute;
   top: 295rpx;
   left: 695rpx;
   width: 60rpx;
@@ -83,16 +83,48 @@ page {
   }
 }
 
-.start{
+.backgroundImg {
+  position: absolute;
+  margin: 0 auto;
+  bottom: 10rpx;
+  width: 910rpx;
+  height: 1300rpx;
+  opacity: 0;
+  animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
+  z-index: 1;
+}
+.row{
+  width: 100%;
+  height: 200rpx;
+}
+
+.topBigText{
   position: relative;
-  top: 160rpx;
-  left: 8%;
+  font-size: 75rpx;
+  font-weight: 800;
+  margin: 0 auto;
+  margin-bottom: 200rpx;
+  /* left: 8%; */
   /* width: 600rpx;
   height: 800rpx; */
   /* margin-left: 20rpx; */
   opacity: 0;
   animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
+  z-index: 2;
 }
+.start {
+  position: relative;
+  margin: 0 auto;
+  bottom: 180rpx;
+  /* left: 8%; */
+  /* width: 600rpx;
+  height: 800rpx; */
+  /* margin-left: 20rpx; */
+  opacity: 0;
+  animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
+  z-index: 2;
+}
+
 .startdetailLeUp {
   position: absolute;
   top: 295rpx;
@@ -100,11 +132,16 @@ page {
   width: 60rpx;
   height: 60rpx;
   margin-left: -300rpx;
-  
-  animation-name: myfirst; /*动画的名称 */
-  animation-duration: 2000ms; /*动画从开始到结束的时间*/
-  animation-timing-function: linear; /*动画执行快慢的参数*/
-  animation-iteration-count: infinite; /*动画执行多少次的参数*//*以下是兼容ios所需，参数意义与上相同*/
+
+  animation-name: myfirst;
+  /*动画的名称 */
+  animation-duration: 2000ms;
+  /*动画从开始到结束的时间*/
+  animation-timing-function: linear;
+  /*动画执行快慢的参数*/
+  animation-iteration-count: infinite;
+  /*动画执行多少次的参数*/
+  /*以下是兼容ios所需，参数意义与上相同*/
   -webkit-animation-name: myfirst;
   -webkit-animation-duration: 2000ms;
   -webkit-animation-timing-function: linear;
@@ -120,32 +157,44 @@ page {
   height: 60rpx;
   margin-left: -300rpx;
   animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
-    animation-name: myfirst; /*动画的名称 */
-  animation-duration: 2000ms; /*动画从开始到结束的时间*/
-  animation-timing-function: linear; /*动画执行快慢的参数*/
-  animation-iteration-count: infinite; /*动画执行多少次的参数*//*以下是兼容ios所需，参数意义与上相同*/
+  animation-name: myfirst;
+  /*动画的名称 */
+  animation-duration: 2000ms;
+  /*动画从开始到结束的时间*/
+  animation-timing-function: linear;
+  /*动画执行快慢的参数*/
+  animation-iteration-count: infinite;
+  /*动画执行多少次的参数*/
+  /*以下是兼容ios所需，参数意义与上相同*/
   -webkit-animation-name: myfirst;
   -webkit-animation-duration: 2000ms;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
+
 .startdetail3 {
-    position: absolute;
+  position: absolute;
   top: 445rpx;
   left: 685rpx;
   width: 60rpx;
   height: 60rpx;
   margin-left: -300rpx;
   animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
-    animation-name: myfirst; /*动画的名称 */
-  animation-duration: 2000ms; /*动画从开始到结束的时间*/
-  animation-timing-function: linear; /*动画执行快慢的参数*/
-  animation-iteration-count: infinite; /*动画执行多少次的参数*//*以下是兼容ios所需，参数意义与上相同*/
+  animation-name: myfirst;
+  /*动画的名称 */
+  animation-duration: 2000ms;
+  /*动画从开始到结束的时间*/
+  animation-timing-function: linear;
+  /*动画执行快慢的参数*/
+  animation-iteration-count: infinite;
+  /*动画执行多少次的参数*/
+  /*以下是兼容ios所需，参数意义与上相同*/
   -webkit-animation-name: myfirst;
   -webkit-animation-duration: 2000ms;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
+
 .startdetail4 {
   position: absolute;
   top: 445rpx;
@@ -154,10 +203,15 @@ page {
   height: 60rpx;
   margin-left: -300rpx;
 
-  animation-name: myfirst; /*动画的名称 */
-  animation-duration: 2000ms; /*动画从开始到结束的时间*/
-  animation-timing-function: linear; /*动画执行快慢的参数*/
-  animation-iteration-count: infinite; /*动画执行多少次的参数*//*以下是兼容ios所需，参数意义与上相同*/
+  animation-name: myfirst;
+  /*动画的名称 */
+  animation-duration: 2000ms;
+  /*动画从开始到结束的时间*/
+  animation-timing-function: linear;
+  /*动画执行快慢的参数*/
+  animation-iteration-count: infinite;
+  /*动画执行多少次的参数*/
+  /*以下是兼容ios所需，参数意义与上相同*/
   -webkit-animation-name: myfirst;
   -webkit-animation-duration: 2000ms;
   -webkit-animation-timing-function: linear;
@@ -165,7 +219,7 @@ page {
 
 }
 
-.img{
+.img {
   width: 50px;
   height: 50px;
   position: absolute;
@@ -173,7 +227,8 @@ page {
   margin: 0 auto;
   left: 30%;
 }
-.img1{
+
+.img1 {
   width: 50px;
   height: 50px;
   position: absolute;
@@ -181,7 +236,8 @@ page {
   margin: 0 auto;
   left: 30%;
 }
-.img2{
+
+.img2 {
   width: 50px;
   height: 50px;
   position: absolute;
@@ -191,48 +247,65 @@ page {
 }
 
 .smalltitle {
-  position: absolute;
+  /* position: absolute;
   top: 40rpx;
-  left:25%;
-  width: 400rpx;
+  left:10%; */
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 100rpx;
+  width: 600rpx;
   height: 60rpx;
   /* margin-left: 100rpx; */
   opacity: 0;
+  color: wheat;
   animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
+  z-index: 3;
 }
 
 
 /* 螺旋桨慢速 */
 .animationSlow {
-    position: absolute;
+  position: absolute;
   top: 350rpx;
   left: 825rpx;
   width: 60rpx;
   height: 60rpx;
   margin-left: -300rpx;
-  animation-name: myfirst; /*动画的名称 */
-  animation-duration: 2000ms; /*动画从开始到结束的时间*/
-  animation-timing-function: linear; /*动画执行快慢的参数*/
-  animation-iteration-count: infinite; /*动画执行多少次的参数*//*以下是兼容ios所需，参数意义与上相同*/
+  animation-name: myfirst;
+  /*动画的名称 */
+  animation-duration: 2000ms;
+  /*动画从开始到结束的时间*/
+  animation-timing-function: linear;
+  /*动画执行快慢的参数*/
+  animation-iteration-count: infinite;
+  /*动画执行多少次的参数*/
+  /*以下是兼容ios所需，参数意义与上相同*/
   -webkit-animation-name: myfirst;
   -webkit-animation-duration: 2000ms;
   -webkit-animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
 }
+
 @keyframes myfirst {
+
   /*开始转的角度*/
   from {
     transform: rotate(0deg);
-  }/*结束的角度*/
+  }
+
+  /*结束的角度*/
   to {
     transform: rotate(360deg);
   }
 }
+
 /*兼容ios*/
 @-webkit-keyframes myfirst {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -360,19 +433,20 @@ page {
 }
 
 .confirm-user {
-  position: absolute;
+  position: relative;
   font-size: 13pt;
   line-height: 85rpx;
   height: 85rpx;
   color: black;
-  text-align:center ;
+  text-align: center;
   /* margin-bottom: 100rpx; */
-  margin-left: 15%;
+  /* margin-left: 35%; */
   border-radius: 100rpx;
   display: inline-block;
-  bottom: 7%;
-  left:2%;
+  bottom: 30%;
+  /* left: 2%; */
   z-index: 999;
+  margin: 0 auto;
 }
 
 .confirm-flyer {
@@ -381,14 +455,14 @@ page {
   line-height: 85rpx;
   height: 85rpx;
   color: black;
-  text-align:center ;
+  text-align: center;
   margin-right: 15%;
   /* margin-bottom: 10%; */
   border-radius: 100rpx;
   display: inline-block;
   z-index: 999;
   bottom: 7%;
-  right:2%;
+  right: 2%;
 }
 
 .confirm-btn:active {
@@ -406,18 +480,3 @@ page {
   text-align: center;
 }
 
-.confirm-user{
-  position: absolute;
-  font-size: 13pt;
-  line-height: 85rpx;
-  height: 85rpx;
-  color: black;
-  text-align:center ;
-  /* margin-bottom: 100rpx; */
-  margin-left: 35%;
-  border-radius: 100rpx;
-  display: inline-block;
-  bottom: 7%;
-  left:2%;
-  z-index: 999;
-}
