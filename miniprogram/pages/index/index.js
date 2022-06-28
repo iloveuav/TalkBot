@@ -56,6 +56,8 @@ Page({
 
 
 
+    picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/粤语真的很有意思.png")
+    picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/首页轮播图1.png")
     picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/1654701789977.png")
 
     let login = wx.getStorageSync("islogin")

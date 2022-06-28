@@ -3,7 +3,7 @@
     <image class="info_cover" mode="aspectFill" src="{{crouseDetail.courseFrontImgUrl}}"></image>
     <view class="info_content">
       <text class="content_title">{{crouseDetail.courseName}}</text>
-      <text class="content_desc">{{crouseDetail.courseIntroduce}}</text>
+      <text class="content_desc">课程简介：{{crouseDetail.courseIntroduce}}</text>
       <text class="content_state" wx:if="{{btnType==='edit'}}">审核状态：{{crouseDetail.state||'待审核'}}</text>
     </view>
   </view>

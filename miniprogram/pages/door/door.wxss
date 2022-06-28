@@ -16,7 +16,7 @@ page {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* background: #4D9BF4; */
+  background: #5e78bc;
   /* background: #4D9BF4; */
   align-items: stretch;
   padding: 0;
@@ -86,9 +86,9 @@ page {
 .backgroundImg {
   position: absolute;
   margin: 0 auto;
-  bottom: 10rpx;
+  bottom: 0rpx;
   width: 910rpx;
-  height: 1300rpx;
+  height: 100vh;
   opacity: 0;
   animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
   z-index: 1;
@@ -116,6 +116,8 @@ page {
   position: relative;
   margin: 0 auto;
   bottom: 180rpx;
+  width: 700rpx;
+  height: 700rpx;
   /* left: 8%; */
   /* width: 600rpx;
   height: 800rpx; */
@@ -253,14 +255,14 @@ page {
   position: relative;
   text-align: center;
   margin: 0 auto;
-  margin-top: 100rpx;
+  margin-top: 8%;
   width: 600rpx;
-  height: 60rpx;
+  height: 30rpx;
   /* margin-left: 100rpx; */
   opacity: 0;
   color: wheat;
   animation: show 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s forwards;
-  z-index: 3;
+  z-index: 2;
 }
 
 
@@ -443,7 +445,7 @@ page {
   /* margin-left: 35%; */
   border-radius: 100rpx;
   display: inline-block;
-  bottom: 30%;
+  bottom: 25%;
   /* left: 2%; */
   z-index: 999;
   margin: 0 auto;

@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <!-- <view class="myswiper"> -->
 
-<swiper style="height:600rpx" indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
+<swiper style="height:480rpx" indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
   <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
     <swiper-item class="swiper-item">
       <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
