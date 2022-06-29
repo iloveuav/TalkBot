@@ -603,6 +603,7 @@ Page({
           //   })
           // }, 1000)
           // break; //跳出当前遍历   相当于暂停
+          return;
         } else {
           Centendata.push(data);
           that.setData({
