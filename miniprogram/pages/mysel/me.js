@@ -123,6 +123,14 @@ Page({
   },
 
 
+  toCollectCourseList: function (e) {
+    wx.navigateTo({
+      //这里传值
+      url: '/pages/courseBotIndex/index?pageType=' + 'collectCoursePage',
+    })
+    // this.queryMineCourseList();
+  },
+
   toMineCourseList: function (e) {
     wx.navigateTo({
       //这里传值

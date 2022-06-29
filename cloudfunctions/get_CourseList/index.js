@@ -58,6 +58,10 @@ exports.main = async (event, context) => {
   var tempUserCourseMess = await db.collection('user-info').where({
     openid: wxContext.OPENID
   }).get()
+
+  var curUserCollectCourse = await db.collection('userCourseCollect').where({
+    _openid: wxContext.OPENID
+  }).get()
   var UserCourseMess = tempUserCourseMess.data
 
 
@@ -67,6 +71,12 @@ exports.main = async (event, context) => {
     testCourseContents.list.forEach(mess => {
       if (item.courseUUid === mess._id.courseUUid) {
         item.courseNum = mess.courseNum
+      }
+    })
+
+    curUserCollectCourse.data.forEach(record => {
+      if (item.courseUUid === record.courseUUid) {//标记为用户收藏
+        item.userCollectedFlag = true
       }
     })
 
@@ -89,6 +99,8 @@ exports.main = async (event, context) => {
     allCourse,
     UserCourseMess,
     currentOpenid: wxContext.OPENID,
+
+    curUserCollectCourse
 
   }
 }

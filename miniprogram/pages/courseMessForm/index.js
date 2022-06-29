@@ -246,7 +246,8 @@ Page({
       name: 'operate_CourseMess',
       data: {
         courseMess: courseMess,
-        type: this.data.type
+        type: this.data.type,
+        mode: 'operateDetail'
       },
       success: res => {
         if (this.data.isPageEdit) {

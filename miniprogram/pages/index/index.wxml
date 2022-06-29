@@ -1,16 +1,41 @@
 <!--index.wxml-->
 <!-- <view class="myswiper"> -->
 
-<swiper style="height:480rpx" indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
+
+
+
+<!-- 轮播图 -->
+<view class="swiper-view">
+  <swiper class="swiper-box" autoplay="true" interval="3000" previous-margin="{{swiperMargin}}"
+    next-margin="{{swiperMargin}}" bindchange="swiperChange">
+    <block wx:for="{{picList}}" wx:key="id">
+      <swiper-item bindtap="toDetail" data-proid="{{item.productId}}" style="text-align: center;">
+        <view class="swiper-item-view">
+          <image mode="aspectFill" class="swiper-image {{ swiperCurrent==index?'active':''}}" src="{{item}}" />
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="swiper-dots-view">
+    <view class="swiper-dot {{ swiperCurrent==index?'active':''}}" wx:for="{{swiperList}}" wx:key="id"></view>
+  </view>
+</view>
+
+
+
+
+<!-- <swiper style="height:470rpx" indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
   <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
     <swiper-item class="swiper-item">
       <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
     </swiper-item>
   </block>
-  <!-- <view class="remind-box" wx:if="{{remind}}">
-    <image class="remind-img" src="/images/loading_blue.gif"></image>
-  </view> -->
-</swiper>
+
+</swiper> -->
+
+
+
+
 
 <!-- </view> -->
 <!-- <view class='myGrid'>

@@ -23,6 +23,11 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
+  <view class='item' bindtap="toCollectCourseList">
+    <view class="title">我收藏的课程</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+
   <!-- <view class='item' bindtap="toMineNarrateList">
     <view class="title">我上传的山村介绍</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />

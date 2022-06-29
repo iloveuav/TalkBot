@@ -15,7 +15,14 @@ Page({
       "url": "img/1242x366_lyx_0709-1531122892.jpg"
     }, {
       "url": "img/14540040236323_1_o.jpg"
-    }]
+    }],
+
+
+
+    swiperMargin: wx.getSystemInfoSync().windowWidth > 380 ? '60rpx' : '50rpx',
+
+    swiperCurrent: 0,
+    swiperList: []
   },
   swiperBindchange(e) {
     this.setData({
@@ -57,8 +64,16 @@ Page({
 
 
     picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/粤语真的很有意思.png")
-    picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/首页轮播图1.png")
+    picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/1656511698886.png")
     picList.push("cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/1654701789977.png")
+
+
+    // swiperList.push({
+
+    //   productId: 0,
+    //   imgUrl: 'cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/粤语真的很有意思.png'
+    // })
+
 
     let login = wx.getStorageSync("islogin")
     console.log(login)
@@ -117,6 +132,16 @@ Page({
       islogin: wx.getStorageSync("islogin")
     })
   },
+
+
+  // 监听swiper切换
+  swiperChange: function (e) {
+    let current = e.detail.current;
+    this.setData({
+      swiperCurrent: current
+    });
+  },
+
 
   tonew() {
     console.log("tonew login:", this.data.login)

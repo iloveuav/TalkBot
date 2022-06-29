@@ -118,21 +118,39 @@ width: 90%;
   position: relative;
   display: flex;
   align-items: center;
-  margin: 20rpx 0;
+  /* margin: 20rpx 0; */
 }
 
 .order{
   width: 50rpx;
   height: 50rpx;
   text-align: center;
-  line-height: 50rpx;
+  /* line-height: 50rpx; */
   margin-right: 20rpx;
   color: #666666;
+  border-right: 1rpx solid #e7eaee;
+  border-bottom: 1rpx solid #e7eaee;
+  border-radius: 35%;
+}
+
+.chapterName{
+
+  line-height: 27rpx;
+  height: 80rpx;
+
+  /* text-align: center; */
+  /* height: 100rpx;
+  width: 100%;
+  line-height: 100rpx; */
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
 }
 
 .fail{
   position: absolute;
-  left: 340px;
+  left: 320px;
+  top:-12px
 }
 
 .course_operate{
@@ -178,7 +196,7 @@ width: 90%;
 
 .rightBtnItem {
   font-size: 10px;
-  width: 83pt;
+  width: 87pt;
   height: 30pt;
   z-index: 999;
   text-align: right;
@@ -203,12 +221,16 @@ width: 90%;
   align-items: center;
 }
 
-.r-itemSwitch {
+
+.r-itemAvatarUrl {
   color: #fff;
   position: absolute;
-  top: 23%;
-  right: 55%;
-  width: 32px;
-  height: 25rpx;
-  font-size: 26rpx;
+  top: 18%;
+  right: 50%;
+  width: 80rpx;
+  height: 75rpx;
+  border-radius: 50%;
+
+
+
 }

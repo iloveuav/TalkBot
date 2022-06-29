@@ -19,10 +19,10 @@
 </view>
 <!-- 当前章节已上传的课程内容 -->
 <view class='message'>
-  <view class='top_txt'>点击阴影块对块内课程内容编辑</view>
+  <view class='top_txt'>点击/长按阴影块对块内课程内容编辑</view>
   <view class="historycon">
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key=''
-      data-index="{{index}}" bindtap="preimage">
+      data-index="{{index}}" bindtap="preimage" bindlongpress="deleteOneItem">
       <!-- 时间 -->
       <view>
         <text class='time'>{{item.time}}</text>

@@ -14,55 +14,67 @@ exports.main = async (event, context) => {
   let sucess = {
     state: '200'
   }
-  if (event.edit_id) {
 
-    await db.collection(event.contentData.classCollection).where({
-      _id: event.edit_id
-    }).update({
-      data: {
-        contentType: event.contentData.contentType,
-        courseUUid: event.contentData.courseUUid,
-        chapterId: event.contentData.chapterId,
-        className: event.contentData.className,
-        chapterName: event.contentData.chapterName,
-        isBot: true,
-        content: event.contentData.content,
-        textImgArray: event.contentData.textImgArray,
-        src: event.contentData.src,
-        textimgTitle: event.contentData.textimgTitle,
-        imgfile: event.contentData.imgfile,
-        
-        detail: event.contentData.detail,
-        openid: wxContext.OPENID,
-        // curTTsRoleString:event.contentData.curTTsRoleString,
-
-        Collection: event.contentData.classCollection
-      },
-    })
-
-  } else {
-    await db.collection(event.contentData.classCollection).add({
-      data: {
-        contentType: event.contentData.contentType,
-        courseUUid: event.contentData.courseUUid,
-        chapterId: event.contentData.chapterId,
-        className: event.contentData.className,
-        chapterName: event.contentData.chapterName,
-        isBot: true,
-        content: event.contentData.content,
-        textImgArray: event.contentData.textImgArray,
-        src: event.contentData.src,
-        textimgTitle: event.contentData.textimgTitle,
-        imgfile: event.contentData.imgfile,
-        time: event.contentData.time,
-        detail: event.contentData.detail,
-        openid: wxContext.OPENID,
-        curTTsRoleString:event.contentData.curTTsRoleString,
-
-        Collection: event.contentData.classCollection
-      }
-    }); //success!!!!!!!!!!!!!!!!!!!!!
+  if (event.mode == 'delete') {
+    if (event.edit_id) {
+      await db.collection(event.classCollection).where({
+        _id: event.edit_id
+      }).remove()
+    }
   }
+
+
+  else {
+    if (event.edit_id) {
+      await db.collection(event.contentData.classCollection).where({
+        _id: event.edit_id
+      }).update({
+        data: {
+          contentType: event.contentData.contentType,
+          courseUUid: event.contentData.courseUUid,
+          chapterId: event.contentData.chapterId,
+          className: event.contentData.className,
+          chapterName: event.contentData.chapterName,
+          isBot: true,
+          content: event.contentData.content,
+          textImgArray: event.contentData.textImgArray,
+          src: event.contentData.src,
+          textimgTitle: event.contentData.textimgTitle,
+          imgfile: event.contentData.imgfile,
+
+          detail: event.contentData.detail,
+          openid: wxContext.OPENID,
+          // curTTsRoleString:event.contentData.curTTsRoleString,
+
+          Collection: event.contentData.classCollection
+        },
+      })
+
+    } else {
+      await db.collection(event.contentData.classCollection).add({
+        data: {
+          contentType: event.contentData.contentType,
+          courseUUid: event.contentData.courseUUid,
+          chapterId: event.contentData.chapterId,
+          className: event.contentData.className,
+          chapterName: event.contentData.chapterName,
+          isBot: true,
+          content: event.contentData.content,
+          textImgArray: event.contentData.textImgArray,
+          src: event.contentData.src,
+          textimgTitle: event.contentData.textimgTitle,
+          imgfile: event.contentData.imgfile,
+          time: event.contentData.time,
+          detail: event.contentData.detail,
+          openid: wxContext.OPENID,
+          curTTsRoleString: event.contentData.curTTsRoleString,
+
+          Collection: event.contentData.classCollection
+        }
+      }); //success!!!!!!!!!!!!!!!!!!!!!
+    }
+  }
+
 
 
 

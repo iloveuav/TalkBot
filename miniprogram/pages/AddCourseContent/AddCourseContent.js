@@ -504,6 +504,12 @@ Page({
     })
   },
 
+
+  //删除一个图文项
+  deleteOneTextImgItem: function (e) {
+    console.log(e)
+  },
+
   selectedAnswer(e) {
     this.setData({
       answer: e.currentTarget.dataset.answer
@@ -541,48 +547,138 @@ Page({
     }
 
     console.log("进入add函数")
-    // 设置封面
-    if (this.data.setFrontImg) {
-      if (this.data.className == '') {
-        wx.showModal({
-          title: '提示',
-          content: '课程名不能为空',
-          showCancel: false
+    //这个else一直到最后
+
+    console.log("this.data.message", this.data.message)
+    // --------设置封面end-----------------------
+    if (this.data.chapterId == '') {
+      wx.showModal({
+        title: '提示',
+        content: '课程id不能为空',
+        showCancel: false
+      })
+      return;
+    } else if (this.data.className == '') {
+      wx.showModal({
+        title: '提示',
+        content: '课程名不能为空~',
+        showCancel: false
+      })
+      return;
+    } else if ((this.data.message == '' || this.data.message == null || !this.data.message) && this.data.imgUrl == null) {
+      wx.showModal({
+        title: '提示',
+        content: '课程内容不能为空~',
+        showCancel: false
+      })
+      return;
+    } else if (this.data.chapterName == '') {
+      wx.showModal({
+        title: '提示',
+        content: '章节名不能为空~',
+        showCancel: false
+      })
+      return;
+    }
+
+    else {
+      let imgobj = this.data.imageObject;
+      console.log('imgobj', imgobj)
+      if (imgobj != '' && imgobj != undefined) {
+        this.setData({
+          imgUrl: 'http://' + imgobj.imageURL
         })
-        return;
       }
-      if (this.data.textimgTitle != this.data.className) {
-        wx.showModal({
-          title: '提示',
-          content: '课程名不一致~',
-          showCancel: false
-        })
-        return;
+      let newcontentType;
+      // if (that.data.textImgArray.length <= 0) {
+      //   newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
+      // } else {
+      //   newcontentType = 'textImg';
+      // }
+
+      //add函数 只给上传文字、图片、图文使用
+      if (that.data.setTextImg) {
+        newcontentType = 'textImg';
+      } else {
+        newcontentType = that.data.imgUrl == null ? 'text' : 'img';
       }
-      let courseMess = {
-        name: this.data.className,
-        frontImg: this.data.imgUrl,
+
+      var newData = {
+        contentType: newcontentType,
+        isBot: true,
+        classCollection: 'testCourseContents',
+        chapterId: parseInt(that.data.chapterId),
+        className: that.data.className,
+        classType: ClassCollection,
+        chapterName: this.data.chapterName,
+
+        chapterId: parseInt(that.data.chapterId),
+        courseUUid: this.data.crouseDetail.courseUUid || '',
+
+        detail: {},
+        textimgTitle: that.data.textimgTitle,
+        textImgArray: that.data.textImgArray,
+        content: that.data.message,
+        src: that.data.imgUrl,
+        imgfile: that.data.tempimg,
+        time: time.formatTime(new Date, 'Y/M/D'),
+        is_show_right: 1,
+        curTTsRoleString: this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null
       }
+
+      this.setData({
+        newData: newData,
+      })
+
+      if (!this.data.editStatus) {
+        this.bottom();
+      }
+
+      console.log('this.add cloud params', {
+        contentData: that.data.newData,
+        edit_id: this.data.edit_id
+      })
+
+      //  下面是云函数的调用
       wx.cloud.init({
         env: 'huixue-3g4h1ydg1dedcaf3'
       })
-      // wx.cloud.init()
-      //  下面是云函数的调用
       wx.cloud.callFunction({
-        name: 'update_allCourseMess',
+        name: 'operate_courseContent',
         data: {
-          courseMess: courseMess,
+          contentData: that.data.newData,
+          edit_id: this.data.edit_id,
+          mode: 'AddOrEdit'
         },
         success: res => {
-          let mess = {
-            content: '成功设置封面'
+          if (!this.data.editStatus) {
+            that.data.centendata.push(this.data.newData);
           }
-          wx.showModal({
-            title: '操作成功',
-            content: '课程封面已上传',
-            showCancel: false,
+
+          this.setData({
+            centendata: that.data.centendata,
           })
-          return;
+          if (!this.data.editStatus) {
+            this.bottom();
+          }
+          this.setData({
+            imgUrl: null,
+            imageObject: '',
+            message: '',
+            setTextImg: false,
+            textimgTitle: '',
+            imgfile: '',
+            btnDie: false,
+            textImgArray: [{}],
+            answer: '',
+            setFrontImg: '',
+            editStatus: false,//编辑状态关闭
+
+            edit_id: null//编辑id置空
+          })
+
+
+
         },
         fail: err => {
           // handle error
@@ -597,155 +693,10 @@ Page({
           console.log('callFunction test result: ', res)
         }
       })
-    } else { //这个else一直到最后
-
-      console.log("this.data.message", this.data.message)
-      // --------设置封面end-----------------------
-      if (this.data.chapterId == '') {
-        wx.showModal({
-          title: '提示',
-          content: '课程id不能为空',
-          showCancel: false
-        })
-        return;
-      } else if (this.data.className == '') {
-        wx.showModal({
-          title: '提示',
-          content: '课程名不能为空~',
-          showCancel: false
-        })
-        return;
-      } else if ((this.data.message == '' || this.data.message == null || !this.data.message) && this.data.imgUrl == null) {
-        wx.showModal({
-          title: '提示',
-          content: '课程内容不能为空~',
-          showCancel: false
-        })
-        return;
-      } else if (this.data.chapterName == '') {
-        wx.showModal({
-          title: '提示',
-          content: '章节名不能为空~',
-          showCancel: false
-        })
-        return;
-      }
-
-      else {
-        let imgobj = this.data.imageObject;
-        console.log('imgobj', imgobj)
-        if (imgobj != '' && imgobj != undefined) {
-          this.setData({
-            imgUrl: 'http://' + imgobj.imageURL
-          })
-        }
-        let newcontentType;
-        // if (that.data.textImgArray.length <= 0) {
-        //   newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
-        // } else {
-        //   newcontentType = 'textImg';
-        // }
-
-        //add函数 只给上传文字、图片、图文使用
-        if (that.data.setTextImg) {
-          newcontentType = 'textImg';
-        } else {
-          newcontentType = that.data.imgUrl == null ? 'text' : 'img';
-        }
-
-        var newData = {
-          contentType: newcontentType,
-          isBot: true,
-          classCollection: 'testCourseContents',
-          chapterId: parseInt(that.data.chapterId),
-          className: that.data.className,
-          classType: ClassCollection,
-          chapterName: this.data.chapterName,
-
-          chapterId: parseInt(that.data.chapterId),
-          courseUUid: this.data.crouseDetail.courseUUid || '',
-
-          detail: {},
-          textimgTitle: that.data.textimgTitle,
-          textImgArray: that.data.textImgArray,
-          content: that.data.message,
-          src: that.data.imgUrl,
-          imgfile: that.data.tempimg,
-          time: time.formatTime(new Date, 'Y/M/D'),
-          is_show_right: 1,
-          curTTsRoleString: this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null
-        }
-
-        this.setData({
-          newData: newData,
-        })
-
-        if (!this.data.editStatus) {
-          this.bottom();
-        }
-
-        console.log('this.add cloud params', {
-          contentData: that.data.newData,
-          edit_id: this.data.edit_id
-        })
-
-        //  下面是云函数的调用
-        wx.cloud.init({
-          env: 'huixue-3g4h1ydg1dedcaf3'
-        })
-        wx.cloud.callFunction({
-          name: 'operate_courseContent',
-          data: {
-            contentData: that.data.newData,
-            edit_id: this.data.edit_id
-          },
-          success: res => {
-            if (!this.data.editStatus) {
-              that.data.centendata.push(this.data.newData);
-            }
-
-            this.setData({
-              centendata: that.data.centendata,
-            })
-            if (!this.data.editStatus) {
-              this.bottom();
-            }
-            this.setData({
-              imgUrl: null,
-              imageObject: '',
-              message: '',
-              setTextImg: false,
-              textimgTitle: '',
-              imgfile: '',
-              btnDie: false,
-              textImgArray: [{}],
-              answer: '',
-              setFrontImg: '',
-              editStatus: false,//编辑状态关闭
-
-              edit_id: null//编辑id置空
-            })
-
-
-
-          },
-          fail: err => {
-            // handle error
-            wx.showModal({
-              title: '提示',
-              content: '课程内容上传出错 请检查网络',
-              showCancel: false,
-            })
-            return;
-          },
-          complete: res => {
-            console.log('callFunction test result: ', res)
-          }
-        })
-
-      }
 
     }
+
+
   },
 
 
@@ -1142,7 +1093,7 @@ Page({
       className: this.data.className,
       chapterName: this.data.chapterName,
 
-      curTTsRoleString:this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null,
+      curTTsRoleString: this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null,
 
       detail: {
         btnNum: this.data.btnNum,
@@ -1173,7 +1124,8 @@ Page({
       name: 'operate_courseContent',
       data: {
         contentData: that.data.contentData,
-        edit_id: this.data.edit_id
+        edit_id: this.data.edit_id,
+        mode: 'AddOrEdit'
       },
       success: res => {
         if (!this.data.editStatus) {
@@ -1307,6 +1259,67 @@ Page({
       editIndex: contentIndex,
       edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
     })
+  },
+
+  //删除一个课程内容项
+  deleteOneItem: function (e) {
+    console.log(e)
+    const contentIndex = e.currentTarget.dataset.index;
+    const contentItem = this.data.centendata[contentIndex];
+    const contentType = contentItem['contentType']
+    const edit_id = contentItem['_id']
+    console.log('edit_id', edit_id)
+
+    if (edit_id) {
+      wx.showModal({
+        title: "确认删除当前课程内容？",
+        content: "本次删除不可恢复~",
+        showCancel: true,
+        success: (res) => {
+          if (res.confirm) {
+            //调用云函数
+            wx.cloud.init({
+              env: 'huixue-3g4h1ydg1dedcaf3'
+            })
+            wx.cloud.callFunction({
+              name: 'operate_courseContent',
+              data: {
+                edit_id: edit_id,
+                classCollection: ClassCollection,
+                mode: 'delete'
+              },
+              success: res => {
+                this.data.centendata = this.data.centendata.filter(item => {
+                  return item._id != edit_id
+                })
+                this.setData({
+                  centendata: this.data.centendata
+                })
+
+                wx.showModal({
+                  title: '提示',
+                  content: '已删除您选择的课程内容~',
+                  showCancel: false,
+                })
+
+                return;
+              },
+              fail: err => {
+                wx.showModal({
+                  title: '提示',
+                  content: '删除失败 请检查网络~',
+                  showCancel: false,
+                })
+                return;
+              },
+            })
+            // ----------- 云函数 end---------------
+          }
+        }
+      })
+    }
+
+
   },
 
   // --------------- 左侧 上传特殊类型功能方法集

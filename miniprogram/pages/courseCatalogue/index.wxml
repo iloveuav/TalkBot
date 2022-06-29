@@ -9,12 +9,16 @@
     </view>
     <view class="oparetion">
       <view class="opare_item">
-        <image src="../../images/talkBot/ic_like_white@2x.png" />
-        <text>10</text>
+        <image wx:if="{{!isLiked}}" src="../../images/talkBot/ic_like_white@2x.png" catchtap="like" data-content='like' />
+        <image wx:if="{{isLiked}}" src="../../images/talkBot/liked.png" catchtap="like"  data-content='cancelLike'/>
+        <text>{{crouseDetail.likeCount||0}}</text>
       </view>
       <view class="opare_item">
-        <image src="../../images/talkBot/ic_collection_white@2x.png" />
-        <text>20</text>
+        <image wx:if="{{!isCollected}}" src="../../images/talkBot/toCollect.png" catchtap="courseCollect"
+          data-content='collect' />
+        <image wx:if="{{isCollected}}" src="../../images/talkBot/toCancelCollect.png" catchtap="courseCollect"
+          data-content='cancelCollect' />
+        <text>{{crouseDetail.collectCount||0}}</text>
       </view>
       <view class="opare_item">
         <image src="../../images/talkBot/ic_share_white@2x.png" />
@@ -33,9 +37,10 @@
       </button>
     </view>
     <view class="chapter_list">
-      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}" data-id="{{item._id.chapterId}}">
+      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}"
+        data-id="{{item._id.chapterId}}">
         <text class="order">{{index + 1}}</text>
-        <text catchtap="handleChapterItem" data-clickChapter="{{item}}">
+        <text class="chapterName" catchtap="handleChapterItem" data-clickChapter="{{item}}">
           {{item._id.chapterName}}
         </text>
         <text wx:if="{{btnType==='edit'}}" class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">
@@ -49,15 +54,33 @@
     <button bindtap="editCourse">编辑课程基本信息</button>
   </view>
 </view>
-<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" style="{{translate}}">
+<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start"
+  style="{{translate}}">
   <view class="rightBtnItem">
     <image class="r-itemImgBox" src="../../images/button/addCoverBtn.png"></image>
+    <image class="r-itemAvatarUrl" src="{{crouseDetail.createrInfo.avatarUrl||'https://thirdwx.qlogo.cn/mmopen/vi_32/Z2mGduZjV5GwcgYmxibVEY8icUNgOyuibtnL13WAwZFyYX40DS4aEInnfkibXdOoSweD7icrWdUzd9Tnp1us70jdbpQ/132'}}"></image>
     <view class="r-itemName">
       <view>作者</view>
-      <view>{{crouseDetail.state||'待审核'}}</view>
+      <view>{{crouseDetail.createrInfo.nickName||'匿名'}}</view>
     </view>
   </view>
-  <view class="rightBtnItem" wx:if="{{btnType==='edit'}}">
+  <view class="rightBtnItem" wx:if="{{btnType==='edit'&&crouseDetail.state==='待审核'}}">
+    <image class="r-itemImgBox" src="../../images/button/addTextImg.png"></image>
+    <view class="r-itemName">
+      <view>审核状态</view>
+      <view>{{'待审核'}}</view>
+    </view>
+  </view>
+  <view class="rightBtnItem" wx:if="{{btnType==='edit'&&crouseDetail.state==='审核不通过'}}">
+    <image class="r-itemImgBox" src="../../images/button/addTextImg.png"></image>
+    <view class="r-itemName">
+      <view>审核状态</view>
+      <view>{{'未通过'}}</view>
+    </view>
+  </view>
+
+
+  <view class="rightBtnItem" wx:if="{{btnType==='edit'&&crouseDetail.state==='审核通过'}}">
     <image class="r-itemImgBox" src="../../images/button/addAnswerBtn.png"></image>
     <view class="r-itemName">
       <view>审核状态</view>

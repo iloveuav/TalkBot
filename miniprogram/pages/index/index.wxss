@@ -1,20 +1,20 @@
 /**index.wxss**/
-swiper{
-  margin: 0 0 30rpx ;
+swiper {
+  margin: 0 0 30rpx;
   height: 300rpx;
   /* border-radius: 20rpx; */
   /* overflow: hidden; */
 }
 
- page {
+page {
   background-color: white;
-} 
- 
+}
+
 .slide-image {
   width: 100%;
   height: 100%;
 }
- 
+
 /* .zoom-out {
   transform: scale(0.9);
   transition: all 0.7s ease-out 0s;
@@ -25,24 +25,26 @@ swiper{
   transition: all 0.7s ease-in 0s;
 } */
 
-.myGrid{
-top: 200rpx;
-margin-top: 0rpx;
-margin-bottom: 200rpx;
+.myGrid {
+  top: 200rpx;
+  margin-top: 0rpx;
+  margin-bottom: 200rpx;
   /* background: linear-gradient(to top,rgb(195, 232, 247),rgb(137, 200, 243),rgb(66, 197, 236)); */
 
 }
-.gridFont{
+
+.gridFont {
   /* background: linear-gradient(to top,rgb(247, 246, 195),rgb(240, 229, 198),rgb(235, 204, 175)); */
 
 }
 
-.flex-box{
+.flex-box {
   display: flex;
   flex-wrap: wrap;
   margin: 0 30rpx;
 }
-.flex-item{
+
+.flex-item {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -79,11 +81,12 @@ margin-bottom: 200rpx;
   background-color: #9c88ff;
   box-shadow: 0 10rpx 15rpx #9c88ff;
 } */
-.flex-item image{
+.flex-item image {
   width: 50rpx;
   height: 50rpx;
 }
-.flex-item text{
+
+.flex-item text {
   display: block;
   margin-top: 10rpx;
   font-size: 26rpx;
@@ -112,10 +115,79 @@ margin-bottom: 200rpx;
   transform: translateX(-50%);
   width: 360rpx;
   height: 72rpx;
-  
+
   border: 1px solid #4D9BF4;
   border-radius: 44rpx;
   line-height: 72rpx;
   font-size: 30rpx;
   color: #4D9BF4;
+}
+
+
+
+
+
+
+
+
+.swiper-view {
+  position: relative;
+  border-bottom: 1px solid #f6f8fc;
+  margin-top: 20rpx;
+}
+
+.swiper-box {
+  height: 355rpx;
+}
+
+.swiper-item-view {
+  zoom: 1;
+  box-sizing: border-box;
+}
+
+.swiper-item-view:after {
+  display: table;
+  content: "";
+  clear: both;
+}
+
+.swiper-image {
+  overflow: hidden;
+  /* height: 170px; */
+  width: 620rpx;
+  height: 340rpx;
+  transition: transform 500ms;
+  transform: scale(0.95, 0.9);
+  /* 缩放处理，产生一种层次感 */
+  border-radius: 8px;
+  box-shadow: 0px 6px 10px 0px rgba(179, 154, 139, 1);
+}
+
+.swiper-image.active {
+  transform: scale(1, 1);
+}
+
+.swiper-dots-view {
+  /* 水平居中*/
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  left: 0;
+  bottom: 10px;
+  height: 18rpx;
+  /* height: 6px; */
+}
+
+.swiper-dot {
+  width: 6px;
+  height: 6px;
+  margin: 0 3px;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.swiper-dot.active {
+  width: 15px;
+  background-color: rgb(221, 65, 3);
 }

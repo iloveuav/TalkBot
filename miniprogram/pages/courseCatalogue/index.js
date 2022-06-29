@@ -43,9 +43,8 @@ Page({
         pageType: options.type ? options.type : 'course'
       })
       this.getChapterList(btnType);
-
     }
-
+    this.getCollectState();
   },
   toAddChapter: function () {
     let str = JSON.stringify(this.data.crouseDetail);
@@ -72,6 +71,133 @@ Page({
   up(x, y) {
     return x._id.chapterId - y._id.chapterId
   },
+
+
+  getCollectState: function () {
+    wx.cloud.callFunction({
+      name: 'operate_courseUserStatus',
+      data: {
+        mode: 'getStatus',
+        courseUUid: this.data.crouseDetail.courseUUid
+      }
+    }).then(res => {
+      console.log(res)
+      this.setData({
+        isLiked: res.result.userIsLike,
+        isCollected: res.result.userIsCollect
+      })
+      // return res.result.data.collectd
+    })
+      .catch(err => {
+        console.error('getCollectd', err)
+      })
+
+  },
+
+  getUserCourseState: function () {
+
+
+  },
+
+  like: function (e) {
+    console.log(e)
+    const mode = e.currentTarget.dataset.content
+    if (mode === 'like') {
+      if (this.data.crouseDetail.likeCount || this.data.crouseDetail.likeCount === 0) {
+        this.data.crouseDetail.likeCount++;
+      } else {
+        this.data.crouseDetail.likeCount = 1
+      }
+    } else {
+      if (this.data.crouseDetail.likeCount && this.data.crouseDetail.likeCount > 0) {
+        this.data.crouseDetail.likeCount--;
+      } else {
+        this.data.crouseDetail.likeCount = 0
+      }
+    }
+
+    wx.cloud.callFunction({
+      name: 'operate_courseUserStatus',
+      data: {
+        // type: 'course',
+        // mode: 'cancelLike',
+        mode: mode,
+        courseUUid: this.data.crouseDetail.courseUUid
+      },
+      success: res => {
+        console.log(res)
+        this.setData({
+          crouseDetail: this.data.crouseDetail,
+          isLiked:!this.data.isLiked
+        })
+
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '提示',
+          content: '点赞失败 请检查网络',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+      }
+    })
+  },
+
+  courseCollect: function (e) {
+    const mode = e.currentTarget.dataset.content
+    if (mode === 'collect') {
+      if (this.data.crouseDetail.collectCount || this.data.crouseDetail.collectCount === 0) {
+        this.data.crouseDetail.collectCount++;
+      } else {
+        this.data.crouseDetail.collectCount = 1
+      }
+    } else {
+      if (this.data.crouseDetail.collectCount && this.data.crouseDetail.collectCount >= 0) {
+        this.data.crouseDetail.collectCount--;
+      } else {
+        this.data.crouseDetail.collectCount = 0
+      }
+    }
+
+
+    wx.cloud.callFunction({
+      name: 'operate_courseUserStatus',
+      data: {
+        // mode:'cancelCollect',//'cancelCollect'
+        // mode:'collect',//'cancelCollect'
+        mode: mode,
+        courseUUid: this.data.crouseDetail.courseUUid
+      },
+      success: res => {
+        console.log(res)
+        this.setData({
+          crouseDetail: this.data.crouseDetail,
+          isCollected:!this.data.isCollected
+        })
+
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '提示',
+          content: '操作失败 请检查网络',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+      }
+    })
+  },
+
+
 
 
   getChapterList(pageType) {

@@ -162,9 +162,6 @@ Page({
           ctx.onEnded((res) => {
             console.log("play done...")
             this.data.isVoicePlaying = false
-            if (this.data.autoReadingAloud && !this.data.wait) {
-              this.showTeach()
-            }
             fs.unlink({
               filePath: this.data.saveFile,
               success: (res) => {
@@ -477,7 +474,6 @@ Page({
 
           console.log("tts done")
           this.data.ttsStart = false
-
         } catch (e) {
           console.log("tts start error:" + e)
         }
@@ -547,105 +543,91 @@ Page({
   // ============================================================
 
   showTeach: function () {
-    setTimeout(() => {
+    this.setData({
+      start: true,
+      continueBtn: false,
+      classLength: LeftOverClassConten.length,
+    })
+    let that = this;
+    // let classContent = wx.getStorageSync('newClassContent');
+    // console.log(classContent);
+    // LeftOverClassConten = wx.getStorageSync('loClassContent');
 
-
-      this.setData({
-        start: true,
-        continueBtn: false,
-        classLength: LeftOverClassConten.length,
-      })
-      let that = this;
-      // let classContent = wx.getStorageSync('newClassContent');
-      // console.log(classContent);
-      // LeftOverClassConten = wx.getStorageSync('loClassContent');
-
-      if (LeftOverClassConten == '' || null || undefined) {
+    if (LeftOverClassConten == '' || null || undefined) {
+      // console.log(LeftOverClassConten);
+      this.getNewClassContent();
+    } else {
+      // console.log(NewclassContent);
+      // 遍历注入新的课程内容到Centendata
+      // var loDataArray = LeftOverClassConten.splice(this.data.growid, LeftOverClassConten.length);
+      var loclassLength = LeftOverClassConten.length;
+      // console.log(loclassLength)
+      for (let i = 0; i < loclassLength; i++) {
+        let that = this;
+        // this.bottom();
+        // -------------------拿出首项  并移除----------------
+        let data = LeftOverClassConten[0];
+        LeftOverClassConten.splice(0, 1);
         // console.log(LeftOverClassConten);
-        this.getNewClassContent();
-      } else {
-        // console.log(NewclassContent);
-        // 遍历注入新的课程内容到Centendata
-        // var loDataArray = LeftOverClassConten.splice(this.data.growid, LeftOverClassConten.length);
-        var loclassLength = LeftOverClassConten.length;
-        // console.log(loclassLength)
-        for (let i = 0; i < loclassLength; i++) {
-          let that = this;
-          // this.bottom();
-          // -------------------拿出首项  并移除----------------
-          let data = LeftOverClassConten[0];
-          LeftOverClassConten.splice(0, 1);
-          // console.log(LeftOverClassConten);
-          // ----------------------更新剩余LO----------------
-          if (data.contentType == 'Interact') {
-            //  先显示互动内容
-            // centendata = this.data.centendata;
-            this.data.centendata.push(data);
-            that.setData({
-              centendata: this.data.centendata
-            })
-            this.bottom();
-            this.sleep(100);
-            // this.bottom();
-            // 为互动设置样式
-            this.setData({
-              wait: true,
-              time: 60,
-              btnDie: false,
-            })
-            // 暂时没用定时需求
-            // that.init(that);          //这步很重要，没有这步，重复点击会出现多个定时器
-            // var time = that.data.time;
-            // console.log("倒计时开始")
-            // var interval = setInterval(function() {
-            //   that.setData({
-            //     // time: that.data.time - 1,
-            //   })
-            // }, 1000)
-            break; //跳出当前遍历   相当于暂停
-          } else {
-            // 不是互动 显示即可
-            // console.log(data);
-            // centendata = this.data.centendata;
-
-            Centendata.push(data);
-            that.setData({
-              centendata: Centendata
-            })
-            if (this.data.autoReadingAloud) {
-              // this.speach(data.content);
-              this.onTtsSpeach({ content: data.content, curTTsRoleString: data.curTTsRoleString });
-              break;
-            }
-            this.bottom();
-            this.sleep(500);
-            // 更新本地历史记录
-            wx.setStorageSync('history' + this.data.courseObject.courseName, this.data.centendata)
-            //剩余内容更新
-            wx.setStorageSync(this.data.courseObject.courseName, LeftOverClassConten)
-            this.setTimeout(() => {
-              this.showTeach()
-            }, 1000);
-            break;
-          }
-          this.sleep(500);
-          
-        }
-
-        //  进入下一课
-        // this.toNextClass();
-        if (LeftOverClassConten.length == 0) {
-          this.setData({
-            // continueBtn: true,
-            classLength: 0
+        // ----------------------更新剩余LO----------------
+        if (data.contentType == 'Interact') {
+          //  先显示互动内容
+          // centendata = this.data.centendata;
+          this.data.centendata.push(data);
+          that.setData({
+            centendata: this.data.centendata
           })
+          this.bottom();
+          this.sleep(100);
+          // this.bottom();
+          // 为互动设置样式
+          this.setData({
+            wait: true,
+            time: 60,
+            btnDie: false,
+          })
+          // 暂时没用定时需求
+          // that.init(that);          //这步很重要，没有这步，重复点击会出现多个定时器
+          // var time = that.data.time;
+          // console.log("倒计时开始")
+          // var interval = setInterval(function() {
+          //   that.setData({
+          //     // time: that.data.time - 1,
+          //   })
+          // }, 1000)
+          break; //跳出当前遍历   相当于暂停
+        } else {
+          // 不是互动 显示即可
+          // console.log(data);
+          // centendata = this.data.centendata;
+
+          Centendata.push(data);
+          that.setData({
+            centendata: Centendata
+          })
+          if (this.data.autoReadingAloud) {
+            // this.speach(data.content);
+            this.onTtsSpeach({ content: data.content, curTTsRoleString: data.curTTsRoleString });
+          }
+          this.bottom();
+          this.sleep(100);
+          // 更新本地历史记录
+          wx.setStorageSync('history' + this.data.courseObject.courseName, this.data.centendata)
+          //剩余内容更新
+          wx.setStorageSync(this.data.courseObject.courseName, LeftOverClassConten)
         }
+        this.sleep(500);
       }
 
-
-
-
-    }, 1000);
+      //  进入下一课
+      // this.toNextClass();
+      if (LeftOverClassConten.length == 0) {
+        this.setData({
+          // continueBtn: true,
+          classLength: 0
+        })
+      }
+    }
 
   },
 
@@ -834,23 +816,16 @@ Page({
 
         Centendata.push(data);
         // this.updateScrollHeightByFooter();
-        // this.setData({
-        //   centendata: Centendata,
-        //   wait: false,
-        //   growid: growid,
-        //   btnDie: true,
-        // })
+        this.setData({
+          centendata: Centendata,
+          wait: false,
+          growid: growid,
+          btnDie: true,
+        })
 
         this.bottom();
         // this.toScrollBottom();
       }
-
-      this.setData({
-        centendata: Centendata,
-        wait: false,
-        growid: growid,
-        btnDie: true,
-      })
     }
     // ------------上面是执行从互动按过来的处理 
     if (this.data.classLength != 0) {

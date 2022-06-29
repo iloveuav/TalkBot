@@ -223,6 +223,10 @@ Page({
           if((item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'){
             showCourse.push(item)
           }
+
+          if((item.userCollectedFlag&&pageType ==='collectCoursePage'&&(item.isMineCourse||item.state==='审核通过'))){
+            showCourse.push(item)
+          }
         })
         this.setData({
           allCourse: showCourse,
