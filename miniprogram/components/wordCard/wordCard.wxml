@@ -1,15 +1,15 @@
 <!--components/classCard.wxml-->
-<swiper class="swiper" bindchange="swiperBindchange" previous-margin="100rpx"
-        next-margin="100rpx"
-        :indicator-dots="false"
-        :autoplay="false">
+<swiper class="swiper" bindchange="swiperBindchange" previous-margin="100rpx" next-margin="100rpx" :indicator-dots="false" :autoplay="false">
   <block wx:for="{{allItem}}" wx:key="index" wx:for-index="index">
     <swiper-item catchtap="preimage" data-i="{{index}}">
       <view class="Card {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}">
         <image class="img" src="{{item.src}}" mode="aspectFill"></image>
         <view class="card_text">
           <view class="Title"> {{item.textimgTitle}} </view>
-          <view class="card_content slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"> {{item.content}} </view>
+          <!-- 这里得限制最多30个中文 负责会展示不全 -->
+          <view class="card_content slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}">
+            <text style="overflow: hidden; text-overflow: ellipsis;">{{item.content}} </text>
+          </view>
         </view>
       </view>
     </swiper-item>

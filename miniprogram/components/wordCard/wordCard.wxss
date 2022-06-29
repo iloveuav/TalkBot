@@ -8,7 +8,7 @@
 }
 
 .Card {
-  height: 700rpx;
+  height: 725rpx;
   width: 510rpx;
   margin: 20rpx 0;
   border-radius: 15rpx;
@@ -31,10 +31,14 @@
 }
 
 .card_content{
-  font-size: 30rpx;
-  font-size: 500;
+  font-size: 24rpx;
   color: #A2A2A2;
-  margin-top: 20rpx;
+  margin-top: 15rpx;
+  padding: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 100rpx;
+  height: 75rpx;
 }
 
 

@@ -16,14 +16,14 @@ Page({
       })
       return;
     }
-    if (e.detail.value.number == "") {
-      wx.showModal({
-        title: '提示',
-        content: '请留下您的联系方式，请重试',
-        showCancel: false
-      })
-      return;
-    }
+    // if (e.detail.value.number == "") {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: '请留下您的联系方式，请重试',
+    //     showCancel: false
+    //   })
+    //   return;
+    // }
 
     var text = e.detail.value.text;
     var number = e.detail.value.number;

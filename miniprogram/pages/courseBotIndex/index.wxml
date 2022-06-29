@@ -45,10 +45,10 @@
   <!-- <view class="crouseType">英语课程</view> -->
 
 
-  <view class="failText1" wx:if="{{allCourse.length>=3}}">更多课程正在加紧制作中，敬请期待~</view>
+  <view class="failText1" wx:if="{{allCourse.length>=2}}">更多课程正在加紧制作中，敬请期待~</view>
 </view>
 
 
-<view class="failText2" wx:if="{{allCourse.length<=2}}">更多课程正在加紧制作中，敬请期待~</view>
+<view class="failText2" wx:if="{{allCourse.length<=1}}">更多课程正在加紧制作中，敬请期待~</view>
 
 <!-- ------------------------------------------------- -->

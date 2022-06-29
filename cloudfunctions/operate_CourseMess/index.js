@@ -35,6 +35,7 @@ exports.main = async (event, context) => {
               courseType: event.courseMess.courseType,
               creatTime: event.courseMess.creatTime,
               createrOpenid: wxContext.OPENID,
+              createrInfo: event.courseMess.createrInfo,
               state: '待审核'
             }
           })

@@ -449,6 +449,8 @@ page {
   /* left: 2%; */
   z-index: 999;
   margin: 0 auto;
+  animation: show 10s cubic-bezier(0.19, 1, 0.22, 1) 2s forwards;
+
 }
 
 .confirm-flyer {

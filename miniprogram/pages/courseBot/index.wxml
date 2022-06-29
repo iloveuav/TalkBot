@@ -59,7 +59,7 @@
 
 
           <!-- -----------------横向轮播卡片组件------------------------------------------ -->
-          <view class="wordCard" wx-if="{{item.textImgArray.length>0}}">
+          <view class="wordCard" wx-if="{{item.contentType === 'textImg'}}">
             <scroll-view>
               <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" bindspeach="onTtsSpeach">
               </wordCard>

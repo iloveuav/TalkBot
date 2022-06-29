@@ -65,6 +65,7 @@ Page({
 
 
     autoReadingAloud: false,
+    haveSpeakerFlag: true,
     multiVoiceArray: [
 
       [//方言
@@ -614,7 +615,7 @@ Page({
           showCancel: false
         })
         return;
-      } else if ((this.data.message == '' || this.data.message == null||!this.data.message) && this.data.imgUrl == null) {
+      } else if ((this.data.message == '' || this.data.message == null || !this.data.message) && this.data.imgUrl == null) {
         wx.showModal({
           title: '提示',
           content: '课程内容不能为空~',
@@ -628,11 +629,11 @@ Page({
           showCancel: false
         })
         return;
-      } 
-      
+      }
+
       else {
         let imgobj = this.data.imageObject;
-        console.log('imgobj',imgobj)
+        console.log('imgobj', imgobj)
         if (imgobj != '' && imgobj != undefined) {
           this.setData({
             imgUrl: 'http://' + imgobj.imageURL
@@ -672,7 +673,7 @@ Page({
           imgfile: that.data.tempimg,
           time: time.formatTime(new Date, 'Y/M/D'),
           is_show_right: 1,
-          curTTsRoleString: this.data.curTTsRoleString
+          curTTsRoleString: this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null
         }
 
         this.setData({
@@ -1141,7 +1142,7 @@ Page({
       className: this.data.className,
       chapterName: this.data.chapterName,
 
-      curTTsRoleString: this.data.curTTsRoleString,
+      curTTsRoleString:this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null,
 
       detail: {
         btnNum: this.data.btnNum,
@@ -1223,7 +1224,7 @@ Page({
       textImgArray: [{
 
       }],
-      setVoiceRole:false
+      setVoiceRole: false
 
     });
   },
@@ -1412,6 +1413,12 @@ Page({
     }
     this.data.mark = 0;
     this.data.newmark = 0;
+  },
+
+  changeHaveSpeakerFlag: function () {
+    this.setData({
+      haveSpeakerFlag: !this.data.haveSpeakerFlag
+    })
   },
 
   //设置当前为新增课程内容模式

@@ -684,4 +684,5 @@ button[disabled] {
 
 .wordCard {
   margin-bottom: 60rpx;
+  width: 100%;
 }

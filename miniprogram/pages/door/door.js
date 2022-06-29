@@ -22,7 +22,9 @@ Page({
       "多种输入方式（文字、语音、图片）",
       "连接蓝牙设备diy个性灯光秀等",
       
-    ]
+    ],
+
+    showBtn:false
   },
 
   /**
@@ -33,7 +35,12 @@ Page({
     // if (islogin != true) {
     //   wx.setStorageSync("islogin", false);
     // }
-    wx.cloud.init();
+    this.data.showBtn = false
+    setTimeout(() => {
+      this.setData({
+        showBtn:true
+      })
+    }, 3000);
   },
 
   /**
@@ -48,6 +55,13 @@ Page({
         remind: ''
       })
     },1000)
+
+    this.data.showBtn = false
+    setTimeout(() => {
+      this.setData({
+        showBtn:true
+      })
+    }, 3000);
    
 
     let obj = this;

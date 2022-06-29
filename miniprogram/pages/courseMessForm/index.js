@@ -84,7 +84,7 @@ Page({
     if (islogin == false || islogin == undefined) {
       wx.showModal({
         title: '提示',
-        content: '您还没有登录，上传的课程内容将保存在临时账号内，为避免数据丢失，建议您在【我的】中进行登录',
+        content: '您还没有登录，课程作者将标记为匿名，为避免您的课程数据丢失，建议您在【我的】中进行登录',
         showCancel: false
       })
     }
@@ -224,6 +224,11 @@ Page({
       courseType: 'other',
       creatTime: time.formatTime(new Date, 'Y/M/D'),
     }
+    const info = wx.getStorageSync("info") || {
+      'nickName': '匿名', avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/WGicQibOVkYHLYQaoSQNLr1fzBcjvkvlqGHaRMBfEI0fulMudnFVr0A2gFKtc8Q4ic50Rap8mBqicv2YwxRQolASdg/132",
+      language: "zh_CN"
+    };
+    courseMess.createrInfo = info
     wx.showLoading({
       title: '处理中',
       mask: true

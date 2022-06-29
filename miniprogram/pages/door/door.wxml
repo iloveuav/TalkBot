@@ -22,7 +22,7 @@
 
 <view class="container" >
   <view class="remind-box" wx:if="{{remind}}">
-    <image class="remind-img" src="/Images/start1/loading.gif"></image>
+    <image class="remind-img" src="/images/loading_blue.gif"></image>
   </view>
   <block wx:else > 
     <text class="smalltitle" >独乐乐不如众乐乐，希望你也能分享知识收获快乐</text>
@@ -38,7 +38,8 @@
 
   
       
-      <button class="confirm-user"  bindtap='init1'>进入会聊</button>
+      <button class="confirm-user" wx:if="{{showBtn}}"  bindtap='init1'>进入会聊</button>
+      <view class="confirm-user" wx:if="{{!showBtn}}"  bindtap='init1'></view>
      
       
        

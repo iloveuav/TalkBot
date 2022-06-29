@@ -181,7 +181,7 @@
       placeholder="写点什么让我读吧~" placeholder-style="color:#318FFF;" />
 
 
-      <switch class="role_SpeakSwitch" checked="{{!edit_id}}" bindchange="changeautoRA"></switch>
+      <switch class="role_SpeakSwitch" checked="{{haveSpeakerFlag}}" bindchange="changeHaveSpeakerFlag"></switch>
 
     <image class="role_Speak" src="../../images/icon/role_Speak.png" data-content="{{curTTsTestText}}"
       catchtap="onTtsSpeach"> </image>
