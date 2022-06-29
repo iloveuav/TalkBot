@@ -23,7 +23,8 @@
         <!-- ----------------历史end---------- -->
         <block id="item{{index}}" wx:for="{{centendata}}" wx:key="index" wx:for-index="groupindex" >
           <view id="msg-{{index}}" wx:if="{{item!=null}}" class="chatBubbles {{item.contentType}} {{item.isBot?'fromOther':'fromSelf'}}" wx:key="{{}}">
-          
+            
+            <image class="avatar" src="../../images/talkBot/image_hotspot_color@2x.png" />
             <view class="bubbleContainer">
               <!-- 语音部分 contentType为voice才显示 -->
               <block wx:if='{{item.contentType=="voice"}}'>
@@ -40,9 +41,9 @@
               <!-- 文字消息 content有值才显示 如果为语音消息content应为语音消息长度-->
 
               <!-- 图片消息 contentType为img时显示 src为数据对象中的src catchtap="speach" -->
-              <text style="font-size:38rpx;font-weight:600;" v-if='{{item.textimgTitle!=""}}' data-content="{{item.textimgTitle}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.textimgTitle}}\n</text>
+              <text style="font-size:38rpx;font-weight:600;" v-if='{{item.textimgTitle!=""}}' data-content="{{item.textimgTitle}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.textimgTitle}}</text>
               <image wx:if='{{item.contentType=="img"}}' src="{{item.src}}"  mode="aspectFill" data-i="{{groupindex}}" catchtap="preimage" lazy-load></image>
-
+              
               <text v-if='{{item.content!=""&&item.content!=undefined}}' data-content="{{item.content}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.content}}</text>
             </view>
           </view>

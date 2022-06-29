@@ -249,16 +249,28 @@ button[disabled] {
 
 .chatBubbles {
   display: flex;
+  align-items: center;
 }
+
+.avatar{
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  margin-left: 30rpx;
+  position: relative;
+}
+
 
 .chatBubbles .bubbleContainer {
   display: inline-block;
   max-width: 60%;
-  padding: 20rpx 30rpx;
-  margin: 20rpx 30rpx;
+  padding: 16rpx 20rpx;
+  margin: 20rpx;
   border: 1px solid #ebebed;
   box-shadow: 0 0 20px #eaeaec;
   overflow: hidden;
+  background-color: #449df2;
+  color: white;
 }
 
 .chatBubbles.img .bubbleContainer {
@@ -303,11 +315,11 @@ button[disabled] {
 }
 
 .fromSelf .bubbleContainer {
-  border-radius: 30rpx 30rpx 0 30rpx;
+  border-radius: 16rpx;
 }
 
 .fromOther .bubbleContainer {
-  border-radius: 30rpx 30rpx 30rpx 0;
+  border-radius: 16rpx;
 }
 
 .voicePlay {
