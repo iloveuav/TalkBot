@@ -953,7 +953,7 @@ Page({
     this.setData({
       setwait: true,
       btnDie: true,
-      btnNum: 0,
+      btnNum: null,
       answer: '',
       interactData: []
     });
@@ -1014,7 +1014,7 @@ Page({
         showCancel: false
       })
       this.setData({
-        btnNum: 0,
+        btnNum: null,
       });
       return;
     }
@@ -1164,7 +1164,7 @@ Page({
     this.setData({
       contentData: contentData,
       interactData: [],
-      btnNum: 0,
+      btnNum: null,
       newData: newInteract
     })
 
