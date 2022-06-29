@@ -388,7 +388,7 @@ button[disabled] {
   z-index: 999;
   /* color: black; */
   text-align: center;
-  background: linear-gradient(to right, grey, rgb(116, 156, 189));
+  background: linear-gradient(to right, rgb(37, 120, 189), rgb(116, 156, 189));
 }
 
 .wordCard{

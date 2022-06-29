@@ -137,6 +137,7 @@ width: 90%;
 
   line-height: 27rpx;
   height: 80rpx;
+  font-size: 26rpx;
 
   /* text-align: center; */
   /* height: 100rpx;

@@ -401,7 +401,7 @@ button[disabled] {
   z-index: 999;
   /* color: black; */
   text-align: center;
-  background: linear-gradient(to right, grey, rgb(211, 217, 221));
+  background: linear-gradient(to right, rgb(211, 217, 221), rgb(211, 217, 221));
 }
 
 .wordCard {
