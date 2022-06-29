@@ -1,10 +1,25 @@
 <view class="course_catalogue">
   <view class="basic_info">
-    <image class="info_cover" mode="aspectFill" src="{{crouseDetail.courseFrontImgUrl}}"></image>
-    <view class="info_content">
+    <view class="cover_box">
+      <image class="info_cover" mode="aspectFit" src="{{crouseDetail.courseFrontImgUrl}}"></image>
       <text class="content_title">{{crouseDetail.courseName}}</text>
+    </view>
+    <view class="info_content">
       <text class="content_desc">课程简介：{{crouseDetail.courseIntroduce}}</text>
-      <text class="content_state" wx:if="{{btnType==='edit'}}">审核状态：{{crouseDetail.state||'待审核'}}</text>
+    </view>
+    <view class="oparetion">
+      <view class="opare_item">
+        <image src="../../images/talkBot/ic_like_white@2x.png" />
+        <text>10</text>
+      </view>
+      <view class="opare_item">
+        <image src="../../images/talkBot/ic_collection_white@2x.png" />
+        <text>20</text>
+      </view>
+      <view class="opare_item">
+        <image src="../../images/talkBot/ic_share_white@2x.png" />
+        <text>30</text>
+      </view>
     </view>
   </view>
   <view class="chapter">
@@ -13,22 +28,40 @@
         章节信息
         <text>（共{{ChapterList.length}}个章节）</text>
       </view>
-      <button wx:if="{{btnType==='edit'}}" class="addChapter_btn" bindtap="toAddChapter"
-        data-content='pass'>新增章节</button>
+      <button wx:if="{{btnType==='edit'}}" class="addChapter_btn" bindtap="toAddChapter" data-content='pass'>
+        新增章节
+      </button>
     </view>
     <view class="chapter_list">
-      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}"
-        data-id="{{item._id.chapterId}}" >
+      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}" data-id="{{item._id.chapterId}}">
         <text class="order">{{index + 1}}</text>
-        <text catchtap="handleChapterItem" data-clickChapter="{{item}}">{{item._id.chapterName}}</text>
-
-        <text wx:if="{{btnType==='edit'}}" class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">🖊</text>
+        <text catchtap="handleChapterItem" data-clickChapter="{{item}}">
+          {{item._id.chapterName}}
+        </text>
+        <text wx:if="{{btnType==='edit'}}" class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">
+          🖊
+        </text>
       </view>
-      
     </view>
   </view>
   <view class="course_operate" wx:if="{{btnType==='edit'}}">
     <button bindtap="deleteCourse">删除课程</button>
     <button bindtap="editCourse">编辑课程基本信息</button>
+  </view>
+</view>
+<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" style="{{translate}}">
+  <view class="rightBtnItem">
+    <image class="r-itemImgBox" src="../../images/button/addCoverBtn.png"></image>
+    <view class="r-itemName">
+      <view>作者</view>
+      <view>{{crouseDetail.state||'待审核'}}</view>
+    </view>
+  </view>
+  <view class="rightBtnItem" wx:if="{{btnType==='edit'}}">
+    <image class="r-itemImgBox" src="../../images/button/addAnswerBtn.png"></image>
+    <view class="r-itemName">
+      <view>审核状态</view>
+      <view>{{crouseDetail.state||'待审核'}}</view>
+    </view>
   </view>
 </view>
