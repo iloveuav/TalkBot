@@ -26,6 +26,6 @@
   </view>
   <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'||pageType==='mineNarratePage'}}">
     <button class="preview-btn" catchtap="toCourseChapterPage" data-content='priview'>预览</button>
-    <button class="edit-btn" bindtap="toCourseChapterPage" data-content='edit'>编辑</button>
+    <button class="edit-btn" catchtap="toCourseChapterPage" data-content='edit'>编辑</button>
   </view>
 </view>

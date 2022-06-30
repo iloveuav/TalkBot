@@ -121,6 +121,33 @@ exports.main = async (event, context) => {
       })
   }
 
+
+  if (event.mode == 'share') {
+    return db.collection('userCourseShare')
+      .add({
+        data: {
+          _openid: wxContext.OPENID,
+          courseUUid: event.courseUUid
+        }
+      })
+      .then(res => {
+        return db.collection('allCourseBaseMess').where({
+          courseUUid: event.courseUUid
+        }).update({
+          data: {
+            shareCount: _.inc(1)
+          }
+        })
+      })
+      .then(res => {
+        return handleSuccess(res)
+      })
+      .catch(err => {
+        return handleErr(err)
+      })
+  }
+
+
   else if(event.mode =='getStatus'){
      userIsLike = await db.collection('userCourseLike').where({
       _openid: wxContext.OPENID,
@@ -152,10 +179,26 @@ exports.main = async (event, context) => {
       return handleErr(err)
     })
 
+    userIsShare = await db.collection('userCourseShare').where({
+      _openid: wxContext.OPENID,
+      courseUUid: event.courseUUid
+    }).count()
+    .then(res => {
+      if (res.total > 0) {
+        return true
+      } else {
+        return false
+      }
+    })
+    .catch(err => {
+      return handleErr(err)
+    })
+
 
     return {
       userIsLike,
-      userIsCollect
+      userIsCollect,
+      userIsShare
     }
 
   }

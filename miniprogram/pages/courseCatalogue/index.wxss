@@ -1,8 +1,6 @@
-.course_catalogue{
+.course_catalogue {}
 
-}
-
-.basic_info{
+.basic_info {
   box-sizing: border-box;
   width: 100%;
   padding: 0 0 80rpx;
@@ -10,22 +8,22 @@
   color: white;
 }
 
-.cover_box{
+.cover_box {
   width: 100%;
   height: 300rpx;
   background-color: black;
   position: relative;
 }
 
-.info_cover{
+.info_cover {
   width: 100%;
   height: 300rpx;
   border-radius: 20rpx;
   vertical-align: middle;
-  
+
 }
 
-.info_content{
+.info_content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -33,7 +31,7 @@
   padding: 0 30rpx;
 }
 
-.content_title{
+.content_title {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -47,37 +45,38 @@
   box-sizing: border-box;
 }
 
-.oparetion{
+.oparetion {
   display: flex;
   justify-content: space-between;
   margin-top: 20rpx;
 }
 
-.opare_item{
+.opare_item {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-.opare_item image{
+.opare_item image {
   width: 60rpx;
   height: 60rpx;
   margin-right: 15rpx;
 }
 
-.content_desc{
+.content_desc {
   font-size: 24rpx;
   font-weight: 500;
 }
 
-.content_state{
+.content_state {
   margin-top: 16rpx;
   font-size: 24rpx;
   font-weight: 500;
 }
 
-.chapter{
+.chapter {
   box-sizing: border-box;
   margin-top: -50rpx;
   padding: 40rpx 30rpx 0;
@@ -85,24 +84,24 @@
   background-color: #fff;
 }
 
-.chapter_header{
+.chapter_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.header_info{
+.header_info {
   display: flex;
   align-items: center;
 }
 
-.header_info text{
+.header_info text {
   color: #666666;
   font-size: 26rpx;
   font-weight: 500;
 }
 
-.addChapter_btn{
+.addChapter_btn {
   margin: 0;
   border-radius: 30rpx;
   font-size: 24rpx;
@@ -110,8 +109,8 @@
   background-color: #fe0056;
 }
 
-.chapter_list{
-width: 90%;
+.chapter_list {
+  width: 90%;
 }
 
 .chapter_item {
@@ -121,7 +120,7 @@ width: 90%;
   /* margin: 20rpx 0; */
 }
 
-.order{
+.order {
   width: 50rpx;
   height: 50rpx;
   text-align: center;
@@ -133,7 +132,17 @@ width: 90%;
   border-radius: 35%;
 }
 
-.chapterName{
+.button_share {
+  opacity:0;
+  position: absolute;
+  right: 120rpx;
+  top:-6rpx;
+  width: 70rpx;
+  height: 70rpx;
+  z-index: 9999;
+}
+
+.chapterName {
 
   line-height: 27rpx;
   height: 80rpx;
@@ -148,13 +157,13 @@ width: 90%;
   justify-content: center; */
 }
 
-.fail{
+.fail {
   position: absolute;
   left: 320px;
-  top:-12px
+  top: -12px
 }
 
-.course_operate{
+.course_operate {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -177,7 +186,7 @@ width: 90%;
   background-color: #fe0056;
 }
 
-.course_operate button:first-child{
+.course_operate button:first-child {
   border-radius: 180rpx 0 0 180rpx;
   background-color: #ff7100;
 }

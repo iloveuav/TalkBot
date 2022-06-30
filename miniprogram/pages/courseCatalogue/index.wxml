@@ -9,8 +9,9 @@
     </view>
     <view class="oparetion">
       <view class="opare_item">
-        <image wx:if="{{!isLiked}}" src="../../images/talkBot/ic_like_white@2x.png" catchtap="like" data-content='like' />
-        <image wx:if="{{isLiked}}" src="../../images/talkBot/liked.png" catchtap="like"  data-content='cancelLike'/>
+        <image wx:if="{{!isLiked}}" src="../../images/talkBot/ic_like_white@2x.png" catchtap="like"
+          data-content='like' />
+        <image wx:if="{{isLiked}}" src="../../images/talkBot/liked.png" catchtap="like" data-content='cancelLike' />
         <text>{{crouseDetail.likeCount||0}}</text>
       </view>
       <view class="opare_item">
@@ -20,9 +21,17 @@
           data-content='cancelCollect' />
         <text>{{crouseDetail.collectCount||0}}</text>
       </view>
-      <view class="opare_item">
-        <image src="../../images/talkBot/ic_share_white@2x.png" />
-        <text>30</text>
+      <view class="opare_item" catchtap="courseShare">
+        <image wx:if="{{!isShared}}" src="../../images/talkBot/ic_share_white@2x.png" bindtap="courseShare"
+          data-content='share'>
+        </image>
+        <image wx:if="{{isShared}}" src="../../images/talkBot/shared.png" bindtap="courseShare" data-content='share'>
+
+        </image>
+
+        <button open-type="share" class="button_share" bindtap="courseShare"  catchtap="onShareAppMessage"></button>
+
+        <text>{{crouseDetail.shareCount||0}}</text>
       </view>
     </view>
   </view>
@@ -58,7 +67,9 @@
   style="{{translate}}">
   <view class="rightBtnItem">
     <image class="r-itemImgBox" src="../../images/button/addCoverBtn.png"></image>
-    <image class="r-itemAvatarUrl" src="{{crouseDetail.createrInfo.avatarUrl||'https://thirdwx.qlogo.cn/mmopen/vi_32/Z2mGduZjV5GwcgYmxibVEY8icUNgOyuibtnL13WAwZFyYX40DS4aEInnfkibXdOoSweD7icrWdUzd9Tnp1us70jdbpQ/132'}}"></image>
+    <image class="r-itemAvatarUrl"
+      src="{{crouseDetail.createrInfo.avatarUrl||'https://thirdwx.qlogo.cn/mmopen/vi_32/Z2mGduZjV5GwcgYmxibVEY8icUNgOyuibtnL13WAwZFyYX40DS4aEInnfkibXdOoSweD7icrWdUzd9Tnp1us70jdbpQ/132'}}">
+    </image>
     <view class="r-itemName">
       <view>作者</view>
       <view>{{crouseDetail.createrInfo.nickName||'匿名'}}</view>

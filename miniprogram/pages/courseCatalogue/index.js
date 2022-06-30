@@ -84,7 +84,8 @@ Page({
       console.log(res)
       this.setData({
         isLiked: res.result.userIsLike,
-        isCollected: res.result.userIsCollect
+        isCollected: res.result.userIsCollect,
+        isShared: res.result.userIsShare,
       })
       // return res.result.data.collectd
     })
@@ -94,10 +95,7 @@ Page({
 
   },
 
-  getUserCourseState: function () {
 
-
-  },
 
   like: function (e) {
     console.log(e)
@@ -128,7 +126,7 @@ Page({
         console.log(res)
         this.setData({
           crouseDetail: this.data.crouseDetail,
-          isLiked:!this.data.isLiked
+          isLiked: !this.data.isLiked
         })
 
       },
@@ -148,6 +146,48 @@ Page({
     })
   },
 
+  courseShare: function (e) {
+    const mode = 'share'
+
+    if (this.data.crouseDetail.shareCount || this.data.crouseDetail.shareCount === 0) {
+      this.data.crouseDetail.shareCount++;
+    } else {
+      this.data.crouseDetail.shareCount = 1
+    }
+
+    this.onShareAppMessage();
+
+    wx.cloud.callFunction({
+      name: 'operate_courseUserStatus',
+      data: {
+        // mode:'cancelCollect',//'cancelCollect'
+        // mode:'collect',//'cancelCollect'
+        mode: mode,
+        courseUUid: this.data.crouseDetail.courseUUid
+      },
+      success: res => {
+        console.log(res)
+        this.setData({
+          crouseDetail: this.data.crouseDetail,
+          isShared: true
+        })
+
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '提示',
+          content: '操作失败 请检查网络',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+      }
+    })
+  },
   courseCollect: function (e) {
     const mode = e.currentTarget.dataset.content
     if (mode === 'collect') {
@@ -177,7 +217,7 @@ Page({
         console.log(res)
         this.setData({
           crouseDetail: this.data.crouseDetail,
-          isCollected:!this.data.isCollected
+          isCollected: !this.data.isCollected
         })
 
       },
@@ -197,6 +237,27 @@ Page({
     })
   },
 
+  onShareAppMessage() {
+    console.log('Share')
+
+    // this.courseShare();
+    // wx.navigateTo({
+    //   //这里传值
+    //   url: '/pages/courseBotIndex/index?pageType=' + 'studyPage',
+    // })
+    const promise = new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          title: '朋友，给你看个好东西',
+        })
+      }, 100);
+    })
+    return {
+      title: '一聊就会的学习小程序',
+      path: '/pages/courseBotIndex/index?pageType=' + 'studyPage',
+      promise
+    }
+  },
 
 
 
