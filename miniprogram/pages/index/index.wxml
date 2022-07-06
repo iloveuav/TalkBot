@@ -1,11 +1,5 @@
-<!--index.wxml-->
-<!-- <view class="myswiper"> -->
-
-
-
-
 <!-- 轮播图 -->
-<view class="swiper-view">
+<!-- <view class="swiper-view">
   <swiper class="swiper-box" autoplay="true" interval="3000" previous-margin="{{swiperMargin}}"
     next-margin="{{swiperMargin}}" bindchange="swiperChange">
     <block wx:for="{{picList}}" wx:key="id">
@@ -19,81 +13,127 @@
   <view class="swiper-dots-view">
     <view class="swiper-dot {{ swiperCurrent==index?'active':''}}" wx:for="{{swiperList}}" wx:key="id"></view>
   </view>
-</view>
-
-
-
-
-<!-- <swiper style="height:470rpx" indicator-dots='true' autoplay='{{false}}' circular='true' bindchange="swiperBindchange">
-  <block wx:for="{{picList}}" wx:key="index" wx:for-index="index">
-    <swiper-item class="swiper-item">
-      <image bindtap="preimage" src='{{item}}' mode="aspectFill" class="slide-image {{currentSwiperIndex == index ? 'zoom-in' : 'zoom-out'}}"></image>
-    </swiper-item>
-  </block>
-
-</swiper> -->
-
-
-
-
-
-<!-- </view> -->
-<!-- <view class='myGrid'>
-  <Grid icon2="{{icon2}}">
-    <view slot="1" bindtap='unopen'>关注</view>
-    <view slot="2" class="gridFont" bindtap="tonearby" wx-if="{{identity==1}}">附近飞手</view>
-    <view slot="2" class="gridFont" bindtap="tonearby" wx-if="{{identity==2}}">我要接单</view>
-
-    <view slot="3" bindtap="totopic" >话题</view>
-    <view slot="4">我要考证</view>
-    <view slot="5" bindtap='tonew'>发布</view>
-    <view slot="6">汇飞社团活动</view>
-  </Grid>
 </view> -->
 
-<view class="flex-box">
-  <view class="flex-item" bindtap="toHelper">
-    <image src="../../images/index/discuss.png"></image>
-    <text>客服答疑</text>
+
+<!-- 新首页 -->
+<scroll-view>
+  <view class="page">
+
+    <view class="topcard_box">
+      <view class="hellow_text">Hi,你好</view>
+      <view class="app_name_box">
+        <image class="app_icon" src="/images/index/discuss.png"></image>
+        <text class="app_name">对话式学习</text>
+      </view>
+
+      <view class="btn_center_box">
+        <view class="btn_card_box">
+          <image src="/images/index/kfdy.png" style="margin: 40rpx 0rpx 10rpx 20rpx;" bindtap="toHelper"> </image>
+          <image src="/images/index/kczx.png" style="margin: 40rpx 20rpx 10rpx 20rpx;" bindtap="toCrouseBot"> </image>
+
+
+        </view>
+
+        <view>
+
+          <image class="czkc_image" src="/images/index/czkc.png" style="margin: 20rpx 20rpx 10rpx 20rpx;" bindtap="toCreateMessForm" data-type="course"> </image>
+
+        </view>
+
+
+
+      </view>
+
+    </view>
+
+
+
+    <view class="showCourse_box">
+
+      <view class="course_title_box">
+        <view class="course-center-title" wx:if="{{pageType ==='studyPage'}}">热门课程</view>
+      </view>
+
+      <view wx:for="{{allCourse}}">
+
+        <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
+          <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+          </courseCard>
+        </view>
+
+
+        <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+          <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+          </courseCard>
+        </view>
+
+        <view wx:if="{{(item.userCollectedFlag&&pageType ==='collectCoursePage'&&(item.isMineCourse||item.state==='审核通过'))}}">
+          <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
+          </courseCard>
+        </view>
+      </view>
+    </view>
+
+
+
+
   </view>
 
 
+</scroll-view>
 
 
-  <!-- <view class="flex-item" bindtap='toNarrate'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <view class="flex-box"> -->
+<!-- <view class="flex-item" bindtap="toHelper">
+    <image src="../../images/index/discuss.png"></image>
+    <text>客服答疑</text>
+  </view> -->
+
+<!-- <view class="flex-item" bindtap='toNarrate'>
     <image src="../../images/index/messge.png"></image>
     <text>山村介绍</text>
   </view> -->
 
-  <view class="flex-item" bindtap="toCrouseBot">
+<!-- <view class="flex-item" bindtap="toCrouseBot">
     <image src="../../images/index/love.png"></image>
     <text>课程中心</text>
-  </view>
-  <!-- <view class="flex-item" bindtap="tonearby" >
+  </view> -->
+
+<!-- <view class="flex-item" bindtap="tonearby" >
     <image src="../../Images/index/shequ.png"></image>
     <text>我要接单</text>
   </view> -->
 
-
-  <view class="flex-item" bindtap="toCreateMessForm" data-type="course">
+<!-- <view class="flex-item" bindtap="toCreateMessForm" data-type="course">
     <image src="../../images/index/topic.png"></image>
     <text>创作课程</text>
-  </view>
+  </view> -->
 
-  <!-- <view class="flex-item" bindtap="toCreateMessForm" data-type="narrate">
+<!-- <view class="flex-item" bindtap="toCreateMessForm" data-type="narrate">
     <image src="../../images/index/plane.png"></image>
     <text>介绍山村</text>
   </view> -->
 
 
-  <!-- <view class="flex-item" bindtap="toExtend">
+<!-- <view class="flex-item" bindtap="toExtend">
     <image src="../../images/index/xxzx.png"></image>
     <text>扩展功能</text>
   </view> -->
-
-
-</view>
-
-<view>
-  <!-- <button class="continueBtn" catchtap="touchAddVisitorApply">访客入村申请</button> -->
-</view>
+<!-- </view> -->

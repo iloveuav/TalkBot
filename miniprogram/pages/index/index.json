@@ -6,7 +6,7 @@
   "navigationBarTextStyle": "white",
   "navigationStyle": "default",
   "usingComponents": {
-    "Grid": "/components/Grid/Grid"
-    
+    "Grid": "/components/Grid/Grid",
+    "courseCard": "/components/index/bigCrouseCard/courseCard"
   }
 }

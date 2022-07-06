@@ -6,9 +6,10 @@ swiper {
   /* overflow: hidden; */
 }
 
-page {
+/* .page {
   background-color: white;
-}
+  height: 100%;
+} */
 
 .slide-image {
   width: 100%;
@@ -190,4 +191,109 @@ page {
 .swiper-dot.active {
   width: 15px;
   background-color: rgb(221, 65, 3);
+}
+
+
+
+
+/* ---------------新首页css */
+
+.page {
+  /* height: 100vh; */
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+
+}
+
+.topcard_box {
+  height: 700rpx;
+  background-color: #4D9BF4;
+  z-index: 1;
+}
+
+
+.topcard_box .hellow_text {
+  font-size: 50rpx;
+  font-weight: 700;
+  color: #fff;
+  margin: 0rpx 0 20rpx 50rpx;
+
+}
+
+.topcard_box .app_name_box {
+  font-size: 28rpx;
+  font-weight: 300;
+  color: #fff;
+  margin: 0rpx 0 20rpx 50rpx;
+  display: flex;
+
+}
+
+.topcard_box .app_icon {
+  width: 50rpx;
+  height: 50rpx;
+
+}
+
+.topcard_box .app_name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10rpx;
+}
+
+
+.topcard_box .btn_center_box {
+
+
+  background-color: #fff;
+  border-radius: 6%;
+  width: 100%;
+
+  /* border: 1px solid red; */
+  height: 600rpx;
+}
+
+.topcard_box .btn_center_box .btn_card_box {
+
+  display: flex;
+  width: 100%;
+
+}
+
+.topcard_box .btn_center_box .btn_card_box image {
+
+  /* display: flex;
+ flex: 1; */
+  width: 350rpx;
+  height: 200rpx;
+  /* margin-left: 10px;
+ margin-right: 10px; */
+  /* margin: 50rpx 10rpx 20rpx 10rpx; */
+
+}
+
+.czkc_image {
+  /* display: flex; */
+  width: 710rpx;
+  height: 200rpx;
+}
+
+.showCourse_box{
+  /* border: 1px solid red; */
+  height: 100px;
+  height: 100%;
+}
+
+.course_title_box{
+  margin-bottom: 30rpx;
+}
+
+.course-center-title {
+  margin: 0 30rpx;
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-weight: bold;
 }

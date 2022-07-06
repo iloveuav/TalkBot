@@ -22,7 +22,11 @@ Page({
     swiperMargin: wx.getSystemInfoSync().windowWidth > 380 ? '60rpx' : '50rpx',
 
     swiperCurrent: 0,
-    swiperList: []
+    swiperList: [],
+
+
+
+    currentIndex: 0,
   },
   swiperBindchange(e) {
     this.setData({
@@ -113,6 +117,7 @@ Page({
       identity: identity,
       icon2: icon2,
       islogin: wx.getStorageSync("islogin"),
+      pageType:'studyPage'
     })
   },
 
@@ -126,12 +131,84 @@ Page({
   onShow: function () {
     var identity = wx.getStorageSync("useridentity");
     console.log(identity)
+    this.data.pageType = 'studyPage'
+    this.getAllCourseList('studyPage');
     this.setData({
       remind: '',
       identity: identity,
       islogin: wx.getStorageSync("islogin")
     })
   },
+
+  getAllCourseList(pageType) {
+    wx.cloud.init({
+      env: 'huixue-3g4h1ydg1dedcaf3'
+    })
+    wx.cloud.callFunction({
+      name: 'get_CourseList',
+      data: { pageType: pageType},
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+        // wx.setStorageSync('allCourseMess', res.result.allCourse);
+        // console.log("testCourseContents",res.result.testCourseContents)
+        const allChapter = res.result.testCourseContents.list.map(item => {
+          return item._id
+        })
+        console.log("testCourseContents", allChapter)
+
+
+        const userCourseProgressObj = res.result.UserCourseMess || [];
+        const resultCourse = res.result.allCourse.data
+        if (userCourseProgressObj[0] && userCourseProgressObj[0].UserCourseMess) {//有云缓存记录
+          const progressArr = userCourseProgressObj[0].UserCourseMess
+          resultCourse.forEach(courseItem => {
+            progressArr.forEach(progressItem => {
+              if (courseItem.courseUUid === progressItem.courseUUid) {//根据课程UUid 赋值进度
+                let progressChapter = {}
+                allChapter.forEach(item => {
+                  if (item.courseUUid === progressItem.courseUUid && item.chapterId === progressItem.chapterId) {
+                    progressChapter = item
+                  }
+                })
+                courseItem.currentProgress = progressItem
+              }
+            })
+
+
+          });
+        }
+
+        let showCourse = []
+        // showCourse = resultCourse
+
+        resultCourse.forEach(item=>{
+          if (pageType ==='studyPage'&&item.state==='审核通过') {
+            showCourse.push(item)
+          }
+
+          if((item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'){
+            showCourse.push(item)
+          }
+
+          if((item.userCollectedFlag&&pageType ==='collectCoursePage'&&(item.isMineCourse||item.state==='审核通过'))){
+            showCourse.push(item)
+          }
+        })
+        this.setData({
+          allCourse: showCourse,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+
 
 
   // 监听swiper切换
