@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk')
 cloud.init({
   traceUser: true,
-  env: 'huixue-3g4h1ydg1dedcaf3'
+  env: 'bot-cloud1-7g30ztcr37ed0193'
 })
 const db = cloud.database();
 const $ = db.command.aggregate
