@@ -1,147 +1,29 @@
 {
-  "setting": {},
+  "setting": {
+    "compileHotReLoad": true,
+    "urlCheck": true
+  },
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
   "condition": {
     "miniprogram": {
       "list": [
         {
-          "name": "db guide",
-          "pathName": "pages/databaseGuide/databaseGuide",
-          "query": ""
-        },
-        {
-          "name": "pages/TalkBot/TalkBot",
-          "pathName": "pages/TalkBot/TalkBot",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/AddEngClassContent/AddEngClassContent",
-          "pathName": "pages/AddEngClassContent/AddEngClassContent",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/index/index",
-          "pathName": "pages/index/index",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/train/train",
-          "pathName": "pages/train/train",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/mysel/admin/admin",
-          "pathName": "pages/mysel/admin/admin",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBot/TalkBot",
-          "pathName": "pages/courseBot/TalkBot",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/notification/notification",
+          "name": "",
           "pathName": "pages/notification/notification",
           "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/schoolDetail/index",
-          "pathName": "pages/schoolDetail/index",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/SendSchoolDetail/index",
-          "pathName": "pages/SendSchoolDetail/index",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/schoolDetail/index",
-          "pathName": "pages/schoolDetail/index",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBotIndex/index",
-          "pathName": "pages/courseBotIndex/index",
-          "query": "",
+          "launchMode": "default",
           "scene": null
         },
         {
           "name": "",
-          "pathName": "pages/mysel/superAdmin/index",
-          "query": "identity=2",
-          "scene": null
-        },
-        {
-          "name": "超级管理员",
-          "pathName": "pages/mysel/superAdmin/index",
-          "query": "identity=2",
-          "scene": null
-        },
-        {
-          "name": "pages/mysel/superAdmin/index",
-          "pathName": "pages/mysel/superAdmin/index",
-          "query": "identity=2",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBotIndex/index",
           "pathName": "pages/courseBotIndex/index",
           "query": "pageType=mineCoursePage",
-          "scene": null
-        },
-        {
-          "name": "pages/mysel/me",
-          "pathName": "pages/mysel/me",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBot/index",
-          "pathName": "pages/courseBot/index",
-          "query": "course=%7B%22_id%22%3A%22058dfefe62a521570858b4a7533dc1fd%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22courseIntroduce%22%3A%22222%22%2C%22courseType%22%3A%22other%22%2C%22creatTime%22%3A%222022%2F06%2F12%2007%3A17%3A45%22%2C%22createrOpenid%22%3A%22oL-lI5SqYECOWBNuxuE73IhtR4Qc%22%2C%22state%22%3A%22%E5%BE%85%E5%AE%A1%E6%A0%B8%22%2C%22courseFrontImgUrl%22%3A%22cloud%3A%2F%2Fhuixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818%2F1654718368799.png%22%2C%22courseNum%22%3A5%2C%22isMineCourse%22%3Atrue%2C%22currentProgress%22%3A%7B%22chapterId%22%3A1%2C%22classCollection%22%3A%22testCourseContents%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%7D&Cc=%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22courseName%22%3A%22222%22%2C%22chapterId%22%3A1%2C%22chapterName%22%3A%22it%20is%20first%22%2C%22reset%22%3Afalse%7D&ChapterList=%5B%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22it%20is%20first%22%2C%22chapterId%22%3A1%7D%2C%22courseNum%22%3A5%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%2C%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D%2C%22courseNum%22%3A3%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%5D",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBotIndex/index",
-          "pathName": "pages/courseBotIndex/index",
-          "query": "pageType=mineCoursePage",
-          "scene": null
-        },
-        {
-          "name": "pages/AddCourseContent/AddCourseContent",
-          "pathName": "pages/AddCourseContent/AddCourseContent",
-          "query": "type=edit&courseMess=%7B%22_id%22%3A%22058dfefe62a521570858b4a7533dc1fd%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22courseIntroduce%22%3A%22222%22%2C%22courseType%22%3A%22other%22%2C%22creatTime%22%3A%222022%2F06%2F12%2007%3A17%3A45%22%2C%22createrOpenid%22%3A%22oL-lI5SqYECOWBNuxuE73IhtR4Qc%22%2C%22state%22%3A%22%E5%BE%85%E5%AE%A1%E6%A0%B8%22%2C%22courseFrontImgUrl%22%3A%22cloud%3A%2F%2Fhuixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818%2F1654718368799.png%22%2C%22courseNum%22%3A7%2C%22isMineCourse%22%3Atrue%2C%22currentProgress%22%3A%7B%22chapterId%22%3A1%2C%22classCollection%22%3A%22testCourseContents%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%7D&chapterList=%5B%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22it%20is%20first%22%2C%22chapterId%22%3A1%7D%2C%22courseNum%22%3A7%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%2C%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D%2C%22courseNum%22%3A8%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%5D&chapterobj=%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D&pageType=course",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBotIndex/index",
-          "pathName": "pages/courseBotIndex/index",
-          "query": "pageType=mineCoursePage",
-          "scene": null
-        },
-        {
-          "name": "pages/AddCourseContent/AddCourseContent",
-          "pathName": "pages/AddCourseContent/AddCourseContent",
-          "query": "type=edit&courseMess=%7B%22_id%22%3A%22058dfefe62a521570858b4a7533dc1fd%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22courseIntroduce%22%3A%22222%22%2C%22courseType%22%3A%22other%22%2C%22creatTime%22%3A%222022%2F06%2F12%2007%3A17%3A45%22%2C%22createrOpenid%22%3A%22oL-lI5SqYECOWBNuxuE73IhtR4Qc%22%2C%22state%22%3A%22%E5%BE%85%E5%AE%A1%E6%A0%B8%22%2C%22courseFrontImgUrl%22%3A%22cloud%3A%2F%2Fhuixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818%2F1654718368799.png%22%2C%22courseNum%22%3A7%2C%22isMineCourse%22%3Atrue%2C%22currentProgress%22%3A%7B%22chapterId%22%3A2%2C%22classCollection%22%3A%22testCourseContents%22%2C%22courseName%22%3A%22222%22%2C%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%7D&chapterList=%5B%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22it%20is%20first%22%2C%22chapterId%22%3A1%7D%2C%22courseNum%22%3A7%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%2C%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D%2C%22courseNum%22%3A9%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%2C%7B%22_id%22%3A%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22third%22%2C%22chapterId%22%3A3%7D%2C%22courseNum%22%3A22%2C%22courseId%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%7D%5D&chapterobj=%7B%22courseUUid%22%3A%22f16ef9a2-9af3-48ec-837a-a691457a159a%22%2C%22className%22%3A%22222%22%2C%22chapterName%22%3A%22second%22%2C%22chapterId%22%3A2%7D&pageType=course",
-          "scene": null
-        },
-        {
-          "name": "pages/courseBotIndex/index",
-          "pathName": "pages/courseBotIndex/index",
-          "query": "pageType=mineCoursePage",
+          "launchMode": "default",
           "scene": null
         }
       ]
     }
-  }
+  },
+  "projectname": "TalkBot",
+  "libVersion": "2.30.0"
 }

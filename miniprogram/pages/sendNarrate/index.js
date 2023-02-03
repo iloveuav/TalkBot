@@ -154,7 +154,7 @@ Page({
         frontImg: this.data.imgUrl,
       }
       wx.cloud.init({
-        env: 'huixue-3g4h1ydg1dedcaf3'
+        env: 'bot-cloud1-7g30ztcr37ed0193'
       })
       // wx.cloud.init()
       //  下面是云函数的调用
@@ -281,7 +281,7 @@ Page({
         this.bottom();
 
         wx.cloud.init({
-          env: 'huixue-3g4h1ydg1dedcaf3'
+          env: 'bot-cloud1-7g30ztcr37ed0193'
         })
         // wx.cloud.init()
         //  下面是云函数的调用
@@ -719,9 +719,10 @@ Page({
       return;
     }
 
-    wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
-    })
+   wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
     // wx.cloud.init()
     //  下面是云函数的调用
     // console.log(wx.getStorageSync("openid"));
@@ -900,9 +901,10 @@ Page({
 
 
             //调用云函数
-            wx.cloud.init({
-              env: 'huixue-3g4h1ydg1dedcaf3'
-            })
+           wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
             console.log(that.data.className)
             console.log(ClassCollection)
             wx.cloud.callFunction({

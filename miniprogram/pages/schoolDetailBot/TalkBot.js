@@ -332,7 +332,7 @@ Page({
     if (LeftOverClassConten == '' || null || undefined) {
       // console.log("get class----" + e);
       wx.cloud.init({
-        env: 'huixue-3g4h1ydg1dedcaf3'
+        env: 'bot-cloud1-7g30ztcr37ed0193'
       })
       // wx.cloud.init()
       //  下面是云函数的调用

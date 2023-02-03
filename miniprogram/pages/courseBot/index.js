@@ -70,7 +70,7 @@ Page({
     //阿里tts
     ttsStart: false,
     ttsText: "",
-    curTTsRoleString: '',//不同文本里面设置的发音人字段
+    curTTsRoleString: '', //不同文本里面设置的发音人字段
 
     tts: {}
   },
@@ -103,7 +103,7 @@ Page({
 
     let tts = new SpeechSynthesizer({
       url: app.globalData.URL,
-      appkey: app.globalData.JPAPPKEY,//JPAPPKEY   CEAPPKEY
+      appkey: app.globalData.JPAPPKEY, //JPAPPKEY   CEAPPKEY
       token: this.data.token
     })
 
@@ -112,7 +112,7 @@ Page({
     })
 
     tts.on("data", (msg) => {
-      console.log(`recv size: ${msg.byteLength}`)
+      // console.log(`recv size: ${msg.byteLength}`)
       //console.log(dumpFile.write(msg, "binary"))
       if (this.data.saveFile) {
         try {
@@ -121,7 +121,7 @@ Page({
             msg,
             "binary"
           )
-          console.log(`append ${msg.byteLength}`)
+          // console.log(`append ${msg.byteLength}`)
         } catch (e) {
           console.error(e)
         }
@@ -262,7 +262,7 @@ Page({
     } else if (courseObject.courseType == 'ja') {
       classCollection = "JaClassContents";
     } else if (courseObject.courseType == 'other') {
-      classCollection = "testCourseContents";//临时
+      classCollection = "testCourseContents"; //临时
       // classCollection = "otherClassContents";
     } else if (courseObject.courseType == 'schoolDetail') {
       classCollection = "SchoolDetail";
@@ -297,10 +297,10 @@ Page({
       this.showTeach();
     }
 
-    if (courseObject.currentProgress) {//用户对课程有进度 弹出模态框确认是变更章节还是留着当前章节
+    if (courseObject.currentProgress) { //用户对课程有进度 弹出模态框确认是变更章节还是留着当前章节
       console.log("courseObject.currentProgress", courseObject.currentProgress)
       const userSelect = this.data.userSelect
-      if (courseObject.currentProgress.chapterId !== userSelect.chapterId)//用户选择的课程与之前课程章节不同
+      if (courseObject.currentProgress.chapterId !== userSelect.chapterId) //用户选择的课程与之前课程章节不同
       {
         wx.showModal({
           title: '准备好上课了吗？',
@@ -330,7 +330,7 @@ Page({
             }
           }
         })
-      } else {//虽然有进度 但是用户选择的和进度一致
+      } else { //虽然有进度 但是用户选择的和进度一致
 
         CurrentChapter = this.data.userSelect
         this.setData({
@@ -354,8 +354,7 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
-  },
+  onHide: function () {},
 
   /**
    * 生命周期函数--监听页面卸载
@@ -389,10 +388,10 @@ Page({
 
   //阿里tts
   onTtsSpeach: function (e) {
-    let content = ''//获取文本内容
-    let curTTsRoleString = ''//获取文本发音人
+    let content = '' //获取文本内容
+    let curTTsRoleString = '' //获取文本发音人
     console.log("curTTsRoleString---e", e);
-    if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {//自动朗读
+    if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) { //自动朗读
       content = e.content
       curTTsRoleString = e.curTTsRoleString || "Rosa"
       this.data.curTTsRoleString = curTTsRoleString
@@ -405,13 +404,13 @@ Page({
         content = e.currentTarget.dataset.content;
         console.log(content)
       }
-      if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {//关闭了自动朗读
+      if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) { //关闭了自动朗读
         content = e.content
         curTTsRoleString = e.curTTsRoleString || "Rosa"
         this.data.curTTsRoleString = curTTsRoleString
       }
     }
-    if (e.currentTarget?.dataset?.curttsrolestring !== undefined) {//如果是用户点击文本朗读
+    if (e.currentTarget?.dataset?.curttsrolestring !== undefined) { //如果是用户点击文本朗读
       curTTsRoleString = e.currentTarget?.dataset?.curttsrolestring
       this.data.curTTsRoleString = curTTsRoleString
     }
@@ -496,12 +495,15 @@ Page({
     console.log(this.data.courseObject)
     let that = this
     wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
     })
     const courseUUid = this.data.courseObject.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
-      data: { courseUUid: courseUUid },
+      data: {
+        courseUUid: courseUUid
+      },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -607,7 +609,10 @@ Page({
           })
           if (this.data.autoReadingAloud) {
             // this.speach(data.content);
-            this.onTtsSpeach({ content: data.content, curTTsRoleString: data.curTTsRoleString });
+            this.onTtsSpeach({
+              content: data.content,
+              curTTsRoleString: data.curTTsRoleString
+            });
           }
           this.bottom();
           this.sleep(100);
@@ -648,7 +653,8 @@ Page({
     if (LeftOverClassConten == '' || null || undefined) {
       // console.log("get class----" + e);
       wx.cloud.init({
-        env: 'huixue-3g4h1ydg1dedcaf3'
+        traceUser: true,
+        env: 'bot-cloud1-7g30ztcr37ed0193'
       })
       // wx.cloud.init()
       //  下面是云函数的调用
@@ -692,7 +698,7 @@ Page({
             // wx.setStorageSync('loClassContent', classContent)
             LeftOverClassConten = classContent;
 
-            if (UserCourseMess == '' || null || undefined) {//初始化
+            if (UserCourseMess == '' || null || undefined) { //初始化
               UserCourseMess = [{
                 classCollection: this.data.classCollection,
                 courseUUid: CurrentChapter.courseUUid,
@@ -728,14 +734,17 @@ Page({
               wx.setStorageSync('UserCourseMess', UserCourseMess);
             }
             //进行云同步 更新当前用户课程使用情况
-            wx.cloud.init({
-              env: 'huixue-3g4h1ydg1dedcaf3'
-            })
+            // wx.cloud.init({
+            //   traceUser: true,
+            //   env: 'bot-cloud1-7g30ztcr37ed0193'
+            // })
             wx.cloud.callFunction({
               name: 'operate_userInfo',
               data: {
                 type: 'update',
-                params: { UserCourseMess },
+                params: {
+                  UserCourseMess
+                },
               },
               success: res => {
                 // console.log(res)
@@ -1071,9 +1080,9 @@ Page({
           if (resTrans.retcode == 0) {
             // let tmpTranslate = Object.assign({}, item, {
             autoPlay: true, // 自动播放背景音乐
-              that.setData({
-                voicePath: resTrans.filename,
-              })
+            that.setData({
+              voicePath: resTrans.filename,
+            })
             that.yuyinPlay();
           }
           else {

@@ -1,45 +1,51 @@
-.head .bg{
+.head .bg {
   width: 100%;
   height: 138rpx;
   background-color: #4D9BF4;
 }
-.head .box{
+
+.head .box {
   margin: -62rpx 30rpx 0;
   padding: 30rpx 40rpx;
   background-color: #fff;
   border-radius: 15rpx;
 }
+
 .head .box .headIcon {
   display: flex;
 }
+
 .head .box .headIcon image {
   width: 134rpx;
   height: 134rpx;
   border-radius: 50%;
 }
-.head .box .headInfo{
+
+.head .box .headInfo {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   margin-left: 30rpx;
 }
+
 .login {
   display: flex;
   color: #0f0f0f;
   font-size: 30rpx;
 }
-.btn_init{
+
+.btn_init {
   width: 360rpx;
   border-radius: 44rpx;
 
   font-size: 30rpx;
   font-weight: 500;
-  color:white;
+  color: white;
   background-color: #4D9BF4;
 }
 
-.func_list{
-  margin: 30rpx 30rpx  0;
+.func_list {
+  margin: 30rpx 30rpx 0;
   padding: 0 32rpx;
   border-radius: 15rpx;
   background-color: #fff;
@@ -52,10 +58,24 @@
   align-items: center;
   border-bottom: 1px solid #DDDDDD;
 }
-.item:last-child{
+
+.item:last-child {
   border-bottom-color: transparent;
 }
+
 .item .icon {
   width: 34rpx;
   height: 32rpx;
+}
+
+.avatar-wrapper {
+  color: transparent;
+  background: transparent;
+  border: transparent;
+  background-color: transparent; 
+  border:none;	
+  width: 140rpx;
+  height: 140rpx;
+  margin: 0rpx;
+  padding: 0rpx !important;
 }

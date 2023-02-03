@@ -13,7 +13,11 @@ const app = getApp();
 
 Page({
   data: {
-    multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'], ['猪肉绦虫', '吸血虫']],
+    multiArray: [
+      ['无脊柱动物', '脊柱动物'],
+      ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'],
+      ['猪肉绦虫', '吸血虫']
+    ],
 
 
     multiIndex: [0, 0, 0],
@@ -30,8 +34,7 @@ Page({
     uptoken: '',
     centendata: [],
     interactData: [],
-    textImgArray: [{
-    }],
+    textImgArray: [{}],
     answer: '',
     btnNum: '',
     editStatus: false,
@@ -68,44 +71,171 @@ Page({
     haveSpeakerFlag: true,
     multiVoiceArray: [
 
-      [//方言
-        { name: '姗姗', intro: '(粤语女生)', value: 'shanshan', icon: 'voice_girl.png' },
-        { name: '佳佳', intro: '(粤语女生)', value: 'jiajia', icon: 'voice_girl.png' },
-        { name: '桃子', intro: '(粤语女生)', value: 'taozi', icon: 'voice_girl.png' },
-        { name: '大虎', intro: '(东北话男声)', value: 'dahu', icon: 'voice_man.png' },
-        { name: '老铁', intro: '(东北老铁)', value: 'laotie', icon: 'voice_man.png' },
-        { name: '艾侃', intro: '(天津话)', value: 'aikan', icon: 'voice_man.png' },
-        { name: '青青', intro: '(中国台湾话女声)', value: 'qingqing', icon: 'voice_girl.png' }
+      [ //方言
+        {
+          name: '姗姗',
+          intro: '(粤语女生)',
+          value: 'shanshan',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: '佳佳',
+          intro: '(粤语女生)',
+          value: 'jiajia',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: '桃子',
+          intro: '(粤语女生)',
+          value: 'taozi',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: '大虎',
+          intro: '(东北话男声)',
+          value: 'dahu',
+          icon: 'voice_man.png'
+        },
+        {
+          name: '老铁',
+          intro: '(东北老铁)',
+          value: 'laotie',
+          icon: 'voice_man.png'
+        },
+        {
+          name: '艾侃',
+          intro: '(天津话)',
+          value: 'aikan',
+          icon: 'voice_man.png'
+        },
+        {
+          name: '青青',
+          intro: '(中国台湾话女声)',
+          value: 'qingqing',
+          icon: 'voice_girl.png'
+        }
       ],
 
-      [//童声
-        { name: '艾彤', intro: '(萝莉女声)', value: 'aitong', icon: 'girl.png' },
-        { name: '思彤', intro: '(萝莉女声)', value: 'sitong', icon: 'girl.png' },
-        { name: '小北', intro: '(萝莉女声)', value: 'xiaobei', icon: 'girl.png' },
-        { name: '杰力豆', intro: '(治愈童声)', value: 'jielidou', icon: 'boy.png' }
+      [ //童声
+        {
+          name: '艾彤',
+          intro: '(萝莉女声)',
+          value: 'aitong',
+          icon: 'girl.png'
+        },
+        {
+          name: '思彤',
+          intro: '(萝莉女声)',
+          value: 'sitong',
+          icon: 'girl.png'
+        },
+        {
+          name: '小北',
+          intro: '(萝莉女声)',
+          value: 'xiaobei',
+          icon: 'girl.png'
+        },
+        {
+          name: '杰力豆',
+          intro: '(治愈童声)',
+          value: 'jielidou',
+          icon: 'boy.png'
+        }
       ],
 
-      [//美式发音
-        { name: 'Lydia', intro: '(英中双语)', value: 'lydia', icon: 'voice_girl.png' },
-        { name: 'Abby', intro: '(美音女声)', value: 'abby', icon: 'voice_girl.png' },
-        { name: 'Wendy', intro: '(英音女声)', value: 'wendy', icon: 'voice_girl.png' },
-        { name: 'Annie', intro: '(美语女声)', value: 'annie', icon: 'voice_girl.png' },
-        { name: 'Emily', intro: '(英音女声)', value: 'emily', icon: 'voice_girl.png' },
-        { name: 'Andy', intro: '(美音男声)', value: 'andy', icon: 'voice_man.png' },
-        { name: 'William', intro: '(英音男声)', value: 'william', icon: 'voice_man.png' }
+      [ //美式发音
+        {
+          name: 'Lydia',
+          intro: '(英中双语)',
+          value: 'lydia',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: 'Abby',
+          intro: '(美音女声)',
+          value: 'abby',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: 'Wendy',
+          intro: '(英音女声)',
+          value: 'wendy',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: 'Annie',
+          intro: '(美语女声)',
+          value: 'annie',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: 'Emily',
+          intro: '(英音女声)',
+          value: 'emily',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: 'Andy',
+          intro: '(美音男声)',
+          value: 'andy',
+          icon: 'voice_man.png'
+        },
+        {
+          name: 'William',
+          intro: '(英音男声)',
+          value: 'william',
+          icon: 'voice_man.png'
+        }
       ],
 
-      [//多语种
-        { name: 'Tien', intro: '(越南语女声)', value: 'tien', icon: 'voice_girl.png' },
-        { name: '智香', intro: '(日语女声)', value: 'tomoka', icon: 'voice_girl.png' },
-        { name: '智也', intro: '(日语男声)', value: 'tomoya', icon: 'voice_man.png' },
-        { name: 'Indah', intro: '(印尼女声)', value: 'indah', icon: 'voice_girl.png' },
-        { name: 'Farah', intro: '(马来语女声)', value: 'farah', icon: 'voice_girl.png' }
+      [ //多语种
+        {
+          name: 'Tien',
+          intro: '(越南语女声)',
+          value: 'tien',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: '智香',
+          intro: '(日语女声)',
+          value: 'tomoka',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: '智也',
+          intro: '(日语男声)',
+          value: 'tomoya',
+          icon: 'voice_man.png'
+        },
+        {
+          name: 'Indah',
+          intro: '(印尼女声)',
+          value: 'indah',
+          icon: 'voice_girl.png'
+        },
+        {
+          name: 'Farah',
+          intro: '(马来语女声)',
+          value: 'farah',
+          icon: 'voice_girl.png'
+        }
       ]
     ],
 
 
-    category: [{ name: '方言', icon: '../../images/icon/china.jpeg' }, { name: '童声', icon: '../../images/icon/child.png' }, { name: '美式发音', icon: '../../images/icon/eng.png' }, { name: '多语种', icon: '../../images/icon/more_language.png' }],
+    category: [{
+      name: '方言',
+      icon: '../../images/icon/china.jpeg'
+    }, {
+      name: '童声',
+      icon: '../../images/icon/child.png'
+    }, {
+      name: '美式发音',
+      icon: '../../images/icon/eng.png'
+    }, {
+      name: '多语种',
+      icon: '../../images/icon/more_language.png'
+    }],
 
     curmultiVoiceArray: []
 
@@ -139,8 +269,11 @@ Page({
 
     //新增章节
     if (options && options.type === 'add' && options.courseMess) {
+      console.log("yyzm-options", options)
+
       let crouseDetail = JSON.parse(options.courseMess);
-      let chapterList = JSON.parse(options.chapterList);
+      let chapterList = options.chapterList && options.chapterList !== 'undefined' ? JSON.parse(options.chapterList) : [];
+      console.log("yyzm-crouseDetail", crouseDetail)
       this.setData({
         crouseDetail: crouseDetail,
         className: crouseDetail.courseName,
@@ -171,7 +304,7 @@ Page({
 
 
       wx.cloud.init({
-        env: 'huixue-3g4h1ydg1dedcaf3'
+        env: 'bot-cloud1-7g30ztcr37ed0193'
       })
       const courseUUid = JSON.parse(options.chapterobj).courseUUid
       wx.cloud.callFunction({
@@ -186,7 +319,10 @@ Page({
         success: res => {
           this.setData({
             centendata: res.result.classContent.data.map(item => {
-              return { ...item, is_show_right: 1 }
+              return {
+                ...item,
+                is_show_right: 1
+              }
             })
           })
         }
@@ -208,7 +344,7 @@ Page({
 
     let tts = new SpeechSynthesizer({
       url: app.globalData.URL,
-      appkey: app.globalData.JPAPPKEY,//JPAPPKEY   CEAPPKEY
+      appkey: app.globalData.JPAPPKEY, //JPAPPKEY   CEAPPKEY
       token: this.data.token
     })
 
@@ -217,7 +353,6 @@ Page({
     })
 
     tts.on("data", (msg) => {
-      console.log(`recv size: ${msg.byteLength}`)
       //console.log(dumpFile.write(msg, "binary"))
       if (this.data.saveFile) {
         try {
@@ -226,7 +361,7 @@ Page({
             msg,
             "binary"
           )
-          console.log(`append ${msg.byteLength}`)
+          // console.log(`append ${msg.byteLength}`)
         } catch (e) {
           console.error(e)
         }
@@ -294,7 +429,7 @@ Page({
     this.data.tts = tts
   },
 
-  // ----------------上传图文准备---------------
+  // ----------------朗读文本输入---------------
   getSpeachText(e) {
     if (e.detail.value) {
       let value = e.detail.value;
@@ -419,9 +554,10 @@ Page({
         success: (res) => {
           if (res.confirm) {
             //调用云函数
-            wx.cloud.init({
-              env: 'huixue-3g4h1ydg1dedcaf3'
-            })
+           wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
             wx.cloud.callFunction({
               name: 'del_chapter',
               data: {
@@ -437,7 +573,7 @@ Page({
                   showCancel: false,
                 })
                 wx.navigateBack({
-                  delta: 2//返回的页面数
+                  delta: 2 //返回的页面数
                 });
                 return;
               },
@@ -476,7 +612,7 @@ Page({
   // 初始化一个图文放入数组
   addOneItem: function (e) {
     const textImgArray = this.data.textImgArray
-    textImgArray.push({//初始化一个新的
+    textImgArray.push({ //初始化一个新的
       textimgTitle: '',
       chapterName: this.data.chapterName,
       content: '',
@@ -521,7 +657,15 @@ Page({
   //事件处理函数
   add: function (e) {
     var that = this;
-    const { editStatus, editIndex, message, centendata, setTextImg, imgUrl, textimgTitle } = this.data;
+    const {
+      editStatus,
+      editIndex,
+      message,
+      centendata,
+      setTextImg,
+      imgUrl,
+      textimgTitle
+    } = this.data;
     if (editStatus) {
       if (!setTextImg) {
         let newValue = centendata;
@@ -579,9 +723,7 @@ Page({
         showCancel: false
       })
       return;
-    }
-
-    else {
+    } else {
       let imgobj = this.data.imageObject;
       console.log('imgobj', imgobj)
       if (imgobj != '' && imgobj != undefined) {
@@ -641,7 +783,8 @@ Page({
 
       //  下面是云函数的调用
       wx.cloud.init({
-        env: 'huixue-3g4h1ydg1dedcaf3'
+        traceUser: true,
+        env: 'bot-cloud1-7g30ztcr37ed0193'
       })
       wx.cloud.callFunction({
         name: 'operate_courseContent',
@@ -672,9 +815,9 @@ Page({
             textImgArray: [{}],
             answer: '',
             setFrontImg: '',
-            editStatus: false,//编辑状态关闭
+            editStatus: false, //编辑状态关闭
 
-            edit_id: null//编辑id置空
+            edit_id: null //编辑id置空
           })
 
 
@@ -790,35 +933,35 @@ Page({
         })
         initQiniu(result.data);
         qiniuUploader.upload(that.data.tempimg, (res) => {
-          var obj = JSON.stringify(res.imageURL)
-          that.setData({
-            'imageObject': res,
-          })
-
-          let imgobj = that.data.imageObject;
-          if (imgobj != '') {
+            var obj = JSON.stringify(res.imageURL)
             that.setData({
-              imgUrl: 'http://' + imgobj.imageURL
+              'imageObject': res,
             })
-          }
 
-          if (that.data.setTextImg) {
-            that.addOneItem();
-          } else {
-            that.add();
-          }
+            let imgobj = that.data.imageObject;
+            if (imgobj != '') {
+              that.setData({
+                imgUrl: 'http://' + imgobj.imageURL
+              })
+            }
 
-          // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
-        },
+            if (that.data.setTextImg) {
+              that.addOneItem();
+            } else {
+              that.add();
+            }
+
+            // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
+          },
           (error) => {
             //   console.error('error: ' + JSON.stringify(error));
           }, {
-          region: 'SCN', // 华南
-          // ECN, SCN, NCN, NA, ASG，分别对应七牛的：华东，华南，华北，北美，新加坡 5 个区域
-          qiniuUploadToken: that.data.uptoken,
-          domain: 'imgchatbot.uavserve.online', // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接。
-          shouldUseQiniuFileName: false,
-        },
+            region: 'SCN', // 华南
+            // ECN, SCN, NCN, NA, ASG，分别对应七牛的：华东，华南，华北，北美，新加坡 5 个区域
+            qiniuUploadToken: that.data.uptoken,
+            domain: 'imgchatbot.uavserve.online', // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接。
+            shouldUseQiniuFileName: false,
+          },
           // null, // 可以使用上述参数，或者使用 null 作为参数占位符
           progress => {
             that.log = "上传进度" + progress.progress;
@@ -863,7 +1006,7 @@ Page({
 
   // ----------------选择图片 ----------------
   uploadimg() {
-    if (this.data.chapterId == '' && !this.data.setFrontImg) {//上传封面的时候可以不需要输入章节id
+    if (this.data.chapterId == '' && !this.data.setFrontImg) { //上传封面的时候可以不需要输入章节id
       wx.showModal({
         title: '提示',
         content: '章节id不能为空',
@@ -968,8 +1111,7 @@ Page({
         btnNum: null,
       });
       return;
-    }
-    else {
+    } else {
       this.setData({
         btnNum: btnNum,
         interactData: [],
@@ -1065,7 +1207,13 @@ Page({
     }
 
     if (this.data.editStatus) {
-      const { editIndex, centendata, answer, btnNum, interactData } = this.data;
+      const {
+        editIndex,
+        centendata,
+        answer,
+        btnNum,
+        interactData
+      } = this.data;
       let newValue = centendata;
       newValue[editIndex] = {
         ...centendata[editIndex],
@@ -1080,9 +1228,10 @@ Page({
       })
     }
 
-    wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
-    })
+   wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
     var btnNum = this.data.btnNum;
     let contentData = {
       contentType: 'Interact',
@@ -1129,7 +1278,10 @@ Page({
       },
       success: res => {
         if (!this.data.editStatus) {
-          that.data.centendata.push({ ...contentData, is_show_right: 1 });
+          that.data.centendata.push({
+            ...contentData,
+            is_show_right: 1
+          });
           this.bottom();
         }
         this.setData({
@@ -1143,9 +1295,9 @@ Page({
           btnDie: false,
           answer: '',
 
-          editStatus: false,//编辑状态关闭
+          editStatus: false, //编辑状态关闭
 
-          edit_id: null//编辑id置空
+          edit_id: null //编辑id置空
         })
 
       },
@@ -1172,7 +1324,9 @@ Page({
       setFrontImg: false,
       editStatus: false,
 
-      curTextImg: { index: 0 },
+      curTextImg: {
+        index: 0
+      },
       textImgArray: [{
 
       }],
@@ -1214,13 +1368,19 @@ Page({
     }
 
     if (contentType == 'text') {
-      const { content } = contentItem;
+      const {
+        content
+      } = contentItem;
       this.setData({
         message: content,
         editStatus: true
       })
     } else if (contentType == 'Interact') {
-      const { btnNum, answer, interactData } = contentItem.detail;
+      const {
+        btnNum,
+        answer,
+        interactData
+      } = contentItem.detail;
       this.setInteract();
       this.setData({
         btnNum,
@@ -1228,21 +1388,29 @@ Page({
         interactData,
         editStatus: true,
         message: '',
-        edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
+        edit_id: edit_id //云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
       })
     } else if (contentType == 'img') {
-      const { textimgTitle, src, content } = contentItem;
+      const {
+        textimgTitle,
+        src,
+        content
+      } = contentItem;
       this.setTextImg();
       this.setData({
         textimgTitle,
         message: content,
         imgUrl: src,
         editStatus: true,
-        edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
+        edit_id: edit_id //云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
       })
-    }
-    else if (contentType == 'textImg') {
-      const { textimgTitle, src, content, textImgArray } = contentItem;
+    } else if (contentType == 'textImg') {
+      const {
+        textimgTitle,
+        src,
+        content,
+        textImgArray
+      } = contentItem;
       this.setTextImg();
       this.setData({
         textimgTitle,
@@ -1252,12 +1420,12 @@ Page({
         curTextImg: textImgArray[0],
         textImgArray: textImgArray,
         editStatus: true,
-        edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
+        edit_id: edit_id //云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
       })
     }
     this.setData({
       editIndex: contentIndex,
-      edit_id: edit_id//云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
+      edit_id: edit_id //云函数通过判断当前是否有这个属性来告诉云函数是编辑还是新增
     })
   },
 
@@ -1278,9 +1446,10 @@ Page({
         success: (res) => {
           if (res.confirm) {
             //调用云函数
-            wx.cloud.init({
-              env: 'huixue-3g4h1ydg1dedcaf3'
-            })
+           wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
             wx.cloud.callFunction({
               name: 'operate_courseContent',
               data: {
@@ -1447,9 +1616,9 @@ Page({
       textImgArray: [{}],
       answer: '',
       setFrontImg: '',
-      editStatus: false,//编辑状态关闭
+      editStatus: false, //编辑状态关闭
 
-      edit_id: null//编辑id置空
+      edit_id: null //编辑id置空
     })
   },
 

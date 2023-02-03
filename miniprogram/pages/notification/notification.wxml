@@ -14,30 +14,98 @@
     </view>
   </view> -->
 </view>
+
+<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start"
+  style="{{translate}}">
+  <view class="rightBtnItem" bindtap="setVoiceRole">
+    <image class="r-itemImgBox" bindtap="setVoiceRole" src="../../images/button/addCoverBtn.png"></image>
+    <view class="r-itemName" bindtap="setVoiceRole">选发音人</view>
+  </view>
+</view>
+
+
+
+
+
 <view class='message'>
   <view class='top_txt'>你好呀，很高兴为您服务</view>
   <view class="historycon">
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key=''>
       <!-- 时间 -->
       <view>
-        <text class='time'>{{item.time}}</text>
+        <text user-select class='time'>{{item.time}}</text>
       </view>
       <block wx:if="{{item.is_show_right ==1}}">
         <!-- 右边 -->
         <view class='message-right'>
           <!-- 文字消息还是图片消息 -->
-          <text wx:if='{{!item.is_img}}' class='message_txt' catchtap="speach">{{item.content}}</text>
+          <text user-select wx:if='{{!item.is_img}}' class='message_txt' catchtap="speach">{{item.content}}</text>
           <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
         </view>
       </block>
       <block wx:else>
         <view class='message-left'>
-          <text wx:if='{{!item.is_img}}' class='message_txt' data-content="{{item.content}}" catchtap="speach">{{item.content}}</text>
+          <text user-select wx:if='{{!item.is_img}}' class='message_txt' data-content="{{item.content}}" catchtap="speach">{{item.content}}</text>
           <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
         </view>
       </block>
     </scroll-view>
   </view>
+</view>
+
+<!-- -------------设置发音人------------ -->
+<view class="setwaitData" style="flex-direction: column;height:720rpx;margin-bottom: 50%;" wx:if="{{setVoiceRole||false}}">
+  <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
+  <view class="modelTitle">设置发音人<view style="font-size: 8pt;color:rgb(158, 158, 154);">（只对设置后上传的文本生效~）</view>
+  </view>
+  <swiper class="voice_category_swiper" circular='true' bindchange="swiperCategoryChange" previousMargin='5px'
+    nextMargin='150rpx' current="{{categoryCur}}">
+    <block wx:for="{{category}}" wx:key="index" wx:for-index="index">
+      <swiper-item>
+        <view class="{{categoryCur==index?'now':'next'}}">
+          <image class="img" src="{{item.icon}}"> </image>
+        </view>
+        <!-- <view class="voice_category_Btn">
+          {{item.name}}
+        </view> -->
+        <view class="{{categoryCur==index?'voice_modal_text_cur':'voice_modal_text_next'}}">
+          {{item.name}}
+        </view>
+
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class="voice_row">
+    <swiper class="voice_role_swiper" circular='true' bindchange="swiperRoleChange" data-detail="{{item}}"
+      previousMargin='5px' nextMargin='150rpx' current="{{roleCur}}">
+      <block wx:for="{{curmultiVoiceArray}}" wx:key="index" wx:for-index="index" data-detail="item">
+        <swiper-item>
+          <view class="{{roleCur==index?'now':'next'}}">
+            <image class="img" src="{{'../../images/icon/'+item.icon}}"> </image>
+          </view>
+          <view class="{{roleCur==index?'voice_modal_text_cur':'voice_modal_text_next'}}">
+            {{item.name}}
+          </view>
+          <view class="{{roleCur==index?'voice_modal_text_cur':'voice_modal_text_next'}}">
+            {{item.intro}}
+          </view>
+
+
+        </swiper-item>
+      </block>
+    </swiper>
+
+
+    <textarea bindinput='getSpeachText' class="audio_txt_textarea" confirm-type="done" value='{{curTTsTestText}}'
+      placeholder="写点什么让我读吧~" placeholder-style="color:#318FFF;" />
+      <switch class="role_SpeakSwitch" checked="{{haveSpeakerFlag}}" bindchange="changeHaveSpeakerFlag"></switch>
+    <image class="role_Speak" src="../../images/icon/role_Speak.png" data-content="{{curTTsTestText}}"
+      catchtap="onTtsSpeach"> </image>
+  </view>
+  <!-- <input bindinput='getSrc' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{imgUrl}}'
+    placeholder="图片src（本地上传时可为空" placeholder-style="color:#318FFF;" /> -->
+  <!-- <button class="modelSubmitBtn" catchtap="add">确认使用</button> -->
 </view>
 <view class='hei' id="hei"></view>
 <view class="sendmessage">

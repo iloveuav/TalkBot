@@ -251,7 +251,6 @@ page {
   padding: 20rpx;
   max-height: 145rpx;
   max-width: 240rpx;
-
 }
 
 

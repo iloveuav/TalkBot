@@ -47,12 +47,12 @@
     </view>
     <view class="chapter_list">
       <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}"
-        data-id="{{item._id.chapterId}}">
+        data-id="{{item._id.chapterId}}" catchtap="handleChapterItem" data-clickChapter="{{item}}">
         <text class="order">{{index + 1}}</text>
-        <text class="chapterName" catchtap="handleChapterItem" data-clickChapter="{{item}}">
+        <text class="chapterName" >
           {{item._id.chapterName}}
         </text>
-        <text wx:if="{{btnType==='edit'}}" class="fail" bindtap="toEditChapter" data-chapterObj="{{item._id}}">
+        <text wx:if="{{btnType==='edit'}}" class="edit_chapter_btn" bindtap="toEditChapter" data-chapterObj="{{item._id}}">
           🖊
         </text>
       </view>

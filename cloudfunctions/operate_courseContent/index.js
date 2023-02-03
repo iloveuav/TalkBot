@@ -22,8 +22,6 @@ exports.main = async (event, context) => {
       }).remove()
     }
   }
-
-
   else {
     if (event.edit_id) {
       await db.collection(event.contentData.classCollection).where({

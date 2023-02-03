@@ -26,7 +26,6 @@ exports.main = async (event, context) => {
 
         mess.sucess = "修改为同意访校成功"
       } catch (e) {
-        console.log(err);
         mess.sucess = "修改为同意访校失败"
       }
     }
@@ -42,7 +41,6 @@ exports.main = async (event, context) => {
 
         mess.sucess = "修改为暂缓访校成功"
       } catch (e) {
-        console.log(err);
         mess.sucess = "修改为暂缓访校失败"
       }
     }
@@ -60,7 +58,6 @@ exports.main = async (event, context) => {
 
         mess.sucess = "修改为审核通过成功"
       } catch (e) {
-        console.log(err);
         mess.sucess = "修改为审核通过失败"
       }
     }
@@ -76,7 +73,6 @@ exports.main = async (event, context) => {
 
         mess.sucess = "修改为审核不通过成功"
       } catch (e) {
-        console.log(err);
         mess.sucess = "修改为审核不通过失败"
       }
     }

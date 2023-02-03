@@ -1,6 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-
 cloud.init({
   traceUser: true,
   env: 'bot-cloud1-7g30ztcr37ed0193'

@@ -1,4 +1,6 @@
 // pages/mysel/mysel.js
+const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+
 Page({
 
   /**
@@ -7,6 +9,8 @@ Page({
   data: {
     islogin: false,
     funshow: false,
+    avatarUrl: defaultAvatarUrl,
+    info: {},
     fun: [
 
     ]
@@ -76,8 +80,7 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  },
+  onReady: function () {},
 
   /**
    * 生命周期函数--监听页面显示
@@ -95,32 +98,27 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
-  },
+  onHide: function () {},
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
-  },
+  onUnload: function () {},
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-  },
+  onPullDownRefresh: function () {},
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-  },
+  onReachBottom: function () {},
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-  },
+  onShareAppMessage: function () {},
 
 
   toCollectCourseList: function (e) {
@@ -156,9 +154,10 @@ Page({
       isWaitCheck: false
       // select_flag: this.data.dialogFlag || '',
     }
-    wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
-    })
+   wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
     wx.cloud.callFunction({
       name: "get_allCourseMess",
       data: {}
@@ -201,9 +200,9 @@ Page({
 
   unopen: function () {
     this.setData({
-      messageTitle: "程序员已被祭天",
-      message: "功能开发中，请耐心等待"
-    }),
+        messageTitle: "程序员已被祭天",
+        message: "功能开发中，请耐心等待"
+      }),
       this.showMessage()
   },
 
@@ -306,58 +305,74 @@ Page({
     })
   },
 
+
+  onChooseAvatar(e) {
+    const {
+      avatarUrl
+    } = e.detail;
+    console.log(" this.info", this.data.info)
+    this.data.info.avatarUrl = avatarUrl
+    this.setData({
+      info: this.data.info,
+    })
+    wx.setStorageSync("info", this.data.info);
+  },
+
   getUserProfile(e) {
     let that = this;
     // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        console.log(res)
-        wx.setStorageSync("info", res.userInfo);
-        wx.setStorageSync("islogin", true);
-        that.setData({
-          remind: '加载中',
-          islogin: true,
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
+    if (wx.getUserProfile) {
+      wx.getUserProfile({
+        desc: '获取你的昵称、头像、地区及性别', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+        success: (res) => {
+          console.log(res)
+          wx.setStorageSync("info", res.userInfo);
+          wx.setStorageSync("islogin", true);
+          that.setData({
+            remind: '加载中',
+            islogin: true,
+            userInfo: res.userInfo,
+            hasUserInfo: true
+          })
 
-        wx.cloud.callFunction({
-          name: 'operate_userInfo',
-          data: {
-            type: 'login',
-            info: res.userInfo,
-          },
-          success: res => {
-            // console.log(res)
-            console.log('callFunction test result: ', res)
-            const result = res.result.data[0]
-            console.log("result", result)
-            if (result && result.isAdmin) {
-              wx.setStorageSync("isAdmin", true);
-              this.setData({
-                isAdmin: true
-              })
+          wx.cloud.callFunction({
+            name: 'operate_userInfo',
+            data: {
+              type: 'login',
+              info: res.userInfo,
+            },
+            success: res => {
+              // console.log(res)
+              console.log('callFunction test result: ', res)
+              const result = res.result.data[0]
+              console.log("result", result)
+              if (result && result.isAdmin) {
+                wx.setStorageSync("isAdmin", true);
+                this.setData({
+                  isAdmin: true
+                })
+              }
+
+            },
+            fail: err => {
+              // handle error
+            },
+            complete: res => {
+              console.log(res)
+              that.onLoad();
+              that.onShow();
             }
-
-          },
-          fail: err => {
-            // handle error
-          },
-          complete: res => {
-            console.log(res)
-            that.onLoad();
-            that.onShow();
-          }
-        })
+          })
 
 
-        // // that.updateUserInfo(res.userInfo);
+          // // that.updateUserInfo(res.userInfo);
 
 
-      }
-    })
+        }
+      })
+    }
+
   },
 
 
@@ -424,9 +439,10 @@ Page({
   },
 
   getAllCourse() {
-    wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
-    })
+   wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
     wx.cloud.init()
     //  下面是云函数的调用
     // console.log(wx.getStorageSync("openid"));

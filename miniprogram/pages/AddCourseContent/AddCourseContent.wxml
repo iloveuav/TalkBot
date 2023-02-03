@@ -134,9 +134,6 @@
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="modelTitle">设置发音人<view style="font-size: 8pt;color:rgb(158, 158, 154);">（只对设置后上传的文本生效~）</view>
   </view>
-
-
-
   <swiper class="voice_category_swiper" circular='true' bindchange="swiperCategoryChange" previousMargin='5px'
     nextMargin='150rpx' current="{{categoryCur}}">
     <block wx:for="{{category}}" wx:key="index" wx:for-index="index">
@@ -154,8 +151,6 @@
       </swiper-item>
     </block>
   </swiper>
-
-
   <view class="voice_row">
     <swiper class="voice_role_swiper" circular='true' bindchange="swiperRoleChange" data-detail="{{item}}"
       previousMargin='5px' nextMargin='150rpx' current="{{roleCur}}">
@@ -188,13 +183,6 @@
 
 
   </view>
-
-
-
-
-
-
-
   <!-- <input bindinput='getSrc' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{imgUrl}}'
     placeholder="图片src（本地上传时可为空" placeholder-style="color:#318FFF;" /> -->
   <!-- <button class="modelSubmitBtn" catchtap="add">确认使用</button> -->

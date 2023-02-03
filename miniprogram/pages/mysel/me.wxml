@@ -2,8 +2,12 @@
   <view class="bg"></view>
   <view class="box">
     <view class="headIcon" wx:if="{{islogin==true}}">
-      <image src="{{info.avatarUrl}}"></image>
+      <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image src="{{info.avatarUrl}}"></image>
+      </button>
+
       <view class="headInfo">
+        <!-- <input type="nickname" class="weui-input" placeholder="请输入昵称"/> -->
         <view>姓名：{{info.nickName}}</view>
         <view>语言：{{info.language}}</view>
       </view>

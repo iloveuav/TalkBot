@@ -9,16 +9,42 @@ Page({
       desc: '简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介',
       state: '审核中'
     },
-    chapterList: [
-      { title: '开始学习啦~', id: 1 },
-      { title: '开始学习啦~', id: 2 },
-      { title: '开始学习啦~', id: 3 },
-      { title: '开始学习啦~', id: 4 },
-      { title: '开始学习啦~', id: 5 },
-      { title: '开始学习啦~', id: 6 },
-      { title: '开始学习啦~', id: 7 },
-      { title: '开始学习啦~', id: 8 },
-      { title: '开始学习啦~', id: 9 },
+    chapterList: [{
+        title: '开始学习啦~',
+        id: 1
+      },
+      {
+        title: '开始学习啦~',
+        id: 2
+      },
+      {
+        title: '开始学习啦~',
+        id: 3
+      },
+      {
+        title: '开始学习啦~',
+        id: 4
+      },
+      {
+        title: '开始学习啦~',
+        id: 5
+      },
+      {
+        title: '开始学习啦~',
+        id: 6
+      },
+      {
+        title: '开始学习啦~',
+        id: 7
+      },
+      {
+        title: '开始学习啦~',
+        id: 8
+      },
+      {
+        title: '开始学习啦~',
+        id: 9
+      },
     ],
 
     //拖拽相关
@@ -75,20 +101,20 @@ Page({
 
   getCollectState: function () {
     wx.cloud.callFunction({
-      name: 'operate_courseUserStatus',
-      data: {
-        mode: 'getStatus',
-        courseUUid: this.data.crouseDetail.courseUUid
-      }
-    }).then(res => {
-      console.log(res)
-      this.setData({
-        isLiked: res.result.userIsLike,
-        isCollected: res.result.userIsCollect,
-        isShared: res.result.userIsShare,
+        name: 'operate_courseUserStatus',
+        data: {
+          mode: 'getStatus',
+          courseUUid: this.data.crouseDetail.courseUUid
+        }
+      }).then(res => {
+        console.log(res)
+        this.setData({
+          isLiked: res.result.userIsLike,
+          isCollected: res.result.userIsCollect,
+          isShared: res.result.userIsShare,
+        })
+        // return res.result.data.collectd
       })
-      // return res.result.data.collectd
-    })
       .catch(err => {
         console.error('getCollectd', err)
       })
@@ -263,14 +289,15 @@ Page({
 
   getChapterList(pageType) {
     wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
     })
     const courseUUid = this.data.crouseDetail.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
       data: {
         courseUUid: courseUUid,
-        type: this.data.type
+        type: 'course'
       },
       success: res => {
         let showChapter = []
@@ -293,7 +320,10 @@ Page({
     })
   },
   handleChapterItem(e) {
-    const { chapterId, chapterName } = e.currentTarget.dataset.clickchapter._id;
+    const {
+      chapterId,
+      chapterName
+    } = e.currentTarget.dataset.clickchapter._id;
     const crouseDetail = this.data.crouseDetail
 
     let CurrentChapter = {
@@ -323,7 +353,7 @@ Page({
         if (res.confirm) {
           //调用云函数
           wx.cloud.init({
-            env: 'huixue-3g4h1ydg1dedcaf3'
+            env: 'bot-cloud1-7g30ztcr37ed0193'
           })
           wx.cloud.callFunction({
             name: 'del_course',
@@ -339,7 +369,7 @@ Page({
                 showCancel: false,
               })
               wx.navigateBack({
-                delta: 1//返回的页面数
+                delta: 1 //返回的页面数
               });
               return;
             },

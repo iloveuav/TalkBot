@@ -141,9 +141,10 @@ Page({
   },
 
   getAllCourseList(pageType) {
-    wx.cloud.init({
-      env: 'huixue-3g4h1ydg1dedcaf3'
-    })
+   wx.cloud.init({
+  traceUser: true,
+  env: 'bot-cloud1-7g30ztcr37ed0193'
+})
     wx.cloud.callFunction({
       name: 'get_CourseList',
       data: { pageType: pageType},
