@@ -9,7 +9,7 @@
       <view class="headInfo">
         <!-- <input type="nickname" class="weui-input" placeholder="请输入昵称"/> -->
         <view>姓名：{{info.nickName}}</view>
-        <view>语言：{{info.language}}</view>
+        <view>徽章：{{info.language}}</view>
       </view>
     </view>
     <view class="login" wx:else>
@@ -20,6 +20,8 @@
 
 
 <view class="func_list">
+
+ 
 
 
   <view class='item' bindtap="toMineCourseList">
@@ -52,8 +54,16 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
 
+
+
   <view class='item' bindtap="toSuperAdmin" wx:if="{{isAdmin}}">
     <view class="title">超级管理员</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+  <view class="line"></view>
+
+  <view class='item' bindtap='toApplyVIP'>
+    <view class="title">申请成为VIP 🏄‍♂️</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
   <view class="line"></view>

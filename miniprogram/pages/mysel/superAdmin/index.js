@@ -222,10 +222,10 @@ Page({
     let nowtime = time.formatDayTime(new Date, 'Y/M/D');
     console.log(nowtime)
     // 获取云端上保密协议的内容
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     //  下面是云函数的调用
     wx.cloud.callFunction({
       name: 'get_indexCardMess',
@@ -312,11 +312,23 @@ Page({
   },
 
 
+  touchWaitCheckVIPList: function () {
+    this.setData({
+      pageFlag: 8,
+      translate: 'transform: translateX(0px)',
+    })
+    // this.queryVisitorList()
+    // this.getAllCourse();
+    // this.getAllCourseList();
+    this.getAllCApplyVipList();
+  },
+
+
   getAllCourse() {
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     wx.cloud.callFunction({
       name: 'get_allCourseMess',
       data: {},
@@ -342,11 +354,47 @@ Page({
     })
   },
 
+  getAllCApplyVipList() {
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
+    wx.cloud.init()
+    wx.cloud.callFunction({
+
+      name: 'operate_FeedBack',
+      data: {
+        type: 'getApplyVipList',
+      },
+      success: res => {
+        console.log(res.result)
+        this.setData({
+          allApplyVipList: res.result.data,
+          remind: '',
+        })
+      },
+      fail: err => {
+
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        // wx.showToast({ //提交成功的提示框
+        //   title: '获取审核成功',
+        //   duration: 1100
+        // })
+          // setTimeout(function () { //延时执行函数
+          //   wx.navigateBack({
+          //     delta: 1
+          //   })
+          // }, 1200) //延迟时间 这里是1.5秒
+      },
+    })
+  },
   getAllCourseList(pageType) {
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     wx.cloud.callFunction({
       name: 'get_CourseList',
       data: {},
@@ -649,6 +697,17 @@ Page({
     }, 600);
   },
 
+  userDetailReload() {
+    // this.getAllCourse();
+    this.getAllCApplyVipList();
+    setTimeout(() => {
+      this.setData({
+        pageFlag: 8,
+        // allCourse: this.data.allCourse,
+      })
+    }, 600);
+  },
+
 
 
 
@@ -687,10 +746,10 @@ Page({
       // select_flag: this.data.dialogFlag || '',
     }
     console.log("test-params", params)
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     wx.cloud.callFunction({
       name: "query_visitorRecord",
       data: params

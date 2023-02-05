@@ -412,6 +412,24 @@ Page({
     wx.hideLoading()
   },
 
+  toApplyVIP: function (e) {
+    if (this.data.islogin == false) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录',
+        showCancel: false
+      })
+      return;
+    }
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.navigateTo({
+      url: '/pages/mysel/applyVIP/index',
+    })
+    wx.hideLoading()
+  },
+
   logout() {
     wx.setStorageSync('islogin', false);
     this.setData({

@@ -1,4 +1,6 @@
 // miniprogram/pages/FeedBack/FeedBack.js
+
+var time = require('../../../utils/util.js');
 Page({
 
   /**
@@ -33,10 +35,11 @@ Page({
 
       name: 'operate_FeedBack',
       data: {
-        type: 'addFeedBack',
+        type: 'applyVIP',
         text: text,
         number: number,
-        useropenid: openid
+        useropenid: openid,
+        applyTime: time.formatTime(new Date, 'Y/M/D'),
       },
       success: res => {
         console.log(res.result)

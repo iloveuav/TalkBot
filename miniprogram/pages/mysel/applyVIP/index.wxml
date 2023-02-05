@@ -1,0 +1,36 @@
+<!--miniprogram/pages/FeedBack/FeedBack.wxml-->
+<scroll-view>
+  <form bindsubmit="formSubmit">
+    <view class="view1 ">
+      <view style="margin-top:44rpx;margin-left:22rpx">
+        <text class="fongStyle1">申请成为年度会员</text>
+      </view>
+
+      <view style="margin-top:64rpx;margin-left:22rpx">
+        <text class="fongStyle2">填写申请原因及备注个人身份方便管理员识别👇</text>
+      </view>
+
+      <view style="margin-top:26rpx;">
+        <textarea class="textarea" name="text" placeholder="由此输入..." maxlength="180"></textarea>
+      </view>
+
+      <view class="marginBottom marginTop marginLeft">
+        <text class="floatLeft fongStyle">联系方式:</text>
+        <input class="input fongStyle" name="number" placeholder="请填写QQ号或者电话号码（非必填）" maxlength="20"></input>
+      </view>
+      <view class="view2"> </view>
+    </view>
+
+    <button class="button" form-type="submit">提交</button>
+  </form>
+
+
+
+
+
+
+
+
+
+</scroll-view>
+

@@ -15,7 +15,6 @@ App({
       })
     }
 
-    // this.globalData = {}//这个会导致全局对象获取不到
   },
   globalData: {
 
@@ -23,8 +22,8 @@ App({
     parameter: null,
 
     //AKID和AKKEY不能上传到git否则会有泄露风险
-    AKID: 'LTAI5tJPxprJbW4smqrJGrcS',
-    AKKEY: 'x1O34wRix1URoODp3AHqxP8JrPL2M2',
+    AKID: '',
+    AKKEY: '',
  
 
 

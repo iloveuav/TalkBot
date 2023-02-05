@@ -9,6 +9,7 @@
     "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
     "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
     "courseAudit": "/components/superAdmin/courseAudit/courseAudit",
+    "applyVipAudit": "/components/superAdmin/applyVipAudit/index",
     "visitorCard": "/components/superAdmin/visitorCard/visitorCard"
 
   }

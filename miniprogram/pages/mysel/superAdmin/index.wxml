@@ -1,143 +1,164 @@
 <!--page/one/index.wxml-->
 <view class="page">
-	<view class="page-bottom">
-		<view class="page-content">
-			<image bindtap="tap_ch" class="logo" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
-			</image>
-			<image bindtap="tap_ch" class="logo" src="{{appSetting.logoUrl}}"></image>
-			<!-- 备用 无网情况下显示 -->
+  <view class="page-bottom">
+    <view class="page-content">
+      <image bindtap="tap_ch" class="logo" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
+      </image>
+      <image bindtap="tap_ch" class="logo" src="{{appSetting.logoUrl}}"></image>
+      <!-- 备用 无网情况下显示 -->
 
 
-			<image bindtap="tap_ch" class="pic" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
-			</image>
-			<image bindtap="tap_ch" class="pic" src="{{appSetting.homeImageUrl}}"></image>
-			<text class="title">管理员数据中心 </text>
-			<view class="wc {{pageFlag == 0 ? 'active' : ''}}" bindtap="touchHome">
-				<text>主页 🌈</text>
-			</view>
+      <image bindtap="tap_ch" class="pic" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
+      </image>
+      <image bindtap="tap_ch" class="pic" src="{{appSetting.homeImageUrl}}"></image>
+      <text class="title">管理员数据中心 </text>
+      <view class="wc {{pageFlag == 0 ? 'active' : ''}}" bindtap="touchHome">
+        <text>主页 🌈</text>
+      </view>
 
-			<view class="wc {{pageFlag == 7 ? 'active' : ''}}" bindtap="touchWaitCheckCrouseList">
-				<text>审核内容列表 📊</text>
-			</view>
+      <view class="wc {{pageFlag == 7 ? 'active' : ''}}" bindtap="touchWaitCheckCrouseList">
+        <text>审核内容列表 📊</text>
+      </view>
 
-			<!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
+      <view class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVIPList">
+        <text>审核VIP列表 🏄‍♂️</text>
+      </view>
+
+      <!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
 				<text>访客待审核列表🎫 </text>
 			</view> -->
 
-			<!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
+      <!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 1 ? 'active' : ''}}" bindtap="touchVisitorsList">
 				<text>访客申请日志📕 </text>
 			</view> -->
 
 
 
-		</view>
-	</view>
-	<view bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" class="page-top"
-		style="{{translate}}">
-		<!-- Home页面的条件渲染 -->
-		<block wx:if="{{pageFlag == 0}}">
-			<!-- <image bindtap="tap_ch" src="../../images/icon/menu.png"></image> -->
-			<view class="tap">
-				<indexCard title="Visitors" leftIndexName="Visitors of Today" rightIndexName="Total Visitors"
-					allVisitorNumber="{{allVisitorNumber}}" todayVisitorNumber="{{todayVisitorNumber}}" nowtime="{{nowtime}}">
-				</indexCard>
-				<view class="cardBtn">
-					<image wx:if="{{identity===2}}" class="addFrom" src="../../../images/icon/addFrom.png" bindtap="touchAddFrom">
-					</image>
-				</view>
-			</view>
+    </view>
+  </view>
+  <view bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" class="page-top" style="{{translate}}">
+    <!-- Home页面的条件渲染 -->
+    <block wx:if="{{pageFlag == 0}}">
+      <!-- <image bindtap="tap_ch" src="../../images/icon/menu.png"></image> -->
+      <view class="tap">
+        <indexCard title="Visitors" leftIndexName="Visitors of Today" rightIndexName="Total Visitors" allVisitorNumber="{{allVisitorNumber}}" todayVisitorNumber="{{todayVisitorNumber}}" nowtime="{{nowtime}}">
+        </indexCard>
+        <view class="cardBtn">
+          <image wx:if="{{identity===2}}" class="addFrom" src="../../../images/icon/addFrom.png" bindtap="touchAddFrom">
+          </image>
+        </view>
+      </view>
 
-			<view class="tap">
-				<indexCard title="Courses" leftIndexName="wait Check Content Count" rightIndexName="All Content Count"
-					allVisitorNumber="{{allCourseNumber}}" todayVisitorNumber="{{waitCheckCourseNumber}}" nowtime="{{nowtime}}">
-				</indexCard>
-				<view class="cardBtn">
+      <view class="tap">
+        <indexCard title="Courses" leftIndexName="wait Check Content Count" rightIndexName="All Content Count" allVisitorNumber="{{allCourseNumber}}" todayVisitorNumber="{{waitCheckCourseNumber}}" nowtime="{{nowtime}}">
+        </indexCard>
+        <view class="cardBtn">
 
-				</view>
-			</view>
+        </view>
+      </view>
 
 
-			<!-- <textarea class="noticeTextArea" value="暂无公告" hidden="{{appSetting.notice!=''}}" />
+      <!-- <textarea class="noticeTextArea" value="暂无公告" hidden="{{appSetting.notice!=''}}" />
 
 			<textarea class="noticeTextArea" maxlength="" type="emoji" disabled="true" confirm-type="done"
 				value='{{appSetting.notice}}' hidden="{{appSetting.notice==''}}" /> -->
 
-			<!-- <textarea class="noticeTextArea" maxlength="" type="emoji" disabled="true" confirm-type="done"
+      <!-- <textarea class="noticeTextArea" maxlength="" type="emoji" disabled="true" confirm-type="done"
 				value="暂无公告" hidden="{{appSetting.notice==''}}" /> -->
 
 
 
 
-			<!-- <view class="callboard">
+      <!-- <view class="callboard">
 				<image src="../../images/NothingCallboard.png"></image>
 			</view> -->
-		</block>
-		<!-- VisitorFrom页面的条件渲染 -->
-		<block wx:if="{{pageFlag == 3}}">
-			<vistorFrom bind:callHelp="helpUploadPic" bind:toHome="touchHome">
-			</vistorFrom>
-		</block>
-		<!-- VisitorEdit页面的条件渲染 -->
-		<block wx:elif="{{pageFlag == 4}}">
+    </block>
+    <!-- VisitorFrom页面的条件渲染 -->
+    <block wx:if="{{pageFlag == 3}}">
+      <vistorFrom bind:callHelp="helpUploadPic" bind:toHome="touchHome">
+      </vistorFrom>
+    </block>
+    <!-- VisitorEdit页面的条件渲染 -->
+    <block wx:elif="{{pageFlag == 4}}">
 
-		</block>
-		<!-- datePicker页面的条件渲染 -->
-		<block wx:elif="{{pageFlag == 5}}">
-			<datePicker start="" bindchange="dateChange" defaultValue="{{defaultValue}}"></datePicker>
-		</block>
+    </block>
+    <!-- datePicker页面的条件渲染 -->
+    <block wx:elif="{{pageFlag == 5}}">
+      <datePicker start="" bindchange="dateChange" defaultValue="{{defaultValue}}"></datePicker>
+    </block>
 
-		<block wx:elif="{{pageFlag == 6}}">
-			<view class="classCard">
-				<scroll-view>
-					<districtCard objectArray="{{allCourseDemo}}" intoBtnName="进入" pageName="admin">
-					</districtCard>
-				</scroll-view>
-			</view>
-		</block>
+    <block wx:elif="{{pageFlag == 6}}">
+      <view class="classCard">
+        <scroll-view>
+          <districtCard objectArray="{{allCourseDemo}}" intoBtnName="进入" pageName="admin">
+          </districtCard>
+        </scroll-view>
+      </view>
+    </block>
 
-		<!-- 内容审核页 -->
-		<block wx:elif="{{pageFlag == 7}}">
-			<view class="Visitors_container">
-				<!-- 列表部分 -->
-				<scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}"
-					scroll-with-animation="{{true}}" class="bottom_part">
-					<!-- <view>数据为空</view> -->
+    <!-- 内容审核页 -->
+    <block wx:elif="{{pageFlag == 7}}">
+      <view class="Visitors_container">
+        <!-- 列表部分 -->
+        <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
+          <!-- <view>数据为空</view> -->
 
-					<block wx:for="{{allCourse}}" wx:key="index">
-						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
-					</block>
+          <block wx:for="{{allCourse}}" wx:key="index">
+            <courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
+          </block>
 
-					<!-- <block wx:for="{{allCourse[0].children}}" wx:key="index">
+          <!-- <block wx:for="{{allCourse[0].children}}" wx:key="index">
 						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
 					</block> -->
 
 
-				</scroll-view>
-			</view>
-		</block>
+        </scroll-view>
+      </view>
+    </block>
 
-	
+    <!-- VIP审核页 -->
+    <block wx:elif="{{pageFlag == 8}}">
+      <view class="Visitors_container">
+        <!-- 列表部分 -->
+        <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
+          <!-- <view>数据为空</view> -->
 
-		<!-- admin页面的条件渲染 -->
-		<block wx:elif="{{pageFlag == 2}}">
-			<view class="adminBox">
-				<!-- <image src="../../images/icon/editbtn.png" class="addimg" bindtap='uploadimg'></image> -->
+          <block wx:for="{{allApplyVipList}}" wx:key="index">
+            <!-- <courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit> -->
+            <applyVipAudit userInfo="{{item}}" bind:Reload="userDetailReload"></applyVipAudit>
+          </block>
 
-				<!-- <button class="sendbButton"  catchtap="add">发送</button> -->
-				<view class="itemBox" catchtap="editNda">
-					<image src="../../../images/icon/editNda.png" class="editNda"></image>
-					<view class="adminText"><text>editNda</text></view>
-				</view>
+          <!-- <block wx:for="{{allCourse[0].children}}" wx:key="index">
+						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
+					</block> -->
 
-				<view class="itemBox" catchtap="setting">
-					<image src="../../../images/icon/setting.png" class="adminSetting"></image>
-					<text>Setting</text>
-				</view>
 
-				<!-- <input style='display:none' type="" bindinput="bindChange" confirm-type="done" placeholder="" /> -->
-			</view>
-		</block>
-	</view>
+        </scroll-view>
+      </view>
+    </block>
+
+
+
+    <!-- admin页面的条件渲染 -->
+    <block wx:elif="{{pageFlag == 2}}">
+      <view class="adminBox">
+        <!-- <image src="../../images/icon/editbtn.png" class="addimg" bindtap='uploadimg'></image> -->
+
+        <!-- <button class="sendbButton"  catchtap="add">发送</button> -->
+        <view class="itemBox" catchtap="editNda">
+          <image src="../../../images/icon/editNda.png" class="editNda"></image>
+          <view class="adminText"><text>editNda</text></view>
+        </view>
+
+        <view class="itemBox" catchtap="setting">
+          <image src="../../../images/icon/setting.png" class="adminSetting"></image>
+          <text>Setting</text>
+        </view>
+
+        <!-- <input style='display:none' type="" bindinput="bindChange" confirm-type="done" placeholder="" /> -->
+      </view>
+    </block>
+  </view>
 </view>
 
 <!-- loading -->

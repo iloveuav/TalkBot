@@ -113,11 +113,10 @@ Page({
     // })
     this.setData({
       picList: picList,
-      isFlyer: wx.getStorageInfoSync("isFlyer"),
       identity: identity,
       icon2: icon2,
       islogin: wx.getStorageSync("islogin"),
-      pageType:'studyPage'
+      pageType: 'studyPage'
     })
   },
 
@@ -130,9 +129,60 @@ Page({
 
   onShow: function () {
     var identity = wx.getStorageSync("useridentity");
+    let that = this;
     console.log(identity)
     this.data.pageType = 'studyPage'
     this.getAllCourseList('studyPage');
+
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get',
+        info: {},
+      },
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res)
+        const result = res.result.data[0]
+        console.log("result", result)
+        if (result && result.isAdmin) {
+          wx.setStorageSync("isAdmin", true);
+          this.setData({
+            isAdmin: true
+          })
+        } else {
+          wx.setStorageSync("isAdmin", false);
+          this.setData({
+            isAdmin: false
+          })
+        }
+        if (result && result.isVip) {
+          wx.setStorageSync("isVip", true);
+          this.setData({
+            isVip: true
+          })
+        } else {
+          wx.setStorageSync("isVip", false);
+          this.setData({
+            isVip: false
+          })
+        }
+        if (result && result.UserQuesRecordArr) {
+          wx.setStorageSync("UserQuesRecordArr", result.UserQuesRecordArr);
+        } else {
+          wx.setStorageSync("UserQuesRecordArr", []);
+        }
+
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+
+
     this.setData({
       remind: '',
       identity: identity,
@@ -141,13 +191,13 @@ Page({
   },
 
   getAllCourseList(pageType) {
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     wx.cloud.callFunction({
       name: 'get_CourseList',
-      data: { pageType: pageType},
+      data: { pageType: pageType },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -183,16 +233,16 @@ Page({
         let showCourse = []
         // showCourse = resultCourse
 
-        resultCourse.forEach(item=>{
-          if (pageType ==='studyPage'&&item.state==='审核通过') {
+        resultCourse.forEach(item => {
+          if (pageType === 'studyPage' && item.state === '审核通过') {
             showCourse.push(item)
           }
 
-          if((item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'){
+          if ((item.isMineCourse === undefined && pageType === 'mineCoursePage') || item.isMineCourse && pageType === 'mineCoursePage') {
             showCourse.push(item)
           }
 
-          if((item.userCollectedFlag&&pageType ==='collectCoursePage'&&(item.isMineCourse||item.state==='审核通过'))){
+          if ((item.userCollectedFlag && pageType === 'collectCoursePage' && (item.isMineCourse || item.state === '审核通过'))) {
             showCourse.push(item)
           }
         })
@@ -274,10 +324,21 @@ Page({
     })
   },
   toHelper() {
-    wx.navigateTo({
-      //这里传值
-      url: '/pages/notification/notification',
-    })
+    let isVip = wx.getStorageSync('isVip');
+    let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
+    if (!isVip && UserQuesRecordArr.length >= 15) {
+      wx.showModal({
+        title: '提问次数超额提示',
+        content: '由于您不是VIP，提问次数超过15次将不可继续提问，请申请成为VIP后重试',
+        showCancel: false
+      })
+    } else {
+      wx.navigateTo({
+        //这里传值
+        url: '/pages/notification/notification',
+      })
+    }
+
   },
 
   toExtend() {

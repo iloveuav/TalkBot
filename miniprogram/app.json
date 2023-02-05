@@ -8,6 +8,7 @@
     "pages/AddCourseContent/AddCourseContent",
     "pages/mysel/me",
     "pages/mysel/FeedBack/FeedBack",
+    "pages/mysel/applyVIP/index",
     "pages/schoolDetailBot/TalkBot",
     "pages/train/train",
     "pages/mysel/admin/admin",

@@ -1,0 +1,32 @@
+<!--components/superAdmin/courseAudit.wxml-->
+<!-- catchtap="toCourse" -->
+<view class="view_tupian_wenzi">
+  <view class="view_content">
+    <image class="image_1" src="{{userInfo.info&&userInfo.info.avatarUrl ? userInfo.info.avatarUrl : '../../images/icon/defaultVisitor.png'}}" />
+    <view class="view_wenzi2">
+      <view>
+        <view class="wenzi_title">用户名：{{userInfo.info&&userInfo.info.nickName ? userInfo.info.nickName : '无用户名'}}</view>
+        <view class="wenzi_desc">
+          申请内容：{{userInfo.applyVipObj.text}} 
+        </view>
+        <view class="wenzi_desc">
+          联系方式：{{userInfo.applyVipObj.number}}
+        </view>
+        <view class="wenzi_desc">
+          当前：{{userInfo.isVip?'VIP用户':'非VIP'}}
+        </view>
+
+      </view>
+      <view style="display: flex;justify-content: space-between;align-items: center;">
+        <text class="text_state"></text>
+        <view style="display: flex;">
+          <button class="btn" catchtap="updateCrouseState" data-content='pass'>同意</button>
+          <button class="btn" catchtap="updateCrouseState" data-content='repulse'>拒绝</button>
+        </view>
+      </view>
+    </view>
+
+    <text class="apply_time">申请日期：{{userInfo.applyVipObj.applyTime||'无'}}</text>
+    <text class="operate_time">操作日期：{{userInfo.applyVipObj.operateTime||'无'}}</text>
+  </view>
+</view>

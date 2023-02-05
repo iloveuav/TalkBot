@@ -266,21 +266,20 @@ Page({
 
     this.initRecord();
 
-    var plugin = requirePlugin("QCloudTBP")
-    plugin.SetQCloudSecret("AKIDVmJMEA8cgaKKDxnu0s6C4iBWL0UpnORH", "p4kBcLupY1TkxywgIkRs7LY8Y7Zry0pV") //设置腾讯云账号信息，重要！！
+    // var plugin = requirePlugin("QCloudTBP")
 
 
-    plugin.GetBots({
-      Version: '2019-03-11',
-      PageNumber: 1,
-      PageSize: 50,
-      success: function (data) {
-        console.log("获取robot列表成功：", data)
-      },
-      fail: function (err) {
-        console.error("获取robot列表失败：", err)
-      }
-    })
+    // plugin.GetBots({
+    //   Version: '2019-03-11',
+    //   PageNumber: 1,
+    //   PageSize: 50,
+    //   success: function (data) {
+    //     console.log("获取robot列表成功：", data)
+    //   },
+    //   fail: function (err) {
+    //     console.error("获取robot列表失败：", err)
+    //   }
+    // })
 
     // plugin.PostText({
 
@@ -502,84 +501,96 @@ Page({
     let that = this
     console.log('tts1', e);
 
-    if (type && type === 'autoSpeach') {
-      content = e
+    let islogin = wx.getStorageSync('islogin');
+    if (islogin == false || islogin == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录，请在【我的】中进行微信登录后重试',
+        showCancel: false
+      })
     } else {
-      if (e) {
+      if (type && type === 'autoSpeach') {
         content = e
-      }
-      if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
-        content = e
-        // console.log(e);
-      } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
-        content = e.currentTarget.dataset.content;
       } else {
-        if (e.currentTarget.dataset.content != undefined && this.data.autoReadingAloud == false) {
-          content = e.currentTarget.dataset.content;
-          console.log(content)
-        }
-        if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {
+        if (e) {
           content = e
         }
-      }
-    }
-
-
-
-    console.log('tts', content)
-    if (!content || !this.data.tts) {
-      console.log("text empty")
-      wx.showToast({
-        title: "文本为空",
-        icon: "error",
-        duration: 1000,
-        mask: true
-      })
-      return
-    }
-    if (this.data.ttsStart) {
-      wx.showToast({
-        title: "正在合成请稍候",
-        icon: "error",
-        duration: 1000,
-        mask: true
-      })
-      return
-    } else {
-      this.data.ttsStart = true
-    }
-    console.log("try to synthesis:" + content)
-    let save = formatTime(new Date()) + ".wav"
-    let savePath = wx.env.USER_DATA_PATH + "/" + save
-    console.log(`save to ${savePath}`)
-    fs.open({
-      filePath: savePath,
-      flag: "a+",
-      success: async (res) => {
-        console.log(`open ${savePath} done`)
-        this.data.saveFd = res.fd
-        this.data.saveFile = savePath
-        console.log("tts3", this.data.tts)
-        console.log("tts3", that.data.tts)
-
-        // voice 中英混女声 Rosa   日语女声 tomoka
-        let param = this.data.tts.defaultStartParams('tomoka')
-        // let param = this.data.tts.defaultStartParams('Rosa')
-        param.text = content
-        // param.voice = "tomoka"
-        param.voice = this.data.curTTsRoleString
-        try {
-          await this.data.tts.start(param)
-          console.log("tts done")
-          this.data.ttsStart = false
-        } catch (e) {
-          console.log("tts start error:" + e)
+        if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
+          content = e
+          // console.log(e);
+        } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
+          content = e.currentTarget.dataset.content;
+        } else {
+          if (e.currentTarget.dataset.content != undefined && this.data.autoReadingAloud == false) {
+            content = e.currentTarget.dataset.content;
+            console.log(content)
+          }
+          if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {
+            content = e
+          }
         }
-      },
-      fail: (res) => {
-        console.log(`open ${savePath} failed: ${res.errMsg}`)
       }
-    })
+
+
+
+      console.log('tts', content)
+      if (!content || !this.data.tts) {
+        console.log("text empty")
+        wx.showToast({
+          title: "文本为空",
+          icon: "error",
+          duration: 1000,
+          mask: true
+        })
+        return
+      }
+      if (this.data.ttsStart) {
+        wx.showToast({
+          title: "正在合成请稍候",
+          icon: "error",
+          duration: 1000,
+          mask: true
+        })
+        return
+      } else {
+        this.data.ttsStart = true
+      }
+      console.log("try to synthesis:" + content)
+      let save = formatTime(new Date()) + ".wav"
+      let savePath = wx.env.USER_DATA_PATH + "/" + save
+      console.log(`save to ${savePath}`)
+      fs.open({
+        filePath: savePath,
+        flag: "a+",
+        success: async (res) => {
+          console.log(`open ${savePath} done`)
+          this.data.saveFd = res.fd
+          this.data.saveFile = savePath
+          console.log("tts3", this.data.tts)
+          console.log("tts3", that.data.tts)
+
+          // voice 中英混女声 Rosa   日语女声 tomoka
+          let param = this.data.tts.defaultStartParams('tomoka')
+          // let param = this.data.tts.defaultStartParams('Rosa')
+          param.text = content
+          // param.voice = "tomoka"
+          param.voice = this.data.curTTsRoleString
+          try {
+            await this.data.tts.start(param)
+            console.log("tts done")
+            this.data.ttsStart = false
+          } catch (e) {
+            console.log("tts start error:" + e)
+          }
+        },
+        fail: (res) => {
+          console.log(`open ${savePath} failed: ${res.errMsg}`)
+        }
+      })
+
+    }
+
+
   },
 
   // speach(e) {
@@ -699,7 +710,6 @@ Page({
   //   }
 
   //   var plugin = requirePlugin("QCloudTBP")
-  //   plugin.SetQCloudSecret("AKIDVmJMEA8cgaKKDxnu0s6C4iBWL0UpnORH", "p4kBcLupY1TkxywgIkRs7LY8Y7Zry0pV") //设置腾讯云账号信息，重要！！
   //   plugin.PostText({
 
   //     Version: '2019-03-11',
@@ -746,43 +756,62 @@ Page({
   //新的add 调用chatGPT进行回答
   add() {
 
-    var data = {
-      program_id: app.jtappid,
-      openid: app._openid,
-      zx_info_id: zx_info_id,
-      content: message,
-      openid_talk: openid_talk,
-      time: time.formatTime(new Date, 'Y/M/D'),
-      is_show_right: 1,
+    let islogin = wx.getStorageSync('islogin');
+    let isVip = wx.getStorageSync('isVip');
+    let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
+    if (islogin == false || islogin == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录，请在【我的】中进行微信登录后重试',
+        showCancel: false
+      })
+    } else if (!isVip && UserQuesRecordArr.length >= 15) {
+      wx.showModal({
+        title: '提问次数超额提示',
+        content: '由于您不是VIP，提问次数超过15次将不可继续提问，请申请成为VIP后重试',
+        showCancel: false
+      })
+    } else {
+      var data = {
+        program_id: app.jtappid,
+        openid: app._openid,
+        zx_info_id: zx_info_id,
+        content: message,
+        openid_talk: openid_talk,
+        time: time.formatTime(new Date, 'Y/M/D'),
+        is_show_right: 1,
+      }
+      var that = this
+      this.data.centendata.push(data);
+      console.log("this.data.centendata", this.data.centendata)
+      this.setData({
+        news_input_val: '',
+        centendata: this.data.centendata
+      })
+
+      let url = 'https://test.uavserve.online/get_bot_answer?msg=' + message
+      wx.request({
+        url: url,
+        method: 'GET',
+        header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
+          'Content-Type': 'application/json'
+        },
+
+
+        success: function (result) {
+          console.log("yyzm-返回", result);
+          that.response(result.data);
+          that.setData({
+            news_input_val: '',
+            centendata: that.data.centendata
+          })
+          this.bottom();
+          message = ''
+        },
+      })
     }
-    var that = this
-    this.data.centendata.push(data);
-    console.log("this.data.centendata", this.data.centendata)
-    this.setData({
-      news_input_val: '',
-      centendata: this.data.centendata
-    })
-
-    let url = 'https://test.uavserve.online/get_bot_answer?msg=' + message
-    wx.request({
-      url: url,
-      method: 'GET',
-      header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
-        'Content-Type': 'application/json'
-      },
 
 
-      success: function (result) {
-        console.log("yyzm-返回", result);
-        that.response(result.data);
-        that.setData({
-          news_input_val: '',
-          centendata: that.data.centendata
-        })
-        this.bottom();
-        message = ''
-      },
-    })
   },
 
 
@@ -953,7 +982,7 @@ Page({
           title: '提示',
           content: '听不太清，请靠近麦克风重新说一遍~',
           showCancel: false,
-          success: function (res) {}
+          success: function (res) { }
         })
         return;
       }
