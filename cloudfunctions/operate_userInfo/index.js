@@ -13,8 +13,8 @@ exports.main = async (event, context) => {
   if (event.type === 'update') {
     try {
       return db.collection('user-info').where({
-        openid: wxContext.OPENID
-      }).count()
+          openid: wxContext.OPENID
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
@@ -49,8 +49,8 @@ exports.main = async (event, context) => {
   } else if (event.type === 'get' || event.type === 'login') {
     try {
       return db.collection('user-info').where({
-        openid: wxContext.OPENID
-      }).count()
+          openid: wxContext.OPENID
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
@@ -68,7 +68,10 @@ exports.main = async (event, context) => {
             const data = db.collection('user-info').where({
               openid: wxContext.OPENID
             }).get()
-            return { success: true, data }
+            return {
+              success: true,
+              data
+            }
           }
         })
         .then(res => {
@@ -83,6 +86,42 @@ exports.main = async (event, context) => {
       return handleErr(err)
     }
 
+  } else if (event.type === 'add_user_ques_record') {
+    try {
+      return db.collection('user-info').where({
+          openid: wxContext.OPENID
+        }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return db.collection('user-info').add({
+              data: {
+                openid: wxContext.openid,
+                UserQuesRecordArr: []
+              }
+            })
+          } else {
+            return db.collection('user-info').where({
+              openid: wxContext.OPENID
+            }).update({
+              data: {
+                openid: wxContext.openid,
+                UserQuesRecordArr: db.command.push([event.params.newUserQuestString])
+              }
+            })
+          }
+        })
+        .then(res => {
+          return db.collection('user-info').where({
+            openid: wxContext.OPENID
+          }).get()
+        })
+        .then(res => {
+          return handleSuccess(res.data)
+        })
+    } catch (err) {
+      return handleErr(err)
+    }
   }
 
 }

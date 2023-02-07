@@ -53,7 +53,7 @@
 }
 
 .view_wenzi2 {
-  height:220rpx;
+  height:320rpx;
   padding: 5rpx 0;
   flex: 1;
   display: flex;

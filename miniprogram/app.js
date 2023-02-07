@@ -22,8 +22,7 @@ App({
     parameter: null,
 
     //AKID和AKKEY不能上传到git否则会有泄露风险
-    AKID: '',
-    AKKEY: '',
+
  
 
 

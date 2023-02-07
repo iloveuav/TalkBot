@@ -753,6 +753,29 @@ Page({
   //   message = ''
   // },
 
+  //记录用户提问
+  addRecord(message) {
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'add_user_ques_record',
+        params: {
+          newUserQuestString: message
+        },
+      },
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res)
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+
   //新的add 调用chatGPT进行回答
   add() {
 
@@ -765,13 +788,24 @@ Page({
         content: '您还没有登录，请在【我的】中进行微信登录后重试',
         showCancel: false
       })
-    } else if (!isVip && UserQuesRecordArr.length >= 15) {
+    } else if (!isVip && UserQuesRecordArr.length >= 12) {
       wx.showModal({
         title: '提问次数超额提示',
-        content: '由于您不是VIP，提问次数超过15次将不可继续提问，请申请成为VIP后重试',
+        content: '由于您不是VIP，提问次数超过12次将不可继续提问，请申请成为VIP后重试',
         showCancel: false
       })
     } else {
+
+      if (message === '') {
+        wx.showModal({
+          title: '文本内容为空',
+          content: '输入内容后重试',
+          showCancel: false
+        })
+        return
+      }
+
+      this.addRecord(message);
       var data = {
         program_id: app.jtappid,
         openid: app._openid,
@@ -786,6 +820,7 @@ Page({
       console.log("this.data.centendata", this.data.centendata)
       this.setData({
         news_input_val: '',
+        remind: '加载中',
         centendata: this.data.centendata
       })
 
@@ -803,7 +838,8 @@ Page({
           that.response(result.data);
           that.setData({
             news_input_val: '',
-            centendata: that.data.centendata
+            centendata: that.data.centendata,
+            remind: null,
           })
           this.bottom();
           message = ''

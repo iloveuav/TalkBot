@@ -396,6 +396,27 @@ page {
   }
 }
 
+.remind-box {
+  position: fixed;
+  width: 100%;
+  /* border: 1px solid red; */
+  height: 2rpx;
+  bottom: 400rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:1000;
+}
+
+.remind-img {
+  display: flex;
+  width: 250rpx;
+  height: 250rpx;
+ 
+
+  /* padding-bottom: 15rpx; */
+}
+
 
 .rightBtnBox {
   width: 160pt;

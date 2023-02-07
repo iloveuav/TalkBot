@@ -24,6 +24,11 @@
 </view>
 
 
+<view class="remind-box" wx:if="{{remind}}">
+    <image class="remind-img" src="/images/talkResponse100-100.gif"></image>
+  </view>
+
+
 
 
 
@@ -56,7 +61,7 @@
 <!-- -------------设置发音人------------ -->
 <view class="setwaitData" style="flex-direction: column;height:720rpx;margin-bottom: 50%;" wx:if="{{setVoiceRole||false}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
-  <view class="modelTitle">设置发音人<view style="font-size: 8pt;color:rgb(158, 158, 154);">（只对设置后上传的文本生效~）</view>
+  <view class="modelTitle">设置发音人<view style="font-size: 8pt;color:rgb(158, 158, 154);">（左右拖动选择当前AI发音人~）</view>
   </view>
   <swiper class="voice_category_swiper" circular='true' bindchange="swiperCategoryChange" previousMargin='5px'
     nextMargin='150rpx' current="{{categoryCur}}">
@@ -109,8 +114,8 @@
 </view>
 <view class='hei' id="hei"></view>
 <view class="sendmessage">
-  <input type="emoji" bindinput="bindChange" confirm-type="done" value='{{news_input_val}}' placeholder="" />
-  <button class="btn" catchtap="add">发送</button>
+  <input maxlength="-1" type="emoji" bindinput="bindChange" confirm-type="done" value='{{news_input_val}}' placeholder="" />
+  <button class="btn" disabled="{{remind}}" catchtap="add">发送</button>
 
   <!-- <input style='display:none' type="" bindinput="bindChange" confirm-type="done" placeholder="" /> -->
 </view>

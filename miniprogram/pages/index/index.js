@@ -326,10 +326,10 @@ Page({
   toHelper() {
     let isVip = wx.getStorageSync('isVip');
     let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
-    if (!isVip && UserQuesRecordArr.length >= 15) {
+    if (!isVip && UserQuesRecordArr.length >= 12) {
       wx.showModal({
         title: '提问次数超额提示',
-        content: '由于您不是VIP，提问次数超过15次将不可继续提问，请申请成为VIP后重试',
+        content: '由于您不是VIP，提问次数超过12次将不可继续提问，请申请成为VIP后重试',
         showCancel: false
       })
     } else {
