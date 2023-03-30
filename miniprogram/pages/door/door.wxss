@@ -453,7 +453,7 @@ page {
 
   margin-left: auto;
   margin-right: auto;
-  animation: show 10s cubic-bezier(0.19, 1, 0.22, 1) 2s forwards;
+  /* animation: show 10s cubic-bezier(0.19, 1, 0.22, 1) 2s forwards; */
 
   /* border: 1px solid red; */
 

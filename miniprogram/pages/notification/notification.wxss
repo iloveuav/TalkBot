@@ -186,7 +186,44 @@ page {
   display: inline-block;
   padding: 10rpx 30rpx;
   border-radius: 7px;
-  background-color: #95d4ff;
+  /* background-color: #95d4ff; */
+  background-color: #E4F0FA;
+  color: #6D7678;
+}
+
+.avatar_img{
+  position: absolute;
+  left: 20rpx;
+  top: 20rpx;
+  width: 60rpx;
+  height: 60rpx;
+  text-align: center;
+  border-radius: 25%;
+  border: 1px solid white;
+  /* background-color: #9fb7ca; */
+  font-size: 40rpx;
+}
+
+.copy_btn {
+  position: absolute;
+  right: -1rpx;
+  top: 25rpx;
+  width: 100rpx;
+  text-align: center;
+  border-radius: 20rpx;
+  /* background-color: #9fb7ca; */
+  font-size: 40rpx;
+}
+
+.speach_btn{
+  position: absolute;
+  right: 80rpx;
+  top: 25rpx;
+  width: 100rpx;
+  text-align: center;
+  border-radius: 20rpx;
+  /* background-color: #9fb7ca; */
+  font-size: 40rpx;
 }
 
 
@@ -419,15 +456,16 @@ page {
 
 
 .rightBtnBox {
-  width: 160pt;
+  width: 200pt;
   position: absolute;
-  top: -150rpx;
+  top: 0rpx;
   right: -3rpx;
-  height: 35%;
+  height: 180rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-end;
+  /* border: 1px solid red; */
   /* background-color: rgb(243, 236, 236); */
 }
 
@@ -438,6 +476,7 @@ page {
   z-index: 999999;
   text-align: right;
   position: relative;
+  
 }
 
 .r-itemImgBox {

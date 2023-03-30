@@ -35,12 +35,12 @@ Page({
     // if (islogin != true) {
     //   wx.setStorageSync("islogin", false);
     // }
-    this.data.showBtn = false
-    setTimeout(() => {
-      this.setData({
-        showBtn:true
-      })
-    }, 3000);
+    // this.data.showBtn = false
+    // setTimeout(() => {
+    //   this.setData({
+    //     showBtn:true
+    //   })
+    // }, 3000);
   },
 
   /**

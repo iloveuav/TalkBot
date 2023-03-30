@@ -39,7 +39,7 @@
   
       
       <button class="confirm-user" wx:if="{{showBtn}}"  bindtap='init1'>进入会聊</button>
-      <view class="confirm-user" wx:if="{{!showBtn}}"  bindtap='init1'></view>
+      <!-- <view class="confirm-user" wx:if="{{!showBtn}}"  bindtap='init1'></view> -->
      
       
        

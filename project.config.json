@@ -49,103 +49,77 @@
   },
   "description": "项目配置文件，详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
-    "plugin": {
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "gamePlugin": {
-      "list": []
-    },
     "miniprogram": {
       "list": [
         {
-          "id": -1,
           "name": "db guide",
           "pathName": "pages/databaseGuide/databaseGuide",
           "query": ""
         },
         {
-          "id": -1,
           "name": "pages/TalkBot/TalkBot",
           "pathName": "pages/TalkBot/TalkBot",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/AddEngClassContent/AddEngClassContent",
           "pathName": "pages/AddEngClassContent/AddEngClassContent",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/index/index",
           "pathName": "pages/index/index",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/train/train",
           "pathName": "pages/train/train",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/mysel/admin/admin",
           "pathName": "pages/mysel/admin/admin",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/courseBot/TalkBot",
           "pathName": "pages/courseBot/TalkBot",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/notification/notification",
           "pathName": "pages/notification/notification",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/schoolDetail/index",
           "pathName": "pages/schoolDetail/index",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/SendSchoolDetail/index",
           "pathName": "pages/SendSchoolDetail/index",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/schoolDetail/index",
           "pathName": "pages/schoolDetail/index",
           "query": "",
           "scene": null
         },
         {
-          "id": -1,
           "name": "pages/courseBotIndex/index",
           "pathName": "pages/courseBotIndex/index",
+          "query": "",
           "scene": null
         }
       ]
@@ -156,5 +130,6 @@
     "ignore": [],
     "include": []
   },
-  "appid": "wx28f43ab06ad5c612"
+  "appid": "wx28f43ab06ad5c612",
+  "projectname": "TalkBot"
 }

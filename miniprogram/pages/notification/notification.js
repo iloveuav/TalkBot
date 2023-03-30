@@ -60,6 +60,7 @@ Page({
     roleCur: 0,
 
     ttsStart: false,
+    isSpeaking: false,
     ttsText: "",
     tts: {},
 
@@ -367,6 +368,9 @@ Page({
           })
           ctx.onEnded((res) => {
             console.log("play done...")
+            this.setData({
+              isSpeaking: false
+            })
             fs.unlink({
               filePath: this.data.saveFile,
               success: (res) => {
@@ -472,15 +476,22 @@ Page({
   speach(e) {
     let content = ''
     if (this.data.autoReadingAloud == true) {
-      // console.log(e);
       content = e
-      // console.log(e);
-      // console.log(lto);
     } else {
       if (e.currentTarget.dataset.content !== undefined && this.data.autoReadingAloud === false) {
         content = e.currentTarget.dataset.content;
         console.log(content)
       }
+    }
+    this.onTtsSpeach(content, 'autoSpeach')
+  },
+
+  //点击朗读
+  clickSpeach(e) {
+    let content = ''
+    if (e.currentTarget.dataset.content !== undefined) {
+      content = e.currentTarget.dataset.content;
+      console.log(content)
     }
     this.onTtsSpeach(content, 'autoSpeach')
   },
@@ -553,7 +564,10 @@ Page({
         })
         return
       } else {
-        this.data.ttsStart = true
+        // this.data.ttsStart = true
+        this.setData({
+          ttsStart: true,
+        })
       }
       console.log("try to synthesis:" + content)
       let save = formatTime(new Date()) + ".wav"
@@ -578,7 +592,11 @@ Page({
           try {
             await this.data.tts.start(param)
             console.log("tts done")
-            this.data.ttsStart = false
+            // this.data.ttsStart = false
+            this.setData({
+              ttsStart: false,
+              isSpeaking: true
+            })
           } catch (e) {
             console.log("tts start error:" + e)
           }
@@ -824,7 +842,8 @@ Page({
         centendata: this.data.centendata
       })
 
-      let url = 'https://test.uavserve.online/get_bot_answer?msg=' + message
+      let url = 'https://us.servasoft.com:8443/get_bot_answer2?msg=' + message
+      // let url = 'http://test.uavserve.online/get_bot_answer2?msg=' + message
       wx.request({
         url: url,
         method: 'GET',
@@ -847,7 +866,7 @@ Page({
       })
     }
 
-
+    message = ''
   },
 
 
@@ -910,6 +929,27 @@ Page({
       // res[1].scrollTop // 显示区域的竖直滚动位置
     })
   },
+
+  viewCopyTextClick: function (e) {
+    let content = ''
+    if (e.currentTarget.dataset.content !== undefined) {
+      content = e.currentTarget.dataset.content;
+      console.log(content)
+    }
+    wx.setClipboardData({
+      data: content,
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            wx.showToast({
+              title: '复制成功'
+            })
+          }
+        })
+      }
+    })
+  },
+
 
   toSysMessList() {
     wx.navigateTo({
@@ -1018,7 +1058,7 @@ Page({
           title: '提示',
           content: '听不太清，请靠近麦克风重新说一遍~',
           showCancel: false,
-          success: function (res) { }
+          success: function (res) {}
         })
         return;
       }

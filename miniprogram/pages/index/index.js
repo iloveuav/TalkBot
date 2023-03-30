@@ -314,14 +314,23 @@ Page({
 
   toCreateMessForm(e) {
     console.log(e.currentTarget.dataset.type)
-    const type = e.currentTarget.dataset.type || 'course'
-    wx.navigateTo({
-      //这里传值
-      url: '/pages/courseMessForm/index?type=' + type,
-
-      // url: '/pages/mysel/admin/admin',
-      // url: '/pages/AddEngClassContent/AddEngClassContent',
-    })
+    let isVip = wx.getStorageSync('isVip');
+    let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
+    if (!isVip && UserQuesRecordArr.length >= 12) {
+      wx.showModal({
+        title: '提示',
+        content: '由于您不是VIP，暂无权限创建课程，请申请成为VIP后重试',
+        showCancel: false
+      })
+    } else {
+      const type = e.currentTarget.dataset.type || 'course'
+      wx.navigateTo({
+        //这里传值
+        url: '/pages/courseMessForm/index?type=' + type,
+        // url: '/pages/mysel/admin/admin',
+        // url: '/pages/AddEngClassContent/AddEngClassContent',
+      })
+    }
   },
   toHelper() {
     let isVip = wx.getStorageSync('isVip');
