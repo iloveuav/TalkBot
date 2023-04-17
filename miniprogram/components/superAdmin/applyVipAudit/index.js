@@ -27,15 +27,17 @@ Component({
     edit() {
       console.log('编辑');
     },
-    updateCrouseState: function (e) {
+    updateUserVIPState: function (e) {
       const state = e.currentTarget.dataset.content
+      const openid = e.currentTarget.dataset.openid
       // console.log('this.data.userInfo', this.data.userInfo)
       wx.cloud.callFunction({
         name: 'operate_FeedBack',
         data: {
           type: 'operate_apply',
           state: state,
-          operateTime:time.formatTime(new Date, 'Y/M/D'),
+          operateTime: time.formatTime(new Date, 'Y/M/D'),
+          userOpenid: openid
         },
         success: res => {
           console.log(res.result)

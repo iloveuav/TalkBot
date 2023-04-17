@@ -1,10 +1,11 @@
 {
-
   "backgroundColor": "#F6F6F6",
   "backgroundTextStyle": "light",
   "navigationBarBackgroundColor": "#4D9BF4",
   "navigationBarTitleText": "对话式学习小助手",
   "navigationBarTextStyle": "white",
   "navigationStyle": "default",
-  "usingComponents": {}
+  "usingComponents": {
+    "conversationItem": "/components/forConversation/conversationItem/index"
+  }
 }

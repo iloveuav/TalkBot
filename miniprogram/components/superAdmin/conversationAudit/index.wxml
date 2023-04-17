@@ -1,0 +1,21 @@
+<!--components/superAdmin/courseAudit.wxml-->
+<view class="view_tupian_wenzi" bindtap="toShowShareConvertsation">
+  <view class="view_content">
+    <image class="image_1" src="{{userInfo.avatarUrl?userInfo.avatarUrl:'../../images/icon/avata.png'}}" />
+    <view class="view_wenzi2">
+      <view>
+        <view class="wenzi_title">用户名：{{userInfo.nickName||'微信用户'}}（对话量：{{conversationInfo.conversationContent.length}}）</view>
+        <view class="wenzi_desc">
+          {{theme}}
+        </view>
+      </view>
+      <view style="display: flex;justify-content: space-between;align-items: center;">
+        <text class="text_state" wx:if="{{scene==='superAdmin'||scene==='myShareConv'}}">{{conversationInfo.state}}</text>
+        <view style="display: flex;" wx:if="{{scene==='superAdmin'}}">
+          <button class="btn" catchtap="updateConvertsationState" data-content='pass'>同意</button>
+          <button class="btn" catchtap="updateConvertsationState" data-content='repulse'>拒绝</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

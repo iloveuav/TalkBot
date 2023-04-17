@@ -1,0 +1,3 @@
+{
+  "usingComponents": {"dailySentence": "/components/forConversation/conversationItem/index"}
+}

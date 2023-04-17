@@ -49,16 +49,15 @@ exports.main = async (event, context) => {
       mess.text = "获取失败"
     }
   } else if (event.type === 'operate_apply') {
-
-
     if (event.state === 'pass') {
       try {
         await db.collection('user-info').where({
-          openid: wxContext.OPENID
+          openid: event.userOpenid
         }).update({
           data: {
             isVip: true,
             applyVipObj: {
+              permanentVIP:true,
               operateTime: event.operateTime
             }
           }
@@ -76,6 +75,7 @@ exports.main = async (event, context) => {
           data: {
             isVip: false,
             applyVipObj: {
+              permanentVIP:false,
               operateTime: event.operateTime
             }
           }

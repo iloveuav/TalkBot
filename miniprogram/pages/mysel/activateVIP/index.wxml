@@ -3,25 +3,27 @@
   <form bindsubmit="formSubmit">
     <view class="view1 ">
       <view style="margin-top:44rpx;margin-left:22rpx">
-        <text class="fongStyle1">申请成为年度会员</text>
+        <text class="fongStyle1">激活VIP</text>
       </view>
 
       <view style="margin-top:64rpx;margin-left:22rpx">
-        <text class="fongStyle2">填写申请原因及备注个人身份方便管理员识别👇</text>
+        <text class="fongStyle2">填写激活秘钥👇</text>
       </view>
 
-      <view style="margin-top:26rpx;">
+      <!-- <view style="margin-top:26rpx;">
         <textarea class="textarea" name="text" placeholder="由此输入..." maxlength="180"></textarea>
-      </view>
+      </view> -->
 
       <view class="marginBottom marginTop marginLeft">
-        <text class="floatLeft fongStyle">联系方式:</text>
-        <input class="input fongStyle" name="number" placeholder="请填写QQ号或者电话号码（非必填）" maxlength="20"></input>
+        <text class="floatLeft fongStyle">秘钥令牌:</text>
+        <input class="input fongStyle" name="secretKey" placeholder="请填写36位秘钥英文字符" maxlength="36"></input>
       </view>
       <view class="view2"> </view>
     </view>
 
-    <button class="button" form-type="submit">提交</button>
+    <!-- {{GenerateVipKeysMap[]}} -->
+
+    <button class="button" form-type="submit">激活</button>
   </form>
 
 

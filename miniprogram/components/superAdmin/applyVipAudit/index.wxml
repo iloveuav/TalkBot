@@ -20,8 +20,8 @@
       <view style="display: flex;justify-content: space-between;align-items: center;">
         <text class="text_state"></text>
         <view style="display: flex;">
-          <button class="btn" catchtap="updateCrouseState" data-content='pass'>同意</button>
-          <button class="btn" catchtap="updateCrouseState" data-content='repulse'>拒绝</button>
+          <button class="btn" catchtap="updateUserVIPState" data-content='pass' data-openid='{{userInfo.openid}}'>同意</button>
+          <button class="btn" catchtap="updateUserVIPState" data-content='repulse' data-openid='{{userInfo.openid}}'>拒绝</button>
         </view>
       </view>
     </view>

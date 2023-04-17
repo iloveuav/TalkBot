@@ -1,0 +1,5 @@
+<view class="conversation_box">
+  <image class="left_icon" src="../../../images/icon/dailyIcon.png"></image>
+ 
+  <text class="theme_text">{{sentence}}</text>
+</view>

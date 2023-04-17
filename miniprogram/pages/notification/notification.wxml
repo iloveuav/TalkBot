@@ -13,14 +13,48 @@
       <button bindtap='toSysMessList'>消息列表</button>
     </view>
   </view> -->
+  <view class="top-canvas" style="{{top_human_translate}}" bindtap="setVoiceRole">
+    <canvas id="c1" type="2d" style="display: inline-block; "></canvas>
+
+  </view>
+
 </view>
 
-<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" style="{{translate}}">
-  <view class="rightBtnItem" bindtap="setVoiceRole">
-    <image class="r-itemImgBox" bindtap="setVoiceRole" src="../../images/button/addCoverBtn.png"></image>
-    <view class="r-itemName" bindtap="setVoiceRole">选发音人</view>
+
+<!-- bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" -->
+<view class="rightBtnBox"  style="{{translate}}">
+  <view class="rightBtnItem" wx:if="{{mode==='talking'}}" >
+    <!-- <image class="r-itemImgBox"  src="../../images/button/addCoverBtn.png"></image> -->
+    <view class="r-itemName"   bindtap="toConversationList">对话列表</view>
+    <view class="conversation_list_box">
+    <view class="conversation_list_content">
+      <view wx:for="{{allConversation}}" >
+      <view bindtap="changeConversation" data-content="{{item.key}}">
+        <conversationItem sentence="{{item.theme}}"></conversationItem>
+      </view>     
+      </view>
+    </view>
+     
+
+      <!-- <view class="init_convert_btn" bindtap="viewCopyTextClick" data-content="{{item.content}}">
+          </view>  -->
+          <image bindtap="initNewConversation" class="init_convert_btn" src="../../images/button/upload2.png" mode=""/>
+
+     
+
+   
+    </view>
+
+    
   </view>
+
+
 </view>
+
+<view wx:if="{{mode==='talking'}}" class="leftBtnBox" bindtap="shareConvertsation">
+  <image class="share_to_Home_icon" src="../../images/index/plane.png" mode=""/>
+</view>
+
 
 
 <view class="remind-box" wx:if="{{remind}}">
@@ -32,7 +66,7 @@
 
 
 <view class='message'>
-  <view class='top_txt'>你好呀，很高兴为您服务</view>
+  <!-- <view class='top_txt'>你好呀，很高兴为您服务</view> -->
 
 
 
@@ -43,35 +77,54 @@
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key=''>
       <!-- 时间 -->
       <view>
-        <text user-select class='time'>{{item.time}}</text>
+        <text user-select class='time' class='message_time'>{{item.time}}</text>
       </view>
       <block wx:if="{{item.is_show_right ==1}}">
         <!-- 右边 -->
         <view class='message-right'>
           <!-- 文字消息还是图片消息 -->
-          <text user-select wx:if='{{!item.is_img}}' class='message_txt' catchtap="clickSpeach">{{item.content}}</text>
+          <text user-select wx:if='{{!item.is_img}}' class='message_txt' catchtap="clickSpeach">
+          
+
+          {{item.content}}
+
+          </text>
           <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
+
+          <!-- <image class="avatar_img" src="../../images/icon/avata.png" mode="" /> -->
+          <image class="avatar_img" src="{{userInfo.avatarUrl||'../../images/icon/avata.png'}}" mode="" />
+          <view wx:if="{{!isSpeaking}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+            🔈
+          </view>
+
+          <view wx:if="{{isSpeaking&&speakingContent===item.content}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+            🔊
+          </view>
+
+          <view class="copy_btn" bindtap="viewCopyTextClick" data-content="{{item.content}}">
+            📜
+          </view>
         </view>
       </block>
       <block wx:else>
         <view class='message-left'>
-          <text user-select wx:if='{{!item.is_img}}' class='message_txt' data-content="{{item.content}}" >
+          <text user-select wx:if='{{!item.is_img}}' class='message_txt' data-content="{{item.content}}">
 
 
             {{item.content}}
 
           </text>
           <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
-       
+
           <!-- <view class="avatar_img" bindtap="viewCopyTextClick" data-content="{{item.content}}"> -->
-            <image class="avatar_img" src="../../images/icon/avata.png" mode=""/>
+          <image class="avatar_img" src="../../images/icon/avata.png" mode="" />
           <!-- </view> -->
 
           <view wx:if="{{!isSpeaking}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
             🔈
           </view>
 
-          <view wx:if="{{isSpeaking}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+          <view wx:if="{{isSpeaking&&speakingContent===item.content}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
             🔊
           </view>
 
@@ -79,7 +132,7 @@
             📜
           </view>
 
-         
+
         </view>
       </block>
     </scroll-view>
@@ -137,7 +190,7 @@
   <!-- <button class="modelSubmitBtn" catchtap="add">确认使用</button> -->
 </view>
 <view class='hei' id="hei"></view>
-<view class="sendmessage">
+<view class="sendmessage" wx:if="{{mode==='talking'}}">
   <input maxlength="-1" type="emoji" bindinput="bindChange" confirm-type="done" value='{{news_input_val}}' placeholder="" />
   <button class="btn" disabled="{{remind}}" catchtap="add">发送</button>
 
@@ -146,9 +199,14 @@
 <!-- <button class="YuYinBtn" catchtap="yuyin">按住说话🎙</button> -->
 
 <!-- 语音 -->
-<view class="YuYinBtnBox">
+<view class="YuYinBtnBox"  wx:if="{{mode==='talking'}}">
+<!-- 自动朗读开关 -->
   <switch class="autoRA" checked="{{autoReadingAloud}}" bindchange="changeautoRA"></switch>
   <image src='../../images/talkBot/talk.png' class='autoraImg'></image>
+
+ <!-- 语音唤醒开关 -->
+  <!-- <switch class="keep_talk_switch" checked="{{autoReadingAloud}}" bindchange="changeautoRA"></switch>
+  <image src='../../images/talkBot/talk.png' class='keep_talk_icon'></image> -->
   <view class="main_voice text-center">
     <view class="voice_ico shadow" bindtouchstart="touchStart" bindtouchend="touchEnd">
       <text class="cuIcon-voicefill "></text>
@@ -156,7 +214,7 @@
       <view class="pulse {{recordState == true ? 'p2' : ''}}"></view>
       <!-- <view class="pulse p2"></view> -->
     </view>
-    <view class="tips">
+    <view class="tips" >
       <text wx:if="{{recordState == false}}">按住说话</text>
       <text wx:else>{{tips}}</text>
     </view>

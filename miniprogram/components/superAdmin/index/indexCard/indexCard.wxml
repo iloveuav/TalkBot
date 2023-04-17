@@ -33,7 +33,7 @@
 
 			</view>
 		</view>
-	<view class="bottom">
+	<view class="bottom_cur_time">
   {{nowtime}}
   <!-- <view class="btn">
   <image class="addFrom" src="../../../images/icon/addFrom.png"></image>

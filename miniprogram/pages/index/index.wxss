@@ -287,13 +287,15 @@ swiper {
 }
 
 .course_title_box{
+  display: flex;
+  flex-wrap: nowrap;
   margin-bottom: 30rpx;
 }
 
 .course-center-title {
-  margin: 0 30rpx;
+  margin: 0rpx 0rpx 0rpx 30rpx;
   display: flex;
   align-items: center;
   font-size: 36rpx;
-  font-weight: bold;
+  
 }

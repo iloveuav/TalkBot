@@ -1,10 +1,15 @@
 // components/superAdmin/courseAudit.js
+var app = getApp();
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    courseInfo: Object
+    conversationInfo: Object,
+    theme:String,
+    userInfo:Object,
+    gptConversationUUid:String,
+    scene:'superAdmin'  //使用这个组件的场景 superAdmin||homeShareConv||myShareConv
   },
 
   /**
@@ -24,15 +29,15 @@ Component({
     edit() {
       console.log('编辑');
     },
-    updateCrouseState: function (e) {
+
+    updateConvertsationState: function (e) {
       const state = e.currentTarget.dataset.content
-      // console.log('this.data.courseInfo', this.data.courseInfo)
       wx.cloud.callFunction({
         name: 'update_adminOperation',
         data: {
-          _id: this.data.courseInfo._id,
+          gptConversationUUid: this.data.gptConversationUUid,
           state: state,
-          operateType: 'updateCourseState'
+          operateType: 'updateShareConversationState'
         },
         success: res => {
           console.log(res.result)
@@ -57,19 +62,27 @@ Component({
     },
 
     toCourse(e) {
-      const courseDetail = this.data.courseInfo
-      let CurrentChapter = {
-        courseUUid: courseDetail.courseUUid,
-        courseName: courseDetail.courseName,
-        chapterId: 1,
-        reset: false
-      }
+      const courseDetail = this.data.conversationInfo
       let str = JSON.stringify(courseDetail);
       let Cc = JSON.stringify(CurrentChapter);
       wx.navigateTo({
         //这里传值
         url: "../../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
       })
+    },
+
+    toShowShareConvertsation(){
+      console.log("toShowShareConvertsation")
+      app.globalData.CurrentConversationUUid = this.data.gptConversationUUid
+      app.globalData.CurrentConversationContent= this.data.conversationInfo.conversationContent
+      wx.navigateTo({
+        //这里传值
+        url: "/pages/notification/notification?mode=onlyRead",
+      })
+      // wx.navigateTo({
+      //   //这里传值
+      //   url: "../../../pages/notification/notification?mode=onlyRead",
+      // })
     },
     reload: function () {
       this.triggerEvent('Reload')

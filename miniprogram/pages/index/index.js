@@ -1,12 +1,15 @@
 //index.js
 //获取应用实例
 const app = getApp()
+var util = require('../../utils/util.js');
+const urlForTalk = ''
 Page({
   data: {
     remind: '加载中',
     islogin: false,
     login: false,
     currentSwiperIndex: 0,
+    showListType: 'talkList',
     "bnrUrl": [{
       "url": "cloud://uav-001-9213ca.7561-uav-001-9213ca/images.jpg"
     }, {
@@ -35,7 +38,10 @@ Page({
   },
 
   unopen: function () {
-    this.setData({ messageTitle: "程序员已被祭天", message: "功能开发中，请耐心等待" }),
+    this.setData({
+        messageTitle: "程序员已被祭天",
+        message: "功能开发中，请耐心等待"
+      }),
       this.showMessage()
   },
 
@@ -87,8 +93,7 @@ Page({
     var icon2;
     if (identity == 1) {
       icon2 = '/Images/txl.png'
-    }
-    else {
+    } else {
       icon2 = "/Images/icon_release.png"
     }
     // ---------全部读取话题--------------
@@ -121,8 +126,8 @@ Page({
   },
 
   /**
- * 用户点击右上角分享
- */
+   * 用户点击右上角分享
+   */
   onShareAppMessage: function () {
 
   },
@@ -133,6 +138,7 @@ Page({
     console.log(identity)
     this.data.pageType = 'studyPage'
     this.getAllCourseList('studyPage');
+    this.getConvetsations();
 
     wx.cloud.callFunction({
       name: 'operate_userInfo',
@@ -143,9 +149,10 @@ Page({
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res)
-        const result = res.result.data[0]
-        console.log("result", result)
-        if (result && result.isAdmin) {
+        const userInfo = res.result.data['userInfo'][0]
+        const SystemSetting = res.result.data['SystemSetting'][0]
+        console.log("userInfo", userInfo)
+        if (userInfo && userInfo.isAdmin) {
           wx.setStorageSync("isAdmin", true);
           this.setData({
             isAdmin: true
@@ -156,22 +163,82 @@ Page({
             isAdmin: false
           })
         }
-        if (result && result.isVip) {
-          wx.setStorageSync("isVip", true);
-          this.setData({
-            isVip: true
-          })
-        } else {
-          wx.setStorageSync("isVip", false);
-          this.setData({
-            isVip: false
-          })
+        //如果有 密钥激活记录
+        if (userInfo && userInfo.curUserSecretkeyInfo) {
+          wx.setStorageSync("curUserSecretkeyInfo", userInfo.curUserSecretkeyInfo);
         }
-        if (result && result.UserQuesRecordArr) {
-          wx.setStorageSync("UserQuesRecordArr", result.UserQuesRecordArr);
-        } else {
-          wx.setStorageSync("UserQuesRecordArr", []);
+        //如果有 永久VIP申请记录
+        if (userInfo && userInfo.applyVipObj) {
+          wx.setStorageSync("applyVipObj", userInfo.applyVipObj);
         }
+
+        setTimeout(() => {
+          const applyVipObj = wx.getStorageSync("applyVipObj")
+          const curUserSecretkeyInfo = wx.getStorageSync("curUserSecretkeyInfo")
+          const permanentVIP = applyVipObj.permanentVIP || false
+          let pastDays = 0
+          //当前用户有 激活信息
+          if (curUserSecretkeyInfo && curUserSecretkeyInfo.isActivation) {
+            const curDate = util.formatTime(new Date, 'Y/M/D');
+            const ActivationDate = curUserSecretkeyInfo.ActivationDate
+
+            let start_num = new Date(ActivationDate.replace(/-/g, "/"))
+            let end_num = new Date(curDate.replace(/-/g, "/"))
+            pastDays = parseInt((end_num.getTime() - start_num.getTime()) / (1000 * 60 * 60 * 24)) + 1
+            console.log('pastDays', pastDays)
+            if (pastDays <= curUserSecretkeyInfo.indate) {
+              wx.setStorageSync("isVip", true);
+            } else {
+              if (!permanentVIP) { //不是永久会员且有效期已过
+                wx.setStorageSync("isVip", false);
+              } else {
+                wx.setStorageSync("isVip", false);
+              }
+            }
+          }
+
+          if (permanentVIP) {
+            wx.setStorageSync("isVip", true);
+          }
+
+          console.log('SystemSetting', SystemSetting)
+          if (SystemSetting) {
+            wx.setStorageSync("allCanTalk", SystemSetting.allCanTalk);
+            wx.setStorageSync("urlForTalk", SystemSetting.urlForTalk);
+          }
+
+          setTimeout(() => {
+            this.setData({
+              identity: identity,
+              info: wx.getStorageSync("info"),
+              islogin: wx.getStorageSync("islogin"),
+              isAdmin: wx.getStorageSync("isAdmin"),
+              isVip: wx.getStorageSync("isVip"),
+              curUserSecretkeyInfo: curUserSecretkeyInfo,
+              applyVipObj: applyVipObj,
+              // indateTag: permanentVIP ? '永久VIP' : `剩余${indate}天`
+            })
+          }, 600);
+
+        }, 600);
+
+        // if (result && result.isVip) {
+        //   wx.setStorageSync("isVip", true);
+        //   this.setData({
+        //     isVip: true
+        //   })
+        // } else {
+        //   wx.setStorageSync("isVip", false);
+        //   this.setData({
+        //     isVip: false
+        //   })
+        // }
+
+        // if (result && result.UserQuesRecordArr) {
+        //   wx.setStorageSync("UserQuesRecordArr", result.UserQuesRecordArr);
+        // } else {
+        //   wx.setStorageSync("UserQuesRecordArr", []);
+        // }
 
       },
       fail: err => {
@@ -197,7 +264,9 @@ Page({
     })
     wx.cloud.callFunction({
       name: 'get_CourseList',
-      data: { pageType: pageType },
+      data: {
+        pageType: pageType
+      },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);
@@ -211,11 +280,11 @@ Page({
 
         const userCourseProgressObj = res.result.UserCourseMess || [];
         const resultCourse = res.result.allCourse.data
-        if (userCourseProgressObj[0] && userCourseProgressObj[0].UserCourseMess) {//有云缓存记录
+        if (userCourseProgressObj[0] && userCourseProgressObj[0].UserCourseMess) { //有云缓存记录
           const progressArr = userCourseProgressObj[0].UserCourseMess
           resultCourse.forEach(courseItem => {
             progressArr.forEach(progressItem => {
-              if (courseItem.courseUUid === progressItem.courseUUid) {//根据课程UUid 赋值进度
+              if (courseItem.courseUUid === progressItem.courseUUid) { //根据课程UUid 赋值进度
                 let progressChapter = {}
                 allChapter.forEach(item => {
                   if (item.courseUUid === progressItem.courseUUid && item.chapterId === progressItem.chapterId) {
@@ -315,8 +384,9 @@ Page({
   toCreateMessForm(e) {
     console.log(e.currentTarget.dataset.type)
     let isVip = wx.getStorageSync('isVip');
-    let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
-    if (!isVip && UserQuesRecordArr.length >= 12) {
+    // let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
+    var allCanTalk = wx.getStorageSync("allCanTalk");
+    if (!isVip && !allCanTalk) {
       wx.showModal({
         title: '提示',
         content: '由于您不是VIP，暂无权限创建课程，请申请成为VIP后重试',
@@ -335,10 +405,12 @@ Page({
   toHelper() {
     let isVip = wx.getStorageSync('isVip');
     let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
-    if (!isVip && UserQuesRecordArr.length >= 12) {
+    var allCanTalk = wx.getStorageSync("allCanTalk");
+    if (!isVip && !allCanTalk) {
+      // if (!isVip && UserQuesRecordArr.length >= 12) {
       wx.showModal({
-        title: '提问次数超额提示',
-        content: '由于您不是VIP，提问次数超过12次将不可继续提问，请申请成为VIP后重试',
+        title: '下线提醒',
+        content: '此功能暂不开放，有疑问请联系管理员',
         showCancel: false
       })
     } else {
@@ -389,5 +461,50 @@ Page({
         urls: [this.data.picList[0], this.data.picList[1], this.data.picList[2], this.data.picList[3], this.data.picList[4]],
       })
     }
+  },
+
+  showShareTalkList() {
+    this.setData({
+      showListType: 'talkList'
+    })
+  },
+
+  showCourseList() {
+    this.setData({
+      showListType: 'courseList'
+    })
+  },
+
+  //获取待审核用户提问记录
+  getConvetsations() {
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get_share_user_ques_record',
+      },
+      success: res => {
+        const AIConversationsMap = res?.result?.data[0].ShareConversationMap || undefined
+        if (AIConversationsMap) {
+          const converKeysArr = Object.keys(AIConversationsMap)
+          const conversationList = []
+          converKeysArr.forEach(e => {
+            conversationList.push({
+              theme: AIConversationsMap[e]['conversationContent'][0].content,
+              key: e
+            })
+          })
+          this.setData({
+            allConversation: conversationList,
+            AIConversationsMap: AIConversationsMap
+          })
+        }
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        // console.log(res)
+      }
+    })
   },
 });

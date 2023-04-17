@@ -29,7 +29,7 @@
 
       <view class="btn_center_box">
         <view class="btn_card_box">
-          <image src="/images/index/kfdy.png" style="margin: 40rpx 0rpx 10rpx 20rpx;" bindtap="toHelper"> </image>
+          <image src="/images/index/dhxx.png" style="margin: 40rpx 0rpx 10rpx 20rpx;" bindtap="toHelper"> </image>
           <image src="/images/index/kczx.png" style="margin: 40rpx 20rpx 10rpx 20rpx;" bindtap="toCrouseBot"> </image>
 
 
@@ -52,11 +52,11 @@
     <view class="showCourse_box">
 
       <view class="course_title_box">
-        <view class="course-center-title" wx:if="{{pageType ==='studyPage'}}">热门课程</view>
+        <view bindtap="showShareTalkList" style="{{showListType==='talkList'?'font-weight: bold;':''}}" class="course-center-title" wx:if="{{pageType ==='studyPage'}}">热门问答</view>
+        <view bindtap="showCourseList" style="{{showListType==='courseList'?'font-weight: bold;':''}}" class="course-center-title" wx:if="{{pageType ==='studyPage'}}">热门课程</view>
       </view>
 
-      <view wx:for="{{allCourse}}">
-
+      <view wx:for="{{allCourse}}" wx:if="{{showListType==='courseList'}}">
         <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
           <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
           </courseCard>
@@ -73,6 +73,10 @@
           </courseCard>
         </view>
       </view>
+
+      <view wx:for="{{allConversation}}" wx:key="index" wx:if="{{showListType==='talkList'}}">
+            <conversationAudit wx:if="{{AIConversationsMap[item.key].state==='审核通过'}}" scene='homeShareConv' gptConversationUUid ="{{item.key}}" theme="{{item.theme}}" userInfo="{{AIConversationsMap[item.key].userInfo}}" conversationInfo="{{AIConversationsMap[item.key]}}" bind:Reload="shareConvasationReload"></conversationAudit>
+          </view>
     </view>
 
 

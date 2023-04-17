@@ -2,7 +2,7 @@
 <view class="page">
   <view class="page-bottom">
     <view class="page-content">
-      <image bindtap="tap_ch" class="logo" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
+      <image bindtap="tap_ch" class="logo" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/avata.png">
       </image>
       <image bindtap="tap_ch" class="logo" src="{{appSetting.logoUrl}}"></image>
       <!-- 备用 无网情况下显示 -->
@@ -23,6 +23,15 @@
       <view class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVIPList">
         <text>审核VIP列表 🏄‍♂️</text>
       </view>
+
+      <view class="wc {{pageFlag == 9 ? 'active' : ''}}" bindtap="touchWaitCheckConversationList">
+        <text>审核用户对话列表📜 </text>
+      </view>
+
+      <view class="wc {{pageFlag == 10 ? 'active' : ''}}" bindtap="touchGenerateKeyList">
+        <text>生成VIP密钥🔑 </text>
+      </view>
+
 
       <!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
 				<text>访客待审核列表🎫 </text>
@@ -56,6 +65,28 @@
 
         </view>
       </view>
+
+      <view class="tap">
+        <indexCard title="ShareConverSation" leftIndexName="wait Check Content Count" rightIndexName="All Content Count" allVisitorNumber="{{allCourseNumber}}" todayVisitorNumber="{{waitCheckCourseNumber}}" nowtime="{{nowtime}}">
+        </indexCard>
+        <view class="cardBtn">
+
+        </view>
+      </view>
+
+      <view class="tap">
+        <indexCard title="VIP" leftIndexName="wait Check Content Count" rightIndexName="All Content Count" allVisitorNumber="{{allCourseNumber}}" todayVisitorNumber="{{waitCheckCourseNumber}}" nowtime="{{nowtime}}">
+        </indexCard>
+        <view class="cardBtn">
+
+        </view>
+      </view>
+     
+     <view class="index_all_talk_open_switch_box">
+      <switch class="autoRA" checked="{{allCanTalk}}" bindchange="changeAllCanTalk"></switch>
+        <image src='../../../images/talkBot/talk.png' class='autoraImg'></image>
+     </view>
+  
 
 
       <!-- <textarea class="noticeTextArea" value="暂无公告" hidden="{{appSetting.notice!=''}}" />
@@ -98,27 +129,19 @@
 
     <!-- 内容审核页 -->
     <block wx:elif="{{pageFlag == 7}}">
-      <view class="Visitors_container">
+      <view class="lists_container">
         <!-- 列表部分 -->
         <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
-          <!-- <view>数据为空</view> -->
-
           <block wx:for="{{allCourse}}" wx:key="index">
             <courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
           </block>
-
-          <!-- <block wx:for="{{allCourse[0].children}}" wx:key="index">
-						<courseAudit courseInfo="{{item}}" bind:Reload="courseDetailReload"></courseAudit>
-					</block> -->
-
-
         </scroll-view>
       </view>
     </block>
 
     <!-- VIP审核页 -->
     <block wx:elif="{{pageFlag == 8}}">
-      <view class="Visitors_container">
+      <view class="lists_container">
         <!-- 列表部分 -->
         <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
           <!-- <view>数据为空</view> -->
@@ -134,6 +157,51 @@
 
 
         </scroll-view>
+      </view>
+    </block>
+
+    <!-- 对话审核页 -->
+    <block wx:elif="{{pageFlag == 9}}">
+      <view class="lists_container">
+        <!-- 列表部分 -->
+        <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
+          <block wx:for="{{allConversation}}" wx:key="index">
+            <conversationAudit scene='superAdmin' gptConversationUUid="{{item.key}}" theme="{{item.theme}}" userInfo="{{AIConversationsMap[item.key].userInfo}}" conversationInfo="{{AIConversationsMap[item.key]}}" bind:Reload="shareConvasationReload"></conversationAudit>
+          </block>
+        </scroll-view>
+      </view>
+    </block>
+
+    <!-- 生成VIP密钥页 -->
+    <block wx:elif="{{pageFlag == 10}}">
+      <!-- -------------新增密钥表单模态框------------ -->
+      <view class="setwaitData" style="height:{{btnBox}}rpx;width:{{btnBox}}rpx" wx:if="{{showAddKeyModal}}">
+        <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
+        <view class="btnArrayBox">
+          <!-- <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}' placeholder="输入按钮个数" placeholder-style="color:#318FFF;" /> -->
+          <!-- <view wx:for="{{btnNum-0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
+              <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥" value="{{interactData[groupindex]}}" placeholder-style="color:#318FFF;" />
+            </view> -->
+          <input bindinput="setIndate" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{indate}}' placeholder="有效期天数" placeholder-style="color:#318FFF;" />
+          <textarea bindinput="setRemark" class="remarkInput" style="border-color: red;" confirm-type="done" value='{{remark}}' placeholder="备注" placeholder-style="color:#318FFF;" />
+        </view>
+        <button class="answerModelSubmitBtn" catchtap="submitGenerateVipKey">生成</button>
+      </view>
+
+      <view class="lists_container">
+
+
+
+        <image bindtap="showNewVipKeyModal" class="show_newVipKey_btn" src="../../../images/button/upload2.png" mode="" />
+        <!-- 列表部分 -->
+        <view style="height: 100vh;" wx:if="{{!showAddKeyModal}}">
+          <scroll-view scroll-y="true" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
+            <block wx:for="{{allVipSecretkeyList}}" wx:key="index">
+              <vipSecretKeyCard secretkeyInfo="{{item}}" scene='superAdmin' bind:Reload="userDetailReload"></vipSecretKeyCard>
+            </block>
+          </scroll-view>
+        </view>
+
       </view>
     </block>
 

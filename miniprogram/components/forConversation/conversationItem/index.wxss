@@ -1,0 +1,48 @@
+/* components/index/dailySentence.wxss */
+
+
+
+/* .top-encourage-icon {
+  height: 50rpx;
+  width: 39rpx;
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5%;
+} */
+.conversation_box image{
+  height: 78rpx;
+  width: 78rpx;
+  position: absolute;
+  left: 10%;
+  margin-right: 20rpx;
+}
+
+.conversation_box {
+  height: 108rpx;
+  margin: 30rpx;
+  padding: 15rpx;
+  background-color: #E4F0FF;
+  border: 1rpx solid rgb(218, 218, 218);
+  border-radius: 35rpx 35rpx 35rpx 35rpx;
+  color:#318FFF;
+
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.theme_text{
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 75%;
+  max-height: 70rpx;
+  /* border: 1px solid red; */
+  margin-left: 25%;
+  font-size: 30rpx;
+  overflow:auto;
+  text-emphasis: '...';
+  /* margin-top: 20rpx; */
+}

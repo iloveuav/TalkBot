@@ -9,6 +9,11 @@ var zx_info_id;
 var openid_talk;
 const formatTime = require("../../tts/util").formatTime
 
+import lottie from 'lottie-miniprogram'
+import {
+  uuid
+} from '../../utils/util.js';
+
 
 //阿里云tts
 const SpeechSynthesizer = require("../../tts/tts")
@@ -34,6 +39,7 @@ Page({
   data: {
     userInfo: {},
     autoReadingAloud: true, //自动读开关
+    mode: 'talking',
 
     news: '',
     scrollTop: 0,
@@ -241,6 +247,10 @@ Page({
     curmultiVoiceArray: [],
 
 
+    gptConversationUUid: util.uuid(), //当前会话uuid
+
+    allConversation: [],
+
 
     // 设置录音状态，按下为true，松开false,默认状态为false
     content: '', //输出内容
@@ -251,9 +261,11 @@ Page({
     openid_talk = options.openid_talk;
     zx_info_id = options.zx_info_id;
     console.log(openid_talk)
-
+    this.loaddata()
+    const copyuserInfo = wx.getStorageSync('info')
     //调用应用实例的方法获取全局数据
     this.setData({
+      userInfo: copyuserInfo,
       zx_info_id: zx_info_id,
       nickName: app.nickName,
       avatarUrl: app.avatarUrl,
@@ -261,43 +273,22 @@ Page({
       curmultiVoiceArray: this.data.multiVoiceArray[2],
       curTTsRoleString: this.data.multiVoiceArray[2][0].value
     });
-    this.loaddata()
-    // this.template();
-    this.getunReadcomNum();
 
+    //跳转过来且是只读模式
+    if (options && options.mode === 'onlyRead') {
+      console.log("options", options)
+      console.log("app.globalData.", app.globalData)
+      this.setData({
+        mode: 'onlyRead',
+        gptConversationUUid: app.globalData.CurrentConversationUUid,
+        centendata: app.globalData.CurrentConversationContent
+      })
+    } else {
+      this.getunReadcomNum();
+      this.getConvetsations();
+      this.template(); //自动提示对话气泡  
+    }
     this.initRecord();
-
-    // var plugin = requirePlugin("QCloudTBP")
-
-
-    // plugin.GetBots({
-    //   Version: '2019-03-11',
-    //   PageNumber: 1,
-    //   PageSize: 50,
-    //   success: function (data) {
-    //     console.log("获取robot列表成功：", data)
-    //   },
-    //   fail: function (err) {
-    //     console.error("获取robot列表失败：", err)
-    //   }
-    // })
-
-    // plugin.PostText({
-
-    //   Version: '2019-03-11',
-    //   BotId: '3f1d2bd7-f55a-44dd-b4e3-18132281fe48',
-    //   BotEnv: "release",
-    //   InputText: '我想订机票',
-    //   TerminalId: "300180199810091921",
-    //   success: function (resData) {
-    //     console.log("robot调用成功：", resData)
-    //   },
-    //   fail: function (err) {
-    //     console.error("robot调用失败", err)
-    //   }
-    // })
-
-    this.template(); //关掉自动提示对话气泡
 
 
     //阿里tts
@@ -403,17 +394,18 @@ Page({
   onReady() {
     //创建内部 audio 上下文 InnerAudioContext 对象。
     this.innerAudioContext = wx.createInnerAudioContext();
-    this.innerAudioContext.onError(function (res) {
-      // console.log(res);
-      wx.showToast({
-        title: '语音播放失败',
-        icon: 'none',
-      })
-    })
+    // this.innerAudioContext.onError(function (res) {
+    //   // console.log(res);
+    //   wx.showToast({
+    //     title: '语音播放失败',
+    //     icon: 'none',
+    //   })
+    // })
   },
 
   onShow: function () {
     this.getunReadcomNum();
+    this.lottieInit();
   },
 
   /**
@@ -430,7 +422,7 @@ Page({
       // zx_info_id: zx_info_id,
       // content: "猜你想问：\n 1、在本小程序发布课程，有什么奖励吗？\n2、课程内容如何才能审核通过？\n 3、可以参考借鉴或者搬运其他人创作的内容上传吗？\n4、访问山村的具体流程？\n5、这个小程序是公益性质的吗？\n 9、随机英语短句 \n回复数字即可",
 
-      content: 'hi，我是一个基于chatGPT实现的机器人，有什么问题尽管问我吧~',
+      content: 'hi，有什么问题尽管问我吧 \n\n（小提示：点击上面数字人可以设置发音人的声音、左下角开关按钮可以控制是否自动朗读、文字过多时语音合成较慢请耐心等待）',
 
 
       // content: "猜你想问：\n 1、食堂的开关门时间？\n2、充饭卡的地点？\n 3、图书馆闭馆时间？\n4、普通话照片怎么上传？\n5、无课表哪里能看？\n 6、澡堂的开关门时间？\n7、选修课除了学习通哪里能看\n8、捐赠衣物\n 9、随机英语短句 \n回复数字即可",
@@ -441,6 +433,7 @@ Page({
       is_show_right: 2,
     }
     this.data.centendata.push(data);
+    // this.addRecord(data);
     this.setData({
       centendata: this.data.centendata
     })
@@ -459,9 +452,11 @@ Page({
       openid_talk: openid_talk,
       time: time.formatTime(new Date, 'Y/M/D'),
       is_show_right: 2,
+      curTTsRoleString: this.data.curTTsRoleString
     }
 
     this.data.centendata.push(data);
+    this.addRecord(data);
     that.setData({
       // news_input_val: '',
       centendata: that.data.centendata
@@ -568,6 +563,12 @@ Page({
         this.setData({
           ttsStart: true,
         })
+        wx.showToast({
+          title: "正在合成请稍候",
+          icon: "error",
+          duration: 1000,
+          mask: true
+        })
       }
       console.log("try to synthesis:" + content)
       let save = formatTime(new Date()) + ".wav"
@@ -595,7 +596,8 @@ Page({
             // this.data.ttsStart = false
             this.setData({
               ttsStart: false,
-              isSpeaking: true
+              isSpeaking: true,
+              speakingContent: content
             })
           } catch (e) {
             console.log("tts start error:" + e)
@@ -611,6 +613,49 @@ Page({
 
   },
 
+  shareConvertsation() {
+    const that = this
+    wx.showModal({
+      title: '是否分享对话到大厅列表',
+      content: '对话内容在管理员审核后发布',
+      cancelText: "取消",
+      confirmText: "分享",
+      success(res) {
+        if (res.cancel == true) {
+          return;
+        }
+        if (res.confirm == true) {
+
+          // console.log('that.data.xx',that)
+          // 点击确认分享
+          wx.cloud.callFunction({
+            name: 'operate_userInfo',
+            data: {
+              type: 'share_user_ques_record',
+              params: {
+                userInfo: that.data.userInfo,
+                gptConversationUUid: that.data.gptConversationUUid,
+                newConversation: that.data.centendata //对话记录对象
+              },
+            },
+            success: res => {
+              // console.log(res)
+              console.log('callFunction test result: ', res)
+            },
+            fail: err => {
+              // handle error
+            },
+            complete: res => {
+              console.log(res)
+            }
+          })
+
+        }
+      }
+    })
+  },
+
+  //同声传译插件的speach
   // speach(e) {
   //   console.log(e);
   //   let that = this
@@ -664,8 +709,7 @@ Page({
   //   }
   // },
 
-  //播放语音
-
+  // 播放语音
   yuyinPlay: function (e) {
     if (this.data.voicePath == '') {
       // console.log("暂无语音");
@@ -772,13 +816,74 @@ Page({
   // },
 
   //记录用户提问
-  addRecord(message) {
+  addRecord(dataObj) {
     wx.cloud.callFunction({
       name: 'operate_userInfo',
       data: {
         type: 'add_user_ques_record',
         params: {
-          newUserQuestString: message
+          gptConversationUUid: this.data.gptConversationUUid,
+          newConversation: dataObj //对话记录对象
+        },
+      },
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res)
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+  //获取用户提问记录
+  getConvetsations() {
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get_user_ques_record',
+      },
+      success: res => {
+        // console.log(res)
+        const AIConversationsMap = res?.result?.data[0].AIConversationsMap || undefined
+        if (AIConversationsMap) {
+          console.log('getConversation-result: ', AIConversationsMap)
+          // const AIConversationsArr = []
+          const converKeysArr = Object.keys(AIConversationsMap)
+          console.log('converKeysArr', converKeysArr)
+          const conversationList = []
+          converKeysArr.forEach(e => {
+            conversationList.push({
+              theme: AIConversationsMap[e][0].content,
+              key: e
+            })
+          })
+          console.log("conversationList", conversationList)
+          this.setData({
+            allConversation: conversationList,
+            AIConversationsMap: AIConversationsMap
+          })
+        }
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        // console.log(res)
+      }
+    })
+  },
+  //记录用户提问
+  addRecord(dataObj) {
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'add_user_ques_record',
+        params: {
+          gptConversationUUid: this.data.gptConversationUUid,
+          newConversation: dataObj //对话记录对象
         },
       },
       success: res => {
@@ -800,16 +905,19 @@ Page({
     let islogin = wx.getStorageSync('islogin');
     let isVip = wx.getStorageSync('isVip');
     let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
+    var allCanTalk = wx.getStorageSync("allCanTalk");
+
     if (islogin == false || islogin == undefined) {
       wx.showModal({
         title: '提示',
         content: '您还没有登录，请在【我的】中进行微信登录后重试',
         showCancel: false
       })
-    } else if (!isVip && UserQuesRecordArr.length >= 12) {
+    } else if (!isVip && !allCanTalk) {
+      // else if (!isVip && UserQuesRecordArr.length >= 12) {
       wx.showModal({
-        title: '提问次数超额提示',
-        content: '由于您不是VIP，提问次数超过12次将不可继续提问，请申请成为VIP后重试',
+        title: '下线提醒',
+        content: '此功能暂不开放，有疑问请联系管理员',
         showCancel: false
       })
     } else {
@@ -823,7 +931,6 @@ Page({
         return
       }
 
-      this.addRecord(message);
       var data = {
         program_id: app.jtappid,
         openid: app._openid,
@@ -832,7 +939,10 @@ Page({
         openid_talk: openid_talk,
         time: time.formatTime(new Date, 'Y/M/D'),
         is_show_right: 1,
+        curTTsRoleString: this.data.curTTsRoleString
       }
+      this.addRecord(data);
+
       var that = this
       this.data.centendata.push(data);
       console.log("this.data.centendata", this.data.centendata)
@@ -841,32 +951,65 @@ Page({
         remind: '加载中',
         centendata: this.data.centendata
       })
+      const urlForTalk = wx.getStorageSync("urlForTalk")
+      let frontUrl = ''
+      if (urlForTalk) {
+        frontUrl = urlForTalk
+        let url = frontUrl + message
+        // let url = 'http://test.uavserve.online/get_bot_answer2?msg=' + message
+        wx.request({
+          url: url,
+          method: 'GET',
+          header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
+            'Content-Type': 'application/json'
+          },
 
-      let url = 'https://us.servasoft.com:8443/get_bot_answer2?msg=' + message
-      // let url = 'http://test.uavserve.online/get_bot_answer2?msg=' + message
-      wx.request({
-        url: url,
-        method: 'GET',
-        header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
-          'Content-Type': 'application/json'
-        },
 
-
-        success: function (result) {
-          console.log("yyzm-返回", result);
-          that.response(result.data);
-          that.setData({
-            news_input_val: '',
-            centendata: that.data.centendata,
-            remind: null,
-          })
-          this.bottom();
-          message = ''
-        },
-      })
+          success: function (result) {
+            console.log("yyzm-返回", result);
+            that.response(result.data);
+            that.setData({
+              news_input_val: '',
+              centendata: that.data.centendata,
+              remind: null,
+            })
+            this.bottom();
+            message = ''
+          },
+        })
+      } else {
+        that.setData({
+          news_input_val: '',
+          remind: null,
+        })
+        that.response('服务正在维护更新中，给您带来不便十分抱歉，我们将尽快恢复，如有紧急情况请联系管理员');
+        this.bottom();
+      }
     }
 
     message = ''
+  },
+
+  changeConversation(e) {
+    console.log(e)
+    if (e.currentTarget.dataset.content !== undefined) {
+      const key = e.currentTarget.dataset.content
+      this.setData({
+        gptConversationUUid: key,
+        centendata: this.data.AIConversationsMap[key]
+      })
+      this.toConversationList()
+    }
+  },
+
+  initNewConversation(e) {
+    this.setData({
+      gptConversationUUid: util.uuid(),
+      centendata: [{
+        content: 'hi，有什么问题尽管问我吧~',
+        is_show_right: 2
+      }]
+    })
   },
 
 
@@ -950,6 +1093,29 @@ Page({
     })
   },
 
+  toConversationList() {
+    // wx.navigateTo({
+    //   //这里传值
+    //   // url: "../../pages/AddEngClassContent/AddEngClassContent",
+    //   url: "../../pages/conversationHistory/index",
+    // })
+
+    if (this.data.translate === 'transform: translateX(-250px)') {
+      this.setData({
+        translate: 'transform: translateX(-0px)',
+        top_human_translate: 'transform: translateX(-0px)'
+      })
+    } else {
+      this.setData({
+        translate: 'transform: translateX(-250px)',
+        top_human_translate: 'transform: translateX(-250px)'
+      })
+    }
+
+
+
+  },
+
 
   toSysMessList() {
     wx.navigateTo({
@@ -985,6 +1151,12 @@ Page({
 
   changeautoRA: function () {
     this.data.autoReadingAloud = !this.data.autoReadingAloud
+    wx.showToast({
+      title: this.data.autoReadingAloud ? '自动朗读已开启' : '自动朗读已关闭',
+      icon: "error",
+      duration: 1000,
+      mask: true
+    })
   },
 
   getunReadcomNum: function (e) {
@@ -1208,6 +1380,43 @@ Page({
       roleCur: e.detail.current,
       curTTsRoleString: roleObj.value
     })
+  },
+
+
+  // lottie动画相关
+
+  lottieInit() {
+    if (this._inited) {
+      return
+    }
+    wx.createSelectorQuery().selectAll('#c1').node(res => {
+      const canvas = res[0].node
+      const context = canvas.getContext('2d')
+
+      canvas.width = 150
+      canvas.height = 150
+
+      lottie.setup(canvas)
+      this.ani = lottie.loadAnimation({
+        loop: true,
+        autoplay: true,
+        // animationData: require('../../json/catrim'),
+        animationData: require('../../json/man'),
+        // path: 'https://assets3.lottiefiles.com/packages/lf20_2cbmucbb.json',
+        // path:'https://assets1.lottiefiles.com/packages/lf20_mu5qmj4m.json',
+        // path:'https://assets10.lottiefiles.com/packages/lf20_oibkdzf3.json',
+        rendererSettings: {
+          context,
+        },
+      })
+      this._inited = true
+    }).exec()
+  },
+  play() {
+    this.ani.play()
+  },
+  pause() {
+    this.ani.pause()
   },
 
 

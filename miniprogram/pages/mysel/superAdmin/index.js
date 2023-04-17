@@ -2,10 +2,14 @@
 // "mp-badge": "/miniprogram_npm/weui-miniprogram/badge/badge",
 // "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
 // "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
+
 // "mp-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
+var util = require("../../../utils/util")
+
 Page({
   data: {
     open: false,
+    showAddKeyModal:false,
     remind: "remind",
     mark: 0,
     newmark: 0,
@@ -17,6 +21,7 @@ Page({
     // ----------------------------------------以上为yzm data 以下为ss data------------------------------------------------------
     pageFlag: 0,// 0:Home页 1：Visitors页  2：admin页  3： 4：VisitorEdit页 5：datePicker页  6：废弃中  7：内容审核 8：访客待审核页 9：
     dialogShow: false,
+    allCanTalk:false,
     buttons: [{
       text: '取消'
     }, {
@@ -218,8 +223,7 @@ Page({
     this.setData({
       remind: '加载中'
     })
-    var time = require('../../../utils/util');
-    let nowtime = time.formatDayTime(new Date, 'Y/M/D');
+    let nowtime = util.formatDayTime(new Date, 'Y/M/D');
     console.log(nowtime)
     // 获取云端上保密协议的内容
     wx.cloud.init({
@@ -290,16 +294,26 @@ Page({
       pageFlag: 1,
       translate: 'transform: translateX(0px)',
     })
-    this.queryVisitorList()
+    // this.queryVisitorList()
   },
+  
 
-  touchWaitCheckVisitorsList: function () {
+  touchGenerateKeyList: function () {
     this.setData({
-      pageFlag: 8,
+      pageFlag: 10,
       translate: 'transform: translateX(0px)',
     })
-    this.queryVisitorList()
+    this.getAllVipSecretKeyList();
+    // this.getAllApplyVipList();
   },
+
+  showNewVipKeyModal(){
+    this.setData({
+      showAddKeyModal:true
+    })
+  },
+
+ 
 
   touchWaitCheckCrouseList: function () {
     this.setData({
@@ -320,8 +334,14 @@ Page({
     // this.queryVisitorList()
     // this.getAllCourse();
     // this.getAllCourseList();
-    this.getAllCApplyVipList();
+    this.getAllApplyVipList();
   },
+
+  touchWaitCheckConversationList: function () {
+    this.setData({
+      pageFlag: 9,
+      translate: 'transform: translateX(0px)',
+    })},
 
 
   getAllCourse() {
@@ -354,7 +374,7 @@ Page({
     })
   },
 
-  getAllCApplyVipList() {
+  getAllApplyVipList() {
     wx.cloud.init({
       traceUser: true,
       env: 'bot-cloud1-7g30ztcr37ed0193'
@@ -390,6 +410,9 @@ Page({
       },
     })
   },
+
+ 
+
   getAllCourseList(pageType) {
     wx.cloud.init({
       traceUser: true,
@@ -422,6 +445,74 @@ Page({
       }
     })
   },
+
+  //获取待审核用户提问记录
+  getConvetsations() {
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get_share_user_ques_record',
+      },
+      success: res => {
+        const AIConversationsMap = res?.result?.data[0].ShareConversationMap || undefined
+        if (AIConversationsMap) {
+          const converKeysArr = Object.keys(AIConversationsMap)
+          const conversationList = []
+          converKeysArr.forEach(e => {
+            conversationList.push({
+              theme: AIConversationsMap[e]['conversationContent'][0].content,
+              key: e
+            })
+          })
+          this.setData({
+            allConversation: conversationList,
+            AIConversationsMap: AIConversationsMap
+          })
+        }
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        // console.log(res)
+      }
+    })
+  },
+
+    //获取Vip秘钥列表
+    getAllVipSecretKeyList() {
+      wx.cloud.callFunction({
+        name: 'operate_userInfo',
+        data: {
+          type: 'get_all_VIP_secretkey_record',
+        },
+        success: res => {
+          const GenerateVipKeysMap = res?.result?.data[0].GenerateVipKeysMap || undefined
+          if (GenerateVipKeysMap) {
+            const converKeysArr = Object.keys(GenerateVipKeysMap)
+            const conversationList = []
+            converKeysArr.forEach(e => {
+              conversationList.push({
+              ...GenerateVipKeysMap[e],
+                secretkey: e
+              })
+            })
+            this.setData({
+              allVipSecretkeyList: conversationList,
+              GenerateVipKeysMap: GenerateVipKeysMap
+            })
+          }
+        },
+        fail: err => {
+          // handle error
+        },
+        complete: res => {
+          // console.log(res)
+        }
+      })
+    },
+
+  
 
 
 
@@ -657,7 +748,8 @@ Page({
   onLoad: function (e) {
     var identity = wx.getStorageSync("useridentity");
     this.setData({
-      identity
+      identity,
+      allCanTalk:wx.getStorageSync("allCanTalk")
       // remind:'1'
     })
     this.touchHome();
@@ -672,12 +764,14 @@ Page({
       translate: 'transform: translateX(' + this.data.windowWidth * 0.4 + 'px)',
       remind: ' '
     })
-    this.queryVisitorList()
+    // this.queryVisitorList()
+
+    this.getConvetsations();
 
   },
 
   visitorDetailReload() {
-    this.queryVisitorList();
+    // this.queryVisitorList();
     setTimeout(() => {
       this.setData({
         pageFlag: 4,
@@ -697,9 +791,20 @@ Page({
     }, 600);
   },
 
+  shareConvasationReload() {
+    // this.getAllCourse();
+    this.getConvetsations();
+    setTimeout(() => {
+      this.setData({
+        pageFlag: 9,
+        // allCourse: this.data.allCourse,
+      })
+    }, 600);
+  },
+
   userDetailReload() {
     // this.getAllCourse();
-    this.getAllCApplyVipList();
+    this.getAllApplyVipList();
     setTimeout(() => {
       this.setData({
         pageFlag: 8,
@@ -717,19 +822,19 @@ Page({
     this.setData({
       visitorName: e.detail.value,
     })
-    this.queryVisitorList()
+    // this.queryVisitorList()
   },
   inputVisitorTeamName(e) {
     this.setData({
       visitorTeamName: e.detail.value,
     })
-    this.queryVisitorList()
+    // this.queryVisitorList()
   },
   inputVisitorPhonenum(e) {
     this.setData({
       visitorPhonenum: e.detail.value,
     })
-    this.queryVisitorList()
+    // this.queryVisitorList()
   },
 
   queryVisitorList() {
@@ -768,7 +873,114 @@ Page({
         })
       }
     })
-  }
+  },
+
+  setIndate(e) {
+    if (e.detail.value) {
+      let indate = e.detail.value;
+      this.setData({
+        indate: indate,
+      });
+    }
+  },
+
+  setRemark(e) {
+    if (e.detail.value) {
+      let remark = e.detail.value;
+      this.setData({
+        remark: remark,
+      });
+    }
+  },
+
+  close(e) {
+    this.setData({
+      showAddKeyModal: false,
+    });
+  },
+
+
+  submitGenerateVipKey: function (e) {
+    wx.cloud.callFunction({
+      name: 'update_adminOperation',
+      data: {
+        operateType: 'generateVipKey',
+        secretKey: util.uuid(), //秘钥
+        indate: this.data.indate,//有效时间
+        certigier:'Jamin',
+        remark:this.data.remark,
+        generatedTime:util.formatTime(new Date, 'Y/M/D'),
+      },
+      success: res => {
+        console.log(res.result)
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+        if (res.result.mess.sucess) {
+          wx.showToast({
+            title: res.result.mess.sucess,
+            icon: 'success',
+            duration: 1000
+          })
+          this.close()
+         this.setData({
+          remark:'',
+          indate:undefined
+         })
+         this.getAllVipSecretKeyList()
+        }
+
+      }
+    })
+  },
+
+  changeAllCanTalk: function () {
+    this.data.allCanTalk = !this.data.allCanTalk
+    wx.showToast({
+      title: this.data.allCanTalk ? '全局可用已开启' : '全局可用已关闭',
+      icon: "success",
+      duration: 1000,
+      mask: true
+    })
+
+    wx.cloud.callFunction({
+      name: 'update_adminOperation',
+      data: {
+       params:{
+        allCanTalk:this.data.allCanTalk
+       },
+        operateType: 'updateAdminSetting'
+      },
+      success: res => {
+        console.log(res.result)
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+        if (res.result.mess.sucess) {
+          wx.showToast({
+            title: res.result.mess.sucess,
+            icon: 'success',
+            duration: 1000
+          })
+
+
+        }
+
+      }
+    })
+
+    
+  },
+
+ 
 
 
 

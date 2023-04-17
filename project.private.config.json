@@ -20,6 +20,20 @@
           "query": "pageType=mineCoursePage",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/mysel/superAdmin/index",
+          "query": "identity=2",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/mysel/me",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

@@ -40,9 +40,10 @@ page,
   position: absolute;
   width: 248rpx;
   height: 68rpx;
-  font-size: 26rpx;
+  font-size: 28rpx;
   left: 20rpx;
   top: 200rpx;
+  font-weight: 600;
 }
 
 .c-state1 {
@@ -209,7 +210,8 @@ page,
   color: red;
 }
 
-.Visitors_container {
+.lists_container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-content: flex-start;
@@ -234,13 +236,16 @@ page,
   display: flex;
   justify-content: space-between;
 }
-.label{
+
+.label {
   margin: 14rpx 0;
   font-size: 30rpx;
 }
-.form_item{
+
+.form_item {
   width: 272rpx;
 }
+
 .select_button {
   width: 100%;
   height: 90rpx;
@@ -312,4 +317,132 @@ page,
   box-sizing: border-box;
   box-shadow: 0 0 8rpx #ccc;
   padding: 50rpx;
+}
+
+.show_newVipKey_btn {
+  /* border: 1px solid red; */
+  position: absolute;
+  left: 45%;
+  bottom: 35rpx;
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.setwaitData {
+  border: 1px solid rgb(95, 90, 90);
+  background-color: #FFFFFF;
+  width: 86%;
+  height: 500rpx;
+  padding: 20rpx;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 40%;
+  left: 20rpx;
+  /* margin-top: 10rpx; */
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  justify-content: space-around;
+  font-size: 20rpx;
+  z-index: 99;
+}
+
+.btnArrayBox {
+  background-color: #FFFFFF;
+  margin-top: 30rpx;
+  width: 85%;
+  height: 300rpx;
+  padding: 30rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  left: 20rpx;
+  margin-top: 80rpx;
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  justify-content: space-around;
+  font-size: 20rpx;
+  z-index: 999;
+}
+
+.cancel {
+  position: absolute;
+  width: 50rpx;
+  height: 50rpx;
+  top: 30rpx;
+  right: 50rpx;
+  z-index: 99999;
+}
+
+.modelBtn {
+  font-size: 10px;
+  flex: 1;
+  min-width: 100px;
+  min-height: 30px;
+  height: 30px;
+  max-width: 120px;
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  z-index: 9999;
+  color: #318FFF;
+  background-color: #DEEDFF;
+  text-align: center;
+  /* margin-left: 30rpx; */
+}
+
+.remarkInput {
+  font-size: 10px;
+  /* flex: 1; */
+  min-width: 200px;
+  min-height: 80px;
+  height: 30px;
+ width: 120px;
+  overflow: auto;
+  border-radius: 10rpx 10rpx 10rpx 10rpx;
+  z-index: 9999;
+  color: #318FFF;
+  background-color: #DEEDFF;
+  padding: 20rpx;
+  /* text-align: center; */
+  /* flex-wrap: wrap; */
+
+  /* margin-left: 30rpx; */
+}
+
+.answerModelSubmitBtn {
+  min-width: 100px;
+  min-height: 30px;
+  max-width: 120px;
+  border-radius: 100rpx 100rpx 100rpx 100rpx;
+  z-index: 9999;
+  color: #fff;
+  background-color: #318FFF;
+  text-align: center;
+  position: absolute;
+  bottom: 30rpx;
+  margin: 0 auto;
+  font-size: 25rpx;
+}
+
+.autoRA {
+  height: 70rpx;
+  width: 60rpx;
+  position: fixed;
+  bottom: 20px;
+  left: 30%;
+  border-radius: 50%;
+}
+
+.autoraImg {
+  height: 70rpx;
+  width: 60rpx;
+  position: fixed;
+  bottom: 25px;
+  left: 20%;
+}
+.index_all_talk_open_switch_box{
+  position: absolute;
+  bottom: 30rpx;
+  left: 20rpx;
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 60rpx;
 }

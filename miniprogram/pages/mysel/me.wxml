@@ -8,8 +8,18 @@
 
       <view class="headInfo">
         <!-- <input type="nickname" class="weui-input" placeholder="请输入昵称"/> -->
-        <view>姓名：{{info.nickName}}</view>
-        <view>徽章：{{info.language}}</view>
+        <view>呢称：{{info.nickName}}</view>
+        
+        <view class="auth_box">
+        <view class="">
+          权限：
+        </view> 
+        <view class="tag_box">
+          <view class="user_tag" wx:if="{{!isVip}}">普通用户</view>
+          <view wx:if="{{isVip}}" class="vip_tag"> VIP ({{indateTag}}) </view> 
+        <view  wx:if="{{isAdmin}}" class="admin_tag">admin</view></view>
+        </view>
+      
       </view>
     </view>
     <view class="login" wx:else>
@@ -39,10 +49,10 @@
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view> -->
 
-  <view class='item' bindtap="toCreateMessForm" data-type="course">
+  <!-- <view class='item' bindtap="toCreateMessForm" data-type="course">
     <view class="title">创作课程</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
-  </view>
+  </view> -->
 
   <!-- <view class='item' bindtap="toCreateMessForm" data-type="narrate">
     <view class="title">推广山村</view>
@@ -64,6 +74,12 @@
 
   <view class='item' bindtap='toApplyVIP'>
     <view class="title">申请成为VIP 🏄‍♂️</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+  <view class="line"></view>
+
+  <view class='item' bindtap='toActivateVIP'>
+    <view class="title">激活VIP 🏄‍♂️</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
   <view class="line"></view>

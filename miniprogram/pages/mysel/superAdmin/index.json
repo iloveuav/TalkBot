@@ -9,6 +9,9 @@
     "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
     "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
     "courseAudit": "/components/superAdmin/courseAudit/courseAudit",
+    "conversationAudit": "/components/superAdmin/conversationAudit/index",
+    "vipSecretKeyCard": "/components/superAdmin/vipSecretKeyCard/index",
+
     "applyVipAudit": "/components/superAdmin/applyVipAudit/index",
     "visitorCard": "/components/superAdmin/visitorCard/visitorCard"
 

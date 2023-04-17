@@ -9,6 +9,7 @@
     "pages/mysel/me",
     "pages/mysel/FeedBack/FeedBack",
     "pages/mysel/applyVIP/index",
+    "pages/mysel/activateVIP/index",
     "pages/schoolDetailBot/TalkBot",
     "pages/train/train",
     "pages/mysel/admin/admin",
@@ -16,9 +17,9 @@
     "pages/notification/notification",
     "pages/mysel/superAdmin/index",
     "pages/mysel/superAdmin/admin/train/train",
-
     "pages/courseMessForm/index",
-    "pages/courseCatalogue/index"
+    "pages/courseCatalogue/index",
+    "pages/conversationHistory/index"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

@@ -1,6 +1,6 @@
 // pages/mysel/mysel.js
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
-
+var util = require('../../utils/util.js');
 Page({
 
   /**
@@ -65,16 +65,8 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    var identity = wx.getStorageSync("useridentity");
-    this.setData({
-      identity: identity,
-      info: wx.getStorageSync("info"),
-      islogin: wx.getStorageSync("islogin"),
-      isAdmin: wx.getStorageSync("isAdmin")
-    })
-
-    // this.getAllCourse();
+  onLoad: function (options){
+    // this.init();
   },
 
   /**
@@ -88,6 +80,7 @@ Page({
   onShow: function () {
     var identity = wx.getStorageSync("useridentity");
     console.log(identity)
+    this.init();
     this.setData({
       // remind: '',
       identity: identity,
@@ -120,6 +113,50 @@ Page({
    */
   onShareAppMessage: function () {},
 
+  init(){
+    var identity = wx.getStorageSync("useridentity");
+    const applyVipObj = wx.getStorageSync("applyVipObj")
+    const curUserSecretkeyInfo = wx.getStorageSync("curUserSecretkeyInfo")
+    const permanentVIP = applyVipObj.permanentVIP || false
+    let pastDays = 0
+    //当前用户有 激活信息
+    if (curUserSecretkeyInfo && curUserSecretkeyInfo.isActivation) {
+      const curDate = util.formatTime(new Date, 'Y/M/D');
+      const ActivationDate = curUserSecretkeyInfo.ActivationDate
+
+      let start_num = new Date(ActivationDate.replace(/-/g, "/"))
+      let end_num = new Date(curDate.replace(/-/g, "/"))
+      pastDays = parseInt((end_num.getTime() - start_num.getTime()) / (1000 * 60 * 60 * 24)) + 1
+      console.log('pastDays',pastDays)
+      if (pastDays <= curUserSecretkeyInfo.indate) {
+        wx.setStorageSync("isVip", true);
+      } else {
+        if (!permanentVIP) { //不是永久会员且有效期已过
+          wx.setStorageSync("isVip", false);
+        }else{
+          wx.setStorageSync("isVip", true);
+        }
+      }
+    }
+
+    if(permanentVIP){
+      wx.setStorageSync("isVip", true);
+    }
+    setTimeout(() => {
+      this.setData({
+        identity: identity,
+        info: wx.getStorageSync("info"),
+        islogin: wx.getStorageSync("islogin"),
+        isAdmin: wx.getStorageSync("isAdmin"),
+        isVip: wx.getStorageSync("isVip"),
+        curUserSecretkeyInfo: curUserSecretkeyInfo,
+        applyVipObj: applyVipObj,
+        indateTag: permanentVIP ? '永久VIP' : `剩余${curUserSecretkeyInfo.indate - pastDays +1 }天`
+      })
+    }, 500);
+
+    // this.getAllCourse();
+  },
 
   toCollectCourseList: function (e) {
     wx.navigateTo({
@@ -128,6 +165,8 @@ Page({
     })
     // this.queryMineCourseList();
   },
+
+
 
   toMineCourseList: function (e) {
     wx.navigateTo({
@@ -154,10 +193,10 @@ Page({
       isWaitCheck: false
       // select_flag: this.data.dialogFlag || '',
     }
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     wx.cloud.callFunction({
       name: "get_allCourseMess",
       data: {}
@@ -223,87 +262,87 @@ Page({
   },
 
 
-  init() {
-    let that = this;
-    wx.showModal({
-      title: '欢迎使用',
-      content: '目前功能正在开发中，敬请期待！',
-      cancelText: "我再看看",
-      confirmText: "开始使用",
-      success(res) {
-        if (res.cancel == true) {
-          return;
-          // if (that.data.funshow == false) {
-          //   that.setData({
-          //     top_height: 80,
-          //     confirmText: "关闭功能",
-          //     funshow: true
-          //   })
-          // }
-          // else {
-          //   that.setData({
-          //     top_height: 200,
-          //     confirmText: "取消",
-          //     funshow: false
-          //   })
-          // }
-        }
-        if (res.confirm == true) {
-          wx.getSetting({
-            success(res) {
-              if (res.authSetting['scope.userInfo']) {
-                wx.getUserInfo({
-                  success(res) {
-                    console.log(res)
-                    wx.setStorageSync("info", res.userInfo);
-                    wx.setStorageSync("islogin", true);
-                    // that.updateUserInfo(res.userInfo);
-                    that.setData({
-                      remind: '加载中',
-                      islogin: true
-                    })
-                    that.onLoad();
-                    that.onShow();
+  // oldinit() {
+  //   let that = this;
+  //   wx.showModal({
+  //     title: '欢迎使用',
+  //     content: '目前功能正在开发中，敬请期待！',
+  //     cancelText: "我再看看",
+  //     confirmText: "开始使用",
+  //     success(res) {
+  //       if (res.cancel == true) {
+  //         return;
+  //         // if (that.data.funshow == false) {
+  //         //   that.setData({
+  //         //     top_height: 80,
+  //         //     confirmText: "关闭功能",
+  //         //     funshow: true
+  //         //   })
+  //         // }
+  //         // else {
+  //         //   that.setData({
+  //         //     top_height: 200,
+  //         //     confirmText: "取消",
+  //         //     funshow: false
+  //         //   })
+  //         // }
+  //       }
+  //       if (res.confirm == true) {
+  //         wx.getSetting({
+  //           success(res) {
+  //             if (res.authSetting['scope.userInfo']) {
+  //               wx.getUserInfo({
+  //                 success(res) {
+  //                   console.log(res)
+  //                   wx.setStorageSync("info", res.userInfo);
+  //                   wx.setStorageSync("islogin", true);
+  //                   // that.updateUserInfo(res.userInfo);
+  //                   that.setData({
+  //                     remind: '加载中',
+  //                     islogin: true
+  //                   })
+  //                   that.onLoad();
+  //                   that.onShow();
 
-                    // wx.cloud.init()
-                    // wx.cloud.callFunction({
-                    //   name: 'login',
-                    //   data: {
+  //                   // wx.cloud.init()
+  //                   // wx.cloud.callFunction({
+  //                   //   name: 'login',
+  //                   //   data: {
 
-                    //   },
-                    //   success: res => {
-                    //     // output: res.result === 3
-                    //     // console.log(res.result)
-                    //     wx.setStorageSync("openid", res.result.openid);
-                    //     wx.setStorageSync("islogin", true);
-                    //     that.onLoad();
-                    //     that.onShow();
+  //                   //   },
+  //                   //   success: res => {
+  //                   //     // output: res.result === 3
+  //                   //     // console.log(res.result)
+  //                   //     wx.setStorageSync("openid", res.result.openid);
+  //                   //     wx.setStorageSync("islogin", true);
+  //                   //     that.onLoad();
+  //                   //     that.onShow();
 
-                    //   },
-                    //   fail: err => {
-                    //     // handle error
-                    //   },
-                    //   complete: res => {
-                    //     console.log('callFunction test result: ', res)
-                    //   }
-                    // })
-                  }
-                })
-              } else {
-                wx.showModal({
-                  title: '提示',
-                  content: '为了数据安全和合规，需要你的个人信息做绑定，否则将无法使用。',
-                  showCancel: false
-                })
-              }
-            }
-          })
-        }
+  //                   //   },
+  //                   //   fail: err => {
+  //                   //     // handle error
+  //                   //   },
+  //                   //   complete: res => {
+  //                   //     console.log('callFunction test result: ', res)
+  //                   //   }
+  //                   // })
+  //                 }
+  //               })
+  //             } else {
+  //               wx.showModal({
+  //                 title: '提示',
+  //                 content: '为了数据安全和合规，需要你的个人信息做绑定，否则将无法使用。',
+  //                 showCancel: false
+  //               })
+  //             }
+  //           }
+  //         })
+  //       }
 
 
-      }
-    })
-  },
+  //     }
+  //   })
+  // },
 
 
   onChooseAvatar(e) {
@@ -430,6 +469,24 @@ Page({
     wx.hideLoading()
   },
 
+  toActivateVIP: function (e) {
+    if (this.data.islogin == false) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录',
+        showCancel: false
+      })
+      return;
+    }
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.navigateTo({
+      url: '/pages/mysel/activateVIP/index',
+    })
+    wx.hideLoading()
+  },
+
   logout() {
     wx.setStorageSync('islogin', false);
     this.setData({
@@ -457,10 +514,10 @@ Page({
   },
 
   getAllCourse() {
-   wx.cloud.init({
-  traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
-})
+    wx.cloud.init({
+      traceUser: true,
+      env: 'bot-cloud1-7g30ztcr37ed0193'
+    })
     wx.cloud.init()
     //  下面是云函数的调用
     // console.log(wx.getStorageSync("openid"));

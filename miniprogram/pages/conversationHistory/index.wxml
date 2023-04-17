@@ -1,0 +1,5 @@
+<!--pages/conversationHistory/index.wxml-->
+
+<view wx:for="{{allConversation}}">
+  <dailySentence sentence="{{item.theme}}"></dailySentence>
+</view>

@@ -21,6 +21,7 @@ App({
     appstyleColor: '#0D7DA1',
     parameter: null,
 
+    //AKID和AKKEY不能上传到git否则会有泄露风险
 
     CurrentCourseObj: {}, // 当前选择的课程对象
     CurrentChapter: {}// 当前选择的章节对象

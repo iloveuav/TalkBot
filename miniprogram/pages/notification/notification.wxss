@@ -4,10 +4,29 @@ page {
   background-color: #f7f7f7;
 }
 
+
+.top-canvas {
+  /* border: 1px solid red; */
+  display: flex;
+  z-index: 88;
+
+}
+
+#c1 {
+  /* margin-left: 35%; */
+  /* justify-content: center;
+  align-items: center; */
+  margin: auto;
+  width: 120px;
+  height: 120px;
+  z-index: 88;
+}
+
 .tab {
   height: 170rpx;
   background-color: #4d9bf4;
   border-radius: 0 0 20% 20%;
+  z-index: 88;
 }
 
 .top-btns {
@@ -120,6 +139,15 @@ page {
   border-radius: 50%;
 }
 
+.keep_talk_switch {
+  height: 70rpx;
+  width: 60rpx;
+  position: fixed;
+  bottom: 50px;
+  right: 52%;
+  border-radius: 50%;
+}
+
 /*swtich整体大小及背景色*/
 /*swtich样式-start*/
 /*swtich整体大小*/
@@ -149,6 +177,13 @@ page {
   position: fixed;
   bottom: 55px;
   right: 90%;
+}
+.keep_talk_icon {
+  height: 70rpx;
+  width: 60rpx;
+  position: fixed;
+  bottom: 55px;
+  right: 62%;
 }
 
 /* 聊天 */
@@ -184,6 +219,7 @@ page {
 
 .message_txt {
   display: inline-block;
+  min-width: 220rpx;
   padding: 10rpx 30rpx;
   border-radius: 7px;
   /* background-color: #95d4ff; */
@@ -191,7 +227,7 @@ page {
   color: #6D7678;
 }
 
-.avatar_img{
+.avatar_img {
   position: absolute;
   left: 20rpx;
   top: 20rpx;
@@ -215,7 +251,7 @@ page {
   font-size: 40rpx;
 }
 
-.speach_btn{
+.speach_btn {
   position: absolute;
   right: 80rpx;
   top: 25rpx;
@@ -442,56 +478,94 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index:1000;
+  z-index: 1000;
 }
 
 .remind-img {
   display: flex;
   width: 250rpx;
   height: 250rpx;
- 
+
 
   /* padding-bottom: 15rpx; */
 }
+.leftBtnBox{
+  position: absolute;
+  top: 15rpx;
+  left: -3rpx;
 
+  width: 110rpx;
+  height: 80rpx;
+  border: 1px solid rgb(233, 216, 216);
+  border-radius: 0rpx 20rpx 20rpx 0rpx;
+  /* box-shadow: 0 3rpx 12rpx rgba(133, 47, 47, 0.06); */
+}
+
+.share_to_Home_icon{
+  width: 60rpx;
+  height: 60rpx;
+  padding: 10rpx;
+  margin-left: 10rpx;
+}
 
 .rightBtnBox {
-  width: 200pt;
+  width: 120pt;
   position: absolute;
-  top: 0rpx;
+  top: -20rpx;
   right: -3rpx;
   height: 180rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-end;
+  z-index: 9999999;
   /* border: 1px solid red; */
   /* background-color: rgb(243, 236, 236); */
 }
 
 .rightBtnItem {
-  font-size: 10px;
-  width: 83pt;
-  height: 30pt;
-  z-index: 999999;
-  text-align: right;
   position: relative;
-  
+  font-size: 10px;
+  width: 63pt;
+  height: 30pt;
+  z-index: 99999999;
+  text-align: center;
+  position: relative;
+  background-color: rgb(228, 157, 24);
+  border-radius: 30rpx 0rpx 0rpx 30rpx;
+
 }
 
+.conversation_list_box {
+  width: 70vw;
+  height: 86vh;
+  position: absolute;
+
+  overflow: auto;
+  margin-left: 160rpx;
+  top: -20rpx;
+  background-color: rgb(246, 246, 247);
+  /* border: 1px solid red; */
+  border-radius: 20rpx 0rpx 0rpx 20rpx;
+  z-index: 999;
+  box-shadow: 0 3rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+
+
 .r-itemImgBox {
-  width: 83pt;
+  width: 63pt;
   height: 34pt;
 }
 
 .r-itemName {
   color: #fff;
   position: absolute;
-  top: 8%;
-  right: 2%;
-  width: 32px;
+  top: 20%;
+  right: 3%;
+  width: 72px;
   height: 75rpx;
-  font-size: 26rpx;
+  font-size: 30rpx;
 }
 
 .r-itemSwitch {
@@ -637,6 +711,10 @@ page {
   text-align: center;
 }
 
+.message_time {
+  color: rgb(200, 203, 206);
+}
+
 .voice_modal_text_next {
   font-size: 22rpx;
   max-height: 220rpx;
@@ -652,4 +730,18 @@ page {
 .wordCard {
   margin-bottom: 60rpx;
   width: 100%;
+}
+
+.conversation_list_content{
+  position: relative;
+  max-height: 76vh;
+  overflow: auto;
+}
+
+.init_convert_btn{
+  position: absolute;
+  left: 45%;
+  bottom: 35rpx;
+  width: 60rpx;
+  height: 60rpx;
 }

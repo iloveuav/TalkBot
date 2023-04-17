@@ -1,3 +1,66 @@
+.auth_box {
+  width: 100%;
+  height: 80rpx;
+  /* overflow: auto; */
+  display: flex;
+  flex-wrap: nowrap;
+  margin-top: 20rpx;
+}
+
+.auth_label {
+  width: 140rpx;
+  /* margin-top: 30rpx; */
+}
+
+.tag_box {
+  /* margin-left: 10rpx; */
+  width: 70%;
+  overflow: auto;
+
+  padding: 2rpx;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content:start;
+}
+
+.user_tag {
+  min-width: 80rpx;
+  background-color: #6199ed;
+  border-radius: 15rpx;
+  padding: 8rpx 12rpx;
+  margin-right: 10rpx;
+  color: rgb(243, 239, 237);
+  height: 50rpx;
+  line-height: 50rpx;
+  padding: 0rpx 10rpx;
+  font-size: 20rpx;
+}
+
+.vip_tag {
+  min-width: 130rpx;
+  background-color: wheat;
+  border-radius: 15rpx;
+  margin-right: 10rpx;
+  color: rgb(233, 138, 94);
+  font-size: 20rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  padding: 0rpx 10rpx;
+}
+
+.admin_tag {
+  width: 60rpx;
+  background-color: rgb(134, 230, 222);
+  border-radius: 15rpx;
+  padding: 8rpx 12rpx;
+  margin-right: 10rpx;
+  color: rgb(10, 158, 196);
+  font-size: 20rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  padding: 0rpx 10rpx;
+}
+
 .head .bg {
   width: 100%;
   height: 138rpx;
@@ -22,10 +85,12 @@
 }
 
 .head .box .headInfo {
+  width: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   margin-left: 30rpx;
+  /* border: 1px solid; */
 }
 
 .login {
@@ -72,8 +137,8 @@
   color: transparent;
   background: transparent;
   border: transparent;
-  background-color: transparent; 
-  border:none;	
+  background-color: transparent;
+  border: none;
   width: 140rpx;
   height: 140rpx;
   margin: 0rpx;
