@@ -1,9 +1,4 @@
-// page/one/index.js
-// "mp-badge": "/miniprogram_npm/weui-miniprogram/badge/badge",
-// "mp-cells": "/miniprogram_npm/weui-miniprogram/cells/cells",
-// "mp-cell": "/miniprogram_npm/weui-miniprogram/cell/cell",
 
-// "mp-dialog": "/miniprogram_npm/weui-miniprogram/dialog/dialog",
 var util = require("../../../utils/util")
 
 Page({
@@ -747,9 +742,10 @@ Page({
 
   onLoad: function (e) {
     var identity = wx.getStorageSync("useridentity");
+    var SystemSetting = wx.getStorageSync("SystemSetting");
     this.setData({
       identity,
-      allCanTalk:wx.getStorageSync("allCanTalk")
+      allCanTalk:SystemSetting.allCanTalk
       // remind:'1'
     })
     this.touchHome();

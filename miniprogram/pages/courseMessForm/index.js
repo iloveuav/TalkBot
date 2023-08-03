@@ -729,6 +729,14 @@ Page({
     this.data.newmark = 0;
   },
 
+  toChartDetail(){
+    console.log(1111)
+    wx.navigateTo({
+      //这里传值
+      url: "../chartBox/package-tree-graph/basic-dendrogram/index" ,
+    })
+  },
+
   handleChoose(e) {
     const { index, choose } = e.target.dataset;
     const str = `tagList[${index}].choose`

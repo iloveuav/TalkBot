@@ -45,6 +45,9 @@
 
           <image wx:if='{{item.contentType=="img"}}' src='{{item.src}}' class='new_imgtent'></image>
 
+        
+        </view>
+
           <!-- -----------------横向轮播卡片组件------------------------------------------ -->
           <view class="wordCard" wx-if="{{item.textImgArray.length>0&&item.contentType==='textImg'}}">
             <scroll-view>
@@ -54,7 +57,6 @@
             </scroll-view>
           </view>
           <!-- ------------------------------------------------- -->
-        </view>
       </block>
       <block wx:else>
         <view class='message-left'></view>

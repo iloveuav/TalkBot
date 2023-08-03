@@ -14,5 +14,5 @@
 
 
 <view class="crossContainer">
-  <ec-canvas id="mychart-dom-graph" canvas-id="mychart-graph" ec="{{ cross }}"></ec-canvas>
+  <!-- <ec-canvas id="mychart-dom-graph" canvas-id="mychart-graph" ec="{{ cross }}"></ec-canvas> -->
 </view>

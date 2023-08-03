@@ -1,0 +1,24 @@
+{
+  "name": "talkbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@antv/f6-wx": "0.0.7",
+    "miniprogram-sm-crypto": "^0.3.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iloveuav/TalkBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iloveuav/TalkBot/issues"
+  },
+  "homepage": "https://github.com/iloveuav/TalkBot#readme"
+}

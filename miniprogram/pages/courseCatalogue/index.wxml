@@ -5,7 +5,7 @@
       <text class="content_title">{{crouseDetail.courseName}}</text>
     </view>
     <view class="info_content">
-      <text class="content_desc">课程简介：{{crouseDetail.courseIntroduce}}</text>
+      <text user-select class="content_desc">课程简介：{{crouseDetail.courseIntroduce}}</text>
     </view>
     <view class="oparetion">
       <view class="opare_item">

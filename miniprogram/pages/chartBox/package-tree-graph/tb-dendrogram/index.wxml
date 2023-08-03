@@ -1,0 +1,9 @@
+<f6-canvas
+  width="{{width}}"
+  height="{{height}}"
+  forceMini="{{forceMini}}"
+  pixelRatio="{{pixelRatio}}"
+  bind:onTouchEvent="handleTouch"
+  bind:onInit="handleInit"
+></f6-canvas>
+<button class="save_btn" bindtap="saveImg">保存图片到本地</button>

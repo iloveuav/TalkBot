@@ -65,7 +65,14 @@ exports.main = async (event, context) => {
                 creatTime: event.courseMess.creatTime,
                 createrOpenid: wxContext.OPENID,
                 createrInfo: event.courseMess.createrInfo,
-                state: '待审核'
+                state: '待审核',
+
+                useAI: true,
+                //AI需要的部分
+                courseContentMode: event.courseMess.courseContentMode,
+                curLanguage: event.courseMess.curLanguage || undefined,
+                depthContent: event.courseMess.depthContent
+
               }
             })
           } else {
@@ -80,6 +87,63 @@ exports.main = async (event, context) => {
                 creatTime: event.courseMess.creatTime,
                 state: event.courseMess.state || '待审核',
                 createrOpenid: wxContext.OPENID,
+
+                useAI: true,
+                //AI需要的部分
+                courseContentMode: event.courseMess.courseContentMode,
+                curLanguage: event.courseMess.curLanguage || undefined,
+                depthContent: event.courseMess.depthContent
+              },
+            })
+          }
+        })
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  if (event.mode === 'operateCharaterList') {
+    try {
+      return db.collection(Collection).where({
+        courseUUid: event.courseMess.courseUUid,
+      }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return;
+          } else {
+            return db.collection(Collection).where({
+              courseUUid: event.courseMess.courseUUid
+            }).update({
+              data: {
+                ChapterList: event.ChapterList
+              },
+            })
+          }
+        })
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  if (event.mode === 'operateCharaterContent') {
+    try {
+      return db.collection(Collection).where({
+        courseUUid: event.courseUUid,
+      }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return;
+          } else {
+            return db.collection(Collection).where({
+              courseUUid: event.courseUUid
+            }).update({
+              data: {
+                ChapterContentMap: {
+                  [event.curChapterName]: event.ChapterContent
+                }
               },
             })
           }

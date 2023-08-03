@@ -111,12 +111,14 @@
 
 .chapter_list {
   width: 90%;
+  margin-top: 30rpx;
 }
 
 .chapter_item {
   position: relative;
   display: flex;
   align-items: center;
+  margin-top: 5rpx;
   /* margin: 20rpx 0; */
 }
 

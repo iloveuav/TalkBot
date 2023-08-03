@@ -8,6 +8,8 @@ var length;
 var zx_info_id;
 var openid_talk;
 const formatTime = require("../../tts/util").formatTime
+// import cookies from 'weapp-cookie'
+import 'weapp-cookie'
 
 import lottie from 'lottie-miniprogram'
 import {
@@ -20,6 +22,7 @@ const SpeechSynthesizer = require("../../tts/tts")
 const sleep = require("../../tts/util").sleep
 const getToken = require("../../tts/token").getToken
 const fs = wx.getFileSystemManager()
+const ctx = wx.createInnerAudioContext()
 
 
 
@@ -40,6 +43,7 @@ Page({
     userInfo: {},
     autoReadingAloud: true, //自动读开关
     mode: 'talking',
+    isVoicePlaying: false,
 
     news: '',
     scrollTop: 0,
@@ -263,12 +267,17 @@ Page({
     console.log(openid_talk)
     this.loaddata()
     const copyuserInfo = wx.getStorageSync('info')
+
+    var SystemSetting = wx.getStorageSync("SystemSetting");
+    var talkRead_switch = SystemSetting.talkRead_switch
     //调用应用实例的方法获取全局数据
     this.setData({
       userInfo: copyuserInfo,
       zx_info_id: zx_info_id,
       nickName: app.nickName,
       avatarUrl: app.avatarUrl,
+
+      talkRead_switch:talkRead_switch,//控制是否显示语音朗读按钮
       //发音人初始化
       curmultiVoiceArray: this.data.multiVoiceArray[2],
       curTTsRoleString: this.data.multiVoiceArray[2][0].value
@@ -336,11 +345,12 @@ Page({
       fs.close({
         fd: this.data.saveFd,
         success: (res) => {
-          let ctx = wx.createInnerAudioContext()
+          // let ctx = wx.createInnerAudioContext()
           ctx.autoplay = true
           ctx.src = this.data.saveFile
           ctx.onPlay(() => {
             console.log('start playing..')
+            this.data.isVoicePlaying = true
           })
           ctx.onError((res) => {
             console.log(res.errMsg)
@@ -362,6 +372,7 @@ Page({
             this.setData({
               isSpeaking: false
             })
+            this.data.isVoicePlaying = false
             fs.unlink({
               filePath: this.data.saveFile,
               success: (res) => {
@@ -413,6 +424,8 @@ Page({
    */
   onUnload: function () {
     this.end();
+    ctx.pause();
+    this.data.isVoicePlaying = false
   },
 
   template: function (e) {
@@ -462,6 +475,10 @@ Page({
       centendata: that.data.centendata
     })
     if (this.data.autoReadingAloud) {
+      // wx.showLoading({
+      //   title: '正在合成语音',
+      //   mask:true
+      // })
       this.speach(data.content);
     }
     this.bottom()
@@ -490,6 +507,15 @@ Page({
     }
     this.onTtsSpeach(content, 'autoSpeach')
   },
+  //取消朗读
+  stopSpeach() {
+      ctx.pause();
+      this.data.isVoicePlaying = false
+      this.end();
+      this.setData({
+        isSpeaking:false
+      })
+  },
 
   // ----------------朗读文本输入---------------
   getSpeachText(e) {
@@ -506,6 +532,8 @@ Page({
     let content = ''
     let that = this
     console.log('tts1', e);
+    console.log('tts1-type',type);
+   
 
     let islogin = wx.getStorageSync('islogin');
     if (islogin == false || islogin == undefined) {
@@ -550,6 +578,11 @@ Page({
         })
         return
       }
+
+      if (this.data.isVoicePlaying) {
+        ctx.pause();
+      }
+
       if (this.data.ttsStart) {
         wx.showToast({
           title: "正在合成请稍候",
@@ -594,6 +627,7 @@ Page({
             await this.data.tts.start(param)
             console.log("tts done")
             // this.data.ttsStart = false
+            // this.hideLoading();
             this.setData({
               ttsStart: false,
               isSpeaking: true,
@@ -736,7 +770,7 @@ Page({
   // TakeRandomNumber(1,100)；
 
   //事件处理函数  
-  //之前的add  没有调用chatGPT
+  //之前的add  没有调用chatGPT 用的腾讯对话机器人平台
   // add: function (e) {
   //   // content: "猜你想问：\n 1、在本小程序发布课程，有什么奖励吗？\n2、课程内容如何才能审核通过？\n 3、可以参考借鉴或者搬运其他人创作的内容上传吗？\n4、访问山村的具体流程？\n5、这个小程序是公益性质的吗？\n 9、随机英语短句 \n回复数字即可",
 
@@ -899,13 +933,210 @@ Page({
     })
   },
 
+  isJSON(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  },
+
+
+  parseToJSON(str) {
+    console.log("parseToJSON-str", str)
+    // 检查是否是JSON格式,如果是直接返回
+    if (this.isJSON(str)) return JSON.parse(str);
+
+    // 如果不是JSON格式,则做以下处理
+    str = str.trim();  // 去除字符串两边空格
+    str = str.replace(/^\s*|\s*$/g, ''); // 去除每行两边空格
+
+    // 如果字符串以{或者[开头,说明可能是对象或者数组,尝试解析
+    if (str.startsWith('{') || str.startsWith('[')) {
+      try {
+        return JSON.parse(str);
+      } catch (e) { }
+    }
+
+    // 否则按行分割,尝试构造对象或数组
+    var lines = str.split('\n');
+    var obj = {};  // 假定为对象
+    var arr = [];  // 假定为数组
+    var isArray = false;
+
+    // 遍历每行,解析键值对或者数组元素
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      line = line.trim();
+
+      // 如果遇到{立即构造对象
+      if (line.startsWith('{')) {
+        obj = {};
+        isArray = false;
+        continue;
+      }
+
+      // 如果遇到[立即构造数组
+      if (line.startsWith('[')) {
+        arr = [];
+        isArray = true;
+        continue;
+      }
+
+      // 对象处理
+      if (!isArray) {
+        var keyValue = line.split(':');
+        if (keyValue.length == 2) {
+          var key = keyValue[0].trim();
+          var value = keyValue[1].trim();
+          obj[key] = value.startsWith('{') || value.startsWith('[') ? this.parseToJSON(value) : value;
+        }
+      } else {  // 数组处理
+        if (line) arr.push(line.startsWith('{') || line.startsWith('[') ? this.parseToJSON(line) : line);
+      }
+    }
+
+    // 返回对象或数组
+    return isArray ? arr : obj;
+  },
+
+
+  parseToArray(str) {
+    var arr = [];
+    var lines = str.split('\n');
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+
+      if (line.startsWith('data:')) {
+        var jsonStr = line.slice(6); // 从data:后面开始截取
+        if (this.isJSON(jsonStr)) {  // 检查是否JSON
+          arr.push(JSON.parse(jsonStr));  // 是的话直接push
+        } else {
+          jsonStr = this.parseToJSON(jsonStr); // 否则解析成JSON
+          arr.push(jsonStr);
+        }
+      }
+    }
+
+    return arr;
+  },
+
+
+  get_streaming() {
+
+    wx.showLoading({
+      title: '请稍等片刻',
+    })
+    var that = this
+    // this.data.testStreamingInterval = setInterval(() => {
+    wx.request({
+      method: 'GET',
+      url: 'https://claude.uavserve.online/stream_api',
+      header: { 
+        'Content-Type': 'application/json',//get 请求用这个
+        // "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+        'Host': 'yierco.slack.com',
+        // 'Cookie':'ts=1685503057.254249; latest_reply=1685503059.191849',
+        // 'Set-Cookie':'latest_reply=1685503059.191849; expires=Wed, 31 May 2023 13:43:13 GMT; Path=/'
+        'Same-Site':'None',
+        // 'Secure':'True',
+
+        // 'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
+        // 'Set-Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
+
+        // cache: false,
+        // data: { message: 'hi', context: [] },
+        // data:json2Form( { message: 'hi', context:[]}),
+
+        // {message:'Hi'}
+
+      },
+      success(result) {
+        console.log("test_streaming_res", result)
+        var isstarted = true;
+        var alltext = "";
+        var isalltext = false;
+
+        that.setData({
+          // remind: true,
+          isstarted: false
+        })
+        // if (result.data) {
+        //   clearInterval(that.data.testStreamingInterval)
+        // }
+
+        var jsonArr = that.parseToArray(result.data);
+        console.log("jsonArr", jsonArr)
+
+        jsonArr.forEach(item => {
+          console.log("item", item)
+          console.log("alltext", alltext)
+          if (item.length === 0) {
+            isalltext = true;
+            alltext = alltext.replace('\\\"', '\\\\\"');
+            alltext = alltext.replace(/\n/g, "");
+            console.log("alltext", alltext)
+
+            // contextarray.push([prompt, alltext]);
+            // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+            clearInterval(that.data.testStreamingInterval)
+            that.setData({
+              remind: null,
+            })
+            wx.hideLoading()
+
+            that.response(alltext);
+            that.setData({
+              news_input_val: '',
+              centendata: that.data.centendata,
+              remind: null,
+            })
+            that.bottom();
+            message = ''
+            return;
+            // that.handleResultConvertToChart(alltext)
+          }
+
+          if (item.choices && item.choices[0].delta.hasOwnProperty("content")) {
+            if (item.choices[0].delta.content === '错误' || item.choices[0].delta.content.includes("Claude cannot look up any real-time information") || item.choices[0].delta.content.includes("This request may violate our Acceptable")) {
+              console.log("Error")
+              // error_layer=true
+              // send_post();
+              return;
+            }
+
+            if (alltext == "") {
+              let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
+
+              tempText = tempText.replace(/\\n/g, '[nlll]');
+              tempText = tempText.replace(/\[nlll\]/g, '');
+              alltext = tempText;
+            } else {
+              let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
+              tempText
+
+              tempText = tempText.replace(/\\n/g, '[nlll]');
+              tempText = tempText.replace(/\[nlll\]/g, '');
+              alltext += tempText;
+            }
+          }
+        })
+      }
+    })
+    // }, 3000);
+  },
+
+
   //新的add 调用chatGPT进行回答
   add() {
 
     let islogin = wx.getStorageSync('islogin');
     let isVip = wx.getStorageSync('isVip');
     let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
-    var allCanTalk = wx.getStorageSync("allCanTalk");
+    var SystemSetting = wx.getStorageSync("SystemSetting");
+    var allCanTalk = SystemSetting.allCanTalk
 
     if (islogin == false || islogin == undefined) {
       wx.showModal({
@@ -951,30 +1182,44 @@ Page({
         remind: '加载中',
         centendata: this.data.centendata
       })
-      const urlForTalk = wx.getStorageSync("urlForTalk")
+      const SystemSetting = wx.getStorageSync("SystemSetting")
+      const urlForTalk = SystemSetting.urlForTalk || ''
+      const canNotTalkMessage = SystemSetting.canNotTalkMessage || ''
       let frontUrl = ''
       if (urlForTalk) {
         frontUrl = urlForTalk
-        let url = frontUrl + message
-        // let url = 'http://test.uavserve.online/get_bot_answer2?msg=' + message
-        wx.request({
+        // let url = frontUrl + message
+        let url = frontUrl
+        wx.requestWithCookie({
           url: url,
-          method: 'GET',
-          header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
-            'Content-Type': 'application/json'
+          // method: 'GET',
+          method: 'POST',
+          data: util.json2Form({ message: message, context: [] }),
+          header: {
+            // 'Content-Type': 'application/json',//get 请求用这个
+            "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+            'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
           },
 
 
           success: function (result) {
             console.log("yyzm-返回", result);
-            that.response(result.data);
-            that.setData({
-              news_input_val: '',
-              centendata: that.data.centendata,
-              remind: null,
-            })
-            this.bottom();
-            message = ''
+
+            setTimeout(() => { //claude的
+              if (result.data.success) {
+                that.get_streaming()
+              }
+            }, 600);
+         
+
+            // that.response(result.data);
+            // that.setData({
+            //   news_input_val: '',
+            //   centendata: that.data.centendata,
+            //   remind: null,
+            // })
+            // this.bottom();
+            // message = ''
           },
         })
       } else {
@@ -982,7 +1227,14 @@ Page({
           news_input_val: '',
           remind: null,
         })
-        that.response('服务正在维护更新中，给您带来不便十分抱歉，我们将尽快恢复，如有紧急情况请联系管理员');
+        if (canNotTalkMessage) {
+          that.response(canNotTalkMessage);
+        }
+        else {
+          that.response('服务正在维护更新中，给您带来不便十分抱歉，我们将尽快恢复，如有紧急情况请联系管理员');
+
+        }
+
         this.bottom();
       }
     }
@@ -1011,6 +1263,7 @@ Page({
       }]
     })
   },
+
 
 
   // 页面加载
@@ -1230,7 +1483,7 @@ Page({
           title: '提示',
           content: '听不太清，请靠近麦克风重新说一遍~',
           showCancel: false,
-          success: function (res) {}
+          success: function (res) { }
         })
         return;
       }
@@ -1418,6 +1671,14 @@ Page({
   pause() {
     this.ani.pause()
   },
+
+
+  toCreateChart() {
+    wx.navigateTo({
+      //这里传值
+      url: "../chartBox/index",
+    })
+  }
 
 
 

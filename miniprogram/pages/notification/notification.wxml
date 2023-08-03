@@ -22,43 +22,44 @@
 
 
 <!-- bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" -->
-<view class="rightBtnBox"  style="{{translate}}">
-  <view class="rightBtnItem" wx:if="{{mode==='talking'}}" >
+<view class="rightBtnBox" style="{{translate}}">
+  <view class="rightBtnItem" wx:if="{{mode==='talking'}}">
     <!-- <image class="r-itemImgBox"  src="../../images/button/addCoverBtn.png"></image> -->
-    <view class="r-itemName"   bindtap="toConversationList">对话列表</view>
+    <view class="r-itemName" bindtap="toConversationList">对话列表</view>
     <view class="conversation_list_box">
-    <view class="conversation_list_content">
-      <view wx:for="{{allConversation}}" >
-      <view bindtap="changeConversation" data-content="{{item.key}}">
-        <conversationItem sentence="{{item.theme}}"></conversationItem>
-      </view>     
+      <view class="conversation_list_content">
+        <view wx:for="{{allConversation}}">
+          <view bindtap="changeConversation" data-content="{{item.key}}">
+            <conversationItem sentence="{{item.theme}}"></conversationItem>
+          </view>
+        </view>
       </view>
-    </view>
-     
+
 
       <!-- <view class="init_convert_btn" bindtap="viewCopyTextClick" data-content="{{item.content}}">
           </view>  -->
-          <image bindtap="initNewConversation" class="init_convert_btn" src="../../images/button/upload2.png" mode=""/>
+      <image bindtap="initNewConversation" class="init_convert_btn" src="../../images/button/upload2.png" mode="" />
 
-     
 
-   
+
+
     </view>
 
-    
+
   </view>
 
 
 </view>
 
 <view wx:if="{{mode==='talking'}}" class="leftBtnBox" bindtap="shareConvertsation">
-  <image class="share_to_Home_icon" src="../../images/index/plane.png" mode=""/>
+  <image class="share_to_Home_icon" src="../../images/index/plane.png" mode="" />
 </view>
 
 
 
 <view class="remind-box" wx:if="{{remind}}">
-  <image class="remind-img" src="/images/talkResponse100-100.gif"></image>
+  <image class="remind-img" src="/images/loading_blue.gif"></image>
+  <!-- <image class="remind-img" src="/images/talkResponse100-100.gif"></image> -->
 </view>
 
 
@@ -84,9 +85,9 @@
         <view class='message-right'>
           <!-- 文字消息还是图片消息 -->
           <text user-select wx:if='{{!item.is_img}}' class='message_txt' catchtap="clickSpeach">
-          
 
-          {{item.content}}
+
+            {{item.content}}
 
           </text>
           <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
@@ -120,11 +121,11 @@
           <image class="avatar_img" src="../../images/icon/avata.png" mode="" />
           <!-- </view> -->
 
-          <view wx:if="{{!isSpeaking}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+          <view wx:if="{{!isSpeaking&&talkRead_switch}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
             🔈
           </view>
 
-          <view wx:if="{{isSpeaking&&speakingContent===item.content}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+          <view wx:if="{{isSpeaking&&speakingContent===item.content&&talkRead_switch}}" class="speach_btn" catchtap="stopSpeach" data-content="{{item.content}}">
             🔊
           </view>
 
@@ -199,12 +200,14 @@
 <!-- <button class="YuYinBtn" catchtap="yuyin">按住说话🎙</button> -->
 
 <!-- 语音 -->
-<view class="YuYinBtnBox"  wx:if="{{mode==='talking'}}">
-<!-- 自动朗读开关 -->
+<view class="YuYinBtnBox" wx:if="{{mode==='talking'}}">
+  <!-- 自动朗读开关 -->
   <switch class="autoRA" checked="{{autoReadingAloud}}" bindchange="changeautoRA"></switch>
   <image src='../../images/talkBot/talk.png' class='autoraImg'></image>
 
- <!-- 语音唤醒开关 -->
+
+
+  <!-- 语音唤醒开关 -->
   <!-- <switch class="keep_talk_switch" checked="{{autoReadingAloud}}" bindchange="changeautoRA"></switch>
   <image src='../../images/talkBot/talk.png' class='keep_talk_icon'></image> -->
   <view class="main_voice text-center">
@@ -214,10 +217,16 @@
       <view class="pulse {{recordState == true ? 'p2' : ''}}"></view>
       <!-- <view class="pulse p2"></view> -->
     </view>
-    <view class="tips" >
+    <view class="tips">
       <text wx:if="{{recordState == false}}">按住说话</text>
       <text wx:else>{{tips}}</text>
     </view>
   </view>
 
+</view>
+
+
+<view class="mindmap_box">
+  <image src='../../images/antv_icon/mind.png' class='mindmap_img' style=" bottom: 120px;left: 75rpx;" bindtap="toCreateChart"></image>
+  <text class="mindmap_text">思维导图</text>
 </view>

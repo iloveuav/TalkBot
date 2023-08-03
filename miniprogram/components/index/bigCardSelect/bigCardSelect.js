@@ -61,10 +61,10 @@ Component({
 
       let str = JSON.stringify(corseArray[currentSwiperIndex]);
       let Cc = JSON.stringify(CurrentChapter);
-      wx.navigateTo({
-        //这里传值
-        url: "../../pages/schoolDetailBot/TalkBot?course=" + str + "&Cc=" + Cc,
-      })
+      // wx.navigateTo({
+      //   //这里传值
+      //   url: "../../pages/schoolDetailBot/TalkBot?course=" + str + "&Cc=" + Cc,
+      // })
 
       // let userEngCId = 1;
       // let userJaCId = 1;

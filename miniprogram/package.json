@@ -1,0 +1,17 @@
+{
+  "name": "miniprogram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@antv/f6-wx": "0.0.7",
+    "@antv/f6-plugin": "^1.0.3",
+    "lottie-miniprogram": "^1.0.12",
+    "weapp-cookie": "^1.4.8"
+  }
+}

@@ -2,24 +2,49 @@
   "pages": [
     "pages/door/door",
     "pages/index/index",
-    "pages/courseBotIndex/index",
-    "pages/courseBot/index",
-    "pages/narrate/index",
-    "pages/AddCourseContent/AddCourseContent",
+
+  
+
     "pages/mysel/me",
     "pages/mysel/FeedBack/FeedBack",
     "pages/mysel/applyVIP/index",
     "pages/mysel/activateVIP/index",
-    "pages/schoolDetailBot/TalkBot",
-    "pages/train/train",
     "pages/mysel/admin/admin",
-    "pages/sendNarrate/index",
-    "pages/notification/notification",
     "pages/mysel/superAdmin/index",
     "pages/mysel/superAdmin/admin/train/train",
+
+
+    "pages/AddCourseContent/AddCourseContent",
+    "pages/courseBotIndex/index",
+    "pages/courseBot/index",
     "pages/courseMessForm/index",
+    "pages/courseByAiMessForm/index",
     "pages/courseCatalogue/index",
-    "pages/conversationHistory/index"
+
+    "pages/conversationHistory/index",
+    "pages/narrate/index",
+
+    "pages/notification/notification",
+    "pages/chartBox/index",
+    "pages/chartBox/package-tree-graph/basic-dendrogram/index",
+    "pages/chartBox/package-tree-graph/tb-dendrogram/index",
+    "pages/chartBox/package-tree-graph/mind-map/index",
+    "pages/chartBox/package-tree-graph/intend-align-top/index",
+    "pages/chartBox/package-tree-graph/h-intended/index",
+    "pages/chartBox/package-tree-graph/radial-dendrogram/index",
+    "pages/chartBox/package-tree-graph/radial-compact-box/index",
+
+
+
+    "pages/chartBox/package-general-graph/basic-dagre/index",
+    "pages/chartBox/package-general-graph/dagre-combo/index",
+    "pages/chartBox/package-general-graph/dagre/index",
+    "pages/chartBox/package-general-graph/dagre-UL/index",
+    "pages/chartBox/package-tree-graph/file-system/index"
+ 
+  
+
+   
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -28,6 +53,14 @@
     "navigationBarTitleText": "对话式学习小助手",
     "navigationBarTextStyle": "white"
   },
+  "subPackages": [{
+    "root": "subpages",
+    "name": "subpages",
+    "pages": [
+     
+    ],
+    "independent": false
+  }],
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#3399FF",

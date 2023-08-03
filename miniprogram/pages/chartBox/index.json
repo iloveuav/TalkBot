@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "topCard":"/components/train/topCard/topCard",
+    "f6-canvas": "@antv/f6-wx/canvas/canvas",
+    "classCard": "/components/admin/classCard/classCard",
+    "dailySentence": "/components/index/dailySentence/dailySentence"
+  }
+}

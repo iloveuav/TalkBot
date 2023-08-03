@@ -72,17 +72,26 @@
   </view>
   <view class="line"></view>
 
-  <view class='item' bindtap='toApplyVIP'>
+  <!-- <view class='item' bindtap='toApplyVIP'>
     <view class="title">申请成为VIP 🏄‍♂️</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
-  <view class="line"></view>
+  <view class="line"></view> -->
 
   <view class='item' bindtap='toActivateVIP'>
     <view class="title">激活VIP 🏄‍♂️</view>
     <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
   </view>
   <view class="line"></view>
+
+  <!-- <view class='item' >
+    <view class="title">
+    <a href="https://claude.uavserve.online">Claude 🏄‍♂️</a> </view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+  <view class="line"></view> -->
+
+  <!-- <web-view src="https://claude.uavserve.online/gptyier"/> -->
 
   <view class='item' bindtap="logout" wx:if="{{islogin}}">
     <view class="title">退出登录</view>

@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "topCard":"/components/train/topCard/topCard",
-    "ec-canvas": "../../ec-canvas/ec-canvas",
-    "classCard": "/components/admin/classCard/classCard",
-    "dailySentence": "/components/index/dailySentence/dailySentence"
-  }
-}

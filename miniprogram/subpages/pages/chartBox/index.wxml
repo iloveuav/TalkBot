@@ -1,0 +1,35 @@
+<!--miniprogram/pages/FunTalk/FunTalk.wxml-->
+<!-- <topCard class="topCard" >
+</topCard> -->
+
+<!-- ------------------每日一句-------------------------------------------------- -->
+<view class="sentence" bindtap="toChartDetail">
+<dailySentence sentence="思维导图">
+</dailySentence>
+</view>
+
+<f6-canvas 
+  width="{{width}}"
+  height="{{height}}"
+  forceMini="{{forceMini}}"
+  pixelRatio="{{pixelRatio}}"
+  bind:onTouchEvent="handleTouch"
+  bind:onInit="handleInit"
+></f6-canvas>
+
+<!-- <view class="randerContainer">
+  <ec-canvas id="mychart-dom-graph" canvas-id="mychart-graph" ec="{{ rader }}"></ec-canvas>
+</view> -->
+
+
+
+
+<!-- ------------------------------------------------------------------------------- -->
+<!-- <view class="randerContainer">
+  <ec-canvas id="mychart-dom-graph" canvas-id="mychart-graph" ec="{{ rader }}"></ec-canvas>
+</view> -->
+
+
+<!-- <view class="crossContainer">
+  <ec-canvas id="mychart-dom-graph" canvas-id="mychart-graph" ec="{{ cross }}"></ec-canvas>
+</view> -->

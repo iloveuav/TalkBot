@@ -39,9 +39,9 @@ Page({
 
   unopen: function () {
     this.setData({
-        messageTitle: "程序员已被祭天",
-        message: "功能开发中，请耐心等待"
-      }),
+      messageTitle: "程序员已被祭天",
+      message: "功能开发中，请耐心等待"
+    }),
       this.showMessage()
   },
 
@@ -203,8 +203,9 @@ Page({
 
           console.log('SystemSetting', SystemSetting)
           if (SystemSetting) {
-            wx.setStorageSync("allCanTalk", SystemSetting.allCanTalk);
-            wx.setStorageSync("urlForTalk", SystemSetting.urlForTalk);
+            wx.setStorageSync("SystemSetting", SystemSetting);
+            // wx.setStorageSync("allCanTalk", SystemSetting.allCanTalk);
+            // wx.setStorageSync("urlForTalk", SystemSetting.urlForTalk);
           }
 
           setTimeout(() => {
@@ -375,18 +376,19 @@ Page({
     })
   },
   toSendNarrate() {
-    wx.navigateTo({
-      //这里传值
-      url: '/pages/sendNarrate/index',
-    })
+    // wx.navigateTo({
+    //   //这里传值
+    //   url: '/pages/sendNarrate/index',
+    // })
   },
 
   toCreateMessForm(e) {
     console.log(e.currentTarget.dataset.type)
     let isVip = wx.getStorageSync('isVip');
     // let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
-    var allCanTalk = wx.getStorageSync("allCanTalk");
-    if (!isVip && !allCanTalk) {
+    var SystemSetting = wx.getStorageSync("SystemSetting");
+    var allCanCreatCourse = SystemSetting.allCanCreatCourse
+    if (!isVip && !allCanCreatCourse) {
       wx.showModal({
         title: '提示',
         content: '由于您不是VIP，暂无权限创建课程，请申请成为VIP后重试',
@@ -396,7 +398,8 @@ Page({
       const type = e.currentTarget.dataset.type || 'course'
       wx.navigateTo({
         //这里传值
-        url: '/pages/courseMessForm/index?type=' + type,
+        // url: '/pages/courseMessForm/index?type=' + type,//之前的手动创建课程url
+        url: '/pages/courseByAiMessForm/index?type=' + type,
         // url: '/pages/mysel/admin/admin',
         // url: '/pages/AddEngClassContent/AddEngClassContent',
       })
@@ -405,7 +408,9 @@ Page({
   toHelper() {
     let isVip = wx.getStorageSync('isVip');
     let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
-    var allCanTalk = wx.getStorageSync("allCanTalk");
+    var SystemSetting = wx.getStorageSync("SystemSetting");
+
+    var allCanTalk = SystemSetting.allCanTalk
     if (!isVip && !allCanTalk) {
       // if (!isVip && UserQuesRecordArr.length >= 12) {
       wx.showModal({

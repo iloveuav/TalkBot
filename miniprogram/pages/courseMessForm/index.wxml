@@ -17,7 +17,7 @@
   </view>
   <view class="form_item introduce">
     <text class="chapter">eg:第一章</text>
-    <textarea class="input" bindinput="bindChange3" confirm-type="done"
+    <textarea  maxlength="-1" user-select class="input" bindinput="bindChange3" confirm-type="done"
       value='{{editCourseDetail.courseIntroduce||courseIntroduce}}' placeholder="{{thirdPlaceholder}}" />
   </view>
 </view>

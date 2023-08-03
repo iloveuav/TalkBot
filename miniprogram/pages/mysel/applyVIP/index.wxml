@@ -3,11 +3,11 @@
   <form bindsubmit="formSubmit">
     <view class="view1 ">
       <view style="margin-top:44rpx;margin-left:22rpx">
-        <text class="fongStyle1">申请成为年度会员</text>
+        <text class="fongStyle1">申请VIP</text>
       </view>
 
       <view style="margin-top:64rpx;margin-left:22rpx">
-        <text class="fongStyle2">填写申请原因及备注个人身份方便管理员识别👇</text>
+        <text class="fongStyle2">填写申请原因👇</text>
       </view>
 
       <view style="margin-top:26rpx;">

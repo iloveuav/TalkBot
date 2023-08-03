@@ -280,13 +280,13 @@ swiper {
   height: 200rpx;
 }
 
-.showCourse_box{
+.showCourse_box {
   /* border: 1px solid red; */
   height: 100px;
   height: 100%;
 }
 
-.course_title_box{
+.course_title_box {
   display: flex;
   flex-wrap: nowrap;
   margin-bottom: 30rpx;
@@ -297,5 +297,10 @@ swiper {
   display: flex;
   align-items: center;
   font-size: 36rpx;
-  
+  /* border: 1px solid red;
+  background-color: #4D9BF4;
+  background-image: url('/miniprogram/images/button/cancel.png');
+  background-repeat: no-repeat;
+  background-size: cover; */
+
 }

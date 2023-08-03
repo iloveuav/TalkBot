@@ -78,19 +78,6 @@ Component({
       })
     },
     
-    // toShowShareConvertsation(){
-    //   console.log("toShowShareConvertsation")
-    //   app.globalData.CurrentConversationUUid = this.data.gptConversationUUid
-    //   app.globalData.CurrentConversationContent= this.data.conversationInfo.conversationContent
-    //   wx.navigateTo({
-    //     //这里传值
-    //     url: "/pages/notification/notification?mode=onlyRead",
-    //   })
-    //   // wx.navigateTo({
-    //   //   //这里传值
-    //   //   url: "../../../pages/notification/notification?mode=onlyRead",
-    //   // })
-    // },
     reload: function () {
       this.triggerEvent('Reload')
     },

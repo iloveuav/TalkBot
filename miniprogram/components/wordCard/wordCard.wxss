@@ -13,6 +13,7 @@
   margin: 20rpx 0;
   border-radius: 15rpx;
   box-shadow: 0 3rpx 20rpx 1rpx rgba(0, 0, 0, 0.07);
+  background-color: rgb(255, 255, 255);
 }
 
 .img {
@@ -33,12 +34,21 @@
 .card_content{
   font-size: 24rpx;
   color: #A2A2A2;
-  margin-top: 15rpx;
-  padding: 20rpx;
-  overflow: hidden;
+  margin-top: 45rpx;
+  margin: 45rpx 10rpx 10rpx 10rpx;
+  padding: 10rpx;
+  overflow-y: auto;
   text-overflow: ellipsis;
   max-height: 100rpx;
   height: 75rpx;
+  
+}
+
+.content_text_style{
+  height: 400rpx;
+  margin-top: 20rpx;
+  padding: 10rpx;
+  /* border: 1rpx solid red; */
 }
 
 
@@ -66,3 +76,4 @@
   transform: scale(1);
   transition: all .2s linear;
 }
+

@@ -1,5 +1,4 @@
 // miniprogram/pages/index/index.js
-import * as echarts from '../../../ec-canvas/echarts';
 
 const app = getApp();
 var allCourseMess = wx.getStorageSync('allCourseMess');

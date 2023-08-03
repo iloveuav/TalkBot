@@ -1,4 +1,9 @@
 //app.js
+// npm install lottie-miniprogram
+// var F6;
+// var TreeGraph;
+
+import 'weapp-cookie'
 App({
   onLaunch: function () {
 
@@ -14,6 +19,12 @@ App({
         traceUser: true,
       })
     }
+    console.log('APP la')
+    // const antv = require('../../subpages/utils/@antv/')
+    // import F6 from '../../subpages/utils/@antv/f6-wx';
+    //  F6 = require('../miniprogram/subpages/utils/@antv/f6-wx')
+    // import TreeGraph from '@antv/f6-wx/extends/graph/treeGraph';
+    //  TreeGraph = require('../miniprogram/subpages/utils/@antv/f6-wx/extends/graph/treeGraph')
 
   },
   globalData: {
@@ -22,6 +33,12 @@ App({
     parameter: null,
 
     //AKID和AKKEY不能上传到git否则会有泄露风险
+    AKID: 'LTAI5tR6UJwz3PCPhjvxMfBM',
+    AKKEY: 'E7LVH7kg22FcLXHHfSBBBi5oBRhzF3',
+    CEAPPKEY: 'vZGa4IgAxYBX3TUQ',
+    JPAPPKEY: 'r4dw1Se1lf9NFYvl',
+    URL: "wss://nls-gateway.cn-shanghai.aliyuncs.com/ws/v1",
+
 
     CurrentCourseObj: {}, // 当前选择的课程对象
     CurrentChapter: {}// 当前选择的章节对象
