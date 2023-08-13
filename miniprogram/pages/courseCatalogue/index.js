@@ -50,6 +50,7 @@ Page({
       id: 9
     },
     ],
+    currentProgress: {},
 
     //拖拽相关
     mark: 0,
@@ -70,7 +71,8 @@ Page({
       this.setData({
         crouseDetail: crouseDetail,
         btnType: btnType,
-        pageType: options.type ? options.type : 'course'
+        pageType: options.type ? options.type : 'course',
+        currentProgress: app.globalData.CurrentChapter ? app.globalData.CurrentChapter : crouseDetail.currentProgress || {}
       })
       if (crouseDetail.useAI) {
         console.log("crouseDetail", crouseDetail)
@@ -91,10 +93,24 @@ Page({
 
   },
 
+  /**
+ * 生命周期函数--监听页面显示
+ */
+  onShow: function () {
+    console.log("show-app.globalData.CurrentChapter",app.globalData.CurrentChapter)
+    console.log("show-currentProgress",app.globalData.CurrentChapter!==null?app.globalData.CurrentChapter : this.data.crouseDetail.currentProgress || {})
+    this.setData({
+      currentProgress: app.globalData.CurrentChapter ? app.globalData.CurrentChapter : this.data.crouseDetail.currentProgress || {}
+    })
+  },
+
   getChapterListByClaude() {
     wx.showLoading({
       title: '正在生成章节目录中',
     })
+
+
+
 
     //参考章节结构如下：第一章节：英语的特点，文化背景，学习英语有什么优势
     // 第二章节：英语的语法特点  基础语法
@@ -102,28 +118,66 @@ Page({
     // 第四章节：高阶进阶语法
     // 第五章节：高阶语法应用  听力、小作文训练
     // 第六章节：冒险阶段 随机生成各种场景模拟、小游戏等  
-    const msg = `请按照接口格式返回数据  我需要你生成一个生动有趣的课程的章节架构 课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce} 不要和参考的一模一样 返回的格式参考这个返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：MARKER1{
-            "ChapterList": [
-              {
-                "courseId": "1",
-                "courseNum": "16",
-    "_id": {
-            "chapterId": 1,
-            "chapterName": "JS基础知识",
-            "className": "深入浅出Javascript",
-            "courseUUid": "c3ed5828-bd84-4785-8788-d31d26796613"
-          }
-              },  {
-                "courseId": "1",
-                "courseNum": "16",
-    "_id": {
-            "chapterId": 2,
-            "chapterName": "Javascript闭包",
-            "className": "深入浅出Javascript",
-            "courseUUid": "c3ed5828-bd84-4785-8788-d31d26796613"
-          }
-        ]
-          }MARKER2`
+
+    const courseUUid = this.data.crouseDetail.courseUUid || ''
+    const courseName = this.data.crouseDetail.courseName || ''
+    const curLanguage = this.data.crouseDetail.curLanguage || ''
+    const courseContentMode = this.data.crouseDetail.courseContentMode || 'breadth'
+    const learnContent = this.data.crouseDetail.learnContent || ''
+    const courseContentModeMap = {
+      breadth: `一个宏观围绕${learnContent}扩展式学习的章节目录`,// 广度扩展型章节
+      depth: `围绕${learnContent}不同方面深入式学习的章节目录`,// 深度挖掘型章节
+    }
+    const courseContentModeDemoMap = {
+      breadth: `MARKER1{
+        "ChapterList": [
+          {
+            "courseId": "${courseUUid}",
+            "courseNum": "-",
+"_id": {
+        "chapterId": 1,
+        "chapterName": "第一个章节名（eg:xx前世今生）",
+        "className": "${courseName}",
+        "courseUUid": "${courseUUid}"
+      }
+          },  {
+            "courseId": "1",
+            "courseNum": "-",
+"_id": {
+        "chapterId": 2,
+        "chapterName": "第二个章节名（eg:xx快速入门）",
+        "className": "${courseName}",
+        "courseUUid": "${courseUUid}"
+      }
+    ]
+      }MARKER2`,// 广度扩展型章节
+      depth: `MARKER1{
+        "ChapterList": [
+          {
+            "courseId": "${courseUUid}",
+            "courseNum": "-",
+"_id": {
+        "chapterId": 1,
+        "chapterName": "第一个章节名",
+        "className": "${courseName}",
+        "courseUUid": "${courseUUid}"
+      }
+          },  {
+            "courseId": "1",
+            "courseNum": "-",
+"_id": {
+        "chapterId": 2,
+        "chapterName": "第二个章节名",
+        "className": "${courseName}",
+        "courseUUid": "${courseUUid}"
+      }
+    ]
+      }MARKER2`,// 深度挖掘型章节
+    }
+
+
+    // mess第一部分  课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce}
+    const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
     this.firstStep_ask(msg)
 
 
@@ -712,8 +766,12 @@ Page({
       reset: false,
     }
 
+    this.setData({
+      currentProgress: CurrentChapter
+    })
+
     app.globalData.CurrentChapter = CurrentChapter
-    
+
     let str = JSON.stringify(crouseDetail);
     let Cc = JSON.stringify(CurrentChapter);
     let ChapterList = JSON.stringify(this.data.ChapterList);

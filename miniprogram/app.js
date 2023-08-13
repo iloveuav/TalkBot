@@ -27,6 +27,37 @@ App({
     //  TreeGraph = require('../miniprogram/subpages/utils/@antv/f6-wx/extends/graph/treeGraph')
 
   },
+
+  /**
+    * 设置监听器
+    */
+  setWatcher(data, watch) { // 接收index.js传过来的data对象和watch对象
+    Object.keys(watch).forEach(v => { // 将watch对象内的key遍历
+      this.observe(data, v, watch[v]); // 监听data内的v属性，传入watch内对应函数以调用
+    })
+  },
+
+
+  /**
+     * 监听属性 并执行监听函数
+     */
+  observe(obj, key, watchFun) {
+    var val = obj[key]; // 给该属性设默认值
+    Object.defineProperty(obj, key, {
+      configurable: true,
+      enumerable: true,
+      set: function (value) {
+        val = value;
+        watchFun(value, val); // 赋值(set)时，调用对应函数
+      },
+      get: function () {
+        return val;
+      }
+    })
+  },
+
+  // 原文链接：https://blog.csdn.net/xuyangxinlei/article/details/81408200
+
   globalData: {
 
     appstyleColor: '#0D7DA1',
@@ -40,8 +71,8 @@ App({
     URL: "wss://nls-gateway.cn-shanghai.aliyuncs.com/ws/v1",
 
 
-    CurrentCourseObj: {}, // 当前选择的课程对象
-    CurrentChapter: {}// 当前选择的章节对象
+    CurrentCourseObj: null, // 当前选择的课程对象
+    CurrentChapter: null// 当前选择的章节对象
 
 
 

@@ -3,14 +3,23 @@
   <!-- catchtap="toCourse"  -->
   <!-- mode='aspectFill' 不缩放自动裁切 -->
   <!-- mode='widthFix'保持宽高比例 -->
-  <view class="coverImg" >
+  <view class="coverImg">
     <image wx:if="{{courseDetail.courseFrontImgUrl&&courseDetail.courseFrontImgUrl!==''}}" class="leftImage" src="{{courseDetail.courseFrontImgUrl}}" mode="aspectFill"></image>
     <image wx:else class="leftImage" src='cloud://huixue-3g4h1ydg1dedcaf3.7461-huixue-3g4h1ydg1dedcaf3-1258960420/1591649188560.png' mode="widthFix"></image>
     <view class="title">{{courseDetail.courseName}}</view>
   </view>
   <view class="right">
     <view class="detail">
-      <text>开始了解吧</text>
+      <text>开始了解吧 </text>
+      <view class="tag_list">
+        <view class="tag" wx:for="{{courseDetail.courseTagList}}">
+          <!-- <image class="tag_icon" src="../../../images/antv_icon/terms.png" mode="" /> -->
+          <text>{{item}}</text>
+        </view>
+      </view>
+
+
+
       <text class="text_state" wx:if="{{pageType!=='studyPage'}}">{{courseDetail.state||'课程未上传封面'}}</text>
     </view>
     <view class="process">
@@ -22,6 +31,9 @@
         </view> -->
       </view>
       <text class="label">{{crouseTypeMap[courseDetail.courseType]}}</text>
+
+
+      <!-- <text class="label">test1</text> -->
     </view>
   </view>
   <view class="mineCourseBtns" wx:if="{{pageType==='mineCoursePage'||pageType==='mineNarratePage'}}">

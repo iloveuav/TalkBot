@@ -19,7 +19,13 @@ Component({
     },
     pageType: {
       type: String
+    },
+    courseTagList: {
+      type: Array,
+      value:[]
     }
+
+    
 
 
   },

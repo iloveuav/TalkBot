@@ -1,7 +1,7 @@
 <!--miniprogram/pages/TalkBot/TalkBot.wxml-->
 <view class="topCard">
-<topCard courseObject="{{courseObject}}" currentSelect="{{currentSelect||null}}"  ChapterList="{{ChapterList||[]}}" bindchangeChapter="getcurrentChapter">
-</topCard>
+  <topCard courseObject="{{courseObject}}" currentSelect="{{currentSelect||null}}" ChapterList="{{ChapterList||[]}}" bindchangeChapter="getcurrentChapter">
+  </topCard>
 </view>
 
 <!-- ---------------------tabArea------------------------ -->
@@ -14,42 +14,91 @@
       <!-- 聊天窗体 -->
       <!-- <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key='index' wx:for-index="groupindex" catchtap="preimage" bindlongtap='check' data-i="{{groupindex}}"> -->
 
-<!-- style='height: {{scrollTop}};' -->
-      <scroll-view scroll-y="true" scroll-top="{{scrollTop+100}}" scroll-with-animation enable-back-to-top
-       scroll-into-view="{{toLast}}"
-       style='height: {{scrollTop+100}};'>
+      <!-- style='height: {{scrollTop}};' -->
+      <scroll-view scroll-y="true" scroll-top="{{scrollTop+100}}" scroll-with-animation enable-back-to-top scroll-into-view="{{toLast}}" style='height: {{scrollTop+100}};margin-bottom: 100rpx;'>
         <!-- <image src="http://qayfx8qb0.bkt.clouddn.com/tmp/wx796ecbe5abb047e5.o6zAJsxEl7OaCkRJJGGx0jXlFzMc.x2v11PBX86jz4eebfa8606faf0d32e5dbd64556a2090.gif"></image> -->
 
         <!-- ----------------历史end---------- -->
-        <block id="item{{index}}" wx:for="{{centendata}}" wx:key="index" wx:for-index="groupindex" >
-          <view id="msg-{{index}}" wx:if="{{item!=null}}" class="chatBubbles {{item.contentType}} {{item.isBot?'fromOther':'fromSelf'}}" wx:key="{{}}">
-            
-            <image class="avatar" src="../../images/talkBot/image_hotspot_color@2x.png" />
-            <view class="bubbleContainer">
-              <!-- 语音部分 contentType为voice才显示 -->
-              <block wx:if='{{item.contentType=="voice"}}'>
-                <!-- 语音消息的播放暂停按钮 -->
-                <!-- <icon class="voicePlay iconfont {{isVoicePlay?'icon-PlayFilled':'icon-zanting'}}" bindtap="toggleVoicePlay"></icon> -->
-                <!-- 语音消息 音频图标 -->
-                <!-- <view class="voiceProgress" bindtap="toScrollBottom">
-                  <icon class="iconfont icon-icon7"></icon>
-                  <icon class="iconfont icon-voice"></icon>
-                  <icon class="iconfont icon-voiceprint-line"></icon>
-                  <icon class="iconfont icon-icon7"></icon>
-                </view> -->
-              </block>
-              <!-- 文字消息 content有值才显示 如果为语音消息content应为语音消息长度-->
+        <block id="item{{index}}" wx:for="{{centendata}}" wx:key="index" wx:for-index="groupindex">
+          <view id="msg-{{index}}" wx:if="{{item!=null}}" class="chatBubbles {{item.contentType}} {{item.isBot?'fromOther':'fromSelf'}}" style="margin-bottom:{{index===centendata.length?'130rpx':'10rpx'}}" wx:key="{{}}">
 
-              <!-- 图片消息 contentType为img时显示 src为数据对象中的src catchtap="speach" -->
-              <text style="font-size:38rpx;font-weight:600;" v-if='{{item.textimgTitle!=""}}' data-content="{{item.textimgTitle}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.textimgTitle}}</text>
-              <image wx:if='{{item.contentType=="img"}}' src="{{item.src}}"  mode="aspectFill" data-i="{{groupindex}}" catchtap="preimage" lazy-load></image>
-              
-              <text v-if='{{item.content!=""&&item.content!=undefined}}' data-content="{{item.content}}" data-curTTsRoleString="{{item.curTTsRoleString}}" catchtap="onTtsSpeach">{{item.content}}</text>
-            </view>
+
+            <!-- <image class="avatar" src="../../images/talkBot/image_hotspot_color@2x.png" /> -->
+
+
+
+
           </view>
 
+
+          <!-- 文本类型 -->
+          <!-- style="margin-bottom:{{index===centendata.length?'130rpx':'10rpx'}}" -->
+
+          <block wx:if="{{!item.isBot}}">
+            <!-- 右边 -->
+            <view style="width: 100%;">
+              <view class='message-right'>
+                <!-- 文字消息还是图片消息 -->
+                <text user-select wx:if='{{!item.is_img}}' class='message_txt' catchtap="clickSpeach">
+
+
+                  {{item.content}}
+
+                </text>
+                <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
+
+                <!-- <image class="avatar_img" src="../../images/icon/avata.png" mode="" /> -->
+                <image class="avatar_img" src="{{userInfo.avatarUrl||'../../images/icon/avata.png'}}" mode="" />
+                <view wx:if="{{!isSpeaking}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+                  🔈
+                </view>
+
+                <view wx:if="{{isSpeaking&&speakingContent===item.content}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+                  🔊
+                </view>
+
+                <view class="copy_btn" bindtap="viewCopyTextClick" data-content="{{item.content}}">
+                  📜
+                </view>
+              </view>
+            </view>
+          </block>
+          <block wx:if="{{item.isBot&&item.content!=''&&item.content!=undefined}}" style="width: 100%;">
+            <view style="width: 100%;">
+              <view class='message-left' style="margin-bottom:{{groupindex===centendata.length-1?'300rpx':'10rpx'}}">
+
+                <view user-select wx:if='{{!item.is_img}}' class='message_txt' data-content="{{item.content}}">
+                  {{item.content}}
+
+                  <view wx:if="{{!isSpeaking&&talkRead_switch}}" class="speach_btn" catchtap="clickSpeach" data-content="{{item.content}}">
+                    🔈
+                  </view>
+
+                  <view wx:if="{{isSpeaking&&speakingContent===item.content&&talkRead_switch}}" class="speach_btn" catchtap="stopSpeach" data-content="{{item.content}}">
+                    🔊
+                  </view>
+
+                  <view class="copy_btn" bindtap="viewCopyTextClick" data-content="{{item.content}}">
+                    📜
+                  </view>
+
+
+                </view>
+                <image wx:if='{{item.is_img}}' src='{{item.content}}' class='new_imgtent'></image>
+
+                <!-- <view class="avatar_img" bindtap="viewCopyTextClick" data-content="{{item.content}}"> -->
+                <image class="avatar_img" src="../../images/icon/avata.png" mode="" />
+                <!-- </view> -->
+
+
+
+
+              </view>
+            </view>
+          </block>
+
           <!-- ----互动类型---- -->
-          <view class="InteractBox" wx:if="{{item.contentType=='Interact'}}" >
+          <view class="InteractBox" wx:if="{{item.contentType=='Interact'}}">
             <!-- <image src="/images/button/cancel.png" style='position:absoluted;' class="cancel" bindtap=''></image> -->
             <view wx:for="{{centendata[groupindex].detail.interactData}}" wx:key="{{item.index}}">
               <button catchtap="dealInteract" class="setWaitBtn  {{centendata[groupindex].detail.choosed==index?'':''}}" confirm-type="done" hidden="{{centendata[groupindex].detail.choosed!=index&&centendata[groupindex].detail.choosed!=undefined}}" value="{{item}}" data-detail='{{centendata[groupindex].detail}}' data-id='{{index}}' data-growid='{{groupindex}}' disabled="{{centendata[groupindex].detail.choosed!=undefined}}">
@@ -68,30 +117,54 @@
           </view>
           <!-- ------------------------------------------------- -->
 
-       
+
         </block>
         <!-- <view class='hei' id="hei"></view> -->
-        <button wx:if="{{classLength==0&&start==true}}" class="nextClassBtn" catchtap="toNextClass">进入下一课？</button>
-        <button wx:if="{{start==false&&classLength==0}}" class="nextClassBtn" catchtap="startTeach">开始上课</button>
+        <button wx:if="{{!isExtensionContent&&!userTalking&&centendata&&showContinueByLast&&classLength==0&&start==true&&courseObject.useAI}}" class="nextClassBtn" style="bottom:{{userTalking?'1.4%':'0.2%'}}" catchtap="continueAddCurChaContent">生成本章节新内容</button>
+        <button wx:if="{{!userTalking&&classLength==0&&start==true&&!courseObject.useAI}}" style="bottom:{{userTalking?'1.2%':'0%'}}" class="nextClassBtn" catchtap="toNextClass">进入下一课？</button>
+        <button wx:if="{{start==false&&classLength==0}}" style="bottom:{{userTalking?'1.2%':'0%'}}" class="nextClassBtn" catchtap="startTeach">开始上课</button>
       </scroll-view>
 
     </view>
     <!-- root节点 -->
 
   </view>
-  <!-- 旧的聊天窗体 -->
-  <!-- 旧的sview end -->
-  <!-- mess end -->
 </view>
 
-<button class="continueBtn" wx-if="{{continueBtn&&classLength!=0}}" catchtap="showTeach">continue</button>
-<switch class="autoRA" checked="{{autoReadingAloud}}" bindchange="changeautoRA"></switch>
-<image src='../../images/talkBot/talk.png' class='autoraImg'></image>
+<view class="sendmessage" wx:if="{{userTalking}}">
+  <image src="/images/button/cancel2.png" style='position:absoluted;' class="close_input" catchtap="closeInput"></image>
+
+  <input maxlength="-1" type="emoji" bindinput="getUserInput" confirm-type="done" value='{{news_input_val}}' placeholder="" />
+  <button class="btn" disabled="{{remind}}" catchtap="askClaude">发送</button>
+
+  <!-- <input style='display:none' type="" bindinput="bindChange" confirm-type="done" placeholder="" /> -->
+</view>
+
+<!-- 语音朗读开关 -->
+<view class="main_voice">
+  <view class="voice_ico shadow" bindtouchstart="touchStart" bindtouchend="touchEnd">
+    <view class="maike_icon">🎙</view>
+    <text class="cuIcon-voicefill "></text>
+    <view class="pulse {{recordState == true ? 'p1' : ''}}"></view>
+    <view class="pulse {{recordState == true ? 'p2' : ''}}"></view>
+    <!-- <view class="pulse p2"></view> -->
+  </view>
+  <view class="tips">
+    <text wx:if="{{recordState == false}}">按住说话</text>
+    <text wx:else>{{tips}}</text>
+  </view>
+</view>
+
+
+
+<button class="continueBtn" wx-if="{{continueBtn&&classLength!=0}}" style="bottom:{{userTalking?'8%':'2%'}}" catchtap="showTeach">continue</button>
+<switch class="autoRA" style="bottom:{{userTalking?'5%':'2%'}}" checked="{{autoReadingAloud}}" bindchange="changeautoRA"></switch>
+<image src='../../images/talkBot/talk.png' class='autoraImg' style="bottom:{{userTalking?'6%':'2%'}}"></image>
 
 <image src='../../images/button/goup.png' class='goTop' hidden='{{!backTopValue}}' bindtap="backTop"></image>
 
 
- <view class='hei' id="hei"></view>
-   <view class='hei' id="hei"></view>
+<view class='hei' id="hei"></view>
+<view class='hei' id="hei"></view>
 
 <!-- <view id="footer" class='{{isShowChooseModal?"":"closeDown"}}'></view> -->

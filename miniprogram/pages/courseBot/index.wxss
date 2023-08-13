@@ -15,42 +15,6 @@ page {
   margin-bottom: 150rpx;
 }
 
-/* 聊天 */
-
-/* 对定位：position:relative;如果一个元素的设置该属性为relative，那么就激活了该元素left和top属性，利用这两个属性，该元素就相对于它自身原本在普通文档流中的位置进行偏移，但无论如何进行移动，元素仍然占据原来的空间，仍然属于普通流。 */
-
-.message-right {
-  max-width: 80%;
-  line-height: 40rpx;
-  float: right;
-  position: relative;
-  right: 40rpx;
-  text-align: left;
-}
-
-/* 浮动模型。浮动的元素脱离普通文档流，向左或者向右移动，直到它的边缘碰到包含框或者另一个浮动框的边缘。因为浮动框不在文档的普通流中，所以文档的普通流中的块框表现得就像浮动框不存在一样。 */
-
-.message-left {
-  max-width: 80%;
-  line-height: 40rpx;
-  float: left;
-  position: relative;
-  left: 5rpx;
-  text-align: left;
-}
-
-.new_img {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-}
-
-.message_txt {
-  display: inline-block;
-  padding: 10rpx 30rpx;
-  border-radius: 7px;
-  background-color: #95d4ff;
-}
 
 .userButton {
   /* background-color: white; */
@@ -154,11 +118,11 @@ page {
 
 .InteractBox {
   /* background-color: rgb(204, 36, 36); */
-  background-color: whitesmoke;
+  background-color: rgba(245, 245, 245, 0);
   /* width: 65%; */
   min-width: 200rpx;
   min-height: 100rpx;
-  max-height: 420rpx;
+  /* max-height: 520rpx; */
   padding: 25rpx;
   /* position: absolute; */
   display: flex;
@@ -252,7 +216,7 @@ button[disabled] {
   align-items: center;
 }
 
-.avatar{
+.avatar {
   width: 92rpx;
   height: 92rpx;
   border-radius: 50%;
@@ -407,4 +371,269 @@ button[disabled] {
 .wordCard {
 
   margin-bottom: 60rpx;
+}
+
+.sendmessage {
+  background-color: white;
+  width: 100%;
+  padding: 5rpx;
+  position: fixed;
+  bottom: 0rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.sendmessage input {
+  width: 90%;
+  margin: 10rpx auto;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  padding-left: 20px;
+  padding-right: 110rpx;
+  box-sizing: border-box;
+  box-shadow: 0 0 8rpx #ccc;
+  border: 1px solid #d0d0d0;
+  border-radius: 40rpx;
+  background-color: white;
+}
+
+.sendmessage button {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-55%);
+  width: 60rpx;
+  height: 36px;
+  background: #fff;
+  color: #000;
+  line-height: 40px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.sendmessage button::after {
+  border: none;
+}
+
+.btn {
+  color: #555;
+  background-color: red;
+  width: 160rpx !important;
+  height: 100rpx;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+.main_voice {
+  position: relative;
+  /* border: 1rpx solid red; */
+  width: 120rpx;
+  height: 120rpx;
+
+
+  position: fixed;
+  bottom: 10%;
+  right: 80%;
+}
+
+.voice_ico {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(-45deg, #9cedf3, #3da0f1);
+  border-radius: 50%;
+  font-size: 3rem;
+  color: #fff;
+  line-height: 150rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.maike_icon {
+  /* border: 1rpx solid red; */
+  transform: translateY(-30rpx);
+}
+
+.voice_ico .pulse {
+  position: absolute;
+  width: 250rpx;
+  height: 250rpx;
+  left: -75rpx;
+  right: 0rpx;
+  margin: auto;
+  border: 2px solid #39f;
+  border-radius: 50%;
+  opacity: 0;
+  top: -52px;
+  z-index: -1;
+}
+
+.p1 {
+  animation: warn 2s ease-out infinite;
+}
+
+.p2 {
+  animation: warn2 2s ease-out infinite;
+}
+
+@keyframes warn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.0;
+  }
+
+  25% {
+    transform: scale(0.3);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: scale(0.5);
+    opacity: 0.3;
+  }
+
+  75% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.0;
+  }
+}
+
+@keyframes warn2 {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.0;
+  }
+
+  25% {
+    transform: scale(0.3);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: scale(0.3);
+    opacity: 0.3;
+  }
+
+  75% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(0.8);
+    opacity: 0.0;
+  }
+}
+
+.tips {
+  text-align: center;
+  position: absolute;
+  bottom: 130rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.7rem;
+  width: 100%;
+}
+
+
+/* 聊天 */
+
+
+/* 对定位：position:relative;如果一个元素的设置该属性为relative，那么就激活了该元素left和top属性，利用这两个属性，该元素就相对于它自身原本在普通文档流中的位置进行偏移，但无论如何进行移动，元素仍然占据原来的空间，仍然属于普通流。 */
+.message-right {
+  max-width: 80%;
+  line-height: 40rpx;
+  float: right;
+  position: relative;
+  right: 40rpx;
+  text-align: left;
+}
+
+/* 浮动模型。浮动的元素脱离普通文档流，向左或者向右移动，直到它的边缘碰到包含框或者另一个浮动框的边缘。因为浮动框不在文档的普通流中，所以文档的普通流中的块框表现得就像浮动框不存在一样。 */
+.message-left {
+  max-width: 80%;
+  width: 90%;
+  line-height: 40rpx;
+  float: left;
+  position: relative;
+  left: 15rpx;
+  text-align: left;
+  margin-top: 18rpx;
+  
+  /* z-index: 888; */
+}
+
+
+.new_img {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+
+.message_txt {
+  display: inline-block;
+  min-width: 220rpx;
+  padding: 100rpx 30rpx 30rpx 30rpx;
+  border-radius: 7px;
+  /* background-color: #95d4ff; */
+  background-color: #E4F0FA;
+  color: #6D7678;
+  border: 1rpx solid rgb(62, 125, 177);
+  position: relative;
+}
+
+.avatar_img {
+  position: absolute;
+  left: 20rpx;
+  top: 20rpx;
+  width: 60rpx;
+  height: 60rpx;
+  text-align: center;
+  border-radius: 25%;
+  border: 1px solid white;
+  /* background-color: #9fb7ca; */
+  font-size: 40rpx;
+}
+
+.copy_btn {
+  position: absolute;
+  right: 10rpx;
+  top: 25rpx;
+  width: 100rpx;
+  text-align: center;
+  border-radius: 20rpx;
+  /* background-color: #9fb7ca; */
+  font-size: 40rpx;
+}
+
+.speach_btn {
+  position: absolute;
+  right: 80rpx;
+  top: 25rpx;
+  width: 100rpx;
+  text-align: center;
+  border-radius: 20rpx;
+  /* background-color: #9fb7ca; */
+  font-size: 40rpx;
+}
+
+.close_input {
+  position: absolute;
+  width: 35rpx;
+  height: 35rpx;
+  top: -16rpx;
+  right: 18rpx;
+  z-index: 99999;
 }

@@ -76,6 +76,13 @@
           "query": "pageType=mineCoursePage",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/courseCatalogue/index",
+          "query": "btnType=priview",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

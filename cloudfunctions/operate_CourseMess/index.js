@@ -71,7 +71,9 @@ exports.main = async (event, context) => {
                 //AI需要的部分
                 courseContentMode: event.courseMess.courseContentMode,
                 curLanguage: event.courseMess.curLanguage || undefined,
-                depthContent: event.courseMess.depthContent
+                learnContent: event.courseMess.learnContent,
+                curContentType: event.courseMess.curContentType || 'ask',
+                courseTagList: event.courseMess.courseTagList || []
 
               }
             })
@@ -92,7 +94,9 @@ exports.main = async (event, context) => {
                 //AI需要的部分
                 courseContentMode: event.courseMess.courseContentMode,
                 curLanguage: event.courseMess.curLanguage || undefined,
-                depthContent: event.courseMess.depthContent
+                learnContent: event.courseMess.learnContent,
+                curContentType: event.courseMess.curContentType || 'ask',
+                courseTagList: event.courseMess.courseTagList || []
               },
             })
           }
@@ -127,6 +131,32 @@ exports.main = async (event, context) => {
       console.error(e)
     }
   }
+  if (event.mode === 'extensionCharaterContent') {
+    try {
+      return db.collection(Collection).where({
+        courseUUid: event.courseUUid,
+      }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return;
+          } else {
+            return db.collection(Collection).where({
+              courseUUid: event.courseUUid
+            }).update({
+              data: {
+                ChapterContentMap: {
+                  [event.curChapterName]: db.command.push(event.ChapterContent),
+                }
+              },
+            })
+          }
+        })
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
   if (event.mode === 'operateCharaterContent') {
     try {
       return db.collection(Collection).where({
@@ -142,8 +172,32 @@ exports.main = async (event, context) => {
             }).update({
               data: {
                 ChapterContentMap: {
-                  [event.curChapterName]: event.ChapterContent
+                  [event.curChapterName]: db.command.push(event.ChapterContent),
                 }
+              },
+            })
+          }
+        })
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  if (event.mode === 'updateCourseProgress') {
+    try {
+      return db.collection(Collection).where({
+        courseUUid: event.courseUUid,
+      }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return;
+          } else {
+            return db.collection(Collection).where({
+              courseUUid: event.courseUUid
+            }).update({
+              data: {
+                curCourseProgress: event.curChapter
               },
             })
           }

@@ -49,10 +49,10 @@
   <view>
     <view class="title" wx:if="{{editCourseDetail.courseContentMode==='breadth'}}">扩展式学习的内容</view>
     <view class="title" wx:if="{{editCourseDetail.courseContentMode==='depth'}}">深入学习的内容</view>
-    <view class='tips'>填写具体学习内容~</view>
+    <view class='tips'>填写具体想学习的内容~</view>
     <view class="form_item introduce">
       <text class="chapter">eg:英语长短句 其作用和如何在作文中使用</text>
-      <textarea maxlength="-1" user-select class="input" bindinput="bindChange4" confirm-type="done" value='{{editCourseDetail.learnContent||learnContent}}' placeholder="输入想学习的内容，内容不一定是语言知识也可以是某一个新知识的内容 比如用英语学习C++的语法 用英语教我日语等" />
+      <textarea maxlength="-1" user-select class="input" bindinput="bindChange4" confirm-type="done" value='{{editCourseDetail.learnContent||learnContent}}' placeholder="输入想学习的内容，比如用英语学习C++的语法、用英语教我日语、生活百科100道必会题等" />
     </view>
   </view>
 

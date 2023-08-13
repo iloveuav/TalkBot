@@ -305,6 +305,7 @@ Page({
       creatTime: time.formatTime(new Date, 'Y/M/D'),
 
       //AI需要的部分
+      useAI:true,
       courseContentMode: this.data.editCourseDetail.courseContentMode || 'breadth',
       curLanguage: this.data.editCourseDetail.curLanguage || 'English',
       learnContent: this.data.editCourseDetail.learnContent || '',
@@ -332,46 +333,46 @@ Page({
       env: 'bot-cloud1-7g30ztcr37ed0193'
     })
     console.log("courseMess", courseMess)
-    // wx.cloud.callFunction({
-    //   name: 'operate_CourseMess',
-    //   data: {
-    //     courseMess: courseMess,
-    //     type: this.data.type,
-    //     mode: 'operateDetail'
-    //   },
-    //   success: res => {
-    //     if (this.data.isPageEdit) {
-    //       wx.navigateBack({
-    //         delta: 2//返回的页面数
-    //       });
-    //       return;
-    //     } else {
-    //       const crouseDetail = courseMess
-    //       app.globalData.CurrentCourseObj = crouseDetail
-    //       wx.navigateTo({
-    //         //这里传值
-    //         url: "../../pages/courseCatalogue/index?btnType=" + 'edit' + "&type=" + this.data.type,
-    //         // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
-    //         // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
-    //       })
-    //       return;
-    //     }
+    wx.cloud.callFunction({
+      name: 'operate_CourseMess',
+      data: {
+        courseMess: courseMess,
+        type: this.data.type,
+        mode: 'operateDetail'
+      },
+      success: res => {
+        if (this.data.isPageEdit) {
+          wx.navigateBack({
+            delta: 2//返回的页面数
+          });
+          return;
+        } else {
+          const crouseDetail = courseMess
+          app.globalData.CurrentCourseObj = crouseDetail
+          wx.navigateTo({
+            //这里传值
+            url: "../../pages/courseCatalogue/index?btnType=" + 'edit' + "&type=" + this.data.type,
+            // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+            // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&Cc=" + Cc,
+          })
+          return;
+        }
 
-    //   },
-    //   fail: err => {
-    //     // handle error
-    //     wx.showModal({
-    //       title: '提示',
-    //       content: '课程信息上传出错 请检查网络',
-    //       showCancel: false,
-    //     })
-    //     return;
-    //   },
-    //   complete: res => {
-    //     console.log('callFunction test result: ', res)
-    //     wx.hideLoading()
-    //   }
-    // })
+      },
+      fail: err => {
+        // handle error
+        wx.showModal({
+          title: '提示',
+          content: '课程信息上传出错 请检查网络',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+      }
+    })
   },
 
   useTecentCloud() {

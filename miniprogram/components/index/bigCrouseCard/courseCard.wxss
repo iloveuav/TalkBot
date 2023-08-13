@@ -44,7 +44,7 @@
 .detail{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: left;
   margin-bottom: 14rpx;
 }
 .label{
@@ -53,6 +53,28 @@
   padding: 10rpx 20rpx;
   font-size: 20rpx;
   font-weight: 400;
+}
+.tag_list{
+  max-width: 300rpx;
+  display: flex;
+  margin-left: 20rpx;
+  /* border: 1rpx solid red; */
+  /* align-items: l; */
+  /* justify-content: left; */
+}
+.tag{
+  background: #8dddc2;
+  border-radius: 10rpx;
+  padding: 6rpx 15rpx;
+  margin: 0rpx 5rpx;
+  font-size: 20rpx;
+  font-weight: 400;
+
+  font-size: 16rpx;
+  color: #3a3838;
+
+  /* display: flex;
+  flex-wrap: nowrap; */
 }
 .process{
   display: flex;
@@ -88,6 +110,14 @@
 .text_state {
   color: #bdb1b1;
   font-size: 20rpx;
+  position: absolute;
+  top: 25rpx;
+  right: 15rpx;
+}
+
+.tag_icon{
+  width: 30rpx;
+  height: 30rpx;
 }
 
 .mineCourseBtns {

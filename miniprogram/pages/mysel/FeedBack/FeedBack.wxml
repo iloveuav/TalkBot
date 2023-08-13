@@ -14,10 +14,10 @@
         <textarea class="textarea" name="text" placeholder="由此输入..." maxlength="180"></textarea>
       </view>
 
-      <view class="marginBottom marginTop marginLeft">
+      <!-- <view class="marginBottom marginTop marginLeft">
         <text class="floatLeft fongStyle">联系方式:</text>
         <input class="input fongStyle" name="number" placeholder="请填写QQ号或者电话号码（非必填）" maxlength="20"></input>
-      </view>
+      </view> -->
       <view class="view2"> </view>
     </view>
 

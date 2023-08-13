@@ -301,20 +301,14 @@ page {
   bottom: 0rpx;
   display: flex;
   flex-direction: row;
-  /* z-index: 999; */
-
-  /* border: 1px solid black; */
 }
 
 .sendmessage input {
   width: 90%;
   margin: 10rpx auto;
   height: 40px;
-
   line-height: 40px;
   font-size: 14px;
-
-
   padding-left: 20px;
   padding-right: 110rpx;
   box-sizing: border-box;
@@ -322,7 +316,6 @@ page {
   border: 1px solid #d0d0d0;
   border-radius: 40rpx;
   background-color: white;
-
 }
 
 .sendmessage button {

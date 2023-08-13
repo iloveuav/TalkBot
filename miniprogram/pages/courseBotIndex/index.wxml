@@ -34,23 +34,18 @@
 
     <view wx:for="{{allCourse}}">
       <view wx:if="{{pageType ==='studyPage'&&item.state==='审核通过'}}">
-        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
-          bindchangeCourse="getcurrentCourse">
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
 
 
-      <view
-        wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
-        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
-          bindchangeCourse="getcurrentCourse">
+      <view wx:if="{{(item.isMineCourse===undefined&&pageType ==='mineCoursePage')||item.isMineCourse&&pageType ==='mineCoursePage'}}">
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
 
-      <view
-        wx:if="{{(item.userCollectedFlag&&pageType ==='collectCoursePage'&&(item.isMineCourse||item.state==='审核通过'))}}">
-        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}"
-          bindchangeCourse="getcurrentCourse">
+      <view wx:if="{{(item.userCollectedFlag&&pageType ==='collectCoursePage'&&(item.isMineCourse||item.state==='审核通过'))}}">
+        <courseCard courseDetail="{{item}}" currentIndex="{{currentIndex}}" pageName="index" pageType="{{pageType}}" bindchangeCourse="getcurrentCourse">
         </courseCard>
       </view>
     </view>

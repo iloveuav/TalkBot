@@ -3,7 +3,7 @@
 import util from '../../utils/util'
 import cookies from 'weapp-cookie'
 const app = getApp();
-const plugin = requirePlugin("WechatSI")
+var time = require('../../utils/util.js');
 const windowHeight = wx.getSystemInfoSync().windowHeight;
 const windowWidth = wx.getSystemInfoSync().windowWidth;
 // 课程内容获取状态管理
@@ -34,6 +34,20 @@ const getToken = require("../../tts/token").getToken
 const fs = wx.getFileSystemManager()
 const ctx = wx.createInnerAudioContext()
 
+//引入插件：微信同声传译
+const plugin = requirePlugin('WechatSI');
+//获取全局唯一的语音识别管理器recordRecoManager
+const manager = plugin.getRecordRecognitionManager();
+// 设置采集声音参数
+const options = {
+  sampleRate: 44100,
+  numberOfChannels: 1,
+  encodeBitRate: 192000,
+  format: 'aac'
+}
+
+var message = '';
+var showContinueByLast = false;
 
 Page({
   /**
@@ -47,11 +61,14 @@ Page({
     btnDie: false,
     start: false,
     autoReadingAloud: true, //自动读开关
-
+    userTalking: false,//用户是否正在说话
+    recordState: false, //录音状态
     classLength: 0,
+    showContinueByLast: false, //根据最后的内容 判断是否显示 加载本章节更多
 
     className: "",
     centendata: [],
+    news_input_val: '',
 
 
 
@@ -67,12 +84,15 @@ Page({
 
     classCollection: '',
     continueBtn: false,
+    isExtensionContent: false,
     ChapterList: [],
 
     //阿里tts
     ttsStart: false,
     ttsText: "",
     curTTsRoleString: '', //不同文本里面设置的发音人字段
+    isSpeaking: false,
+
 
     tts: {}
   },
@@ -81,18 +101,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    let courseObject = JSON.parse(options.course);
     console.log("options", options)
-    console.log("courseBot-onLoad-courseObject", courseObject)
-    let Cc = JSON.parse(options.Cc);
-    CurrentChapter = Cc //正确获取index页面传过来的课程信息 
-
-    var that = this;
+    var SystemSetting = wx.getStorageSync("SystemSetting");
+    var talkRead_switch = SystemSetting.talkRead_switch
     this.setData({
-      courseObject: courseObject,
-      userSelect: Cc || null,
-      // ChapterList: ChapterList
+      talkRead_switch: talkRead_switch,//控制是否显示语音朗读按钮
     })
+
+    getApp().setWatcher(this.data, this.watch); // 设置监听器
+
+
+    if (options && options.Cc) {
+      let courseObject = JSON.parse(options.course);
+      let Cc = JSON.parse(options.Cc);
+      CurrentChapter = Cc //正确获取index页面传过来的课程信息 
+
+      var that = this;
+      this.setData({
+        courseObject: courseObject,
+        userSelect: Cc || null,
+        // ChapterList: ChapterList
+      })
+
+      this.initRecord();
+
+    }
+
 
     //阿里tts
     try {
@@ -116,7 +150,6 @@ Page({
     })
 
     tts.on("data", (msg) => {
-      // console.log(`recv size: ${msg.byteLength}`)
       //console.log(dumpFile.write(msg, "binary"))
       if (this.data.saveFile) {
         try {
@@ -140,9 +173,8 @@ Page({
       fs.close({
         fd: this.data.saveFd,
         success: (res) => {
-          //  ctx = wx.createInnerAudioContext()
+          // let ctx = wx.createInnerAudioContext()
           ctx.autoplay = true
-          ctx.play();
           ctx.src = this.data.saveFile
           ctx.onPlay(() => {
             console.log('start playing..')
@@ -165,6 +197,9 @@ Page({
           })
           ctx.onEnded((res) => {
             console.log("play done...")
+            this.setData({
+              isSpeaking: false
+            })
             this.data.isVoicePlaying = false
             fs.unlink({
               filePath: this.data.saveFile,
@@ -186,16 +221,44 @@ Page({
     })
 
     tts.on("closed", () => {
-
-      console.log("Client recv closed1111")
+      console.log("Client recv closed")
     })
 
     tts.on("failed", (msg) => {
       console.log("Client recv failed:", msg)
     })
-
     this.data.tts = tts
 
+  },
+
+
+  watch: {
+    centendata: function (centendata) {
+      if (centendata.length > 0) {
+        console.log(centendata); // centendata改变时，调用该方法输出新值。
+        if (centendata[centendata.length - 1].contentType === 'Interact' && centendata[centendata.length - 1].detail.answer === '') {
+          showContinueByLast//最后是交互的但是没答案 要显示
+        }
+
+        if (centendata[centendata.length - 1].contentType === 'Interact' && centendata[centendata.length - 1].detail.answer !== '') {
+          showContinueByLast = false//最后是交互的但是有答案 不显示
+        }
+
+        if (centendata[centendata.length - 1].contentType !== 'Interact') {
+          showContinueByLast = true//最后不是交互的 显示
+        }
+        console.log("this.data", showContinueByLast)
+
+        // this.setData({
+        //   showContinueByLast
+        // })
+
+
+      } else {
+        showContinueByLast = true//没内容要显示
+      }
+
+    }
   },
 
   onShareAppMessage: function () {
@@ -240,11 +303,15 @@ Page({
     // // let EngLeftOverClassConten = [];
     // // let JaLeftOverClassConten = [];
 
-    console.log("app.globalData.CurrentCourseObj",app.globalData)
+    console.log("app.globalData.CurrentCourseObj", app.globalData)
     this.setData({
-      courseObject: app.globalData.CurrentCourseObj||{},
-      userSelect: app.globalData.CurrentChapter||{},
+      courseObject: app.globalData.CurrentCourseObj || {},
+      userSelect: app.globalData.CurrentChapter || {},
     })
+    if (app.globalData.CurrentChapter) {
+      this.data.userSelect = app.globalData.CurrentChapter
+      // this.updateCourseProgress(app.globalData.CurrentChapter)
+    }
 
     // app.globalData.CurrentCourseObj = courseDetail
 
@@ -322,6 +389,8 @@ Page({
     if (courseObject.currentProgress) { //用户对课程有进度 弹出模态框确认是变更章节还是留着当前章节
       console.log("courseObject.currentProgress", courseObject.currentProgress)
       const userSelect = this.data.userSelect
+      console.log("courseObject.userSelect", courseObject.userSelect)
+
       if (courseObject.currentProgress.chapterId !== userSelect.chapterId) //用户选择的课程与之前课程章节不同
       {
         wx.showModal({
@@ -409,46 +478,46 @@ Page({
   },
 
   //阿里tts
-  onTtsSpeach: function (e) {
-    var SystemSetting = wx.getStorageSync("SystemSetting");
-    const courseRead_switch = SystemSetting.courseRead_switch
-    if (courseRead_switch) {
-      let content = '' //获取文本内容
-      let curTTsRoleString = '' //获取文本发音人
-      console.log("curTTsRoleString---e", e);
-      if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) { //自动朗读
-        content = e.content
-        curTTsRoleString = e.curTTsRoleString || "Rosa"
-        this.data.curTTsRoleString = curTTsRoleString
-        // console.log(e);
-      } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
-        content = e.currentTarget.dataset.content;
+  onTtsSpeach: function (e, type) {
+    let content = ''
+    let that = this
+    console.log('tts1', e);
+    console.log('tts1-type', type);
 
+
+    let islogin = wx.getStorageSync('islogin');
+    if (islogin == false || islogin == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录，请在【我的】中进行微信登录后重试',
+        showCancel: false
+      })
+    } else {
+      if (type && type === 'autoSpeach') {
+        content = e
       } else {
-        if (e.currentTarget.dataset.content != undefined && this.data.autoReadingAloud == false) {
+        if (e) {
+          content = e
+        }
+        if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content == undefined) {
+          content = e
+          // console.log(e);
+        } else if (this.data.autoReadingAloud == true && e.currentTarget?.dataset?.content !== undefined) {
           content = e.currentTarget.dataset.content;
-          console.log(content)
-        }
-        if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) { //关闭了自动朗读
-          content = e.content
-          curTTsRoleString = e.curTTsRoleString || "Rosa"
-          this.data.curTTsRoleString = curTTsRoleString
+        } else {
+          if (e.currentTarget.dataset.content != undefined && this.data.autoReadingAloud == false) {
+            content = e.currentTarget.dataset.content;
+            console.log(content)
+          }
+          if (e.currentTarget.dataset.content == undefined && this.data.autoReadingAloud == false) {
+            content = e
+          }
         }
       }
-      if (e.currentTarget?.dataset?.curttsrolestring !== undefined) { //如果是用户点击文本朗读
-        curTTsRoleString = e.currentTarget?.dataset?.curttsrolestring
-        this.data.curTTsRoleString = curTTsRoleString
-      }
-      // if (e.currentTarget?.dataset?.curttsrolestring !== undefined) {//如果是系统自动朗读
-      //   curTTsRoleString = e.currentTarget?.dataset?.curttsrolestring|| "Rosa"
-      //   this.data.curTTsRoleString = curTTsRoleString
-      // }
-
-      console.log('curTTsRoleString', e.currentTarget?.dataset?.curttsrolestring)
-      console.log('curTTsRoleString2', this.data.curTTsRoleString)
 
 
-      var that = this
+
+      console.log('tts', content)
       if (!content || !this.data.tts) {
         console.log("text empty")
         wx.showToast({
@@ -459,23 +528,31 @@ Page({
         })
         return
       }
-      // if (this.data.ttsStart) {
-      //   wx.showToast({
-      //     title: "正在合成请稍候",
-      //     icon: "error",
-      //     duration: 1000,
-      //     mask: true
-      //   })
-      //   return
-      // } else {
-      //   this.data.ttsStart = true
-      // }
 
       if (this.data.isVoicePlaying) {
         ctx.pause();
       }
 
-
+      if (this.data.ttsStart) {
+        // wx.showToast({
+        //   title: "正在合成请稍候",
+        //   icon: "error",
+        //   duration: 1000,
+        //   mask: true
+        // })
+        return
+      } else {
+        // this.data.ttsStart = true
+        this.setData({
+          ttsStart: true,
+        })
+        // wx.showToast({
+        //   title: "正在合成请稍候",
+        //   icon: "error",
+        //   duration: 1000,
+        //   mask: true
+        // })
+      }
       console.log("try to synthesis:" + content)
       let save = formatTime(new Date()) + ".wav"
       let savePath = wx.env.USER_DATA_PATH + "/" + save
@@ -487,17 +564,25 @@ Page({
           console.log(`open ${savePath} done`)
           this.data.saveFd = res.fd
           this.data.saveFile = savePath
-          // voice 中英混女声 Rosa/Lydia   日语女声 tomoka
+          console.log("tts3", this.data.tts)
+          console.log("tts3", that.data.tts)
+
+          // voice 中英混女声 Rosa   日语女声 tomoka
           let param = this.data.tts.defaultStartParams('tomoka')
           // let param = this.data.tts.defaultStartParams('Rosa')
           param.text = content
-          param.voice = this.data.curTTsRoleString || "Rosa"
+          // param.voice = "tomoka"
+          param.voice = this.data.curTTsRoleString
           try {
-            console.log('this.data.tts', this.data.tts)
             await this.data.tts.start(param)
-
             console.log("tts done")
-            this.data.ttsStart = false
+            // this.data.ttsStart = false
+            // this.hideLoading();
+            this.setData({
+              ttsStart: false,
+              isSpeaking: true,
+              speakingContent: content
+            })
           } catch (e) {
             console.log("tts start error:" + e)
           }
@@ -507,15 +592,49 @@ Page({
         }
       })
 
-      // else{
-      //    this.data.tts.
-      // }
-    } else {
-      wx.showToast({
-        title: '当前语音朗读暂不可用',
-        icon: 'none',
-      })
     }
+
+
+  },
+
+  updateCourseProgress(curChapter) {
+    console.log("curChapter", curChapter)
+    app.globalData.CurrentChapter = curChapter
+    wx.cloud.callFunction({
+      name: 'operate_CourseMess',
+      data: {
+        courseUUid: this.data.courseObject.courseUUid,
+        mode: 'updateCourseProgress',
+        curChapter: curChapter,
+      },
+      success: res => {
+
+        wx.showToast({
+          title: '课程进度云同步成功',
+          icon: 'sucess',
+        })
+
+      },
+      fail: err => {
+        // handle error
+        wx.showToast({
+          title: '课程进度云同步失败',
+          icon: 'error',
+        })
+
+        wx.showModal({
+          title: '提示',
+          content: '请检查网络后重试',
+          showCancel: false,
+        })
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        this.data.isExtensionContent = false
+        wx.hideLoading()
+      }
+    })
 
   },
 
@@ -577,11 +696,15 @@ Page({
   // ============================================================
 
   showTeach: function () {
-    this.setData({
-      start: true,
-      continueBtn: false,
-      classLength: LeftOverClassConten.length,
-    })
+    setTimeout(() => {
+      this.setData({
+        start: true,
+        continueBtn: false,
+        classLength: LeftOverClassConten.length,
+        showContinueByLast: showContinueByLast
+      })
+    }, 300);
+
     let that = this;
     // let classContent = wx.getStorageSync('newClassContent');
     // console.log(classContent);
@@ -643,9 +766,11 @@ Page({
             // this.speach(data.content);
             this.onTtsSpeach({
               content: data.content,
-              curTTsRoleString: data.curTTsRoleString
+              curTTsRoleString: data.curTTsRoleString || 'autoSpeach'
             });
           }
+
+
           this.bottom();
           this.sleep(100);
           // 更新本地历史记录
@@ -668,6 +793,230 @@ Page({
 
   },
 
+  getAskStringBycourseDetail: function () {
+
+    const currentSelect = this.data.currentSelect
+    const courseObject = this.data.courseObject
+
+    const demoCourseNameMap = {
+      'ask': `关于${currentSelect.chapterName}问答`,
+      'get': `认识${currentSelect.chapterName}`
+    }
+
+    const courseTypeMap = {
+      'ask': '课程内容必须至少80%以问答为主',
+      'get': '课程内容必须至少80%以讲解为主'
+    }
+
+    //第一次提问
+    const firstDemoTypeMap = {
+      ask: `MARKER1{
+        "ContentList": [
+        { 
+         "contentType": "text",
+         "curTTsRoleString": "shanshan",
+         "detail": {},
+         "isBot": true,
+         "content": "接下来，我们开始进行${currentSelect.chapterName}的问答环节"
+       },
+       {
+        "curTTsRoleString": "shanshan",
+        "contentType": "Interact",
+        "detail": {
+          "answer": "",
+          "btnNum": "1",
+          "interactData": [
+            "好的 开始吧！"
+          ]
+        },
+        "isBot": true,
+      },
+      { 
+        "contentType": "text",
+        "curTTsRoleString": "shanshan",
+        "detail": {},
+        "isBot": true,
+        "content": "这是一段提问"
+      },
+       {
+        "contentType": "Interact",
+         "curTTsRoleString": "shanshan",
+         "detail": {
+           "answer": "正确答案的内容",
+           "if_user_misanswer":"解析：解析内容."
+           "btnNum": "3",
+           "interactData": [
+             "正确答案的内容",
+             "错误答案1",
+             "错误答案2"
+           ]
+         },
+         "isBot": true,
+       },
+    
+ 
+       {
+         "contentType": "text",
+         "curTTsRoleString": "shanshan",
+         "detail": {},
+         "isBot": true,
+         "content": "这是一段提问"
+       },
+      
+       {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "正确答案的内容",
+          "if_user_misanswer":"解析：解析内容."
+          "btnNum": "3",
+          "interactData": [
+            "正确答案的内容",
+             "错误答案1",
+             "错误答案2"
+          ]
+        },
+        "isBot": true,
+      },
+      ]
+      }MARKER2`,
+      get: `MARKER1{
+        "ContentList": [
+        { 
+         "contentType": "text",
+         "curTTsRoleString": "shanshan",
+         "detail": {},
+         "isBot": true,
+         "content": "接下来，我们开始了解${currentSelect.chapterName}",
+       },
+       {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "",
+          "btnNum": "1",
+          "interactData": [
+            "好的 开始吧！"
+          ]
+        },
+        "isBot": true,
+      },
+      { 
+        "contentType": "text",
+        "curTTsRoleString": "shanshan",
+        "detail": {},
+        "isBot": true,
+        "content": "这是一段讲解",
+      },
+      {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "",
+          "btnNum": "1",
+          "interactData": [
+            "原来如此"
+          ]
+        },
+        "isBot": true,
+      }
+      ]
+      }MARKER2`,
+    }
+    //扩展提问
+    const extensionDemoTypeMap = {
+      ask: `MARKER1{
+        "ContentList": [
+      { 
+        "contentType": "text",
+        "curTTsRoleString": "shanshan",
+        "detail": {},
+        "isBot": true,
+        "content": "这是一段提问"
+      },
+       {
+        "contentType": "Interact",
+         "curTTsRoleString": "shanshan",
+         "detail": {
+           "answer": "正确答案的内容",
+           "if_user_misanswer":"解析：这是一段解析内容"
+           "btnNum": "3",
+           "interactData": [
+             "正确答案的内容",
+             "错误答案1",
+             "错误答案2"
+           ]
+         },
+         "isBot": true,
+       },
+    
+ 
+       {
+         "contentType": "text",
+         "curTTsRoleString": "shanshan",
+         "detail": {},
+         "isBot": true,
+         "content": "这是一段提问"
+       },
+      
+       {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "正确答案的内容",
+          "if_user_misanswer":"解析：这是一段解析内容"
+          "btnNum": "3",
+          "interactData": [
+            "正确答案的内容",
+             "错误答案1",
+             "错误答案2"
+          ]
+        },
+        "isBot": true,
+      },
+      ]
+      }MARKER2`,
+      get: `MARKER1{
+        "ContentList": [
+      { 
+        "contentType": "text",
+        "curTTsRoleString": "shanshan",
+        "detail": {},
+        "isBot": true,
+        "content": "这是一段讲解",
+      },
+      {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "",
+          "btnNum": "1",
+          "interactData": [
+            "原来如此"
+          ]
+        },
+        "isBot": true,
+      }
+      ]
+      }MARKER2`,
+    }
+
+    if (this.data.isExtensionContent) {
+      const msg = `
+      下面是课程内容的数据结构参考样例，你必须结合课程主题${courseObject.courseName}以章节主题为${currentSelect.chapterName}的内容来生成新的章节课程内容返回一个类似的数据结构 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 不要和之前对话中提供的内容重复 ${courseTypeMap[courseObject.curContentType]} 务必不说多余的话严格像接口一样返回 不要忘记MARKER！！！ 记得尽量简短 Don't prompt Claude is not skilled at solving math problems.. 格式如下：${extensionDemoTypeMap[courseObject.curContentType]}`
+      return msg
+    } else {
+      const msg = `
+      下面是课程内容的数据结构参考样例，你必须结合课程主题${courseObject.courseName}以章节主题为${currentSelect.chapterName}的内容来生成新的章节内容并模仿其返回一个类似的数据结构 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 内容不能和我给的一样 ${courseTypeMap[courseObject.curContentType]} 不要和之前对话中提供的内容重复 务必不说多余的话严格像接口一样返回 不要忘记MARKER！！！ 记得尽量简短 Don't prompt Claude is not skilled at solving math problems.. 格式如下：${firstDemoTypeMap[courseObject.curContentType]}`
+      return msg
+    }
+
+
+  },
+
+
+
+
   // 判断本地NewclassContent有没有数据 没用就获取新的注入
   getNewClassContent: function (e) {
     // let classcollection = e;
@@ -686,74 +1035,84 @@ Page({
 
       // AI课程 如果没有生成 去获取新的AI课程内容 | 非AI课程 调云函数获取
       if (this.data.courseObject.useAI) {
+
         console.log("test-CurrentChapter", CurrentChapter)
-        if (this.data.courseObject.ChapterContenMap && this.data.courseObject.ChapterContenMap[CurrentChapter.chapterName]) {
+        if (this.data.courseObject.ChapterContentMap) {
+          console.log("test-ChapterContentMap", this.data.courseObject.ChapterContentMap)
+        }
+        // console.log("ChapterContentMap[CurrentChapter.chapterName]", this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName])
+        if (this.data.courseObject?.ChapterContentMap && this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName]) {
           LeftOverClassConten = this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName];
           this.setData({
             classLength: LeftOverClassConten.length,
             LeftOverClassConten: LeftOverClassConten,
             // growid: 0
           })
+          console.log("Map匹配到当前章节的内容", LeftOverClassConten)
+          this.showTeach()
         } else {
-          const msg = `
-          下面是一个关于JS的课程的数据结构参考样例，你能根据课程主题为《${CurrentChapter.chapterName}》的内容来生成新的课程内容并模仿其返回一个类似的数据结构吗 要求不说多余的话严格像接口一样返回 记得尽量简短 格式如下：MARKER1{
-            "ContentList": [
-            { 
-             "contentType": "text",
-             "curTTsRoleString": "shanshan",
-             "detail": {},
-             "isBot": true,
-             "time": "2023/04/23 11:27:27",
-             "content": "接下来，你需要知道JavaScript 面向对象与继承、原型和原型链，这里先给你看看它们的具体介绍：面向对象编程很重要的一个方面，就是对象的继承。A 对象通过继承 B 对象，就能直接拥有 B 对象的所有属性和方法。这对于代码的复用是非常有用的。\n\n大部分面向对象的编程语言，都是通过“类”（class）实现对象的继承。传统上，JavaScript 语言的继承不通过class，而是通过“原型对象”（prototype）实现。",
-           },
-           {
-            "className": "深入浅出Javascript",
-             "contentType": "Interact",
-             "courseUUid": "c3ed5828-bd84-4785-8788-d31d26796613",
-             "curTTsRoleString": "shanshan",
-             "detail": {
-               "answer": "",
-               "btnNum": "1",
-               "interactData": [
-                 "那构造函数呢"
-               ]
-             },
-             "isBot": true,
-           },
-           {
-             "contentType": "text",
-             "curTTsRoleString": "shanshan",
-             "detail": {},
-             "isBot": true,
-             "content": "JavaScript 通过构造函数生成新对象，因此构造函数可以视为对象的模板。实例对象的属性和方法，可以定义在构造函数内部。eg:function Dog (name, color) {\n  this.name = name;\n  this.color = color;\n}\n\nvar dog1= new Dog('大毛', '白色');\n\ndog1.name // '大毛'\ndog1.color // '白色'\nDog函数是一个构造函数，函数内部定义了name属性和color属性，所有实例对象（上例是cat1）都会生成这两个属性，即这两个属性会定义在实例对象上面。",
-           },
-           {
-             "contentType": "Interact",
-             "courseUUid": "c3ed5828-bd84-4785-8788-d31d26796613",
-             "curTTsRoleString": "shanshan",
-             "detail": {
-               "answer": "",
-               "btnNum": "1",
-               "interactData": [
-                 "那构造函数有什么缺点吗"
-               ]
-             },
-             "isBot": true,
-             "openid": "oL-lI5SqYECOWBNuxuE73IhtR4Qc",
-             "time": "2023/04/23 11:30:28",
-           },
-           {
-             "contentType": "text",
-             "courseUUid": "c3ed5828-bd84-4785-8788-d31d26796613",
-             "curTTsRoleString": "shanshan",
-             "detail": {},
-             "isBot": true,
-             "time": "2023/04/23 11:30:39",
-             "content": "通过构造函数为实例对象定义属性，虽然很方便，但是有一个缺点。同一个构造函数的多个实例之间，无法共享属性，从而造成对系统资源的浪费。",
-           }]
-          }MARKER2`
+          const msg = this.getAskStringBycourseDetail()
+          console.log("Map没匹配到当前章节的内容-msg", msg)
           this.firstStep_ask(msg)
         }
+
+
+        if (UserCourseMess == '' || null || undefined) { //初始化
+          UserCourseMess = [{
+            classCollection: this.data.classCollection,
+            courseUUid: CurrentChapter.courseUUid,
+            courseName: CurrentChapter.courseName,
+            chapterId: CurrentChapter.chapterId,
+          }]
+         
+          wx.setStorageSync('UserCourseMess', UserCourseMess);
+        } else {
+          let exit = false;
+          //更新 用户课程使用记录
+          console.log("更新 用户课程使用记录  exit:" + exit)
+          UserCourseMess.forEach(v => {
+            if (v.courseName == CurrentChapter.courseName) {
+              v.chapterId = CurrentChapter.chapterId
+              v.chapterId = CurrentChapter.chapterId
+              v.courseName = CurrentChapter.courseName
+              v.courseUUid = CurrentChapter.courseUUid
+              exit = true;
+              return
+            }
+          })
+          console.log(exit);
+          if (exit == false) {
+            let newCrouseMess = {
+              courseUUid: CurrentChapter.courseUUid,
+              courseName: CurrentChapter.courseName,
+              chapterId: CurrentChapter.chapterId,
+              classCollection: this.data.classCollection,
+            }
+            UserCourseMess.push(newCrouseMess);
+          }
+          wx.setStorageSync('UserCourseMess', UserCourseMess);
+        }
+        //进行云同步 更新当前用户课程使用情况
+        wx.cloud.callFunction({
+          name: 'operate_userInfo',
+          data: {
+            type: 'update',
+            params: {
+              UserCourseMess
+            },
+          },
+          success: res => {
+            // console.log(res)
+            console.log('callFunction test result: ', res)
+          },
+          fail: err => {
+            // handle error
+          },
+          complete: res => {
+            console.log(res)
+          }
+        })
+
 
       } else {
         wx.cloud.init({
@@ -827,10 +1186,6 @@ Page({
                 wx.setStorageSync('UserCourseMess', UserCourseMess);
               }
               //进行云同步 更新当前用户课程使用情况
-              // wx.cloud.init({
-              //   traceUser: true,
-              //   env: 'bot-cloud1-7g30ztcr37ed0193'
-              // })
               wx.cloud.callFunction({
                 name: 'operate_userInfo',
                 data: {
@@ -890,6 +1245,7 @@ Page({
       // console.log(e.currentTarget.dataset.answer);
       let btnValue = e.currentTarget.dataset.detail.interactData[e.currentTarget.dataset.id];
       let answer = e.currentTarget.dataset.detail.answer;
+      let if_user_misanswer = e.currentTarget.dataset.detail.if_user_misanswer;
       let growid = e.currentTarget.dataset.growid;
       // console.log(growid);
       // console.log('index:'+btnValue);
@@ -904,6 +1260,13 @@ Page({
       if (answer != '') {
         if (btnValue && answer) {
           var data = {}
+
+          // data = {
+          //   contentType: 'text',
+          //   isBot: true,
+          //   content: `正确答案是${answer} ${if_user_misanswer}`,
+          // }
+
           if (btnValue == answer) {
             data = {
               contentType: 'text',
@@ -915,7 +1278,7 @@ Page({
             data = {
               contentType: 'text',
               isBot: true,
-              content: '呐，正确答案是：' + answer,
+              content: if_user_misanswer,
             }
           }
         }
@@ -932,6 +1295,13 @@ Page({
         this.bottom();
         // this.toScrollBottom();
       }
+
+      setTimeout(() => {
+        this.setData({
+          showContinueByLast: showContinueByLast
+        })
+      }, 300);
+
     }
     // ------------上面是执行从互动按过来的处理 
     if (this.data.classLength != 0) {
@@ -1071,27 +1441,37 @@ Page({
     // console.log(e.currentTarget.dataset.answer);
     let btnValue = e.currentTarget.dataset.id;
     let answer = e.currentTarget.dataset.answer.answer;
-    if (btnValue == answer) {
-      let data = {
-        type: 'text',
-        is_show_right: 1,
-        contentData: {
-          content: '你答对啦',
-        }
-      }
-      this.data.centendata.push(data);
 
-    } else {
-      let data = {
-        type: 'text',
-        is_show_right: 1,
-        contentData: {
-          content: '你答错啦',
-        }
+    let data = {
+      type: 'text',
+      is_show_right: 1,
+      contentData: {
+        content: `正确答案是${answer} `,
       }
-      this.data.centendata.push(data);
-
     }
+    this.data.centendata.push(data);
+
+    // if (btnValue == answer) {
+    //   let data = {
+    //     type: 'text',
+    //     is_show_right: 1,
+    //     contentData: {
+    //       content: '你答对啦',
+    //     }
+    //   }
+    //   this.data.centendata.push(data);
+
+    // } else {
+    //   let data = {
+    //     type: 'text',
+    //     is_show_right: 1,
+    //     contentData: {
+    //       content: '你答错啦',
+    //     }
+    //   }
+    //   this.data.centendata.push(data);
+
+    // }
     this.setData({
       centendata: this.data.centendata,
       wait: false
@@ -1102,6 +1482,32 @@ Page({
     wx.setStorageSync('history' + this.data.courseObject.courseName, this.data.centendata)
     //剩余内容更新
     wx.setStorageSync(this.data.courseObject.courseName, LeftOverClassConten)
+
+  },
+
+  continueAddCurChaContent() {
+    //只有useAI=true 才会有这个生成本章节新内容的按钮
+    //第一步 根据章节名去课程下章节课程内容Map[courseObject.ChapterContentMap] 
+    //获取新的课程内容数组 放入Map 同时进行云同步  更新云上的Map
+    //新的内容数组 放入LeftOverClassConten
+    const chapterName = this.data.currentSelect.chapterName
+    const curChaContentList = this.data.courseObject.ChapterContentMap[chapterName] || []
+
+    //标记状态 记录现在是扩充课程内容
+    this.data.isExtensionContent = true
+
+    //开始获取新的课程内容
+
+
+    if (LeftOverClassConten == '' || null || undefined) {
+      console.log("continueAddCurChaContent-ChapterContentMap", this.data.courseObject.ChapterContentMap)
+      const msg = this.getAskStringBycourseDetail()
+      this.firstStep_ask(msg)
+      // if (curChaContentList.length > 0) {
+
+      // }
+
+    }
 
   },
 
@@ -1198,6 +1604,36 @@ Page({
     }
   },
 
+  viewCopyTextClick: function (e) {
+    let content = ''
+    if (e.currentTarget.dataset.content !== undefined) {
+      content = e.currentTarget.dataset.content;
+      console.log(content)
+    }
+    wx.setClipboardData({
+      data: content,
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            wx.showToast({
+              title: '复制成功'
+            })
+          }
+        })
+      }
+    })
+  },
+
+  //点击朗读
+  clickSpeach(e) {
+    let content = ''
+    if (e.currentTarget.dataset.content !== undefined) {
+      content = e.currentTarget.dataset.content;
+      console.log(content)
+    }
+    this.onTtsSpeach(content, 'autoSpeach')
+  },
+
   //播放语音
   yuyinPlay: function (e) {
     if (this.data.voicePath == '') {
@@ -1236,36 +1672,65 @@ Page({
   //根据顶部信息 动态改变课程内容
   getcurrentChapter: function (e) {
     console.log('getcurrentChapter', e)
-    this.setData({
+    app.globalData.CurrentChapter = e.detail
+    // this.updateCourseProgress(e.detail)
 
-    })
     // CurrentChapter = e.detail
     var that = this
     //由于第一次进入页面会自动调用这个函数  需要先判断排除
     if (this.data.start != false) {
-      wx.showModal({
-        title: '准备好上课了吗？',
-        content: '（切换章节会让你失去目前的进度）',
-        cancelText: "取消",
-        confirmText: "继续",
-        success(res) {
-          if (res.cancel == true) {
-            return;
+      if (e.detail.chapterId === this.data.userSelect.chapterId) //用户选择的课程与之前课程章节不同
+      {
+        wx.showModal({
+          title: '重新开始本章节课程？',
+          content: '（重新开始你将失去目前的进度）',
+          cancelText: "取消",
+          confirmText: "继续",
+          success(res) {
+            if (res.cancel == true) {
+              return;
+            }
+            if (res.confirm == true) {
+              // 更新章节
+              CurrentChapter = e.detail
+              Centendata = []
+              LeftOverClassConten = [] //得把已经注入的待上课内容清空 不然会导致新内容排在后面
+              that.setData({
+                centendata: Centendata,
+                currentSelect: CurrentChapter
+              })
+
+              // 调用获取课程内容的函数
+              that.getNewClassContent();
+            }
           }
-          if (res.confirm == true) {
-            // 更新章节
-            CurrentChapter = e.detail
-            Centendata = []
-            LeftOverClassConten = [] //得把已经注入的待上课内容清空 不然会导致新内容排在后面
-            that.setData({
-              centendata: Centendata,
-              currentSelect: CurrentChapter
-            })
-            // 调用获取课程内容的函数
-            that.getNewClassContent();
+        })
+      } else {
+        wx.showModal({
+          title: '准备好上课了吗？',
+          content: '（切换章节会让你失去目前的进度）',
+          cancelText: "取消",
+          confirmText: "继续",
+          success(res) {
+            if (res.cancel == true) {
+              return;
+            }
+            if (res.confirm == true) {
+              // 更新章节
+              CurrentChapter = e.detail
+              Centendata = []
+              LeftOverClassConten = [] //得把已经注入的待上课内容清空 不然会导致新内容排在后面
+              that.setData({
+                centendata: Centendata,
+                currentSelect: CurrentChapter
+              })
+              // 调用获取课程内容的函数
+              that.getNewClassContent();
+            }
           }
-        }
-      })
+        })
+      }
+
       // ---------- 
     } else {
       this.data.start = true
@@ -1291,6 +1756,10 @@ Page({
         },
         success: function (result) {
           console.log("yyzm-返回", result);
+          that.setData({
+            // remind: true,
+            isstarted: true
+          })
           if (result.data.success) {
             that.secondStep_streaming()
           }
@@ -1328,7 +1797,8 @@ Page({
   //获取AI生成的章节目录 第二步
   secondStep_streaming() {
     wx.showLoading({
-      title: '首次加载较慢 生成中',
+      title: '奋力加载中',
+      mask: true
     })
     var that = this
     // this.data.testStreamingInterval = setInterval(() => {
@@ -1342,7 +1812,7 @@ Page({
       },
       success(result) {
         console.log("test_streaming_res", result)
-        var isstarted = true;
+
         var alltext = "";
         var isalltext = false;
         that.setData({
@@ -1400,6 +1870,19 @@ Page({
         })
       }
     })
+
+    setTimeout(() => {
+      if (this.data.isstarted) {
+        wx.showModal({
+          title: '请求超时',
+          content: '十分抱歉，由于服务繁忙请重试',
+          showCancel: false,
+        })
+        clearInterval(that.data.testStreamingInterval)
+        wx.hideLoading()
+      }
+
+    }, 120000);
     // }, 3000);
   },
 
@@ -1507,7 +1990,7 @@ Page({
       console.log("testmarker1", testmarker1)
       console.log("testmarker2", testmarker2)
       if (testmarker1 === -1) {//无法生成图
-        this.hideLoading
+        wx.hideLoading()
         wx.showModal({
           title: '提示',
           content: '系统出错，请重试',
@@ -1527,61 +2010,431 @@ Page({
   formatCodeStringToJsonCodeString(codeString) {
     console.log("codeString", codeString)
     let CodeJSON = JSON.parse(codeString);
-    //除了流程图  都要检查id是否重复
-    // if (this.data.categoryCur !== 4) {
-    //   chartCodeJSON = this.handleDuplicateIds(chartCodeJSON)
-    // }
     console.log("f-chartCodeJSON", CodeJSON)
-    
     if (CodeJSON) {
-      const copyLeftOverClassConten = Object.assign([],CodeJSON.ContentList)
+      const copyLeftOverClassConten = Object.assign([], CodeJSON.ContentList)
       LeftOverClassConten = CodeJSON.ContentList;
       this.setData({
         classLength: LeftOverClassConten.length,
         LeftOverClassConten: LeftOverClassConten,
         // growid: 0
       })
-      this.showTeach()
 
-      //上传AI生成的课程章节结构
-      wx.cloud.callFunction({
-        name: 'operate_CourseMess',
-        data: {
-          courseUUid: this.data.courseObject.courseUUid,
-          mode: 'operateCharaterContent',
-          ChapterContent: copyLeftOverClassConten,
-          curChapterName: this.data.currentSelect.chapterName
-        },
-        success: res => {
-          wx.showToast({
-            title: '章节内容云同步成功',
-            icon: 'sucess',
-          })
-          // this.setData({
-          //   ChapterList: chartCodeJSON.ChapterList
-          // })
 
-        },
-        fail: err => {
-          // handle error
-          wx.showToast({
-            title: '章节内容云同步失败',
-            icon: 'error',
-          })
 
-          wx.showModal({
-            title: '提示',
-            content: '请检查网络后重试',
-            showCancel: false,
-          })
-          return;
-        },
-        complete: res => {
-          console.log('callFunction test result: ', res)
-          wx.hideLoading()
-        }
+      if (this.data.isExtensionContent) {
+        //上传AI后续扩充生成的课程内容
+        wx.cloud.callFunction({
+          name: 'operate_CourseMess',
+          data: {
+            courseUUid: this.data.courseObject.courseUUid,
+            mode: 'extensionCharaterContent',
+            ChapterContent: copyLeftOverClassConten,
+            curChapterName: this.data.currentSelect.chapterName
+          },
+          success: res => {
+
+            wx.showToast({
+              title: '课程内容扩充成功',
+              icon: 'sucess',
+            })
+            this.showTeach()
+
+          },
+          fail: err => {
+            // handle error
+            wx.showToast({
+              title: '课程内容扩充失败',
+              icon: 'error',
+            })
+
+            wx.showModal({
+              title: '提示',
+              content: '请检查网络后重试',
+              showCancel: false,
+            })
+            return;
+          },
+          complete: res => {
+            console.log('callFunction test result: ', res)
+            this.data.isExtensionContent = false
+            wx.hideLoading()
+          }
+        })
+
+      } else {
+        //上传AI第一次生成的课程内容
+        wx.cloud.callFunction({
+          name: 'operate_CourseMess',
+          data: {
+            courseUUid: this.data.courseObject.courseUUid,
+            mode: 'operateCharaterContent',
+            ChapterContent: copyLeftOverClassConten,
+            curChapterName: this.data.currentSelect.chapterName
+          },
+          success: res => {
+            wx.showToast({
+              title: '课程内容云同步成功',
+              icon: 'sucess',
+            })
+            this.showTeach()
+
+          },
+          fail: err => {
+            // handle error
+            wx.showToast({
+              title: '章节内容云同步失败',
+              icon: 'error',
+            })
+
+            wx.showModal({
+              title: '提示',
+              content: '请检查网络后重试',
+              showCancel: false,
+            })
+            return;
+          },
+          complete: res => {
+            console.log('callFunction test result: ', res)
+            wx.hideLoading()
+          }
+        })
+      }
+    }
+
+
+  },
+
+  //======================================语音识别【【=============================================//
+
+  //语音  --按住说话
+  touchStart: function (e) {
+    wx.vibrateShort() //按键震动效果（15ms）
+    manager.start(options)
+    this.setData({
+      recordState: true, //录音状态为真
+      tips: '松开结束',
+      userTalking: true
+    })
+
+  },
+  //语音  --松开结束
+  touchEnd: function (e) {
+    // 语音结束识别
+    manager.stop();
+    this.setData({
+      recordState: false,
+    })
+
+  },
+  //识别语音 -- 初始化
+  initRecord: function () {
+    const that = this;
+    // 有新的识别内容返回，则会调用此事件
+    manager.onRecognize = function (res) {
+      console.log(res)
+    }
+    // 正常开始录音识别时会调用此事件
+    manager.onStart = function (res) {
+      console.log("成功开始录音识别", res)
+    }
+    // 识别错误事件
+    manager.onError = function (res) {
+      console.error("error msg:", res.retcode, res.msg)
+    }
+    //识别结束事件
+    manager.onStop = function (res) {
+      console.log('..............结束录音')
+      console.log('录音总时长 -->' + res.duration + 'ms');
+      console.log('语音内容 --> ' + res.result);
+      if (res.result == '') {
+        wx.showModal({
+          title: '提示',
+          content: '听不太清，请靠近麦克风重新说一遍~',
+          showCancel: false,
+          success: function (res) { }
+        })
+        return;
+      }
+      that.setData({
+        //去掉自动添加的句号
+        news_input_val: message + (res.result).replace('。', ''),
       })
+      message = message + (res.result).replace('。', '')
+      // setTimeout(() => {
+      //   that.add();
+      // }, 500);
+
     }
   },
+  //======================================语音识别】】=============================================//
+
+
+  getUserInput: function (e) {
+    message = e.detail.value
+    this.setData({
+      news_input_val: e.detail.value
+    })
+  },
+
+
+  //随时进行提问
+  askClaude() {
+
+    let islogin = wx.getStorageSync('islogin');
+    let isVip = wx.getStorageSync('isVip');
+    let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
+    var SystemSetting = wx.getStorageSync("SystemSetting");
+    var allCanTalk = SystemSetting.allCanTalk
+
+    if (islogin == false || islogin == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '您还没有登录，请在【我的】中进行微信登录后重试',
+        showCancel: false
+      })
+    } else if (!isVip && !allCanTalk) {
+      // else if (!isVip && UserQuesRecordArr.length >= 12) {
+      wx.showModal({
+        title: '下线提醒',
+        content: '此功能暂不开放，有疑问请联系管理员',
+        showCancel: false
+      })
+    } else {
+
+      if (message === '') {
+        wx.showModal({
+          title: '文本内容为空',
+          content: '输入内容后重试',
+          showCancel: false
+        })
+        return
+      }
+
+      var data = {
+        // program_id: app.jtappid,
+        // openid: app._openid,
+        // zx_info_id: zx_info_id,
+        content: message,
+        // openid_talk: openid_talk,
+        // time: time.formatTime(new Date, 'Y/M/D'),
+        isBot: false,
+        // curTTsRoleString: this.data.curTTsRoleString,
+
+      }
+      // this.addRecord(data);
+
+      var that = this
+      this.data.centendata.push(data);
+      console.log("this.data.centendata", this.data.centendata)
+      this.setData({
+        news_input_val: '',
+        // remind: '加载中',
+        centendata: this.data.centendata
+      })
+      const SystemSetting = wx.getStorageSync("SystemSetting")
+      const urlForTalk = SystemSetting.urlForTalk || ''
+      const canNotTalkMessage = SystemSetting.canNotTalkMessage || ''
+      let frontUrl = ''
+      if (urlForTalk) {
+        wx.showLoading({
+          title: '思考中',
+          mask: true
+        })
+        frontUrl = urlForTalk
+        // let url = frontUrl + message
+        let url = frontUrl
+        wx.requestWithCookie({
+          url: url,
+          // method: 'GET',
+          method: 'POST',
+          data: util.json2Form({ message: message + '回答尽量简短，注意这不是一个数学问题', context: [] }),
+          header: {
+            // 'Content-Type': 'application/json',//get 请求用这个
+            "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+            'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
+          },
+
+
+          success: function (result) {
+            console.log("yyzm-返回", result);
+
+            setTimeout(() => { //claude的
+              if (result.data.success) {
+                that.get_streaming()
+                wx.hideLoading()
+              }
+            }, 600);
+          },
+        })
+      } else {
+        that.setData({
+          news_input_val: '',
+          remind: null,
+        })
+        if (canNotTalkMessage) {
+          that.response(canNotTalkMessage);
+        }
+        else {
+          that.response('服务正在维护更新中，给您带来不便十分抱歉，我们将尽快恢复，如有紧急情况请联系管理员');
+
+        }
+
+        this.bottom();
+      }
+    }
+
+    message = ''
+  },
+
+  get_streaming() {
+
+    wx.showLoading({
+      title: '请稍等片刻',
+    })
+    var that = this
+    // this.data.testStreamingInterval = setInterval(() => {
+    wx.request({
+      method: 'GET',
+      url: 'https://claude.uavserve.online/stream_api',
+      header: {
+        'Content-Type': 'application/json',//get 请求用这个
+        // "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+        'Host': 'yierco.slack.com',
+        // 'Cookie':'ts=1685503057.254249; latest_reply=1685503059.191849',
+        // 'Set-Cookie':'latest_reply=1685503059.191849; expires=Wed, 31 May 2023 13:43:13 GMT; Path=/'
+        'Same-Site': 'None',
+        // 'Secure':'True',
+
+        // 'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
+        // 'Set-Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
+
+        // cache: false,
+        // data: { message: 'hi', context: [] },
+        // data:json2Form( { message: 'hi', context:[]}),
+
+        // {message:'Hi'}
+
+      },
+      success(result) {
+        console.log("test_streaming_res", result)
+        var isstarted = true;
+        var alltext = "";
+        var isalltext = false;
+
+        that.setData({
+          // remind: true,
+          isstarted: false
+        })
+        // if (result.data) {
+        //   clearInterval(that.data.testStreamingInterval)
+        // }
+
+        var jsonArr = that.parseToArray(result.data);
+        console.log("jsonArr", jsonArr)
+
+        jsonArr.forEach(item => {
+          console.log("item", item)
+          console.log("alltext", alltext)
+          if (item.length === 0) {
+            isalltext = true;
+            alltext = alltext.replace('\\\"', '\\\\\"');
+            alltext = alltext.replace(/\n/g, "");
+            console.log("alltext", alltext)
+
+            // contextarray.push([prompt, alltext]);
+            // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+            clearInterval(that.data.testStreamingInterval)
+            that.setData({
+              remind: null,
+            })
+
+
+            that.response(alltext);
+            that.setData({
+              news_input_val: '',
+              centendata: that.data.centendata,
+              remind: null,
+            })
+            that.bottom();
+            message = ''
+            return;
+            // that.handleResultConvertToChart(alltext)
+          }
+
+          if (item.choices && item.choices[0].delta.hasOwnProperty("content")) {
+            if (item.choices[0].delta.content === '错误' || item.choices[0].delta.content.includes("Claude cannot look up any real-time information") || item.choices[0].delta.content.includes("This request may violate our Acceptable")) {
+              console.log("Error")
+              // error_layer=true
+              // send_post();
+              return;
+            }
+
+            if (alltext == "") {
+              let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
+
+              tempText = tempText.replace(/\\n/g, '[nlll]');
+              tempText = tempText.replace(/\[nlll\]/g, '');
+              alltext = tempText;
+            } else {
+              let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
+              tempText
+
+              tempText = tempText.replace(/\\n/g, '[nlll]');
+              tempText = tempText.replace(/\[nlll\]/g, '');
+              alltext += tempText;
+            }
+          }
+        })
+      }
+    })
+    // }, 3000);
+  },
+
+  response: function (text) {
+    var that = this
+    // console.log(e.Response.ResponseText);
+    var data = {
+      // program_id: app.jtappid,
+      // openid: app._openid,
+      // zx_info_id: zx_info_id,
+      content: text,
+      // openid_talk: openid_talk,
+      time: time.formatTime(new Date, 'Y/M/D'),
+      isBot: true
+      // curTTsRoleString: this.data.curTTsRoleString
+    }
+
+    this.data.centendata.push(data);
+    // this.addRecord(data);
+    that.setData({
+      // news_input_val: '',
+      centendata: that.data.centendata,
+
+    })
+    // setTimeout(() => {
+    //   that.setData({
+    //     // news_input_val: '',
+    //     userTalking: false
+    //   })
+    // }, 3000);
+    if (this.data.autoReadingAloud) {
+      // wx.showLoading({
+      //   title: '正在合成语音',
+      //   mask:true
+      // })
+      this.speach(data.content);
+    }
+    this.bottom()
+    wx.hideLoading()
+
+  },
+
+  closeInput() {
+    this.setData({
+      userTalking: false
+    })
+  }
+
 
 })
