@@ -331,9 +331,7 @@ Page({
     // 如果需要请求新的课程内容 （已经遍历注入完最后一条课程内容）
     if (LeftOverClassConten == '' || null || undefined) {
       // console.log("get class----" + e);
-      wx.cloud.init({
-        env: 'bot-cloud1-7g30ztcr37ed0193'
-      })
+      
       // wx.cloud.init()
       //  下面是云函数的调用
       // console.log(wx.getStorageSync("openid"));

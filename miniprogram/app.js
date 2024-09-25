@@ -15,8 +15,8 @@ App({
         //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
         //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
         //   如不填则使用默认环境（第一个创建的环境）
-        env: 'bot-cloud1-7g30ztcr37ed0193',
-        traceUser: true,
+        env: 'talkbot-7gji40zbdf69e993',
+        // traceUser: true,
       })
     }
     console.log('APP la')

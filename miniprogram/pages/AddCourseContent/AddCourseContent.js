@@ -303,9 +303,7 @@ Page({
 
 
 
-      wx.cloud.init({
-        env: 'bot-cloud1-7g30ztcr37ed0193'
-      })
+      
       const courseUUid = JSON.parse(options.chapterobj).courseUUid
       wx.cloud.callFunction({
         name: 'getCrouseContent',
@@ -556,7 +554,7 @@ Page({
             //调用云函数
            wx.cloud.init({
   traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
+  env: 'talkbot-7gji40zbdf69e993'
 })
             wx.cloud.callFunction({
               name: 'del_chapter',
@@ -654,7 +652,7 @@ Page({
 
 
   //  ------------------addText & addImg & addTextImg -------------
-  //事件处理函数
+  //事件处理函数  老版 将数据存入 testCourseContents
   add: function (e) {
     var that = this;
     const {
@@ -782,10 +780,7 @@ Page({
       })
 
       //  下面是云函数的调用
-      wx.cloud.init({
-        traceUser: true,
-        env: 'bot-cloud1-7g30ztcr37ed0193'
-      })
+     
       wx.cloud.callFunction({
         name: 'operate_courseContent',
         data: {
@@ -841,6 +836,193 @@ Page({
 
 
   },
+
+    //事件处理函数  V2版 将数据存入 allCourseBaseMess - ChapterContentMap
+    addV2: function (e) {
+      var that = this;
+      const {
+        editStatus,
+        editIndex,
+        message,
+        centendata,
+        setTextImg,
+        imgUrl,
+        textimgTitle
+      } = this.data;
+      if (editStatus) {
+        if (!setTextImg) {
+          let newValue = centendata;
+          newValue[editIndex]['content'] = message;
+          this.setData({
+            // editStatus: false,
+            centendata: newValue,
+            // message: ''
+          })
+        } else {
+          let newValue = centendata;
+          newValue[editIndex]['content'] = message;
+          newValue[editIndex]['textimgTitle'] = textimgTitle;
+          newValue[editIndex]['src'] = imgUrl;
+          this.setData({
+            // editStatus: false,
+            centendata: newValue,
+            // message: '',//和新增一致云函数调用后再置空
+            // setTextImg: false
+          })
+        }
+        // return;
+      }
+  
+      console.log("进入add函数")
+      //这个else一直到最后
+  
+      console.log("this.data.message", this.data.message)
+      // --------设置封面end-----------------------
+      if (this.data.chapterId == '') {
+        wx.showModal({
+          title: '提示',
+          content: '课程id不能为空',
+          showCancel: false
+        })
+        return;
+      } else if (this.data.className == '') {
+        wx.showModal({
+          title: '提示',
+          content: '课程名不能为空~',
+          showCancel: false
+        })
+        return;
+      } else if ((this.data.message == '' || this.data.message == null || !this.data.message) && this.data.imgUrl == null) {
+        wx.showModal({
+          title: '提示',
+          content: '课程内容不能为空~',
+          showCancel: false
+        })
+        return;
+      } else if (this.data.chapterName == '') {
+        wx.showModal({
+          title: '提示',
+          content: '章节名不能为空~',
+          showCancel: false
+        })
+        return;
+      } else {
+        let imgobj = this.data.imageObject;
+        console.log('imgobj', imgobj)
+        if (imgobj != '' && imgobj != undefined) {
+          this.setData({
+            imgUrl: 'http://' + imgobj.imageURL
+          })
+        }
+        let newcontentType;
+        // if (that.data.textImgArray.length <= 0) {
+        //   newcontentType = that.data.imgUrl == '' ? 'text' : 'img';
+        // } else {
+        //   newcontentType = 'textImg';
+        // }
+  
+        //add函数 只给上传文字、图片、图文使用
+        if (that.data.setTextImg) {
+          newcontentType = 'textImg';
+        } else {
+          newcontentType = that.data.imgUrl == null ? 'text' : 'img';
+        }
+  
+        var newData = {
+          contentType: newcontentType,
+          isBot: true,
+          classCollection: 'testCourseContents',
+          chapterId: parseInt(that.data.chapterId),
+          className: that.data.className,
+          classType: ClassCollection,
+          chapterName: this.data.chapterName,
+  
+          chapterId: parseInt(that.data.chapterId),
+          courseUUid: this.data.crouseDetail.courseUUid || '',
+  
+          detail: {},
+          textimgTitle: that.data.textimgTitle,
+          textImgArray: that.data.textImgArray,
+          content: that.data.message,
+          src: that.data.imgUrl,
+          imgfile: that.data.tempimg,
+          time: time.formatTime(new Date, 'Y/M/D'),
+          is_show_right: 1,
+          curTTsRoleString: this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null
+        }
+  
+        this.setData({
+          newData: newData,
+        })
+  
+        if (!this.data.editStatus) {
+          this.bottom();
+        }
+  
+        console.log('this.add cloud params', {
+          contentData: that.data.newData,
+          edit_id: this.data.edit_id
+        })
+  
+        //  下面是云函数的调用
+       
+        wx.cloud.callFunction({
+          name: 'operate_courseContent',
+          data: {
+            contentData: that.data.newData,
+            edit_id: this.data.edit_id,
+            mode: 'AddOrEdit'
+          },
+          success: res => {
+            if (!this.data.editStatus) {
+              that.data.centendata.push(this.data.newData);
+            }
+  
+            this.setData({
+              centendata: that.data.centendata,
+            })
+            if (!this.data.editStatus) {
+              this.bottom();
+            }
+            this.setData({
+              imgUrl: null,
+              imageObject: '',
+              message: '',
+              setTextImg: false,
+              textimgTitle: '',
+              imgfile: '',
+              btnDie: false,
+              textImgArray: [{}],
+              answer: '',
+              setFrontImg: '',
+              editStatus: false, //编辑状态关闭
+  
+              edit_id: null //编辑id置空
+            })
+  
+  
+  
+          },
+          fail: err => {
+            // handle error
+            wx.showModal({
+              title: '提示',
+              content: '课程内容上传出错 请检查网络',
+              showCancel: false,
+            })
+            return;
+          },
+          complete: res => {
+            console.log('callFunction test result: ', res)
+          }
+        })
+  
+      }
+  
+  
+    },
+
+
 
 
   useTecentCloud() {
@@ -1181,7 +1363,7 @@ Page({
 
   },
 
-  // ----------  上传互动  -----------------
+  // ----------  上传互动  老版V1 上传到testCourseContents/ ${ClassCollection} 集合 -----------------
   submitInteract() {
     if (this.data.chapterId == '') {
       wx.showModal({
@@ -1230,7 +1412,7 @@ Page({
 
    wx.cloud.init({
   traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
+  env: 'talkbot-7gji40zbdf69e993'
 })
     var btnNum = this.data.btnNum;
     let contentData = {
@@ -1448,7 +1630,7 @@ Page({
             //调用云函数
            wx.cloud.init({
   traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
+  env: 'talkbot-7gji40zbdf69e993'
 })
             wx.cloud.callFunction({
               name: 'operate_courseContent',

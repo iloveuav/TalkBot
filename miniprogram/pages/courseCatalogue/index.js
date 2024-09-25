@@ -128,6 +128,54 @@ Page({
       breadth: `一个宏观围绕${learnContent}扩展式学习的章节目录`,// 广度扩展型章节
       depth: `围绕${learnContent}不同方面深入式学习的章节目录`,// 深度挖掘型章节
     }
+//     const courseContentModeDemoMap = {
+//       breadth: `MARKER1{
+//         "ChapterList": [
+//           {
+//             "courseId": "${courseUUid}",
+//             "courseNum": "-",
+// "_id": {
+//         "chapterId": 1,
+//         "chapterName": "第一个章节名（eg:xx前世今生）",
+//         "className": "${courseName}",
+//         "courseUUid": "${courseUUid}"
+//       }
+//           },  {
+//             "courseId": "1",
+//             "courseNum": "-",
+// "_id": {
+//         "chapterId": 2,
+//         "chapterName": "第二个章节名（eg:xx快速入门）",
+//         "className": "${courseName}",
+//         "courseUUid": "${courseUUid}"
+//       }
+//     ]
+//       }MARKER2`,// 广度扩展型章节
+//       depth: `MARKER1{
+//         "ChapterList": [
+//           {
+//             "courseId": "${courseUUid}",
+//             "courseNum": "-",
+// "_id": {
+//         "chapterId": 1,
+//         "chapterName": "第一个章节名",
+//         "className": "${courseName}",
+//         "courseUUid": "${courseUUid}"
+//       }
+//           },  {
+//             "courseId": "1",
+//             "courseNum": "-",
+// "_id": {
+//         "chapterId": 2,
+//         "chapterName": "第二个章节名",
+//         "className": "${courseName}",
+//         "courseUUid": "${courseUUid}"
+//       }
+//     ]
+//       }MARKER2`,// 深度挖掘型章节
+//     }
+
+
     const courseContentModeDemoMap = {
       breadth: `MARKER1{
         "ChapterList": [
@@ -149,6 +197,7 @@ Page({
         "className": "${courseName}",
         "courseUUid": "${courseUUid}"
       }
+    }
     ]
       }MARKER2`,// 广度扩展型章节
       depth: `MARKER1{
@@ -171,40 +220,60 @@ Page({
         "className": "${courseName}",
         "courseUUid": "${courseUUid}"
       }
+    }
     ]
       }MARKER2`,// 深度挖掘型章节
     }
 
 
     // mess第一部分  课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce}
-    const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+    const msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+
+    // const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+  
     this.firstStep_ask(msg)
 
 
 
   },
 
-  //获取AI生成的章节目录 第一步
-  firstStep_ask(msg) {
+  useMoonShotApi(msg) {
+    this.setData({
+      // remind: true,
+      remind: null,
+    })
+    wx.showLoading({
+      title: '请稍等片刻',
+    })
     var that = this
-    console.log("msg", msg)
-    const SystemSetting = wx.getStorageSync("SystemSetting")
-    const urlForTalk = SystemSetting.urlForTalk || ''
-    if (urlForTalk) {
-      let url = urlForTalk
-      wx.requestWithCookie({
-        url: url,
-        method: 'POST',
-        data: util.json2Form({ message: msg, context: [] }),
-        header: { //
-          "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
-        },
-        success: function (result) {
-          console.log("yyzm-返回", result);
-          if (result.data.success) {
-            that.secondStep_streaming()
-          }
-        },
+    // this.data.testStreamingInterval = setInterval(() => {
+    wx.request({
+      method: 'POST',
+      url: 'https://api.moonshot.cn/v1/chat/completions',
+      data: {
+        "model": "moonshot-v1-8k",
+        "messages": [
+          { "role": "user", "content":msg}]
+        // "messages": "hi,who are you,我想了解一些海底知识"
+      },
+      header: {
+        "Content-Type": "application/json",
+        "X-Requested-With": 'XMLHttpRequest',
+        "Authorization": "sk-G47fRSG91qhRyhPwMMzVtXA2EPDD6zanzkyySj3WqFzgccUh",
+        'Same-Site': 'None',
+      },
+      success(result) {
+        console.log("test_streaming_res", result)
+        wx.hideLoading();
+        var alltext = result.data.choices[0].message.content
+        that.handleResultConvertToChart(alltext)
+        that.setData({
+          // remind: true,
+          isstarted: false,
+          result: alltext
+        })
+        // that.response(result.data.choices[0].message.content);
+      },
         fail: err => {
           // handle error
           that.setData({
@@ -222,9 +291,66 @@ Page({
           console.log('callFunction test result: ', res)
           that.setData({
             remind: null,
+            generateChart: 'ok',
+           
           })
+
+          // contextarray.push([prompt, alltext]);
+          // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+          // clearInterval(that.data.testStreamingInterval)
         }
-      })
+    })
+    // }, 3000);
+  },
+
+
+
+  //获取AI生成的章节目录 第一步
+  firstStep_ask(msg) {
+    var that = this
+    console.log("msg", msg)
+    const SystemSetting = wx.getStorageSync("SystemSetting")
+    const urlForTalk = SystemSetting.urlForTalk || ''
+    if (urlForTalk) {
+      let url = urlForTalk
+
+      // kimi方案
+
+      this.useMoonShotApi(msg)
+      // 之前基于Claude 现在改kimi
+      // wx.requestWithCookie({
+      //   url: url,
+      //   method: 'POST',
+      //   data: util.json2Form({ message: msg, context: [] }),
+      //   header: { //
+      //     "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+      //   },
+      //   success: function (result) {
+      //     console.log("yyzm-返回", result);
+      //     if (result.data.success) {
+      //       that.secondStep_streaming()
+      //     }
+      //   },
+      //   fail: err => {
+      //     // handle error
+      //     that.setData({
+      //       remind: null,
+      //       generateChart: 'no',
+      //     })
+      //     wx.showModal({
+      //       title: '提示',
+      //       content: '获取失败 请检查网络',
+      //       showCancel: false,
+      //     })
+      //     return;
+      //   },
+      //   complete: res => {
+      //     console.log('callFunction test result: ', res)
+      //     that.setData({
+      //       remind: null,
+      //     })
+      //   }
+      // })
     } else {
       wx.showModal({
         title: '提示',
@@ -719,10 +845,7 @@ Page({
 
 
   getChapterList(pageType) {
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     const courseUUid = this.data.crouseDetail.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',

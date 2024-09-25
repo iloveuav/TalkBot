@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk');
 cloud.init({
   traceUser: true,
-  env: 'bot-cloud1-7g30ztcr37ed0193'
+  env: 'talkbot-7gji40zbdf69e993'
 })
 
 const db = cloud.database();
@@ -142,13 +142,37 @@ exports.main = async (event, context) => {
   else if (event.operateType === 'updateAdminSetting') {
     if (event.params) {
       try {
+
         await db.collection('SurperAdmin').where({
           objKey: 'SystemSetting'
-        }).update({
-          data: {
-            ...event.params
+        }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return db.collection('SurperAdmin').add({
+              data: {
+                objKey: 'SystemSetting',
+                ...event.params
+              }
+            })
+          } else {
+            return db.collection('SurperAdmin').where({
+              objKey: 'ShareConversations'
+            }).update({
+              data: {
+                ...event.params
+              }
+            })
           }
         })
+
+        // await db.collection('SurperAdmin').where({
+        //   objKey: 'SystemSetting'
+        // }).update({
+        //   data: {
+        //     ...event.params
+        //   }
+        // })
         mess.sucess = "更新成功"
       } catch (e) {
         mess.sucess = "更新失败"

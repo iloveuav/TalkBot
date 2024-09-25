@@ -4,7 +4,7 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1685504765372, function(require, module, exports) {
+__DEFINE__(1727074728063, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -128,8 +128,8 @@ var _default = (0, _assign.default)(_hammer.default, {
 });
 
 exports.default = _default;
-}, function(modId) {var map = {"./hammer":1685504765373,"./utils/assign":1685504765383,"./inputjs/input-consts":1685504765378,"./recognizerjs/recognizer-consts":1685504765382,"./manager":1685504765400,"./inputjs/input-constructor":1685504765418,"./touchactionjs/touchaction-constructor":1685504765401,"./input/touch":1685504765417,"./input/pointerevent":1685504765423,"./recognizerjs/recognizer-constructor":1685504765381,"./recognizers/attribute":1685504765380,"./recognizers/tap":1685504765395,"./recognizers/pan":1685504765393,"./recognizers/swipe":1685504765392,"./recognizers/pinch":1685504765391,"./recognizers/rotate":1685504765379,"./recognizers/press":1685504765399,"./utils/add-event-listeners":1685504765419,"./utils/remove-event-listeners":1685504765424,"./utils/each":1685504765386,"./utils/merge":1685504765425,"./utils/extend":1685504765427,"./utils/inherit":1685504765428,"./utils/bind-fn":1685504765397,"./utils/to-array":1685504765421,"./utils/unique-array":1685504765422,"./utils/split-str":1685504765420,"./utils/in-array":1685504765387,"./utils/bool-or-fn":1685504765388,"./utils/has-parent":1685504765407}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765373, function(require, module, exports) {
+}, function(modId) {var map = {"./hammer":1727074728064,"./utils/assign":1727074728074,"./inputjs/input-consts":1727074728069,"./recognizerjs/recognizer-consts":1727074728073,"./manager":1727074728091,"./inputjs/input-constructor":1727074728109,"./touchactionjs/touchaction-constructor":1727074728092,"./input/touch":1727074728108,"./input/pointerevent":1727074728114,"./recognizerjs/recognizer-constructor":1727074728072,"./recognizers/attribute":1727074728071,"./recognizers/tap":1727074728086,"./recognizers/pan":1727074728084,"./recognizers/swipe":1727074728083,"./recognizers/pinch":1727074728082,"./recognizers/rotate":1727074728070,"./recognizers/press":1727074728090,"./utils/add-event-listeners":1727074728110,"./utils/remove-event-listeners":1727074728115,"./utils/each":1727074728077,"./utils/merge":1727074728116,"./utils/extend":1727074728118,"./utils/inherit":1727074728119,"./utils/bind-fn":1727074728088,"./utils/to-array":1727074728112,"./utils/unique-array":1727074728113,"./utils/split-str":1727074728111,"./utils/in-array":1727074728078,"./utils/bool-or-fn":1727074728079,"./utils/has-parent":1727074728098}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728064, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -235,8 +235,8 @@ Hammer.defaults = {
     taps: 2
   }, ['tap']], [_press.default]]
 };
-}, function(modId) { var map = {"./utils/if-undefined":1685504765374,"./touchactionjs/touchaction-Consts":1685504765375,"./inputjs/input-consts":1685504765378,"./recognizers/rotate":1685504765379,"./recognizers/pinch":1685504765391,"./recognizers/swipe":1685504765392,"./recognizers/pan":1685504765393,"./recognizers/tap":1685504765395,"./recognizers/press":1685504765399,"./manager":1685504765400}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765374, function(require, module, exports) {
+}, function(modId) { var map = {"./utils/if-undefined":1727074728065,"./touchactionjs/touchaction-Consts":1727074728066,"./inputjs/input-consts":1727074728069,"./recognizers/rotate":1727074728070,"./recognizers/pinch":1727074728082,"./recognizers/swipe":1727074728083,"./recognizers/pan":1727074728084,"./recognizers/tap":1727074728086,"./recognizers/press":1727074728090,"./manager":1727074728091}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728065, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -255,7 +255,7 @@ function ifUndefined(val1, val2) {
   return val1 === undefined ? val2 : val1;
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765375, function(require, module, exports) {
+__DEFINE__(1727074728066, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -285,8 +285,8 @@ const TOUCH_ACTION_PAN_Y = 'pan-y';
 exports.TOUCH_ACTION_PAN_Y = TOUCH_ACTION_PAN_Y;
 const TOUCH_ACTION_MAP = (0, _getTouchactionProps.default)();
 exports.TOUCH_ACTION_MAP = TOUCH_ACTION_MAP;
-}, function(modId) { var map = {"../utils/utils-consts":1685504765376,"./get-touchaction-props":1685504765377}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765376, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/utils-consts":1727074728067,"./get-touchaction-props":1727074728068}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728067, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -306,7 +306,7 @@ const {
 } = Date;
 exports.now = now;
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765377, function(require, module, exports) {
+__DEFINE__(1727074728068, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -324,7 +324,7 @@ function getTouchActionProps() {
   return touchMap;
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765378, function(require, module, exports) {
+__DEFINE__(1727074728069, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -370,7 +370,7 @@ exports.PROPS_XY = PROPS_XY;
 const PROPS_CLIENT_XY = ['clientX', 'clientY'];
 exports.PROPS_CLIENT_XY = PROPS_CLIENT_XY;
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765379, function(require, module, exports) {
+__DEFINE__(1727074728070, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -414,8 +414,8 @@ RotateRecognizer.prototype.defaults = {
   threshold: 0,
   pointers: 2
 };
-}, function(modId) { var map = {"./attribute":1685504765380,"../touchactionjs/touchaction-Consts":1685504765375,"../recognizerjs/recognizer-consts":1685504765382}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765380, function(require, module, exports) {
+}, function(modId) { var map = {"./attribute":1727074728071,"../touchactionjs/touchaction-Consts":1727074728066,"../recognizerjs/recognizer-consts":1727074728073}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728071, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -499,8 +499,8 @@ AttrRecognizer.prototype.defaults = {
    */
   pointers: 1
 };
-}, function(modId) { var map = {"../recognizerjs/recognizer-constructor":1685504765381,"../recognizerjs/recognizer-consts":1685504765382,"../inputjs/input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765381, function(require, module, exports) {
+}, function(modId) { var map = {"../recognizerjs/recognizer-constructor":1727074728072,"../recognizerjs/recognizer-consts":1727074728073,"../inputjs/input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728072, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -839,8 +839,8 @@ class Recognizer {
 
 exports.default = Recognizer;
 Recognizer.prototype.defaults = {};
-}, function(modId) { var map = {"./recognizer-consts":1685504765382,"../utils/assign":1685504765383,"../utils/unique-id":1685504765384,"../utils/if-undefined":1685504765374,"../utils/invoke-array-arg":1685504765385,"../utils/in-array":1685504765387,"../utils/bool-or-fn":1685504765388,"./get-recognizer-by-name-if-manager":1685504765389,"./state-str":1685504765390}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765382, function(require, module, exports) {
+}, function(modId) { var map = {"./recognizer-consts":1727074728073,"../utils/assign":1727074728074,"../utils/unique-id":1727074728075,"../utils/if-undefined":1727074728065,"../utils/invoke-array-arg":1727074728076,"../utils/in-array":1727074728078,"../utils/bool-or-fn":1727074728079,"./get-recognizer-by-name-if-manager":1727074728080,"./state-str":1727074728081}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728073, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -862,7 +862,7 @@ exports.STATE_CANCELLED = STATE_CANCELLED;
 const STATE_FAILED = 32;
 exports.STATE_FAILED = STATE_FAILED;
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765383, function(require, module, exports) {
+__DEFINE__(1727074728074, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -909,7 +909,7 @@ if (typeof Object.assign !== 'function') {
 var _default = assign;
 exports.default = _default;
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765384, function(require, module, exports) {
+__DEFINE__(1727074728075, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -928,7 +928,7 @@ function uniqueId() {
   return _uniqueId++;
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765385, function(require, module, exports) {
+__DEFINE__(1727074728076, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -958,8 +958,8 @@ function invokeArrayArg(arg, fn, context) {
 
   return false;
 }
-}, function(modId) { var map = {"./each":1685504765386}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765386, function(require, module, exports) {
+}, function(modId) { var map = {"./each":1727074728077}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728077, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -997,7 +997,7 @@ function each(obj, iterator, context) {
   }
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765387, function(require, module, exports) {
+__DEFINE__(1727074728078, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1032,7 +1032,7 @@ function inArray(src, find, findByKey) {
   }
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765388, function(require, module, exports) {
+__DEFINE__(1727074728079, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1057,8 +1057,8 @@ function boolOrFn(val, args) {
 
   return val;
 }
-}, function(modId) { var map = {"./utils-consts":1685504765376}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765389, function(require, module, exports) {
+}, function(modId) { var map = {"./utils-consts":1727074728067}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728080, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1085,7 +1085,7 @@ function getRecognizerByNameIfManager(otherRecognizer, recognizer) {
   return otherRecognizer;
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765390, function(require, module, exports) {
+__DEFINE__(1727074728081, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1114,8 +1114,8 @@ function stateStr(state) {
 
   return '';
 }
-}, function(modId) { var map = {"./recognizer-consts":1685504765382}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765391, function(require, module, exports) {
+}, function(modId) { var map = {"./recognizer-consts":1727074728073}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728082, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1168,8 +1168,8 @@ PinchRecognizer.prototype.defaults = {
   threshold: 0,
   pointers: 2
 };
-}, function(modId) { var map = {"./attribute":1685504765380,"../touchactionjs/touchaction-Consts":1685504765375,"../recognizerjs/recognizer-consts":1685504765382}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765392, function(require, module, exports) {
+}, function(modId) { var map = {"./attribute":1727074728071,"../touchactionjs/touchaction-Consts":1727074728066,"../recognizerjs/recognizer-consts":1727074728073}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728083, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1242,8 +1242,8 @@ SwipeRecognizer.prototype.defaults = {
   direction: _inputConsts.DIRECTION_HORIZONTAL | _inputConsts.DIRECTION_VERTICAL,
   pointers: 1
 };
-}, function(modId) { var map = {"../recognizers/attribute":1685504765380,"../utils/utils-consts":1685504765376,"../inputjs/input-consts":1685504765378,"./pan":1685504765393,"../recognizerjs/direction-str":1685504765394}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765393, function(require, module, exports) {
+}, function(modId) { var map = {"../recognizers/attribute":1727074728071,"../utils/utils-consts":1727074728067,"../inputjs/input-consts":1727074728069,"./pan":1727074728084,"../recognizerjs/direction-str":1727074728085}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728084, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1352,8 +1352,8 @@ PanRecognizer.prototype.defaults = {
   pointers: 1,
   direction: _inputConsts.DIRECTION_ALL
 };
-}, function(modId) { var map = {"./attribute":1685504765380,"../inputjs/input-consts":1685504765378,"../recognizerjs/recognizer-consts":1685504765382,"../touchactionjs/touchaction-Consts":1685504765375,"../recognizerjs/direction-str":1685504765394}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765394, function(require, module, exports) {
+}, function(modId) { var map = {"./attribute":1727074728071,"../inputjs/input-consts":1727074728069,"../recognizerjs/recognizer-consts":1727074728073,"../touchactionjs/touchaction-Consts":1727074728066,"../recognizerjs/direction-str":1727074728085}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728085, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1382,8 +1382,8 @@ function directionStr(direction) {
 
   return '';
 }
-}, function(modId) { var map = {"../inputjs/input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765395, function(require, module, exports) {
+}, function(modId) { var map = {"../inputjs/input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728086, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1521,8 +1521,8 @@ TapRecognizer.prototype.defaults = {
   posThreshold: 10 // a multi-tap can be a bit off the initial position
 
 };
-}, function(modId) { var map = {"../utils/set-timeout-context":1685504765396,"../recognizerjs/recognizer-constructor":1685504765381,"../touchactionjs/touchaction-Consts":1685504765375,"../inputjs/input-consts":1685504765378,"../recognizerjs/recognizer-consts":1685504765382,"../inputjs/get-distance":1685504765398}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765396, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/set-timeout-context":1727074728087,"../recognizerjs/recognizer-constructor":1727074728072,"../touchactionjs/touchaction-Consts":1727074728066,"../inputjs/input-consts":1727074728069,"../recognizerjs/recognizer-consts":1727074728073,"../inputjs/get-distance":1727074728089}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728087, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1545,8 +1545,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function setTimeoutContext(fn, timeout, context) {
   return setTimeout((0, _bindFn.default)(fn, context), timeout);
 }
-}, function(modId) { var map = {"./bind-fn":1685504765397}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765397, function(require, module, exports) {
+}, function(modId) { var map = {"./bind-fn":1727074728088}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728088, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1567,7 +1567,7 @@ function bindFn(fn, context) {
   };
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765398, function(require, module, exports) {
+__DEFINE__(1727074728089, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1594,8 +1594,8 @@ function getDistance(p1, p2, props) {
   let y = p2[props[1]] - p1[props[1]];
   return Math.sqrt(x * x + y * y);
 }
-}, function(modId) { var map = {"./input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765399, function(require, module, exports) {
+}, function(modId) { var map = {"./input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728090, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -1689,8 +1689,8 @@ PressRecognizer.prototype.defaults = {
   threshold: 9 // a minimal movement is ok, but keep it low
 
 };
-}, function(modId) { var map = {"../recognizerjs/recognizer-constructor":1685504765381,"../recognizerjs/recognizer-consts":1685504765382,"../utils/utils-consts":1685504765376,"../utils/set-timeout-context":1685504765396,"../touchactionjs/touchaction-Consts":1685504765375,"../inputjs/input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765400, function(require, module, exports) {
+}, function(modId) { var map = {"../recognizerjs/recognizer-constructor":1727074728072,"../recognizerjs/recognizer-consts":1727074728073,"../utils/utils-consts":1727074728067,"../utils/set-timeout-context":1727074728087,"../touchactionjs/touchaction-Consts":1727074728066,"../inputjs/input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728091, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2042,8 +2042,8 @@ class Manager {
 }
 
 exports.default = Manager;
-}, function(modId) { var map = {"./utils/assign":1685504765383,"./hammer":1685504765373,"./touchactionjs/touchaction-constructor":1685504765401,"./inputjs/create-input-instance":1685504765404,"./utils/each":1685504765386,"./utils/in-array":1685504765387,"./utils/invoke-array-arg":1685504765385,"./utils/split-str":1685504765420,"./recognizerjs/recognizer-constructor":1685504765381,"./recognizerjs/recognizer-consts":1685504765382}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765401, function(require, module, exports) {
+}, function(modId) { var map = {"./utils/assign":1727074728074,"./hammer":1727074728064,"./touchactionjs/touchaction-constructor":1727074728092,"./inputjs/create-input-instance":1727074728095,"./utils/each":1727074728077,"./utils/in-array":1727074728078,"./utils/invoke-array-arg":1727074728076,"./utils/split-str":1727074728111,"./recognizerjs/recognizer-constructor":1727074728072,"./recognizerjs/recognizer-consts":1727074728073}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728092, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2178,8 +2178,8 @@ class TouchAction {
 }
 
 exports.default = TouchAction;
-}, function(modId) { var map = {"./touchaction-Consts":1685504765375,"../inputjs/input-consts":1685504765378,"../utils/each":1685504765386,"../utils/bool-or-fn":1685504765388,"../utils/in-str":1685504765402,"./clean-touch-actions":1685504765403}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765402, function(require, module, exports) {
+}, function(modId) { var map = {"./touchaction-Consts":1727074728066,"../inputjs/input-consts":1727074728069,"../utils/each":1727074728077,"../utils/bool-or-fn":1727074728079,"../utils/in-str":1727074728093,"./clean-touch-actions":1727074728094}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728093, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2198,7 +2198,7 @@ function inStr(str, find) {
   return str.indexOf(find) > -1;
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765403, function(require, module, exports) {
+__DEFINE__(1727074728094, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2246,8 +2246,8 @@ function cleanTouchActions(actions) {
 
   return _touchactionConsts.TOUCH_ACTION_AUTO;
 }
-}, function(modId) { var map = {"../utils/in-str":1685504765402,"./touchaction-Consts":1685504765375}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765404, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/in-str":1727074728093,"./touchaction-Consts":1727074728066}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728095, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2277,8 +2277,8 @@ function createInputInstance(manager) {
 
   return new Type(manager, _inputHandler.default);
 }
-}, function(modId) { var map = {"./input-handler":1685504765405,"../input/touch":1685504765417}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765405, function(require, module, exports) {
+}, function(modId) { var map = {"./input-handler":1727074728096,"../input/touch":1727074728108}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728096, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2321,8 +2321,8 @@ function inputHandler(manager, eventType, input) {
   manager.recognize(input);
   manager.session.prevInput = input;
 }
-}, function(modId) { var map = {"./input-consts":1685504765378,"./compute-input-data":1685504765406}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765406, function(require, module, exports) {
+}, function(modId) { var map = {"./input-consts":1727074728069,"./compute-input-data":1727074728097}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728097, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2405,8 +2405,8 @@ function computeInputData(manager, input) {
   input.maxPointers = !session.prevInput ? input.pointers.length : input.pointers.length > session.prevInput.maxPointers ? input.pointers.length : session.prevInput.maxPointers;
   (0, _computeIntervalInputData.default)(session, input);
 }
-}, function(modId) { var map = {"../utils/utils-consts":1685504765376,"../utils/has-parent":1685504765407,"./simple-clone-input-data":1685504765408,"./get-center":1685504765409,"./get-distance":1685504765398,"./get-angle":1685504765410,"./get-direction":1685504765411,"./compute-delta-xy":1685504765412,"./get-velocity":1685504765413,"./get-scale":1685504765414,"./get-rotation":1685504765415,"./compute-interval-input-data":1685504765416}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765407, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/utils-consts":1727074728067,"../utils/has-parent":1727074728098,"./simple-clone-input-data":1727074728099,"./get-center":1727074728100,"./get-distance":1727074728089,"./get-angle":1727074728101,"./get-direction":1727074728102,"./compute-delta-xy":1727074728103,"./get-velocity":1727074728104,"./get-scale":1727074728105,"./get-rotation":1727074728106,"./compute-interval-input-data":1727074728107}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728098, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2434,7 +2434,7 @@ function hasParent(node, parent) {
   return false;
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765408, function(require, module, exports) {
+__DEFINE__(1727074728099, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2476,8 +2476,8 @@ function simpleCloneInputData(input) {
     deltaY: input.deltaY
   };
 }
-}, function(modId) { var map = {"../utils/utils-consts":1685504765376,"./get-center":1685504765409}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765409, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/utils-consts":1727074728067,"./get-center":1727074728100}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728100, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2518,8 +2518,8 @@ function getCenter(pointers) {
     y: (0, _utilsConsts.round)(y / pointersLength)
   };
 }
-}, function(modId) { var map = {"../utils/utils-consts":1685504765376}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765410, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/utils-consts":1727074728067}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728101, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2546,8 +2546,8 @@ function getAngle(p1, p2, props) {
   let y = p2[props[1]] - p1[props[1]];
   return Math.atan2(y, x) * 180 / Math.PI;
 }
-}, function(modId) { var map = {"./input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765411, function(require, module, exports) {
+}, function(modId) { var map = {"./input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728102, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2577,8 +2577,8 @@ function getDirection(x, y) {
 
   return y < 0 ? _inputConsts.DIRECTION_UP : _inputConsts.DIRECTION_DOWN;
 }
-}, function(modId) { var map = {"../utils/utils-consts":1685504765376,"./input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765412, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/utils-consts":1727074728067,"./input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728103, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2612,8 +2612,8 @@ function computeDeltaXY(session, input) {
   input.deltaX = prevDelta.x + (center.x - offset.x);
   input.deltaY = prevDelta.y + (center.y - offset.y);
 }
-}, function(modId) { var map = {"./input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765413, function(require, module, exports) {
+}, function(modId) { var map = {"./input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728104, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2636,7 +2636,7 @@ function getVelocity(deltaTime, x, y) {
   };
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765414, function(require, module, exports) {
+__DEFINE__(1727074728105, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2661,8 +2661,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getScale(start, end) {
   return (0, _getDistance.default)(end[0], end[1], _inputConsts.PROPS_CLIENT_XY) / (0, _getDistance.default)(start[0], start[1], _inputConsts.PROPS_CLIENT_XY);
 }
-}, function(modId) { var map = {"./input-consts":1685504765378,"./get-distance":1685504765398}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765415, function(require, module, exports) {
+}, function(modId) { var map = {"./input-consts":1727074728069,"./get-distance":1727074728089}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728106, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2686,8 +2686,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getRotation(start, end) {
   return (0, _getAngle.default)(end[1], end[0], _inputConsts.PROPS_CLIENT_XY) + (0, _getAngle.default)(start[1], start[0], _inputConsts.PROPS_CLIENT_XY);
 }
-}, function(modId) { var map = {"./get-angle":1685504765410,"./input-consts":1685504765378}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765416, function(require, module, exports) {
+}, function(modId) { var map = {"./get-angle":1727074728101,"./input-consts":1727074728069}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728107, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2741,8 +2741,8 @@ function computeIntervalInputData(session, input) {
   input.velocityY = velocityY;
   input.direction = direction;
 }
-}, function(modId) { var map = {"./input-consts":1685504765378,"../utils/utils-consts":1685504765376,"./get-velocity":1685504765413,"./get-direction":1685504765411}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765417, function(require, module, exports) {
+}, function(modId) { var map = {"./input-consts":1727074728069,"../utils/utils-consts":1727074728067,"./get-velocity":1727074728104,"./get-direction":1727074728102}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728108, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2870,8 +2870,8 @@ function getTouches(ev, type) {
   return [// merge targetTouches with changedTargetTouches so it contains ALL touches, including 'end' and 'cancel'
   (0, _uniqueArray.default)(targetTouches.concat(changedTargetTouches), 'identifier', true), changedTargetTouches];
 }
-}, function(modId) { var map = {"../inputjs/input-consts":1685504765378,"../inputjs/input-constructor":1685504765418,"../utils/to-array":1685504765421,"../utils/has-parent":1685504765407,"../utils/unique-array":1685504765422}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765418, function(require, module, exports) {
+}, function(modId) { var map = {"../inputjs/input-consts":1727074728069,"../inputjs/input-constructor":1727074728109,"../utils/to-array":1727074728112,"../utils/has-parent":1727074728098,"../utils/unique-array":1727074728113}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728109, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2936,8 +2936,8 @@ class Input {
 }
 
 exports.default = Input;
-}, function(modId) { var map = {"../utils/bool-or-fn":1685504765388,"../utils/add-event-listeners":1685504765419}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765419, function(require, module, exports) {
+}, function(modId) { var map = {"../utils/bool-or-fn":1727074728079,"../utils/add-event-listeners":1727074728110}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728110, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2970,8 +2970,8 @@ function addManagerListeners(manager, types, handler) {
     manager.on(`origin_input:${type}`, handler);
   });
 }
-}, function(modId) { var map = {"./each":1685504765386,"./split-str":1685504765420}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765420, function(require, module, exports) {
+}, function(modId) { var map = {"./each":1727074728077,"./split-str":1727074728111}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728111, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2989,7 +2989,7 @@ function splitStr(str) {
   return str.trim().split(/\s+/g);
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765421, function(require, module, exports) {
+__DEFINE__(1727074728112, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3007,7 +3007,7 @@ function toArray(obj) {
   return Array.prototype.slice.call(obj, 0);
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765422, function(require, module, exports) {
+__DEFINE__(1727074728113, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3055,8 +3055,8 @@ function uniqueArray(src, key, sort) {
 
   return results;
 }
-}, function(modId) { var map = {"./in-array":1685504765387}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765423, function(require, module, exports) {
+}, function(modId) { var map = {"./in-array":1727074728078}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728114, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3155,8 +3155,8 @@ class PointerEventInput extends _inputConstructor.default {
 }
 
 exports.default = PointerEventInput;
-}, function(modId) { var map = {"../inputjs/input-consts":1685504765378,"../inputjs/input-constructor":1685504765418,"../utils/in-array":1685504765387}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765424, function(require, module, exports) {
+}, function(modId) { var map = {"../inputjs/input-consts":1727074728069,"../inputjs/input-constructor":1727074728109,"../utils/in-array":1727074728078}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728115, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3189,8 +3189,8 @@ function removeManagerListeners(manager, types, handler) {
     manager.off(`origin_input:${type}`, handler);
   });
 }
-}, function(modId) { var map = {"./each":1685504765386,"./split-str":1685504765420}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765425, function(require, module, exports) {
+}, function(modId) { var map = {"./each":1727074728077,"./split-str":1727074728111}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728116, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3217,8 +3217,8 @@ const merge = (0, _deprecate.default)((dest, src) => {
 }, 'merge', 'Use `assign`.');
 var _default = merge;
 exports.default = _default;
-}, function(modId) { var map = {"./deprecate":1685504765426,"./extend":1685504765427}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765426, function(require, module, exports) {
+}, function(modId) { var map = {"./deprecate":1727074728117,"./extend":1727074728118}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728117, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3249,7 +3249,7 @@ function deprecate(method, name, message) {
   };
 }
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765427, function(require, module, exports) {
+__DEFINE__(1727074728118, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3286,8 +3286,8 @@ const extend = (0, _deprecate.default)((dest, src, merge) => {
 }, 'extend', 'Use `assign`.');
 var _default = extend;
 exports.default = _default;
-}, function(modId) { var map = {"./deprecate":1685504765426}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765428, function(require, module, exports) {
+}, function(modId) { var map = {"./deprecate":1727074728117}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728119, function(require, module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -3317,8 +3317,8 @@ function inherit(child, base, properties) {
     (0, _assign.default)(childP, properties);
   }
 }
-}, function(modId) { var map = {"./assign":1685504765383}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1685504765372);
+}, function(modId) { var map = {"./assign":1727074728074}; return __REQUIRE__(map[modId], modId); })
+return __REQUIRE__(1727074728063);
 })()
 //miniprogram-npm-outsideDeps=[]
 //# sourceMappingURL=index.js.map

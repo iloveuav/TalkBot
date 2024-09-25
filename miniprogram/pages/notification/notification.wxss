@@ -571,7 +571,7 @@ page {
   background-color: rgb(246, 246, 247);
   /* border: 1px solid red; */
   border-radius: 20rpx 0rpx 0rpx 20rpx;
-  z-index: 999;
+  z-index: 999!important;
   box-shadow: 0 3rpx 12rpx rgba(0, 0, 0, 0.06);
 }
 

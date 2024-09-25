@@ -221,10 +221,7 @@ Page({
     let nowtime = util.formatDayTime(new Date, 'Y/M/D');
     console.log(nowtime)
     // 获取云端上保密协议的内容
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     //  下面是云函数的调用
     wx.cloud.callFunction({
       name: 'get_indexCardMess',
@@ -340,10 +337,7 @@ Page({
 
 
   getAllCourse() {
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     wx.cloud.callFunction({
       name: 'get_allCourseMess',
       data: {},
@@ -370,10 +364,7 @@ Page({
   },
 
   getAllApplyVipList() {
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     wx.cloud.init()
     wx.cloud.callFunction({
 
@@ -409,10 +400,6 @@ Page({
  
 
   getAllCourseList(pageType) {
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
     wx.cloud.callFunction({
       name: 'get_CourseList',
       data: {},
@@ -847,10 +834,7 @@ Page({
       // select_flag: this.data.dialogFlag || '',
     }
     console.log("test-params", params)
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     wx.cloud.callFunction({
       name: "query_visitorRecord",
       data: params

@@ -193,10 +193,7 @@ Page({
       isWaitCheck: false
       // select_flag: this.data.dialogFlag || '',
     }
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     wx.cloud.callFunction({
       name: "get_allCourseMess",
       data: {}
@@ -514,10 +511,7 @@ Page({
   },
 
   getAllCourse() {
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     wx.cloud.init()
     //  下面是云函数的调用
     // console.log(wx.getStorageSync("openid"));

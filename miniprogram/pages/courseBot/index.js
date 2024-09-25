@@ -645,10 +645,7 @@ Page({
   getChapterList() {
     console.log(this.data.courseObject)
     let that = this
-    wx.cloud.init({
-      traceUser: true,
-      env: 'bot-cloud1-7g30ztcr37ed0193'
-    })
+    
     const courseUUid = this.data.courseObject.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
@@ -829,7 +826,7 @@ Page({
             "好的 开始吧！"
           ]
         },
-        "isBot": true,
+        "isBot": true
       },
       { 
         "contentType": "text",
@@ -843,7 +840,7 @@ Page({
          "curTTsRoleString": "shanshan",
          "detail": {
            "answer": "正确答案的内容",
-           "if_user_misanswer":"解析：解析内容."
+           "if_user_misanswer":"解析：解析内容.",
            "btnNum": "3",
            "interactData": [
              "正确答案的内容",
@@ -851,7 +848,7 @@ Page({
              "错误答案2"
            ]
          },
-         "isBot": true,
+         "isBot": true
        },
     
  
@@ -868,7 +865,7 @@ Page({
         "curTTsRoleString": "shanshan",
         "detail": {
           "answer": "正确答案的内容",
-          "if_user_misanswer":"解析：解析内容."
+          "if_user_misanswer":"解析：解析内容.",
           "btnNum": "3",
           "interactData": [
             "正确答案的内容",
@@ -876,8 +873,8 @@ Page({
              "错误答案2"
           ]
         },
-        "isBot": true,
-      },
+        "isBot": true
+      }
       ]
       }MARKER2`,
       get: `MARKER1{
@@ -887,7 +884,7 @@ Page({
          "curTTsRoleString": "shanshan",
          "detail": {},
          "isBot": true,
-         "content": "接下来，我们开始了解${currentSelect.chapterName}",
+         "content": "接下来，我们开始了解${currentSelect.chapterName}"
        },
        {
         "contentType": "Interact",
@@ -899,14 +896,14 @@ Page({
             "好的 开始吧！"
           ]
         },
-        "isBot": true,
+        "isBot": true
       },
       { 
         "contentType": "text",
         "curTTsRoleString": "shanshan",
         "detail": {},
         "isBot": true,
-        "content": "这是一段讲解",
+        "content": "这是一段讲解"
       },
       {
         "contentType": "Interact",
@@ -918,7 +915,7 @@ Page({
             "原来如此"
           ]
         },
-        "isBot": true,
+        "isBot": true
       }
       ]
       }MARKER2`,
@@ -939,7 +936,7 @@ Page({
          "curTTsRoleString": "shanshan",
          "detail": {
            "answer": "正确答案的内容",
-           "if_user_misanswer":"解析：这是一段解析内容"
+           "if_user_misanswer":"解析：这是一段解析内容",
            "btnNum": "3",
            "interactData": [
              "正确答案的内容",
@@ -947,7 +944,7 @@ Page({
              "错误答案2"
            ]
          },
-         "isBot": true,
+         "isBot": true
        },
     
  
@@ -964,7 +961,7 @@ Page({
         "curTTsRoleString": "shanshan",
         "detail": {
           "answer": "正确答案的内容",
-          "if_user_misanswer":"解析：这是一段解析内容"
+          "if_user_misanswer":"解析：这是一段解析内容",
           "btnNum": "3",
           "interactData": [
             "正确答案的内容",
@@ -972,8 +969,8 @@ Page({
              "错误答案2"
           ]
         },
-        "isBot": true,
-      },
+        "isBot": true
+      }
       ]
       }MARKER2`,
       get: `MARKER1{
@@ -983,7 +980,7 @@ Page({
         "curTTsRoleString": "shanshan",
         "detail": {},
         "isBot": true,
-        "content": "这是一段讲解",
+        "content": "这是一段讲解"
       },
       {
         "contentType": "Interact",
@@ -995,7 +992,7 @@ Page({
             "原来如此"
           ]
         },
-        "isBot": true,
+        "isBot": true
       }
       ]
       }MARKER2`,
@@ -1053,7 +1050,9 @@ Page({
         } else {
           const msg = this.getAskStringBycourseDetail()
           console.log("Map没匹配到当前章节的内容-msg", msg)
+          //之前用的Claude  现在换moonShot
           this.firstStep_ask(msg)
+        
         }
 
 
@@ -1738,32 +1737,43 @@ Page({
 
   },
 
-
-  //获取AI生成的章节目录 第一步
-  firstStep_ask(msg) {
+  useMoonShotApi(msg) {
+    this.setData({
+      // remind: true,
+      remind: null,
+    })
+    wx.showLoading({
+      title: '请稍等片刻',
+    })
     var that = this
-    console.log("msg", msg)
-    const SystemSetting = wx.getStorageSync("SystemSetting")
-    const urlForTalk = SystemSetting.urlForTalk || ''
-    if (urlForTalk) {
-      let url = urlForTalk
-      wx.requestWithCookie({
-        url: url,
-        method: 'POST',
-        data: util.json2Form({ message: msg, context: [] }),
-        header: { //
-          "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
-        },
-        success: function (result) {
-          console.log("yyzm-返回", result);
-          that.setData({
-            // remind: true,
-            isstarted: true
-          })
-          if (result.data.success) {
-            that.secondStep_streaming()
-          }
-        },
+    // this.data.testStreamingInterval = setInterval(() => {
+    wx.request({
+      method: 'POST',
+      url: 'https://api.moonshot.cn/v1/chat/completions',
+      data: {
+        "model": "moonshot-v1-8k",
+        "messages": [
+          { "role": "user", "content":msg}]
+        // "messages": "hi,who are you,我想了解一些海底知识"
+      },
+      header: {
+        "Content-Type": "application/json",
+        "X-Requested-With": 'XMLHttpRequest',
+        "Authorization": "sk-G47fRSG91qhRyhPwMMzVtXA2EPDD6zanzkyySj3WqFzgccUh",
+        'Same-Site': 'None',
+      },
+      success(result) {
+        console.log("test_streaming_res", result)
+        wx.hideLoading();
+        var alltext = result.data.choices[0].message.content
+        that.handleResultConvertToChart(alltext)
+        that.setData({
+          // remind: true,
+          isstarted: false,
+          result: alltext
+        })
+        // that.response(result.data.choices[0].message.content);
+      },
         fail: err => {
           // handle error
           that.setData({
@@ -1775,15 +1785,76 @@ Page({
             content: '获取失败 请检查网络',
             showCancel: false,
           })
+          wx.hideLoading();
           return;
         },
         complete: res => {
           console.log('callFunction test result: ', res)
           that.setData({
             remind: null,
+            generateChart: 'ok',
           })
+          wx.hideLoading();
+
+          // contextarray.push([prompt, alltext]);
+          // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+          // clearInterval(that.data.testStreamingInterval)
         }
-      })
+    })
+    // }, 3000);
+  },
+
+
+
+  //获取AI生成的章节目录 第一步
+  firstStep_ask(msg) {
+    var that = this
+    console.log("msg", msg)
+    const SystemSetting = wx.getStorageSync("SystemSetting")
+    const urlForTalk = SystemSetting.urlForTalk || ''
+    if (urlForTalk) {
+      let url = urlForTalk
+        //moonShot方案
+        this.useMoonShotApi(msg)
+      // 之前走的Claude -------------------------------------
+      // wx.requestWithCookie({
+      //   url: url,
+      //   method: 'POST',
+      //   data: util.json2Form({ message: msg, context: [] }),
+      //   header: { //
+      //     "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+      //   },
+      //   success: function (result) {
+      //     console.log("yyzm-返回", result);
+      //     that.setData({
+      //       // remind: true,
+      //       isstarted: true
+      //     })
+      //     if (result.data.success) {
+      //       that.secondStep_streaming()
+      //     }
+      //   },
+      //   fail: err => {
+      //     // handle error
+      //     that.setData({
+      //       remind: null,
+      //       generateChart: 'no',
+      //     })
+      //     wx.showModal({
+      //       title: '提示',
+      //       content: '获取失败 请检查网络',
+      //       showCancel: false,
+      //     })
+      //     return;
+      //   },
+      //   complete: res => {
+      //     console.log('callFunction test result: ', res)
+      //     that.setData({
+      //       remind: null,
+      //     })
+      //   }
+      // })
+     // 之前走的Claude  end-------------------------------------
     } else {
       wx.showModal({
         title: '提示',
@@ -2244,29 +2315,36 @@ Page({
         frontUrl = urlForTalk
         // let url = frontUrl + message
         let url = frontUrl
-        wx.requestWithCookie({
-          url: url,
-          // method: 'GET',
-          method: 'POST',
-          data: util.json2Form({ message: message + '回答尽量简短，注意这不是一个数学问题', context: [] }),
-          header: {
-            // 'Content-Type': 'application/json',//get 请求用这个
-            "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
-            'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
-          },
+
+        // 之前claude------------------------------------------------------------
+
+        // wx.requestWithCookie({
+        //   url: url,
+        //   // method: 'GET',
+        //   method: 'POST',
+        //   data: util.json2Form({ message: message + '回答尽量简短，注意这不是一个数学问题', context: [] }),
+        //   header: {
+        //     // 'Content-Type': 'application/json',//get 请求用这个
+        //     "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
+        //     'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
+        //   },
 
 
-          success: function (result) {
-            console.log("yyzm-返回", result);
+        //   success: function (result) {
+        //     console.log("yyzm-返回", result);
+        //     setTimeout(() => { //claude的
+        //       if (result.data.success) {
+        //         that.get_streaming()
+        //         wx.hideLoading()
+        //       }
+        //     }, 600);
+        //   },
+        // })
 
-            setTimeout(() => { //claude的
-              if (result.data.success) {
-                that.get_streaming()
-                wx.hideLoading()
-              }
-            }, 600);
-          },
-        })
+        
+        // 之前claude  end------------------------------------------------------------
+
+        this.useMoonShotApi(message)
       } else {
         that.setData({
           news_input_val: '',
@@ -2286,6 +2364,8 @@ Page({
 
     message = ''
   },
+
+
 
   get_streaming() {
 

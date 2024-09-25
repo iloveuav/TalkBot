@@ -25,13 +25,13 @@
     <image class="remind-img" src="/images/loading_blue.gif"></image>
   </view>
   <block wx:else > 
-    <text class="smalltitle" >独乐乐不如众乐乐，希望你也能分享知识收获快乐</text>
+    <text class="smalltitle" >独乐乐不如众乐乐，一起分享知识收获快乐</text>
     <!-- <text class="topBigText" >会聊</text> -->
     <!-- <text class="smalltitle" >和我们一起为乡村数字教育出份力~</text> -->
     <!-- <image class="smalltitle" src="/Images/start1/text1.png"></image> -->
 
     <image class="backgroundImg" src="cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/5647109-7bfe3f5d86f098fb.jpeg"></image>    
-    <image class="start" src="cloud://bot-cloud1-7g30ztcr37ed0193.626f-bot-cloud1-7g30ztcr37ed0193-1312399818/翻译_3.gif"></image>    
+    <image class="start" src="http://imgchatbot.uavserve.online/talkBotDoor.gif"></image>    
     <!-- <image class="start" src="cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/翻译.gif"></image>     -->
     <!-- <image class="start" src="cloud://huixue-3g4h1ydg1dedcaf3.6875-huixue-3g4h1ydg1dedcaf3-1312399818/door1.gif"></image>     -->
      <!-- <image class="backuav" src="cloud://uav-001-9213ca.7561-uav-001-9213ca-1258960420/images/樊峻洁-无人机插画-没有螺旋桨3.png" mode="scaleToFill"></image>  -->

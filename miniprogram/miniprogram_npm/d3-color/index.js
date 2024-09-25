@@ -4,13 +4,13 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1685504765643, function(require, module, exports) {
+__DEFINE__(1727074728334, function(require, module, exports) {
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });var __TEMP__ = require('./color.js');Object.defineProperty(exports, 'color', { enumerable: true, configurable: true, get: function() { return __TEMP__.default; } });Object.defineProperty(exports, 'rgb', { enumerable: true, configurable: true, get: function() { return __TEMP__.rgb; } });Object.defineProperty(exports, 'hsl', { enumerable: true, configurable: true, get: function() { return __TEMP__.hsl; } });
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });var __TEMP__ = require('./lab.js');Object.defineProperty(exports, 'lab', { enumerable: true, configurable: true, get: function() { return __TEMP__.default; } });Object.defineProperty(exports, 'hcl', { enumerable: true, configurable: true, get: function() { return __TEMP__.hcl; } });Object.defineProperty(exports, 'lch', { enumerable: true, configurable: true, get: function() { return __TEMP__.lch; } });Object.defineProperty(exports, 'gray', { enumerable: true, configurable: true, get: function() { return __TEMP__.gray; } });
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });var __TEMP__ = require('./cubehelix.js');Object.defineProperty(exports, 'cubehelix', { enumerable: true, configurable: true, get: function() { return __TEMP__.default; } });
 
-}, function(modId) {var map = {"./color.js":1685504765644,"./lab.js":1685504765646,"./cubehelix.js":1685504765648}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765644, function(require, module, exports) {
+}, function(modId) {var map = {"./color.js":1727074728335,"./lab.js":1727074728337,"./cubehelix.js":1727074728339}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728335, function(require, module, exports) {
 var __TEMP__ = require('./define.js');var define = __REQUIRE_DEFAULT__(__TEMP__);var extend = __TEMP__['extend'];
 
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });function Color() {};exports.Color = Color
@@ -408,8 +408,8 @@ function hsl2rgb(h, m1, m2) {
       : m1) * 255;
 }
 
-}, function(modId) { var map = {"./define.js":1685504765645}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765645, function(require, module, exports) {
+}, function(modId) { var map = {"./define.js":1727074728336}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728336, function(require, module, exports) {
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });exports.default = function(constructor, factory, prototype) {
   constructor.prototype = factory.prototype = prototype;
   prototype.constructor = constructor;
@@ -422,7 +422,7 @@ if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: t
 };exports.extend = extend
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765646, function(require, module, exports) {
+__DEFINE__(1727074728337, function(require, module, exports) {
 var __TEMP__ = require('./define.js');var define = __REQUIRE_DEFAULT__(__TEMP__);var extend = __TEMP__['extend'];
 var __TEMP__ = require('./color.js');var Color = __TEMP__['Color'];var rgbConvert = __TEMP__['rgbConvert'];var Rgb = __TEMP__['Rgb'];
 var __TEMP__ = require('./math.js');var degrees = __TEMP__['degrees'];var radians = __TEMP__['radians'];
@@ -547,13 +547,13 @@ define(Hcl, hcl, extend(Color, {
   }
 }));
 
-}, function(modId) { var map = {"./define.js":1685504765645,"./color.js":1685504765644,"./math.js":1685504765647}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765647, function(require, module, exports) {
+}, function(modId) { var map = {"./define.js":1727074728336,"./color.js":1727074728335,"./math.js":1727074728338}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728338, function(require, module, exports) {
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });var radians = exports.radians = Math.PI / 180;
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });var degrees = exports.degrees = 180 / Math.PI;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765648, function(require, module, exports) {
+__DEFINE__(1727074728339, function(require, module, exports) {
 var __TEMP__ = require('./define.js');var define = __REQUIRE_DEFAULT__(__TEMP__);var extend = __TEMP__['extend'];
 var __TEMP__ = require('./color.js');var Color = __TEMP__['Color'];var rgbConvert = __TEMP__['rgbConvert'];var Rgb = __TEMP__['Rgb'];var darker = __TEMP__['darker'];var brighter = __TEMP__['brighter'];
 var __TEMP__ = require('./math.js');var degrees = __TEMP__['degrees'];var radians = __TEMP__['radians'];
@@ -616,8 +616,8 @@ define(Cubehelix, cubehelix, extend(Color, {
   }
 }));
 
-}, function(modId) { var map = {"./define.js":1685504765645,"./color.js":1685504765644,"./math.js":1685504765647}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1685504765643);
+}, function(modId) { var map = {"./define.js":1727074728336,"./color.js":1727074728335,"./math.js":1727074728338}; return __REQUIRE__(map[modId], modId); })
+return __REQUIRE__(1727074728334);
 })()
 //miniprogram-npm-outsideDeps=[]
 //# sourceMappingURL=index.js.map

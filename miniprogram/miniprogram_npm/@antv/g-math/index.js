@@ -4,7 +4,7 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1685504765460, function(require, module, exports) {
+__DEFINE__(1727074728151, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Util = exports.Polyline = exports.Polygon = exports.Line = exports.Arc = exports.Cubic = exports.Quad = void 0;
@@ -23,8 +23,8 @@ exports.Polyline = polyline_1.default;
 var Util = require("./util");
 exports.Util = Util;
 //# sourceMappingURL=index.js.map
-}, function(modId) {var map = {"./quadratic":1685504765461,"./cubic":1685504765465,"./arc":1685504765466,"./line":1685504765462,"./polygon":1685504765468,"./polyline":1685504765470,"./util":1685504765463}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765461, function(require, module, exports) {
+}, function(modId) {var map = {"./quadratic":1727074728152,"./cubic":1727074728156,"./arc":1727074728157,"./line":1727074728153,"./polygon":1727074728159,"./polyline":1727074728161,"./util":1727074728154}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728152, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var line_1 = require("./line");
@@ -119,8 +119,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=quadratic.js.map
-}, function(modId) { var map = {"./line":1685504765462,"./util":1685504765463,"./bezier":1685504765464}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765462, function(require, module, exports) {
+}, function(modId) { var map = {"./line":1727074728153,"./util":1727074728154,"./bezier":1727074728155}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728153, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -220,8 +220,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=line.js.map
-}, function(modId) { var map = {"./util":1685504765463}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765463, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728154}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728154, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.piMod = exports.getBBoxRange = exports.getBBoxByArray = exports.isNumberEqual = exports.distance = void 0;
@@ -272,7 +272,7 @@ function piMod(angle) {
 exports.piMod = piMod;
 //# sourceMappingURL=util.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765464, function(require, module, exports) {
+__DEFINE__(1727074728155, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.snapLength = exports.nearestPoint = void 0;
@@ -365,8 +365,8 @@ function snapLength(xArr, yArr) {
 }
 exports.snapLength = snapLength;
 //# sourceMappingURL=bezier.js.map
-}, function(modId) { var map = {"./util":1685504765463}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765465, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728154}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728156, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -486,8 +486,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=cubic.js.map
-}, function(modId) { var map = {"./util":1685504765463,"./line":1685504765462,"./bezier":1685504765464}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765466, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728154,"./line":1727074728153,"./bezier":1727074728155}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728157, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -675,8 +675,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=arc.js.map
-}, function(modId) { var map = {"./util":1685504765463,"./ellipse":1685504765467}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765467, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728154,"./ellipse":1727074728158}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728158, function(require, module, exports) {
 
 /**
  * @fileoverview 椭圆的一些计算，
@@ -824,8 +824,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=ellipse.js.map
-}, function(modId) { var map = {"./util":1685504765463}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765468, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728154}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728159, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var segments_1 = require("./segments");
@@ -884,8 +884,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=polygon.js.map
-}, function(modId) { var map = {"./segments":1685504765469,"./polyline":1685504765470}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765469, function(require, module, exports) {
+}, function(modId) { var map = {"./segments":1727074728160,"./polyline":1727074728161}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728160, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.distanceAtSegment = exports.angleAtSegments = exports.pointAtSegments = exports.lengthOfSegment = void 0;
@@ -999,8 +999,8 @@ function distanceAtSegment(points, x, y) {
 }
 exports.distanceAtSegment = distanceAtSegment;
 //# sourceMappingURL=segments.js.map
-}, function(modId) { var map = {"./line":1685504765462,"./util":1685504765463}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765470, function(require, module, exports) {
+}, function(modId) { var map = {"./line":1727074728153,"./util":1727074728154}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728161, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var segments_1 = require("./segments");
@@ -1059,8 +1059,8 @@ exports.default = {
     },
 };
 //# sourceMappingURL=polyline.js.map
-}, function(modId) { var map = {"./segments":1685504765469,"./util":1685504765463}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1685504765460);
+}, function(modId) { var map = {"./segments":1727074728160,"./util":1727074728154}; return __REQUIRE__(map[modId], modId); })
+return __REQUIRE__(1727074728151);
 })()
 //miniprogram-npm-outsideDeps=["gl-matrix/vec2","@antv/util"]
 //# sourceMappingURL=index.js.map

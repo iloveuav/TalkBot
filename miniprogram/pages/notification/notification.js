@@ -277,7 +277,7 @@ Page({
       nickName: app.nickName,
       avatarUrl: app.avatarUrl,
 
-      talkRead_switch:talkRead_switch,//控制是否显示语音朗读按钮
+      talkRead_switch: talkRead_switch, //控制是否显示语音朗读按钮
       //发音人初始化
       curmultiVoiceArray: this.data.multiVoiceArray[2],
       curTTsRoleString: this.data.multiVoiceArray[2][0].value
@@ -509,12 +509,12 @@ Page({
   },
   //取消朗读
   stopSpeach() {
-      ctx.pause();
-      this.data.isVoicePlaying = false
-      this.end();
-      this.setData({
-        isSpeaking:false
-      })
+    ctx.pause();
+    this.data.isVoicePlaying = false
+    this.end();
+    this.setData({
+      isSpeaking: false
+    })
   },
 
   // ----------------朗读文本输入---------------
@@ -532,8 +532,8 @@ Page({
     let content = ''
     let that = this
     console.log('tts1', e);
-    console.log('tts1-type',type);
-   
+    console.log('tts1-type', type);
+
 
     let islogin = wx.getStorageSync('islogin');
     if (islogin == false || islogin == undefined) {
@@ -949,20 +949,20 @@ Page({
     if (this.isJSON(str)) return JSON.parse(str);
 
     // 如果不是JSON格式,则做以下处理
-    str = str.trim();  // 去除字符串两边空格
+    str = str.trim(); // 去除字符串两边空格
     str = str.replace(/^\s*|\s*$/g, ''); // 去除每行两边空格
 
     // 如果字符串以{或者[开头,说明可能是对象或者数组,尝试解析
     if (str.startsWith('{') || str.startsWith('[')) {
       try {
         return JSON.parse(str);
-      } catch (e) { }
+      } catch (e) {}
     }
 
     // 否则按行分割,尝试构造对象或数组
     var lines = str.split('\n');
-    var obj = {};  // 假定为对象
-    var arr = [];  // 假定为数组
+    var obj = {}; // 假定为对象
+    var arr = []; // 假定为数组
     var isArray = false;
 
     // 遍历每行,解析键值对或者数组元素
@@ -992,7 +992,7 @@ Page({
           var value = keyValue[1].trim();
           obj[key] = value.startsWith('{') || value.startsWith('[') ? this.parseToJSON(value) : value;
         }
-      } else {  // 数组处理
+      } else { // 数组处理
         if (line) arr.push(line.startsWith('{') || line.startsWith('[') ? this.parseToJSON(line) : line);
       }
     }
@@ -1011,8 +1011,8 @@ Page({
 
       if (line.startsWith('data:')) {
         var jsonStr = line.slice(6); // 从data:后面开始截取
-        if (this.isJSON(jsonStr)) {  // 检查是否JSON
-          arr.push(JSON.parse(jsonStr));  // 是的话直接push
+        if (this.isJSON(jsonStr)) { // 检查是否JSON
+          arr.push(JSON.parse(jsonStr)); // 是的话直接push
         } else {
           jsonStr = this.parseToJSON(jsonStr); // 否则解析成JSON
           arr.push(jsonStr);
@@ -1024,105 +1024,96 @@ Page({
   },
 
 
-  get_streaming() {
-
+  useMoonShotApi() {
+    this.setData({
+      // remind: true,
+      remind: null,
+    })
     wx.showLoading({
       title: '请稍等片刻',
     })
     var that = this
     // this.data.testStreamingInterval = setInterval(() => {
     wx.request({
-      method: 'GET',
-      url: 'https://claude.uavserve.online/stream_api',
-      header: { 
-        'Content-Type': 'application/json',//get 请求用这个
-        // "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
-        'Host': 'yierco.slack.com',
-        // 'Cookie':'ts=1685503057.254249; latest_reply=1685503059.191849',
-        // 'Set-Cookie':'latest_reply=1685503059.191849; expires=Wed, 31 May 2023 13:43:13 GMT; Path=/'
-        'Same-Site':'None',
-        // 'Secure':'True',
-
-        // 'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
-        // 'Set-Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
-
-        // cache: false,
-        // data: { message: 'hi', context: [] },
-        // data:json2Form( { message: 'hi', context:[]}),
-
-        // {message:'Hi'}
-
+      method: 'POST',
+      url: 'https://api.moonshot.cn/v1/chat/completions',
+      data: {
+        "model": "moonshot-v1-8k",
+        "messages": [
+          { "role": "user", "content":message}]
+        // "messages": "hi,who are you,我想了解一些海底知识"
+      },
+      header: {
+        "Content-Type": "application/json",
+        "X-Requested-With": 'XMLHttpRequest',
+        "Authorization": "sk-G47fRSG91qhRyhPwMMzVtXA2EPDD6zanzkyySj3WqFzgccUh",
+        'Same-Site': 'None',
       },
       success(result) {
         console.log("test_streaming_res", result)
-        var isstarted = true;
-        var alltext = "";
-        var isalltext = false;
-
         that.setData({
           // remind: true,
-          isstarted: false
+          isstarted: false,
+          remind: null,
         })
-        // if (result.data) {
-        //   clearInterval(that.data.testStreamingInterval)
-        // }
 
-        var jsonArr = that.parseToArray(result.data);
-        console.log("jsonArr", jsonArr)
+        wx.hideLoading();
+        that.response(result.data.choices[0].message.content);
+        // var jsonArr = that.parseToArray(result.data);
+        // console.log("jsonArr", jsonArr)
+        // jsonArr.forEach(item => {
+        //   console.log("item", item)
+        //   console.log("alltext", alltext)
+        //   if (item.length === 0) {
+        //     isalltext = true;
+        //     alltext = alltext.replace('\\\"', '\\\\\"');
+        //     alltext = alltext.replace(/\n/g, "");
+        //     console.log("alltext", alltext)
 
-        jsonArr.forEach(item => {
-          console.log("item", item)
-          console.log("alltext", alltext)
-          if (item.length === 0) {
-            isalltext = true;
-            alltext = alltext.replace('\\\"', '\\\\\"');
-            alltext = alltext.replace(/\n/g, "");
-            console.log("alltext", alltext)
+        //     // contextarray.push([prompt, alltext]);
+        //     // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+        //     clearInterval(that.data.testStreamingInterval)
+        //     that.setData({
+        //       remind: null,
+        //     })
+        //     wx.hideLoading()
 
-            // contextarray.push([prompt, alltext]);
-            // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
-            clearInterval(that.data.testStreamingInterval)
-            that.setData({
-              remind: null,
-            })
-            wx.hideLoading()
+        //     that.response(alltext);
+        //     that.setData({
+        //       news_input_val: '',
+        //       centendata: that.data.centendata,
+        //       remind: null,
+        //     })
+        //     that.bottom();
+        //     message = ''
+        //     return;
+        //     // that.handleResultConvertToChart(alltext)
+        //   }
 
-            that.response(alltext);
-            that.setData({
-              news_input_val: '',
-              centendata: that.data.centendata,
-              remind: null,
-            })
-            that.bottom();
-            message = ''
-            return;
-            // that.handleResultConvertToChart(alltext)
-          }
+        //   if (item.choices && item.choices[0].delta.hasOwnProperty("content")) {
+        //     if (item.choices[0].delta.content === '错误' || item.choices[0].delta.content.includes("Claude cannot look up any real-time information") || item.choices[0].delta.content.includes("This request may violate our Acceptable")) {
+        //       console.log("Error")
+        //       // error_layer=true
+        //       // send_post();
+        //       return;
+        //     }
 
-          if (item.choices && item.choices[0].delta.hasOwnProperty("content")) {
-            if (item.choices[0].delta.content === '错误' || item.choices[0].delta.content.includes("Claude cannot look up any real-time information") || item.choices[0].delta.content.includes("This request may violate our Acceptable")) {
-              console.log("Error")
-              // error_layer=true
-              // send_post();
-              return;
-            }
+        //     if (alltext == "") {
+        //       let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
 
-            if (alltext == "") {
-              let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
+        //       tempText = tempText.replace(/\\n/g, '[nlll]');
+        //       tempText = tempText.replace(/\[nlll\]/g, '');
+        //       alltext = tempText;
+        //     } else {
+        //       let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
+        //       tempText
 
-              tempText = tempText.replace(/\\n/g, '[nlll]');
-              tempText = tempText.replace(/\[nlll\]/g, '');
-              alltext = tempText;
-            } else {
-              let tempText = item.choices[0].delta.content.replace(/^\n+/, ''); //去掉回复消息中偶尔开头就存在的连续换行符
-              tempText
-
-              tempText = tempText.replace(/\\n/g, '[nlll]');
-              tempText = tempText.replace(/\[nlll\]/g, '');
-              alltext += tempText;
-            }
-          }
-        })
+        //       tempText = tempText.replace(/\\n/g, '[nlll]');
+        //       tempText = tempText.replace(/\[nlll\]/g, '');
+        //       alltext += tempText;
+        //     }
+        //   }
+        // })
       }
     })
     // }, 3000);
@@ -1190,38 +1181,8 @@ Page({
         frontUrl = urlForTalk
         // let url = frontUrl + message
         let url = frontUrl
-        wx.requestWithCookie({
-          url: url,
-          // method: 'GET',
-          method: 'POST',
-          data: util.json2Form({ message: message, context: [] }),
-          header: {
-            // 'Content-Type': 'application/json',//get 请求用这个
-            "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
-            'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
-          },
 
-
-          success: function (result) {
-            console.log("yyzm-返回", result);
-
-            setTimeout(() => { //claude的
-              if (result.data.success) {
-                that.get_streaming()
-              }
-            }, 600);
-         
-
-            // that.response(result.data);
-            // that.setData({
-            //   news_input_val: '',
-            //   centendata: that.data.centendata,
-            //   remind: null,
-            // })
-            // this.bottom();
-            // message = ''
-          },
-        })
+        this.useMoonShotApi()
       } else {
         that.setData({
           news_input_val: '',
@@ -1229,8 +1190,7 @@ Page({
         })
         if (canNotTalkMessage) {
           that.response(canNotTalkMessage);
-        }
-        else {
+        } else {
           that.response('服务正在维护更新中，给您带来不便十分抱歉，我们将尽快恢复，如有紧急情况请联系管理员');
 
         }
@@ -1483,7 +1443,7 @@ Page({
           title: '提示',
           content: '听不太清，请靠近麦克风重新说一遍~',
           showCancel: false,
-          success: function (res) { }
+          success: function (res) {}
         })
         return;
       }

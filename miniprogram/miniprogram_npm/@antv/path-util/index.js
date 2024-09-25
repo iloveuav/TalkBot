@@ -4,7 +4,7 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1685504765509, function(require, module, exports) {
+__DEFINE__(1727074728200, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isPointInPolygon = exports.isPolygonsIntersect = exports.getLineIntersect = exports.path2Segments = exports.getArcParams = exports.reactPath = exports.path2Absolute = exports.path2Curve = exports.parsePathString = exports.parsePathArray = exports.pathIntersection = exports.formatPath = exports.fillPathByDiff = exports.fillPath = exports.catmullRom2Bezier = exports.parsePath = void 0;
@@ -41,8 +41,8 @@ Object.defineProperty(exports, "isPolygonsIntersect", { enumerable: true, get: f
 var point_in_polygon_1 = require("./point-in-polygon");
 Object.defineProperty(exports, "isPointInPolygon", { enumerable: true, get: function () { return point_in_polygon_1.default; } });
 //# sourceMappingURL=index.js.map
-}, function(modId) {var map = {"./parse-path":1685504765510,"./catmull-rom-2-bezier":1685504765511,"./fill-path":1685504765512,"./fill-path-by-diff":1685504765513,"./format-path":1685504765514,"./path-intersection":1685504765515,"./parse-path-array":1685504765524,"./parse-path-string":1685504765519,"./path-2-curve":1685504765517,"./path-2-absolute":1685504765518,"./rect-path":1685504765516,"./get-arc-params":1685504765525,"./path-2-segments":1685504765526,"./get-line-intersect":1685504765527,"./is-polygons-intersect":1685504765528,"./point-in-polygon":1685504765529}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765510, function(require, module, exports) {
+}, function(modId) {var map = {"./parse-path":1727074728201,"./catmull-rom-2-bezier":1727074728202,"./fill-path":1727074728203,"./fill-path-by-diff":1727074728204,"./format-path":1727074728205,"./path-intersection":1727074728206,"./parse-path-array":1727074728215,"./parse-path-string":1727074728210,"./path-2-curve":1727074728208,"./path-2-absolute":1727074728209,"./rect-path":1727074728207,"./get-arc-params":1727074728216,"./path-2-segments":1727074728217,"./get-line-intersect":1727074728218,"./is-polygons-intersect":1727074728219,"./point-in-polygon":1727074728220}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728201, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("@antv/util");
@@ -81,7 +81,7 @@ function parsePath(p) {
 exports.default = parsePath;
 //# sourceMappingURL=parse-path.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765511, function(require, module, exports) {
+__DEFINE__(1727074728202, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var matrix_util_1 = require("@antv/matrix-util");
@@ -201,7 +201,7 @@ function catmullRom2Bezier(crp, z, constraint) {
 exports.default = catmullRom2Bezier;
 //# sourceMappingURL=catmull-rom-2-bezier.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765512, function(require, module, exports) {
+__DEFINE__(1727074728203, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 function decasteljau(points, t) {
@@ -332,7 +332,7 @@ function fillPath(source, target) {
 exports.default = fillPath;
 //# sourceMappingURL=fill-path.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765513, function(require, module, exports) {
+__DEFINE__(1727074728204, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("@antv/util");
@@ -447,7 +447,7 @@ function fillPathByDiff(source, target) {
 exports.default = fillPathByDiff;
 //# sourceMappingURL=fill-path-by-diff.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765514, function(require, module, exports) {
+__DEFINE__(1727074728205, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
@@ -582,7 +582,7 @@ function formatPath(fromPath, toPath) {
 exports.default = formatPath;
 //# sourceMappingURL=format-path.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765515, function(require, module, exports) {
+__DEFINE__(1727074728206, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("@antv/util");
@@ -948,8 +948,8 @@ function pathIntersection(path1, path2) {
 }
 exports.default = pathIntersection;
 //# sourceMappingURL=path-intersection.js.map
-}, function(modId) { var map = {"./rect-path":1685504765516,"./path-2-curve":1685504765517}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765516, function(require, module, exports) {
+}, function(modId) { var map = {"./rect-path":1727074728207,"./path-2-curve":1727074728208}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728207, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 function rectPath(x, y, w, h, r) {
@@ -979,7 +979,7 @@ function rectPath(x, y, w, h, r) {
 exports.default = rectPath;
 //# sourceMappingURL=rect-path.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765517, function(require, module, exports) {
+__DEFINE__(1727074728208, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var path_2_absolute_1 = require("./path-2-absolute");
@@ -1039,8 +1039,8 @@ function fixArc(pathArray, allPathCommands, i) {
     }
 }
 //# sourceMappingURL=path-2-curve.js.map
-}, function(modId) { var map = {"./path-2-absolute":1685504765518,"./process/segment-2-cubic":1685504765520}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765518, function(require, module, exports) {
+}, function(modId) { var map = {"./path-2-absolute":1727074728209,"./process/segment-2-cubic":1727074728211}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728209, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var parse_path_string_1 = require("./parse-path-string");
@@ -1173,8 +1173,8 @@ function pathToAbsolute(pathString) {
 }
 exports.default = pathToAbsolute;
 //# sourceMappingURL=path-2-absolute.js.map
-}, function(modId) { var map = {"./parse-path-string":1685504765519}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765519, function(require, module, exports) {
+}, function(modId) { var map = {"./parse-path-string":1727074728210}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728210, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("@antv/util");
@@ -1237,7 +1237,7 @@ function parsePathString(pathString) {
 exports.default = parsePathString;
 //# sourceMappingURL=parse-path-string.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765520, function(require, module, exports) {
+__DEFINE__(1727074728211, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.segmentToCubic = void 0;
@@ -1279,8 +1279,8 @@ function segmentToCubic(segment, params) {
 }
 exports.segmentToCubic = segmentToCubic;
 //# sourceMappingURL=segment-2-cubic.js.map
-}, function(modId) { var map = {"./arc-2-cubic":1685504765521,"./quad-2-cubic":1685504765522,"./line-2-cubic":1685504765523}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765521, function(require, module, exports) {
+}, function(modId) { var map = {"./arc-2-cubic":1727074728212,"./quad-2-cubic":1727074728213,"./line-2-cubic":1727074728214}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728212, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.arcToCubic = void 0;
@@ -1427,7 +1427,7 @@ function arcToCubic(x1, y1, rx, ry, angle, LAF, SF, x2, y2) {
 exports.arcToCubic = arcToCubic;
 //# sourceMappingURL=arc-2-cubic.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765522, function(require, module, exports) {
+__DEFINE__(1727074728213, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.quadToCubic = void 0;
@@ -1445,7 +1445,7 @@ function quadToCubic(x1, y1, qx, qy, x2, y2) {
 exports.quadToCubic = quadToCubic;
 //# sourceMappingURL=quad-2-cubic.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765523, function(require, module, exports) {
+__DEFINE__(1727074728214, function(require, module, exports) {
 
 // export function getPointAtSegLength(p1x: number, p1y: number, c1x: number, c1y: number, c2x: number, c2y: number, p2x: number, p2y: number, t: number) {
 //   const t1 = 1 - t;
@@ -1486,7 +1486,7 @@ function lineToCubic(x1, y1, x2, y2) {
 exports.lineToCubic = lineToCubic;
 //# sourceMappingURL=line-2-cubic.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765524, function(require, module, exports) {
+__DEFINE__(1727074728215, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var p2s = /,?([a-z]),?/gi;
@@ -1496,7 +1496,7 @@ function parsePathArray(path) {
 exports.default = parsePathArray;
 //# sourceMappingURL=parse-path-array.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765525, function(require, module, exports) {
+__DEFINE__(1727074728216, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSamePoint = void 0;
@@ -1593,7 +1593,7 @@ function getArcParams(startPoint, params) {
 exports.default = getArcParams;
 //# sourceMappingURL=get-arc-params.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765526, function(require, module, exports) {
+__DEFINE__(1727074728217, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var get_arc_params_1 = require("./get-arc-params");
@@ -1736,8 +1736,8 @@ function getSegments(path) {
 }
 exports.default = getSegments;
 //# sourceMappingURL=path-2-segments.js.map
-}, function(modId) { var map = {"./get-arc-params":1685504765525,"./parse-path":1685504765510}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765527, function(require, module, exports) {
+}, function(modId) { var map = {"./get-arc-params":1727074728216,"./parse-path":1727074728201}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728218, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var isBetween = function (value, min, max) { return value >= min && value <= max; };
@@ -1776,7 +1776,7 @@ exports.default = getLineIntersect;
 ;
 //# sourceMappingURL=get-line-intersect.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765528, function(require, module, exports) {
+__DEFINE__(1727074728219, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var point_in_polygon_1 = require("./point-in-polygon");
@@ -1883,8 +1883,8 @@ function isPolygonsIntersect(points1, points2) {
 }
 exports.default = isPolygonsIntersect;
 //# sourceMappingURL=is-polygons-intersect.js.map
-}, function(modId) { var map = {"./point-in-polygon":1685504765529,"./get-line-intersect":1685504765527}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765529, function(require, module, exports) {
+}, function(modId) { var map = {"./point-in-polygon":1727074728220,"./get-line-intersect":1727074728218}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728220, function(require, module, exports) {
 
 /**
  * @fileoverview 判断点是否在多边形内
@@ -1938,7 +1938,7 @@ function isInPolygon(points, x, y) {
 exports.default = isInPolygon;
 //# sourceMappingURL=point-in-polygon.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1685504765509);
+return __REQUIRE__(1727074728200);
 })()
 //miniprogram-npm-outsideDeps=["@antv/util","@antv/matrix-util"]
 //# sourceMappingURL=index.js.map

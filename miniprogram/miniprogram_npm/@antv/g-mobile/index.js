@@ -4,7 +4,7 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1685504765471, function(require, module, exports) {
+__DEFINE__(1727074728162, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = exports.getArcParams = exports.Shape = exports.Group = exports.Canvas = void 0;
@@ -20,8 +20,8 @@ var arc_params_1 = require("./util/arc-params");
 Object.defineProperty(exports, "getArcParams", { enumerable: true, get: function () { return arc_params_1.default; } });
 exports.version = '0.5.6';
 //# sourceMappingURL=index.js.map
-}, function(modId) {var map = {"./shape":1685504765472,"./canvas":1685504765498,"./group":1685504765480,"./util/arc-params":1685504765478}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765472, function(require, module, exports) {
+}, function(modId) {var map = {"./shape":1727074728163,"./canvas":1727074728189,"./group":1727074728171,"./util/arc-params":1727074728169}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728163, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Text = exports.Rect = exports.Polyline = exports.Polygon = exports.Path = exports.Marker = exports.Line = exports.Image = exports.Ellipse = exports.Circle = exports.Base = void 0;
@@ -48,8 +48,8 @@ Object.defineProperty(exports, "Rect", { enumerable: true, get: function () { re
 var text_1 = require("./text");
 Object.defineProperty(exports, "Text", { enumerable: true, get: function () { return text_1.default; } });
 //# sourceMappingURL=index.js.map
-}, function(modId) { var map = {"./base":1685504765473,"./circle":1685504765481,"./ellipse":1685504765482,"./image":1685504765483,"./line":1685504765484,"./marker":1685504765486,"./path":1685504765487,"./polygon":1685504765491,"./polyline":1685504765493,"./rect":1685504765494,"./text":1685504765497}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765473, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"./circle":1727074728172,"./ellipse":1727074728173,"./image":1727074728174,"./line":1727074728175,"./marker":1727074728177,"./path":1727074728178,"./polygon":1727074728182,"./polyline":1727074728184,"./rect":1727074728185,"./text":1727074728188}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728164, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -278,8 +278,8 @@ var ShapeBase = /** @class */ (function (_super) {
 }(g_base_1.AbstractShape));
 exports.default = ShapeBase;
 //# sourceMappingURL=base.js.map
-}, function(modId) { var map = {"../util/util":1685504765474,"../util/draw":1685504765476,"./index":1685504765472,"../group":1685504765480}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765474, function(require, module, exports) {
+}, function(modId) { var map = {"../util/util":1727074728165,"../util/draw":1727074728167,"./index":1727074728163,"../group":1727074728171}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728165, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isParent = exports.tick = exports.clearAnimationFrame = exports.requestAnimationFrame = exports.isNumberEqual = exports.mod = exports.toRadian = exports.each = exports.isArray = exports.isFunction = exports.isString = exports.isNil = exports.isSamePoint = exports.mergeRegion = exports.intersectRect = exports.inBox = exports.distance = exports.getPixelRatio = void 0;
@@ -380,8 +380,8 @@ function isParent(container, shape) {
 }
 exports.isParent = isParent;
 //# sourceMappingURL=util.js.map
-}, function(modId) { var map = {"./time":1685504765475}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765475, function(require, module, exports) {
+}, function(modId) { var map = {"./time":1727074728166}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728166, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.clearAnimationFrame = exports.requestAnimationFrame = exports.setExtraFunction = void 0;
@@ -413,7 +413,7 @@ function clearAnimationFrame(handler) {
 exports.clearAnimationFrame = clearAnimationFrame;
 //# sourceMappingURL=time.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765476, function(require, module, exports) {
+__DEFINE__(1727074728167, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mergeView = exports.getMergedRegion = exports.getRefreshRegion = exports.refreshElement = exports.drawPath = exports.clearChanged = exports.checkChildrenRefresh = exports.checkRefresh = exports.drawChildren = exports.applyAttrsToContext = void 0;
@@ -755,8 +755,8 @@ function mergeView(region, viewRegion) {
 }
 exports.mergeView = mergeView;
 //# sourceMappingURL=draw.js.map
-}, function(modId) { var map = {"./parse":1685504765477,"./arc-params":1685504765478,"./util":1685504765474,"../util/arrow":1685504765479}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765477, function(require, module, exports) {
+}, function(modId) { var map = {"./parse":1727074728168,"./arc-params":1727074728169,"./util":1727074728165,"../util/arrow":1727074728170}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728168, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseRadius = exports.parseStyle = exports.parsePattern = exports.parseRadialGradient = exports.parseLineGradient = void 0;
@@ -971,8 +971,8 @@ function parseRadius(radius) {
 }
 exports.parseRadius = parseRadius;
 //# sourceMappingURL=parse.js.map
-}, function(modId) { var map = {"./util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765478, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728169, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -1058,8 +1058,8 @@ function getArcParams(startPoint, params) {
 }
 exports.default = getArcParams;
 //# sourceMappingURL=arc-params.js.map
-}, function(modId) { var map = {"./util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765479, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728170, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addEndArrow = exports.addStartArrow = exports.getShortenOffset = void 0;
@@ -1180,8 +1180,8 @@ function addEndArrow(shape, attrs, x1, y1, x2, y2) {
 }
 exports.addEndArrow = addEndArrow;
 //# sourceMappingURL=arrow.js.map
-}, function(modId) { var map = {"../shape":1685504765472}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765480, function(require, module, exports) {
+}, function(modId) { var map = {"../shape":1727074728163}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728171, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1297,8 +1297,8 @@ var Group = /** @class */ (function (_super) {
 }(g_base_1.AbstractGroup));
 exports.default = Group;
 //# sourceMappingURL=group.js.map
-}, function(modId) { var map = {"./shape":1685504765472,"./util/draw":1685504765476,"./util/util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765481, function(require, module, exports) {
+}, function(modId) { var map = {"./shape":1727074728163,"./util/draw":1727074728167,"./util/util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728172, function(require, module, exports) {
 
 /**
  * @fileoverview 圆
@@ -1349,8 +1349,8 @@ var Circle = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Circle;
 //# sourceMappingURL=circle.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765482, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728173, function(require, module, exports) {
 
 /**
  * @fileoverview 椭圆
@@ -1421,8 +1421,8 @@ var Ellipse = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Ellipse;
 //# sourceMappingURL=ellipse.js.map
-}, function(modId) { var map = {"./base":1685504765473}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765483, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728174, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setMiniCanvas = void 0;
@@ -1563,8 +1563,8 @@ var ImageShape = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = ImageShape;
 //# sourceMappingURL=image.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765484, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728175, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1664,8 +1664,8 @@ var Line = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Line;
 //# sourceMappingURL=line.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/in-stroke/line":1685504765485,"../util/arrow":1685504765479}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765485, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/in-stroke/line":1727074728176,"../util/arrow":1727074728170}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728176, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var g_math_1 = require("@antv/g-math");
@@ -1686,7 +1686,7 @@ function inLine(x1, y1, x2, y2, lineWidth, x, y) {
 exports.default = inLine;
 //# sourceMappingURL=line.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765486, function(require, module, exports) {
+__DEFINE__(1727074728177, function(require, module, exports) {
 
 /**
  * @fileoverview Marker
@@ -1792,8 +1792,8 @@ var Marker = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Marker;
 //# sourceMappingURL=marker.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/util":1685504765474,"../util/draw":1685504765476}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765487, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/util":1727074728165,"../util/draw":1727074728167}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728178, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2052,8 +2052,8 @@ var Path = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Path;
 //# sourceMappingURL=path.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/draw":1685504765476,"../util/in-path/polygon":1685504765488,"../util/path":1685504765489,"../util/arrow":1685504765479}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765488, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/draw":1727074728167,"../util/in-path/polygon":1727074728179,"../util/path":1727074728180,"../util/arrow":1727074728170}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728179, function(require, module, exports) {
 
 /**
  * @fileoverview 判断点是否在多边形内
@@ -2107,7 +2107,7 @@ function isInPolygon(points, x, y) {
 exports.default = isInPolygon;
 //# sourceMappingURL=polygon.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765489, function(require, module, exports) {
+__DEFINE__(1727074728180, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2234,8 +2234,8 @@ function extractPolygons(path) {
 }
 exports.default = tslib_1.__assign({ hasArc: hasArc, extractPolygons: extractPolygons, isPointInStroke: isPointInStroke }, g_base_1.PathUtil);
 //# sourceMappingURL=path.js.map
-}, function(modId) { var map = {"./util":1685504765474,"./in-stroke/line":1685504765485,"./in-stroke/arc":1685504765490}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765490, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1727074728165,"./in-stroke/line":1727074728176,"./in-stroke/arc":1727074728181}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728181, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../util");
@@ -2252,8 +2252,8 @@ function arc(cx, cy, r, startAngle, endAngle, lineWidth, x, y) {
 }
 exports.default = arc;
 //# sourceMappingURL=arc.js.map
-}, function(modId) { var map = {"../util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765491, function(require, module, exports) {
+}, function(modId) { var map = {"../util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728182, function(require, module, exports) {
 
 /**
  * @fileoverview 多边形
@@ -2302,8 +2302,8 @@ var Polygon = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Polygon;
 //# sourceMappingURL=polygon.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/in-stroke/polyline":1685504765492,"../util/in-path/polygon":1685504765488}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765492, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/in-stroke/polyline":1727074728183,"../util/in-path/polygon":1727074728179}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728183, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var line_1 = require("./line");
@@ -2333,8 +2333,8 @@ function inPolyline(points, lineWidth, x, y, isClose) {
 }
 exports.default = inPolyline;
 //# sourceMappingURL=polyline.js.map
-}, function(modId) { var map = {"./line":1685504765485}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765493, function(require, module, exports) {
+}, function(modId) { var map = {"./line":1727074728176}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728184, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2527,8 +2527,8 @@ var PolyLine = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = PolyLine;
 //# sourceMappingURL=polyline.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/in-stroke/polyline":1685504765492,"../util/arrow":1685504765479}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765494, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/in-stroke/polyline":1727074728183,"../util/arrow":1727074728170}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728185, function(require, module, exports) {
 
 /**
  * @fileoverview 矩形
@@ -2616,8 +2616,8 @@ var Rect = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Rect;
 //# sourceMappingURL=rect.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/parse":1685504765477,"../util/util":1685504765474,"../util/in-stroke/rect":1685504765495,"../util/in-stroke/rect-radius":1685504765496}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765495, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/parse":1727074728168,"../util/util":1727074728165,"../util/in-stroke/rect":1727074728186,"../util/in-stroke/rect-radius":1727074728187}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728186, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../util");
@@ -2631,8 +2631,8 @@ function inRect(minX, minY, width, height, lineWidth, x, y) {
 }
 exports.default = inRect;
 //# sourceMappingURL=rect.js.map
-}, function(modId) { var map = {"../util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765496, function(require, module, exports) {
+}, function(modId) { var map = {"../util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728187, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var line_1 = require("./line");
@@ -2650,8 +2650,8 @@ function rectWithRadius(minX, minY, width, height, radius, lineWidth, x, y) {
 }
 exports.default = rectWithRadius;
 //# sourceMappingURL=rect-radius.js.map
-}, function(modId) { var map = {"./line":1685504765485,"./arc":1685504765490}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765497, function(require, module, exports) {
+}, function(modId) { var map = {"./line":1727074728176,"./arc":1727074728181}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728188, function(require, module, exports) {
 
 /**
  * @fileoverview 文本
@@ -2794,8 +2794,8 @@ var Text = /** @class */ (function (_super) {
 }(base_1.default));
 exports.default = Text;
 //# sourceMappingURL=text.js.map
-}, function(modId) { var map = {"./base":1685504765473,"../util/util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765498, function(require, module, exports) {
+}, function(modId) { var map = {"./base":1727074728164,"../util/util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728189, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3171,8 +3171,8 @@ var Canvas = /** @class */ (function (_super) {
 }(g_base_1.AbstractCanvas));
 exports.default = Canvas;
 //# sourceMappingURL=canvas.js.map
-}, function(modId) { var map = {"./util/hit":1685504765499,"./shape":1685504765472,"./group":1685504765480,"./util/util":1685504765474,"./util/time":1685504765475,"./util/draw":1685504765476,"./events":1685504765500,"./util/mini-canvas-proxy":1685504765501,"./patch":1685504765502}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765499, function(require, module, exports) {
+}, function(modId) { var map = {"./util/hit":1727074728190,"./shape":1727074728163,"./group":1727074728171,"./util/util":1727074728165,"./util/time":1727074728166,"./util/draw":1727074728167,"./events":1727074728191,"./util/mini-canvas-proxy":1727074728192,"./patch":1727074728193}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728190, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getShape = void 0;
@@ -3256,7 +3256,7 @@ function getShape(container, x, y) {
 exports.getShape = getShape;
 //# sourceMappingURL=hit.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765500, function(require, module, exports) {
+__DEFINE__(1727074728191, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var f6_hammerjs_1 = require("@antv/f6-hammerjs");
@@ -3591,8 +3591,8 @@ var EventController = /** @class */ (function () {
 }());
 exports.default = EventController;
 //# sourceMappingURL=events.js.map
-}, function(modId) { var map = {"./util/util":1685504765474}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765501, function(require, module, exports) {
+}, function(modId) { var map = {"./util/util":1727074728165}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728192, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /***
@@ -3652,7 +3652,7 @@ var MiniCanvasProxy = /** @class */ (function () {
 exports.default = MiniCanvasProxy;
 //# sourceMappingURL=mini-canvas-proxy.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765502, function(require, module, exports) {
+__DEFINE__(1727074728193, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var bbox_1 = require("./bbox");
@@ -3662,8 +3662,8 @@ exports.default = (function (context, canvas) {
     bbox_1.default(context);
 });
 //# sourceMappingURL=index.js.map
-}, function(modId) { var map = {"./bbox":1685504765503,"../shape/image":1685504765483}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765503, function(require, module, exports) {
+}, function(modId) { var map = {"./bbox":1727074728194,"../shape/image":1727074728174}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728194, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var g_base_1 = require("@antv/g-base");
@@ -3673,8 +3673,8 @@ exports.default = (function (context) {
     g_base_1.registerBBox('text', text_1.default);
 });
 //# sourceMappingURL=index.js.map
-}, function(modId) { var map = {"./text":1685504765504}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1685504765504, function(require, module, exports) {
+}, function(modId) { var map = {"./text":1727074728195}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1727074728195, function(require, module, exports) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cacheCanvasContext = void 0;
@@ -3768,7 +3768,7 @@ function default_1(shape) {
 exports.default = default_1;
 //# sourceMappingURL=text.js.map
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1685504765471);
+return __REQUIRE__(1727074728162);
 })()
 //miniprogram-npm-outsideDeps=["tslib","@antv/g-base","@antv/util","@antv/g-math","@antv/path-util","@antv/matrix-util","gl-matrix/vec3","@antv/f6-hammerjs","@antv/g-base/lib/util/text"]
 //# sourceMappingURL=index.js.map
