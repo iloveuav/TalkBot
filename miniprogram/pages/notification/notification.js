@@ -1038,7 +1038,7 @@ Page({
       method: 'POST',
       url: 'https://api.moonshot.cn/v1/chat/completions',
       data: {
-        "model": "moonshot-v1-8k",
+        "model": "moonshot-v1-32k",
         "messages": [
           { "role": "user", "content":message}]
         // "messages": "hi,who are you,我想了解一些海底知识"

@@ -226,9 +226,26 @@ page {
   z-index: 999;
 }
 
-.setLBox {
-  background-color: #BEDCFF;
-  width: 22%;
+.setLBox1 {
+  background-color: #dbe4f079;
+  width: 20%;
+  height:80rpx;
+  padding: 5rpx;
+  position: fixed;
+  bottom:250rpx;
+  left: -5rpx;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0rpx 20rpx 20rpx 0rpx;
+  justify-content: space-around;
+  z-index: 99999999;
+  /* border: 1px solid red; */
+}
+
+.setLBox2 {
+  background-color: #dab84748;
+  width: 20%;
+  height: 80rpx;
   padding: 5rpx;
   position: fixed;
   bottom: 150rpx;
@@ -238,6 +255,7 @@ page {
   border-radius: 0rpx 20rpx 20rpx 0rpx;
   justify-content: space-around;
   z-index: 99999999;
+  /* border: 1px solid red; */
 }
 
 .audio_txt_textarea {
@@ -317,19 +335,36 @@ page {
   margin: 0 auto;
 }
 
-.deleteChaBtn {
+
+.saveChaBtn {
   font-size: 10px;
   flex: 1;
-  min-width: 60px;
+  min-width: 70px;
   min-height: 30px;
   max-height: 40px;
   max-width: 80px;
-  color: #318FFF;
+  color: #ffffff;
   text-align: center;
   padding: 15rpx;
-  left: -2rpx;
+  left: 4rpx;
   z-index: 99999999;
-  background-color: #bedcff;
+  background-color: #519ce7;
+}
+
+
+.deleteChaBtn {
+  font-size: 10px;
+  flex: 1;
+  min-width: 70px;
+  min-height: 30px;
+  max-height: 40px;
+  max-width: 80px;
+  color: #e2646a;
+  text-align: center;
+  padding: 15rpx;
+  left: 4rpx;
+  z-index: 99999999;
+  background-color: #eccb84;
 }
 
 button[disabled] {

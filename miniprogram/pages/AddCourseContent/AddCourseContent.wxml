@@ -88,8 +88,12 @@
 </view>
 <!-- left end -->
 <!-- right -->
-<view class="setLBox">
-  <button class="deleteChaBtn" disabled="{{btnDie}}" catchtap="delChapter">删除当前章节</button>
+
+<view class="setLBox1">
+  <button class="saveChaBtn" disabled="{{btnDie}}" catchtap="saveChapter">保存当前修改</button>
+</view>
+  <view class="setLBox2">
+  <button class="deleteChaBtn" disabled="{{btnDie}}" catchtap="delChapterV2">清空章节内容</button>
 </view>
 <!-- right end -->
 <view class='hei' id="hei"></view>
@@ -126,7 +130,7 @@
 
   <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItem">新增图文项</button>
   <image wx:if="{{textImgArray.length>1&&curTextImgIndex>=1}}" catchtap="leftTextImg" class="left_textimg" src="../../images/icon/left.png" alt=""/>
-  <button class="modelSubmitBtn" catchtap="add">提交</button>
+  <button class="modelSubmitBtn" catchtap="addV2">提交</button>
   <image  wx:if="{{textImgArray.length>1&&curTextImgIndex<textImgArray.length-1}}" catchtap="rightTextImg" class="right_textimg" src="../../images/icon/right.png" alt=""/>
 </view>
 <!-- ----------------设置图文参数区end--------------- -->
@@ -198,6 +202,6 @@
   <textarea class="texeArea" maxlength="" type="emoji" bindinput="bindChangeMessage" confirm-type="done"
     value='{{message}}' />
   <view class="senMessBox">
-    <button class="senMessButton" catchtap="add">发送</button>
+    <button class="senMessButton" catchtap="addV2">发送</button>
   </view>
 </view>

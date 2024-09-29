@@ -149,6 +149,7 @@
   line-height: 27rpx;
   height: 80rpx;
   font-size: 26rpx;
+  /* border: 1px solid red; */
 
   /* text-align: center; */
   /* height: 100rpx;

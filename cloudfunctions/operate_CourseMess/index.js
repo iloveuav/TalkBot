@@ -23,8 +23,8 @@ exports.main = async (event, context) => {
   if (event.mode === 'like') {
     try {
       return db.collection(Collection).where({
-        courseUUid: event.courseMess.courseUUid,
-      }).count()
+          courseUUid: event.courseMess.courseUUid,
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
@@ -50,8 +50,8 @@ exports.main = async (event, context) => {
   if (event.mode === 'operateDetail') {
     try {
       return db.collection(Collection).where({
-        courseUUid: event.courseMess.courseUUid,
-      }).count()
+          courseUUid: event.courseMess.courseUUid,
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
@@ -110,8 +110,8 @@ exports.main = async (event, context) => {
   if (event.mode === 'operateCharaterList') {
     try {
       return db.collection(Collection).where({
-        courseUUid: event.courseMess.courseUUid,
-      }).count()
+          courseUUid: event.courseMess.courseUUid,
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
@@ -134,8 +134,8 @@ exports.main = async (event, context) => {
   if (event.mode === 'extensionCharaterContent') {
     try {
       return db.collection(Collection).where({
-        courseUUid: event.courseUUid,
-      }).count()
+          courseUUid: event.courseUUid,
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
@@ -146,7 +146,10 @@ exports.main = async (event, context) => {
             }).update({
               data: {
                 ChapterContentMap: {
-                  [event.curChapterName]: db.command.push(event.ChapterContent),
+                  [event.curChapterName]: {
+                    contentType: 'line',
+                    lineArr: db.command.push(event.ChapterContent),
+                  }
                 }
               },
             })
@@ -160,19 +163,22 @@ exports.main = async (event, context) => {
   if (event.mode === 'operateCharaterContent') {
     try {
       return db.collection(Collection).where({
-        courseUUid: event.courseUUid,
-      }).count()
+          courseUUid: event.courseUUid,
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {
             return;
-          } else {
+          } else 
             return db.collection(Collection).where({
               courseUUid: event.courseUUid
             }).update({
               data: {
                 ChapterContentMap: {
-                  [event.curChapterName]: db.command.push(event.ChapterContent),
+                  [event.curChapterName]: {
+                    contentType: 'line',
+                    lineArr: db.command.push(event.ChapterContent),
+                  }
                 }
               },
             })
@@ -186,8 +192,8 @@ exports.main = async (event, context) => {
   if (event.mode === 'updateCourseProgress') {
     try {
       return db.collection(Collection).where({
-        courseUUid: event.courseUUid,
-      }).count()
+          courseUUid: event.courseUUid,
+        }).count()
         .then(res => {
           console.log('count', res)
           if (res.total <= 0) {

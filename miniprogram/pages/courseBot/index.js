@@ -61,7 +61,7 @@ Page({
     btnDie: false,
     start: false,
     autoReadingAloud: true, //自动读开关
-    userTalking: false,//用户是否正在说话
+    userTalking: false, //用户是否正在说话
     recordState: false, //录音状态
     classLength: 0,
     showContinueByLast: false, //根据最后的内容 判断是否显示 加载本章节更多
@@ -105,7 +105,7 @@ Page({
     var SystemSetting = wx.getStorageSync("SystemSetting");
     var talkRead_switch = SystemSetting.talkRead_switch
     this.setData({
-      talkRead_switch: talkRead_switch,//控制是否显示语音朗读按钮
+      talkRead_switch: talkRead_switch, //控制是否显示语音朗读按钮
     })
 
     getApp().setWatcher(this.data, this.watch); // 设置监听器
@@ -237,15 +237,15 @@ Page({
       if (centendata.length > 0) {
         console.log(centendata); // centendata改变时，调用该方法输出新值。
         if (centendata[centendata.length - 1].contentType === 'Interact' && centendata[centendata.length - 1].detail.answer === '') {
-          showContinueByLast//最后是交互的但是没答案 要显示
+          showContinueByLast //最后是交互的但是没答案 要显示
         }
 
         if (centendata[centendata.length - 1].contentType === 'Interact' && centendata[centendata.length - 1].detail.answer !== '') {
-          showContinueByLast = false//最后是交互的但是有答案 不显示
+          showContinueByLast = false //最后是交互的但是有答案 不显示
         }
 
         if (centendata[centendata.length - 1].contentType !== 'Interact') {
-          showContinueByLast = true//最后不是交互的 显示
+          showContinueByLast = true //最后不是交互的 显示
         }
         console.log("this.data", showContinueByLast)
 
@@ -255,7 +255,7 @@ Page({
 
 
       } else {
-        showContinueByLast = true//没内容要显示
+        showContinueByLast = true //没内容要显示
       }
 
     }
@@ -445,7 +445,7 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () { },
+  onHide: function () {},
 
   /**
    * 生命周期函数--监听页面卸载
@@ -645,7 +645,7 @@ Page({
   getChapterList() {
     console.log(this.data.courseObject)
     let that = this
-    
+
     const courseUUid = this.data.courseObject.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
@@ -1034,12 +1034,10 @@ Page({
       if (this.data.courseObject.useAI) {
 
         console.log("test-CurrentChapter", CurrentChapter)
-        if (this.data.courseObject.ChapterContentMap) {
-          console.log("test-ChapterContentMap", this.data.courseObject.ChapterContentMap)
-        }
+        // 注入 line 类型的 课程内容
         // console.log("ChapterContentMap[CurrentChapter.chapterName]", this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName])
-        if (this.data.courseObject?.ChapterContentMap && this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName]) {
-          LeftOverClassConten = this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName];
+        if (this.data.courseObject?.ChapterContentMap && this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName] && this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName].contentType == 'line') {
+          LeftOverClassConten = this.data.courseObject.ChapterContentMap[CurrentChapter.chapterName].lineArr;
           this.setData({
             classLength: LeftOverClassConten.length,
             LeftOverClassConten: LeftOverClassConten,
@@ -1052,7 +1050,7 @@ Page({
           console.log("Map没匹配到当前章节的内容-msg", msg)
           //之前用的Claude  现在换moonShot
           this.firstStep_ask(msg)
-        
+
         }
 
 
@@ -1063,7 +1061,7 @@ Page({
             courseName: CurrentChapter.courseName,
             chapterId: CurrentChapter.chapterId,
           }]
-         
+
           wx.setStorageSync('UserCourseMess', UserCourseMess);
         } else {
           let exit = false;
@@ -1114,10 +1112,6 @@ Page({
 
 
       } else {
-        wx.cloud.init({
-          traceUser: true,
-          env: 'bot-cloud1-7g30ztcr37ed0193'
-        })
         const params = {
           classCollection: this.data.classCollection,
           courseUUid: CurrentChapter.courseUUid,
@@ -1582,9 +1576,9 @@ Page({
           if (resTrans.retcode == 0) {
             // let tmpTranslate = Object.assign({}, item, {
             autoPlay: true, // 自动播放背景音乐
-              that.setData({
-                voicePath: resTrans.filename,
-              })
+            that.setData({
+              voicePath: resTrans.filename,
+            })
             that.yuyinPlay();
           }
           else {
@@ -1751,9 +1745,11 @@ Page({
       method: 'POST',
       url: 'https://api.moonshot.cn/v1/chat/completions',
       data: {
-        "model": "moonshot-v1-8k",
-        "messages": [
-          { "role": "user", "content":msg}]
+        "model": "moonshot-v1-32k",
+        "messages": [{
+          "role": "user",
+          "content": msg
+        }]
         // "messages": "hi,who are you,我想了解一些海底知识"
       },
       header: {
@@ -1774,32 +1770,32 @@ Page({
         })
         // that.response(result.data.choices[0].message.content);
       },
-        fail: err => {
-          // handle error
-          that.setData({
-            remind: null,
-            generateChart: 'no',
-          })
-          wx.showModal({
-            title: '提示',
-            content: '获取失败 请检查网络',
-            showCancel: false,
-          })
-          wx.hideLoading();
-          return;
-        },
-        complete: res => {
-          console.log('callFunction test result: ', res)
-          that.setData({
-            remind: null,
-            generateChart: 'ok',
-          })
-          wx.hideLoading();
+      fail: err => {
+        // handle error
+        that.setData({
+          remind: null,
+          generateChart: 'no',
+        })
+        wx.showModal({
+          title: '提示',
+          content: '获取失败 请检查网络',
+          showCancel: false,
+        })
+        wx.hideLoading();
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        that.setData({
+          remind: null,
+          generateChart: 'ok',
+        })
+        wx.hideLoading();
 
-          // contextarray.push([prompt, alltext]);
-          // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
-          // clearInterval(that.data.testStreamingInterval)
-        }
+        // contextarray.push([prompt, alltext]);
+        // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+        // clearInterval(that.data.testStreamingInterval)
+      }
     })
     // }, 3000);
   },
@@ -1814,8 +1810,8 @@ Page({
     const urlForTalk = SystemSetting.urlForTalk || ''
     if (urlForTalk) {
       let url = urlForTalk
-        //moonShot方案
-        this.useMoonShotApi(msg)
+      //moonShot方案
+      this.useMoonShotApi(msg)
       // 之前走的Claude -------------------------------------
       // wx.requestWithCookie({
       //   url: url,
@@ -1854,7 +1850,7 @@ Page({
       //     })
       //   }
       // })
-     // 之前走的Claude  end-------------------------------------
+      // 之前走的Claude  end-------------------------------------
     } else {
       wx.showModal({
         title: '提示',
@@ -1876,7 +1872,7 @@ Page({
     wx.requestWithCookie({
       url: 'https://claude.uavserve.online/stream_api',
       header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
-        'Content-Type': 'application/json',//get 请求用这个
+        'Content-Type': 'application/json', //get 请求用这个
         // "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
         'Host': 'yierco.slack.com',
         'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
@@ -1973,20 +1969,20 @@ Page({
     if (this.isJSON(str)) return JSON.parse(str);
 
     // 如果不是JSON格式,则做以下处理
-    str = str.trim();  // 去除字符串两边空格
+    str = str.trim(); // 去除字符串两边空格
     str = str.replace(/^\s*|\s*$/g, ''); // 去除每行两边空格
 
     // 如果字符串以{或者[开头,说明可能是对象或者数组,尝试解析
     if (str.startsWith('{') || str.startsWith('[')) {
       try {
         return JSON.parse(str);
-      } catch (e) { }
+      } catch (e) {}
     }
 
     // 否则按行分割,尝试构造对象或数组
     var lines = str.split('\n');
-    var obj = {};  // 假定为对象
-    var arr = [];  // 假定为数组
+    var obj = {}; // 假定为对象
+    var arr = []; // 假定为数组
     var isArray = false;
 
     // 遍历每行,解析键值对或者数组元素
@@ -2016,7 +2012,7 @@ Page({
           var value = keyValue[1].trim();
           obj[key] = value.startsWith('{') || value.startsWith('[') ? this.parseToJSON(value) : value;
         }
-      } else {  // 数组处理
+      } else { // 数组处理
         if (line) arr.push(line.startsWith('{') || line.startsWith('[') ? this.parseToJSON(line) : line);
       }
     }
@@ -2035,8 +2031,8 @@ Page({
 
       if (line.startsWith('data:')) {
         var jsonStr = line.slice(6); // 从data:后面开始截取
-        if (this.isJSON(jsonStr)) {  // 检查是否JSON
-          arr.push(JSON.parse(jsonStr));  // 是的话直接push
+        if (this.isJSON(jsonStr)) { // 检查是否JSON
+          arr.push(JSON.parse(jsonStr)); // 是的话直接push
         } else {
           jsonStr = this.parseToJSON(jsonStr); // 否则解析成JSON
           arr.push(jsonStr);
@@ -2060,7 +2056,7 @@ Page({
       const testmarker2 = test.indexOf('MARKER2', 0)
       console.log("testmarker1", testmarker1)
       console.log("testmarker2", testmarker2)
-      if (testmarker1 === -1) {//无法生成图
+      if (testmarker1 === -1) { //无法生成图
         wx.hideLoading()
         wx.showModal({
           title: '提示',
@@ -2083,7 +2079,14 @@ Page({
     let CodeJSON = JSON.parse(codeString);
     console.log("f-chartCodeJSON", CodeJSON)
     if (CodeJSON) {
-      const copyLeftOverClassConten = Object.assign([], CodeJSON.ContentList)
+      let copyLeftOverClassConten = Object.assign([], CodeJSON.ContentList)
+      // 把时间和id加进去
+      copyLeftOverClassConten = copyLeftOverClassConten.map((item) => {
+        item.createTime = time.formatTime(new Date, 'Y/M/D')
+        item.contentId = util.uuid()
+        return item
+      })
+      console.log("copyLeftOverClassConten", copyLeftOverClassConten)
       LeftOverClassConten = CodeJSON.ContentList;
       this.setData({
         classLength: LeftOverClassConten.length,
@@ -2094,6 +2097,8 @@ Page({
 
 
       if (this.data.isExtensionContent) {
+
+
         //上传AI后续扩充生成的课程内容
         wx.cloud.callFunction({
           name: 'operate_CourseMess',
@@ -2223,7 +2228,7 @@ Page({
           title: '提示',
           content: '听不太清，请靠近麦克风重新说一遍~',
           showCancel: false,
-          success: function (res) { }
+          success: function (res) {}
         })
         return;
       }
@@ -2341,7 +2346,7 @@ Page({
         //   },
         // })
 
-        
+
         // 之前claude  end------------------------------------------------------------
 
         this.useMoonShotApi(message)
@@ -2352,8 +2357,7 @@ Page({
         })
         if (canNotTalkMessage) {
           that.response(canNotTalkMessage);
-        }
-        else {
+        } else {
           that.response('服务正在维护更新中，给您带来不便十分抱歉，我们将尽快恢复，如有紧急情况请联系管理员');
 
         }
@@ -2378,7 +2382,7 @@ Page({
       method: 'GET',
       url: 'https://claude.uavserve.online/stream_api',
       header: {
-        'Content-Type': 'application/json',//get 请求用这个
+        'Content-Type': 'application/json', //get 请求用这个
         // "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
         'Host': 'yierco.slack.com',
         // 'Cookie':'ts=1685503057.254249; latest_reply=1685503059.191849',
