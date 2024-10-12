@@ -8,6 +8,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/courseByAiMessForm/index",
+          "pathName": "pages/courseByAiMessForm/index",
+          "query": "type=course",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/RoiComputerTool/index",
+          "pathName": "pages/RoiComputerTool/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "",
           "pathName": "pages/notification/notification",
           "query": "",

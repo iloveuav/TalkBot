@@ -53,7 +53,7 @@ Page({
     lastGenerateChartCategoryKey: '',
 
     chartFormatMap: {
-      zstp_fs: `MARKER1{
+      zstp_fs: `{
         "id": "root",
         "children": [
           {
@@ -78,11 +78,11 @@ Page({
             ]
           }
         ]
-      }MARKER2`,
+      }`,
 
 
 
-      sj: `MARKER1{
+      sj: `{
         "id": "root",
         "name": "category",
         "children": [
@@ -106,9 +106,9 @@ Page({
             ],
           }
         ],
-      }MARKER2`,
+      }`,
 
-      lc: `MARKER1{
+      lc: `{
         "nodes": [
           {
           "id": "0",
@@ -940,6 +940,78 @@ Page({
   },
 
 
+  useMoonShotApi(msg) {
+    this.setData({
+      // remind: true,
+      remind: null,
+    })
+    wx.showLoading({
+      title: '请稍等片刻',
+    })
+    var that = this
+    // this.data.testStreamingInterval = setInterval(() => {
+    wx.request({
+      method: 'POST',
+      url: 'https://api.moonshot.cn/v1/chat/completions',
+      data: {
+        "model": "moonshot-v1-32k",
+        "messages": [{
+          "role": "user",
+          "content": msg
+        }]
+        // "messages": "hi,who are you,我想了解一些海底知识"
+      },
+      header: {
+        "Content-Type": "application/json",
+        "X-Requested-With": 'XMLHttpRequest',
+        "Authorization": "sk-G47fRSG91qhRyhPwMMzVtXA2EPDD6zanzkyySj3WqFzgccUh",
+        'Same-Site': 'None',
+      },
+      success(result) {
+        console.log("test_streaming_res", result)
+        wx.hideLoading();
+        var alltext = result.data.choices[0].message.content
+
+        that.formatCodeStringToJsonCodeString(alltext)
+
+        // that.handleResultConvertToChart(alltext)
+        that.setData({
+          // remind: true,
+          isstarted: false,
+          result: alltext
+        })
+        // that.response(result.data.choices[0].message.content);
+      },
+      fail: err => {
+        // handle error
+        that.setData({
+          remind: null,
+          generateChart: 'no',
+        })
+        wx.showModal({
+          title: '提示',
+          content: '获取失败 请检查网络',
+          showCancel: false,
+        })
+        wx.hideLoading();
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        that.setData({
+          remind: null,
+          generateChart: 'ok',
+        })
+        wx.hideLoading();
+
+        // contextarray.push([prompt, alltext]);
+        // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+        // clearInterval(that.data.testStreamingInterval)
+      }
+    })
+    // }, 3000);
+  },
+
   testClaudeApiByWebPy(msg) {
     var that = this
     console.log("msg", msg)
@@ -1047,7 +1119,7 @@ Page({
         // wx.request({
         //   url: url,
         //   method: 'GET',
-        //   header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
+        //   header: { 
         //     'Content-Type': 'application/json'
         //   },
 
@@ -1157,9 +1229,10 @@ Page({
     //开始整合 requestMess  
     // eg: 我需要制作一个名为{{MindMapName}} 的 {{chartName}}，内容关于{{mindMapContent}}，要求按照如下格式返回 {{chartFormatMap[chartObject.key]}}  {{contentRequire}}
 
-    const requestMess = `我需要制作一个${chartName}，内容是${mindMapContent}，图的数据格式严格按照如下格式${chartFormatMap[chartObject.formatKey]} ${contentRequire}    像接口数据一样返回就行，不要有任何多余的话 `
+    const requestMess = `我需要制作一个${chartName}，内容是${mindMapContent}，图的数据格式严格按照如下格式${chartFormatMap[chartObject.formatKey]} ${contentRequire}    像接口数据一样返回就行，不要有任何多余的话 控制全部内容字节数在1200 避免过多内容无法一次返回 不要出现json的markdown符号 返回纯文本`
     console.log(requestMess)
-    this.testClaudeApiByWebPy(requestMess)
+    // this.testClaudeApiByWebPy(requestMess)
+    this.useMoonShotApi(requestMess)
   },
 
 

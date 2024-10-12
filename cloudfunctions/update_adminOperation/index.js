@@ -157,7 +157,7 @@ exports.main = async (event, context) => {
             })
           } else {
             return db.collection('SurperAdmin').where({
-              objKey: 'ShareConversations'
+              objKey: 'SystemSetting'
             }).update({
               data: {
                 ...event.params

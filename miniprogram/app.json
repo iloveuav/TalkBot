@@ -3,7 +3,7 @@
     "pages/door/door",
     "pages/index/index",
 
-  
+    "pages/tools/index",
 
     "pages/mysel/me",
     "pages/mysel/FeedBack/FeedBack",
@@ -20,6 +20,7 @@
     "pages/courseMessForm/index",
     "pages/courseByAiMessForm/index",
     "pages/courseCatalogue/index",
+    "pages/RoiComputerTool/index",
 
     "pages/conversationHistory/index",
     "pages/narrate/index",
@@ -70,6 +71,12 @@
         "iconPath": "images/button/home1.png",
         "pagePath": "pages/index/index",
         "text": "首页"
+      },
+      {
+        "selectedIconPath": "images/button/make2.png",
+        "iconPath": "images/button/make1.png",
+        "pagePath": "pages/tools/index",
+        "text": "工具"
       },
       {
         "selectedIconPath": "images/button/me2.png",

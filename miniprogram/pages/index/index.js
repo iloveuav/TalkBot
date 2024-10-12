@@ -195,6 +195,8 @@ Page({
                 wx.setStorageSync("isVip", false);
               }
             }
+          }else{
+            wx.setStorageSync("isVip", userInfo.isVip);
           }
 
           if (permanentVIP) {
@@ -371,12 +373,7 @@ Page({
       url: '/pages/courseBotIndex/index?pageType=' + 'studyPage',
     })
   },
-  toSendNarrate() {
-    // wx.navigateTo({
-    //   //这里传值
-    //   url: '/pages/sendNarrate/index',
-    // })
-  },
+
 
   toCreateMessForm(e) {
     console.log(e.currentTarget.dataset.type)
@@ -385,10 +382,18 @@ Page({
     var SystemSetting = wx.getStorageSync("SystemSetting");
     var allCanCreatCourse = SystemSetting.allCanCreatCourse
     if (!isVip && !allCanCreatCourse) {
-      wx.showModal({
-        title: '提示',
-        content: '由于您不是VIP，暂无权限创建课程，请申请成为VIP后重试',
-        showCancel: false
+      // wx.showModal({
+      //   title: '提示',
+      //   content: '由于您不是VIP，暂无权限创建课程，请申请成为VIP后重试',
+      //   showCancel: false
+      // })
+      const type = e.currentTarget.dataset.type || 'course'
+      wx.navigateTo({
+        //这里传值
+        // url: '/pages/courseMessForm/index?type=' + type,//之前的手动创建课程url
+        url: '/pages/courseByAiMessForm/index?type=' + type,
+        // url: '/pages/mysel/admin/admin',
+        // url: '/pages/AddEngClassContent/AddEngClassContent',
       })
     } else {
       const type = e.currentTarget.dataset.type || 'course'

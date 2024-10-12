@@ -1,0 +1,45 @@
+<view class="head">
+  <view class="bg"></view>
+  <view class="box">
+    <view class="headIcon" wx:if="{{islogin==true}}">
+      <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image src="cloud://talkbot-7gji40zbdf69e993.7461-talkbot-7gji40zbdf69e993-1312399818/1728023072876.png"></image>
+      </button>
+
+      <view class="headInfo">
+        <!-- <input type="nickname" class="weui-input" placeholder="请输入昵称"/> -->
+        <view>免费工具箱</view>
+        
+        <view class="auth_box">
+        <!-- <view class="">
+          ：
+        </view>  -->
+        <view class="tag_box">
+          <view class="user_tag" >电商工具</view>
+          <!-- <view  class="vip_tag"> 免费工具 </view>  -->
+        <view class="admin_tag">计算器</view></view>
+
+          <!-- <view class="user_tag" wx:if="{{!isVip}}">普通用户</view>
+          <view wx:if="{{isVip}}" class="vip_tag"> VIP ({{indateTag}}) </view> 
+        <view  wx:if="{{isAdmin}}" class="admin_tag">admin</view></view> -->
+        </view>
+      
+      </view>
+    </view>
+    <view class="login" wx:else>
+      <button class="btn_init" bindtap="getUserProfile">微信登陆</button>
+    </view>
+  </view>
+</view>
+
+
+<view class="func_list">
+
+ 
+
+
+  <view class='item' bindtap="toRoiComputerTool">
+    <view class="title">ROI电商利润计算器💴</view>
+    <image class="icon" src="../../images/icon/ic_arrow_gray@2x.png" />
+  </view>
+</view>

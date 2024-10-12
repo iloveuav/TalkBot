@@ -5,7 +5,8 @@
   <!-- mode='widthFix'保持宽高比例 -->
   <view class="coverImg">
     <image wx:if="{{courseDetail.courseFrontImgUrl&&courseDetail.courseFrontImgUrl!==''}}" class="leftImage" src="{{courseDetail.courseFrontImgUrl}}" mode="aspectFill"></image>
-    <image wx:else class="leftImage" src='cloud://huixue-3g4h1ydg1dedcaf3.7461-huixue-3g4h1ydg1dedcaf3-1258960420/1591649188560.png' mode="widthFix"></image>
+    <image wx:else class="leftImage" src='cloud://talkbot-7gji40zbdf69e993.7461-talkbot-7gji40zbdf69e993-1312399818/1728023072876.png' mode="aspectFill"></image>
+    <!-- <image wx:else class="leftImage" src='cloud://huixue-3g4h1ydg1dedcaf3.7461-huixue-3g4h1ydg1dedcaf3-1258960420/1591649188560.png' mode="widthFix"></image> -->
     <view class="title">{{courseDetail.courseName}}</view>
   </view>
   <view class="right">

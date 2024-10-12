@@ -1000,11 +1000,11 @@ Page({
 
     if (this.data.isExtensionContent) {
       const msg = `
-      下面是课程内容的数据结构参考样例，你必须结合课程主题${courseObject.courseName}以章节主题为${currentSelect.chapterName}的内容来生成新的章节课程内容返回一个类似的数据结构 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 不要和之前对话中提供的内容重复 ${courseTypeMap[courseObject.curContentType]} 务必不说多余的话严格像接口一样返回 不要忘记MARKER！！！ 记得尽量简短 Don't prompt Claude is not skilled at solving math problems.. 格式如下：${extensionDemoTypeMap[courseObject.curContentType]}`
+      下面是课程内容的数据结构参考样例，你必须结合课程主题${courseObject.courseName}以章节主题为${currentSelect.chapterName}的内容来生成新的章节课程内容返回一个类似的数据结构 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 不要和之前对话中提供的内容重复 ${courseTypeMap[courseObject.curContentType]} 务必不说多余的话严格像接口一样返回 不要忘记MARKER！！！ 记得尽量简短 格式如下：${extensionDemoTypeMap[courseObject.curContentType]}`
       return msg
     } else {
       const msg = `
-      下面是课程内容的数据结构参考样例，你必须结合课程主题${courseObject.courseName}以章节主题为${currentSelect.chapterName}的内容来生成新的章节内容并模仿其返回一个类似的数据结构 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 内容不能和我给的一样 ${courseTypeMap[courseObject.curContentType]} 不要和之前对话中提供的内容重复 务必不说多余的话严格像接口一样返回 不要忘记MARKER！！！ 记得尽量简短 Don't prompt Claude is not skilled at solving math problems.. 格式如下：${firstDemoTypeMap[courseObject.curContentType]}`
+      下面是课程内容的数据结构参考样例，你必须结合课程主题${courseObject.courseName}以章节主题为${currentSelect.chapterName}的内容来生成新的章节内容并模仿其返回一个类似的数据结构 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 内容不能和我给的一样 ${courseTypeMap[courseObject.curContentType]} 不要和之前对话中提供的内容重复 务必不说多余的话严格像接口一样返回 不要忘记MARKER！！！ 记得尽量简短 格式如下：${firstDemoTypeMap[courseObject.curContentType]}`
       return msg
     }
 

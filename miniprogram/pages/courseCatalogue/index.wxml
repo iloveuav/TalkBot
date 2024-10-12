@@ -1,7 +1,8 @@
 <view class="course_catalogue">
   <view class="basic_info">
     <view class="cover_box">
-      <image class="info_cover" mode="aspectFit" src="{{crouseDetail.courseFrontImgUrl}}"></image>
+      <image wx:if="{{crouseDetail.courseFrontImgUrl&&crouseDetail.courseFrontImgUrl!==''}}"  class="info_cover" mode="aspectFit" src="{{crouseDetail.courseFrontImgUrl}}"></image>
+      <image wx:else class="info_cover" src='cloud://talkbot-7gji40zbdf69e993.7461-talkbot-7gji40zbdf69e993-1312399818/1728023072876.png' mode="aspectFill"></image>
       <text class="content_title">{{crouseDetail.courseName}}</text>
     </view>
     <view class="info_content">

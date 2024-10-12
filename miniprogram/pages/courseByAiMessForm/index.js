@@ -29,8 +29,13 @@ Page({
 
     editCourseDetail: {
       courseContentMode: 'breadth',
+      courseContentTypeMode: 'useAI',
       curContentType: 'ask',
-      courseTagList: []
+      courseTagList: [],
+
+      step1Text:'',
+      step2Text:'',
+      step3Text:'',
     },
 
     tempimg: [], //临时数组  等点击发送的时候一起走
@@ -88,7 +93,7 @@ Page({
         label: '了解知识',
         value: 'get',
         choose: false
-      },
+      }, 
     ],
     tagList2: [{
         label: '广度扩展式学习',
@@ -101,6 +106,7 @@ Page({
         choose: false
       },
     ],
+ 
     tagList3: [{
         label: '英语（English）',
         value: 'English',
@@ -123,6 +129,23 @@ Page({
       },
 
     ],
+
+    tagList4: [{
+      label: 'AI生成',
+      value: 'useAI',
+      choose: true
+    },
+    {
+      label: '人工生成',
+      value: 'manual',
+      choose: false
+    },
+    {
+      label: '开发者模式',
+      value: 'devMode',
+      choose: false
+    },
+  ],
     courseContentMode: 'breadth', // breadth广度  depth深度
     curLanguage: 'English' // 广度扩展式学习的语言
 
@@ -185,9 +208,10 @@ Page({
         })
 
       }
-
+      let isVip = wx.getStorageSync('isVip');
       this.setData({
-        type: options.type
+        type: options.type,
+        isVip:isVip
       })
     }
 
@@ -638,6 +662,22 @@ Page({
     this.data.editCourseDetail.learnContent = e.detail.value
   },
 
+    //编辑 Step1Text
+    bindChangeStep1Text: function (e) {
+      console.log("bindChangeStep1Text",e.detail.value)
+      this.data.editCourseDetail.step1Text = e.detail.value
+    },
+
+    //编辑 Step2Text
+    bindChangeStep2Text: function (e) {
+      this.data.editCourseDetail.step2Text = e.detail.value
+    },
+
+    //编辑 Step1Text
+    bindChangeStep3Text: function (e) {
+      this.data.editCourseDetail.step3Text = e.detail.value
+    },
+
   preimage(e) {
     var imgurl = this.data.centendata[e.currentTarget.dataset.i];
     var final_url = JSON.stringify(imgurl);
@@ -921,4 +961,32 @@ Page({
       editCourseDetail: this.data.editCourseDetail
     })
   },
+
+    //内容生成类型 单选Change
+    ContentTypeHandleChoose(e) {
+      const {
+        index,
+        choose
+      } = e.target.dataset;
+      const str = `tagList4[${index}].choose`
+      const curMode = this.data.tagList4[index].value
+      console.log("curMode", curMode)
+      const chooseList = this.data.tagList4.filter(item => item.choose);
+  
+  
+      if (chooseList.length >= 1) {
+        this.data.tagList4.forEach((e, index) => {
+          const str2 = `tagList4[${index}].choose`
+          this.setData({
+            [str2]: false
+          })
+        })
+      };
+  
+      this.data.editCourseDetail.courseContentTypeMode = curMode //课程学习模式 【广度优先还是深度优先】
+      this.setData({
+        [str]: !choose,
+        editCourseDetail: this.data.editCourseDetail
+      })
+    },
 })
