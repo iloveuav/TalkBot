@@ -5,15 +5,27 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    secretkeyInfo:Object,
-    scene:String //'superAdmin'
+    secretkeyInfo: Object,
+    scene: String //'superAdmin'
   },
 
   /**
    * 组件的初始数据
    */
   data: {
+    showKey: ''
+  },
 
+  observers: {
+    // 监听属性str的变化
+    'secretkeyInfo': function (newVal) {
+      if (newVal.secretkey) {
+        this.setData({
+          showKey: this.truncateString(newVal.secretkey)
+        })
+        // this.truncateString(newVal.secretkey);
+      }
+    }
   },
 
   /**
@@ -25,6 +37,16 @@ Component({
     },
     edit() {
       console.log('编辑');
+    },
+
+
+    // 截取字符串的方法
+    truncateString: function (str) {
+      if (str.length <= 10) { // 10 = 5（前）+ 5（后）
+        return str;
+      } else {
+        return str.substring(0, 5) + '...' + str.substring(str.length - 5);
+      }
     },
 
     updateConvertsationState: function (e) {
@@ -77,7 +99,7 @@ Component({
         }
       })
     },
-    
+
     reload: function () {
       this.triggerEvent('Reload')
     },

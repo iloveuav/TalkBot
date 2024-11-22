@@ -14,41 +14,41 @@ Page({
       state: '审核中'
     },
     chapterList: [{
-      title: '开始学习啦~',
-      id: 1
-    },
-    {
-      title: '开始学习啦~',
-      id: 2
-    },
-    {
-      title: '开始学习啦~',
-      id: 3
-    },
-    {
-      title: '开始学习啦~',
-      id: 4
-    },
-    {
-      title: '开始学习啦~',
-      id: 5
-    },
-    {
-      title: '开始学习啦~',
-      id: 6
-    },
-    {
-      title: '开始学习啦~',
-      id: 7
-    },
-    {
-      title: '开始学习啦~',
-      id: 8
-    },
-    {
-      title: '开始学习啦~',
-      id: 9
-    },
+        title: '开始学习啦~',
+        id: 1
+      },
+      {
+        title: '开始学习啦~',
+        id: 2
+      },
+      {
+        title: '开始学习啦~',
+        id: 3
+      },
+      {
+        title: '开始学习啦~',
+        id: 4
+      },
+      {
+        title: '开始学习啦~',
+        id: 5
+      },
+      {
+        title: '开始学习啦~',
+        id: 6
+      },
+      {
+        title: '开始学习啦~',
+        id: 7
+      },
+      {
+        title: '开始学习啦~',
+        id: 8
+      },
+      {
+        title: '开始学习啦~',
+        id: 9
+      },
     ],
     currentProgress: {},
 
@@ -76,12 +76,19 @@ Page({
       })
       if (crouseDetail.useAI) {
         console.log("crouseDetail", crouseDetail)
-        if (crouseDetail.ChapterList) {
+        if (crouseDetail.ChapterList) { //如果已经有 说明不是第一次进入 直接先注入
           this.setData({
             ChapterList: crouseDetail.ChapterList
           })
-        } else {
-          this.getChapterListByKimi()
+        } else { //没有章节信息 说明是第一次进入  开发者模式 直接注入  AI模式且是VIP 进行生成
+          if (crouseDetail.courseContentTypeMode && crouseDetail.courseContentTypeMode === "devMode") {
+            console.log("开发者模式")
+            console.log("step3Text", JSON.parse(crouseDetail.step3Text))
+            this.formatCodeStringToJsonCodeString(crouseDetail.step3Text)
+          } else if (crouseDetail.courseContentTypeMode && crouseDetail.courseContentTypeMode === "useAI") {
+            this.getChapterListByKimi()
+          }
+
         }
       } else {
         this.getChapterList(btnType);
@@ -94,14 +101,36 @@ Page({
   },
 
   /**
- * 生命周期函数--监听页面显示
- */
+   * 生命周期函数--监听页面显示
+   */
   onShow: function () {
-    console.log("show-app.globalData.CurrentChapter",app.globalData.CurrentChapter)
-    console.log("show-currentProgress",app.globalData.CurrentChapter!==null?app.globalData.CurrentChapter : this.data.crouseDetail.currentProgress || {})
+    let crouseDetail = app.globalData.CurrentCourseObj;
+    console.log("globalData-crouseDetail", crouseDetail)
+    console.log("show-app.globalData.CurrentChapter", app.globalData.CurrentChapter)
+    console.log("show-currentProgress", app.globalData.CurrentChapter !== null ? app.globalData.CurrentChapter : this.data.crouseDetail.currentProgress || {})
     this.setData({
-      currentProgress: app.globalData.CurrentChapter ? app.globalData.CurrentChapter : this.data.crouseDetail.currentProgress || {}
+      currentProgress: app.globalData.CurrentChapter ? app.globalData.CurrentChapter : this.data.crouseDetail.currentProgress || {},
+      crouseDetail: crouseDetail,
     })
+    if (crouseDetail.useAI) {
+      console.log("crouseDetail", crouseDetail)
+      if (crouseDetail.ChapterList) { //如果已经有 说明不是第一次进入 直接先注入
+        this.setData({
+          ChapterList: crouseDetail.ChapterList
+        })
+      } else { //没有章节信息 说明是第一次进入  开发者模式 直接注入  AI模式且是VIP 进行生成
+        if (crouseDetail.courseContentTypeMode && crouseDetail.courseContentTypeMode === "devMode") {
+          console.log("开发者模式")
+          console.log("step3Text", JSON.parse(crouseDetail.step3Text))
+          this.formatCodeStringToJsonCodeString(crouseDetail.step3Text)
+        } else if (crouseDetail.courseContentTypeMode && crouseDetail.courseContentTypeMode === "useAI") {
+          this.getChapterListByKimi()
+        }
+
+      }
+    } else {
+      this.getChapterList(btnType);
+    }
   },
 
   getChapterListByKimi() {
@@ -125,55 +154,55 @@ Page({
     const courseContentMode = this.data.crouseDetail.courseContentMode || 'breadth'
     const learnContent = this.data.crouseDetail.learnContent || ''
     const courseContentModeMap = {
-      breadth: `一个宏观围绕${learnContent}扩展式学习的章节目录`,// 广度扩展型章节
-      depth: `围绕${learnContent}不同方面深入式学习的章节目录`,// 深度挖掘型章节
+      breadth: `一个宏观围绕${learnContent}扩展式学习的章节目录`, // 广度扩展型章节
+      depth: `围绕${learnContent}不同方面深入式学习的章节目录`, // 深度挖掘型章节
     }
-//     const courseContentModeDemoMap = {
-//       breadth: `MARKER1{
-//         "ChapterList": [
-//           {
-//             "courseId": "${courseUUid}",
-//             "courseNum": "-",
-// "_id": {
-//         "chapterId": 1,
-//         "chapterName": "第一个章节名（eg:xx前世今生）",
-//         "className": "${courseName}",
-//         "courseUUid": "${courseUUid}"
-//       }
-//           },  {
-//             "courseId": "1",
-//             "courseNum": "-",
-// "_id": {
-//         "chapterId": 2,
-//         "chapterName": "第二个章节名（eg:xx快速入门）",
-//         "className": "${courseName}",
-//         "courseUUid": "${courseUUid}"
-//       }
-//     ]
-//       }MARKER2`,// 广度扩展型章节
-//       depth: `MARKER1{
-//         "ChapterList": [
-//           {
-//             "courseId": "${courseUUid}",
-//             "courseNum": "-",
-// "_id": {
-//         "chapterId": 1,
-//         "chapterName": "第一个章节名",
-//         "className": "${courseName}",
-//         "courseUUid": "${courseUUid}"
-//       }
-//           },  {
-//             "courseId": "1",
-//             "courseNum": "-",
-// "_id": {
-//         "chapterId": 2,
-//         "chapterName": "第二个章节名",
-//         "className": "${courseName}",
-//         "courseUUid": "${courseUUid}"
-//       }
-//     ]
-//       }MARKER2`,// 深度挖掘型章节
-//     }
+    //     const courseContentModeDemoMap = {
+    //       breadth: `MARKER1{
+    //         "ChapterList": [
+    //           {
+    //             "courseId": "${courseUUid}",
+    //             "courseNum": "-",
+    // "_id": {
+    //         "chapterId": 1,
+    //         "chapterName": "第一个章节名（eg:xx前世今生）",
+    //         "className": "${courseName}",
+    //         "courseUUid": "${courseUUid}"
+    //       }
+    //           },  {
+    //             "courseId": "1",
+    //             "courseNum": "-",
+    // "_id": {
+    //         "chapterId": 2,
+    //         "chapterName": "第二个章节名（eg:xx快速入门）",
+    //         "className": "${courseName}",
+    //         "courseUUid": "${courseUUid}"
+    //       }
+    //     ]
+    //       }MARKER2`,// 广度扩展型章节
+    //       depth: `MARKER1{
+    //         "ChapterList": [
+    //           {
+    //             "courseId": "${courseUUid}",
+    //             "courseNum": "-",
+    // "_id": {
+    //         "chapterId": 1,
+    //         "chapterName": "第一个章节名",
+    //         "className": "${courseName}",
+    //         "courseUUid": "${courseUUid}"
+    //       }
+    //           },  {
+    //             "courseId": "1",
+    //             "courseNum": "-",
+    // "_id": {
+    //         "chapterId": 2,
+    //         "chapterName": "第二个章节名",
+    //         "className": "${courseName}",
+    //         "courseUUid": "${courseUUid}"
+    //       }
+    //     ]
+    //       }MARKER2`,// 深度挖掘型章节
+    //     }
 
 
     const courseContentModeDemoMap = {
@@ -199,7 +228,7 @@ Page({
       }
     }
     ]
-      }MARKER2`,// 广度扩展型章节
+      }MARKER2`, // 广度扩展型章节
       depth: `MARKER1{
         "ChapterList": [
           {
@@ -222,15 +251,15 @@ Page({
       }
     }
     ]
-      }MARKER2`,// 深度挖掘型章节
+      }MARKER2`, // 深度挖掘型章节
     }
 
 
     // mess第一部分  课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce}
-    const msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+    const msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  尽量简短一点  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
 
     // const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
-  
+
     this.firstStep_ask(msg)
 
 
@@ -252,8 +281,10 @@ Page({
       url: 'https://api.moonshot.cn/v1/chat/completions',
       data: {
         "model": "moonshot-v1-32k",
-        "messages": [
-          { "role": "user", "content":msg}]
+        "messages": [{
+          "role": "user",
+          "content": msg
+        }]
         // "messages": "hi,who are you,我想了解一些海底知识"
       },
       header: {
@@ -274,31 +305,32 @@ Page({
         })
         // that.response(result.data.choices[0].message.content);
       },
-        fail: err => {
-          // handle error
-          that.setData({
-            remind: null,
-            generateChart: 'no',
-          })
-          wx.showModal({
-            title: '提示',
-            content: '获取失败 请检查网络',
-            showCancel: false,
-          })
-          return;
-        },
-        complete: res => {
-          console.log('callFunction test result: ', res)
-          that.setData({
-            remind: null,
-            generateChart: 'ok',
-           
-          })
+      fail: err => {
+        // handle error
+        that.setData({
+          remind: null,
+          generateChart: 'no',
+        })
+        wx.showModal({
+          title: '提示',
+          content: '获取失败 请检查网络',
+          showCancel: false,
+        })
+        wx.hideLoading()
+        return;
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        that.setData({
+          remind: null,
+          generateChart: 'ok',
 
-          // contextarray.push([prompt, alltext]);
-          // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
-          // clearInterval(that.data.testStreamingInterval)
-        }
+        })
+
+        // contextarray.push([prompt, alltext]);
+        // contextarray = contextarray.slice(-12); //只保留最近5次对话作为上下文，以免超过最大tokens限制
+        // clearInterval(that.data.testStreamingInterval)
+      }
     })
     // }, 3000);
   },
@@ -371,7 +403,7 @@ Page({
     wx.requestWithCookie({
       url: 'https://claude.uavserve.online/stream_api',
       header: { //这里写你借口返回的数据是什么类型，这里就体现了微信小程序的强大，直接给你解析数据，再也不用去寻找各种方法去解析json，xml等数据了
-        'Content-Type': 'application/json',//get 请求用这个
+        'Content-Type': 'application/json', //get 请求用这个
         // "Content-Type": "application/x-www-form-urlencoded",//post 请求用这个
         'Host': 'yierco.slack.com',
         'Cookie': 'OptanonAlertBoxClosed=2023-04-24T02:43:02.402Z; _gcl_au=1.1.1993499355.1682304182; _cs_c=1; _lc2_fpi=e00b11ac9c9b--01gyrj9b38xrbf37rjhate5rmm; __adroll_fpc=58531eb79acbcd94d1797a4fbfb2ce8b-1682304183624; __qca=P0-1709822310-1682304183175; d=xoxd-9k4xh7B0T8pAG7g4YU8BwGcgItYxrCu%2BIu2QkVum0TxeeMaKYAH8Qy1mCglxhSbbLLyPfgLkcwdlFXBmiugj%2FWjz3NY3wL5hwY%2Bb1g8%2BBjzQlf14BIXR%2BH%2BXA4p1JWa%2FuaDKlmLLPNTTaPR4isYZ2I%2BpqK%2B3neCH7iSq58cIrBdPun8DOJTQ0SijQA%3D%3D; lc=1682304321; b=.cf9fbf96487a912ff277cb5a23f19c22; utm=%7B%22utm_source%22%3A%22in-prod%22%2C%22utm_medium%22%3A%22inprod-btn_app_install-index-click%22%7D; _ga=GA1.3.1398702781.1682304183; __pdst=2ddc803c632d44a8bb045a0ca343b4db; _rdt_uuid=1682304605784.5b74fa53-92c3-4f7b-9056-df25999368e4; _gid=GA1.2.1190074337.1683561607; _fbp=fb.1.1683561617010.1712718942; shown_ssb_redirect_page=1; shown_download_ssb_modal=1; show_download_ssb_banner=1; no_download_ssb_banner=1; d-s=1683592227; PageCount=2; DriftPlaybook=B; existing_users_hp={"launched":1683622587,"launch_count":3}; x=cf9fbf96487a912ff277cb5a23f19c22.1683633784; _cs_mk_ga=0.9921918170232491_1683633788448; _cs_id=56e5d028-0318-ab39-f24d-3697a560f074.1682304182.4.1683633789.1683633789.1.1716468182797; _cs_s=1.0.0.1683635589375; _ga_QTJQME5M5D=GS1.1.1683633789.9.0.1683633789.60.0.0; _ga=GA1.1.1398702781.1682304183; _li_dcdm_c=.slack.com; OptanonConsent=isGpcEnabled=0&datestamp=Tue+May+09+2023+20%3A03%3A11+GMT%2B0800+(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&version=202211.1.0&isIABGlobal=false&hosts=&consentId=4a5e30d2-1aef-4ecb-b82e-489baa62e1c7&interactionCount=2&landingPath=NotLandingPage&groups=1%3A1%2C2%3A1%2C3%3A1%2C4%3A1&AwaitingReconsent=false&geolocation=CN%3BGD; __ar_v4=K2HN2U4VSJGOVKC2WJLQNH%3A20230424%3A3%7CKDMBLDIYHFHI5NUNKGJ4LV%3A20230424%3A5%7CQCM34G7NBZEHHATIFDIUBJ%3A20230424%3A8%7C4UHU5P4P3FESHLUMNBLWAU%3A20230424%3A8',
@@ -455,20 +487,20 @@ Page({
     if (this.isJSON(str)) return JSON.parse(str);
 
     // 如果不是JSON格式,则做以下处理
-    str = str.trim();  // 去除字符串两边空格
+    str = str.trim(); // 去除字符串两边空格
     str = str.replace(/^\s*|\s*$/g, ''); // 去除每行两边空格
 
     // 如果字符串以{或者[开头,说明可能是对象或者数组,尝试解析
     if (str.startsWith('{') || str.startsWith('[')) {
       try {
         return JSON.parse(str);
-      } catch (e) { }
+      } catch (e) {}
     }
 
     // 否则按行分割,尝试构造对象或数组
     var lines = str.split('\n');
-    var obj = {};  // 假定为对象
-    var arr = [];  // 假定为数组
+    var obj = {}; // 假定为对象
+    var arr = []; // 假定为数组
     var isArray = false;
 
     // 遍历每行,解析键值对或者数组元素
@@ -498,7 +530,7 @@ Page({
           var value = keyValue[1].trim();
           obj[key] = value.startsWith('{') || value.startsWith('[') ? this.parseToJSON(value) : value;
         }
-      } else {  // 数组处理
+      } else { // 数组处理
         if (line) arr.push(line.startsWith('{') || line.startsWith('[') ? this.parseToJSON(line) : line);
       }
     }
@@ -517,8 +549,8 @@ Page({
 
       if (line.startsWith('data:')) {
         var jsonStr = line.slice(6); // 从data:后面开始截取
-        if (this.isJSON(jsonStr)) {  // 检查是否JSON
-          arr.push(JSON.parse(jsonStr));  // 是的话直接push
+        if (this.isJSON(jsonStr)) { // 检查是否JSON
+          arr.push(JSON.parse(jsonStr)); // 是的话直接push
         } else {
           jsonStr = this.parseToJSON(jsonStr); // 否则解析成JSON
           arr.push(jsonStr);
@@ -542,7 +574,7 @@ Page({
       const testmarker2 = test.indexOf('MARKER2', 0)
       console.log("testmarker1", testmarker1)
       console.log("testmarker2", testmarker2)
-      if (testmarker1 === -1) {//无法生成图
+      if (testmarker1 === -1) { //无法生成图
         this.hideLoading
         wx.showModal({
           title: '提示',
@@ -658,20 +690,20 @@ Page({
 
   getCollectState: function () {
     wx.cloud.callFunction({
-      name: 'operate_courseUserStatus',
-      data: {
-        mode: 'getStatus',
-        courseUUid: this.data.crouseDetail.courseUUid
-      }
-    }).then(res => {
-      console.log(res)
-      this.setData({
-        isLiked: res.result.userIsLike,
-        isCollected: res.result.userIsCollect,
-        isShared: res.result.userIsShare,
+        name: 'operate_courseUserStatus',
+        data: {
+          mode: 'getStatus',
+          courseUUid: this.data.crouseDetail.courseUUid
+        }
+      }).then(res => {
+        console.log(res)
+        this.setData({
+          isLiked: res.result.userIsLike,
+          isCollected: res.result.userIsCollect,
+          isShared: res.result.userIsShare,
+        })
+        // return res.result.data.collectd
       })
-      // return res.result.data.collectd
-    })
       .catch(err => {
         console.error('getCollectd', err)
       })
@@ -843,9 +875,9 @@ Page({
   },
 
 
-
+  //  老版本获取章节信息
   getChapterList(pageType) {
-    
+
     const courseUUid = this.data.crouseDetail.courseUUid
     wx.cloud.callFunction({
       name: 'get_ChapterListByCourseUUid',
@@ -918,13 +950,14 @@ Page({
         if (res.confirm) {
           //调用云函数
           wx.cloud.init({
-            env: 'bot-cloud1-7g30ztcr37ed0193'
+            env: 'talkbot-7gji40zbdf69e993'
           })
           wx.cloud.callFunction({
             name: 'del_course',
             data: {
               courseUUid: crouseDetail.courseUUid,
-              classCollection: 'testCourseContents'
+              classCollection: 'allCourseBaseMess'
+              // classCollection: 'testCourseContents'
 
             },
             success: res => {

@@ -1,0 +1,36 @@
+<!--components/superAdmin/courseAudit.wxml-->
+<view class="view_tupian_wenzi" bindtap="toShowShareConvertsation">
+  <view class="view_content">
+    <!-- <image class="image_1" src="{{userInfo.avatarUrl?userInfo.avatarUrl:'../../images/icon/avata.png'}}" /> -->
+    <view class="view_wenzi2">
+      <view>
+        <view class="wenzi_title">工作空间: {{workSpaceName||'null'}}
+        <!-- <view class="wenzi_title">SecretKey: {{secretkeyInfo.secretkey||'null'}} -->
+        <text class="key_state" style="color:{{workSpaceObj.curState==='free'?'green':'red'}}">当前状态：{{workSpaceObj.curState||'无效'}}</text> 
+        </view>
+        <view class="wenzi_title">
+          等待队列数：{{workSpaceObj.waitToDrawArr.length}}
+          完成队列数：{{workSpaceObj.finishDrawArr.length}}
+          历史队列数：{{workSpaceObj.historyDrawArr.length}}
+          <!-- 激活日期：<text class="text_state">{{secretkeyInfo.ActivationDate}}</text>  -->
+        </view>
+        <view class="wenzi_desc">
+          备注:{{workSpaceObj.remark}}
+        </view>
+      </view>
+      <view style="display: flex;justify-content: space-between;align-items: center;">
+        <text class="text_state" wx:if="{{scene==='superAdmin'}}">
+        最后运行日期   {{workSpaceObj.lastRunTime}}</text>
+        <!-- <text class="text_state" wx:if="{{scene==='superAdmin'}}">
+         </text> -->
+        
+        <!-- 生成日期：{{secretkeyInfo.generatedTime}}</text> -->
+        <view style="display: flex;" wx:if="{{scene==='superAdmin'||secretkeyInfo.state==='valid'}}">
+          <button class="btn" catchtap="emptyArrByKey" data-content='waitToDrawArr'>清空 W</button>
+          <button class="btn" catchtap="emptyArrByKey" data-content='finishDrawArr'>清空 F</button>
+          <button class="btn" catchtap="emptyArrByKey" data-content='historyDrawArr'>清空 H</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

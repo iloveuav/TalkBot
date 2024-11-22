@@ -381,6 +381,16 @@ Page({
     // let UserQuesRecordArr = wx.getStorageSync('UserQuesRecordArr');
     var SystemSetting = wx.getStorageSync("SystemSetting");
     var allCanCreatCourse = SystemSetting.allCanCreatCourse
+    var allCanTalk = SystemSetting.allCanTalk //全局权限控制
+
+    if(!allCanTalk){
+        wx.showModal({
+        title: '提示',
+        content: '功能维护中，暂时下线',
+        showCancel: false
+      })
+      return;
+    }
     if (!isVip && !allCanCreatCourse) {
       // wx.showModal({
       //   title: '提示',
@@ -420,10 +430,19 @@ Page({
         showCancel: false
       })
     } else {
+
+      // wx.switchTab({
+      //   url: '/packageA/pages/chartBox/index',
+      // })
+
+
       wx.navigateTo({
         //这里传值
-        url: '/pages/notification/notification',
+        // url: '/packageA/pages/chartBox/index',
+       url: '/pages/notification/notification',
       })
+        // url: '/pages/notification/notification',
+        
     }
 
   },

@@ -1,10 +1,9 @@
-
 var util = require("../../../utils/util")
 
 Page({
   data: {
     open: false,
-    showAddKeyModal:false,
+    showAddKeyModal: false,
     remind: "remind",
     mark: 0,
     newmark: 0,
@@ -14,9 +13,9 @@ Page({
     staus: 1,
     translate: '',
     // ----------------------------------------以上为yzm data 以下为ss data------------------------------------------------------
-    pageFlag: 0,// 0:Home页 1：Visitors页  2：admin页  3： 4：VisitorEdit页 5：datePicker页  6：废弃中  7：内容审核 8：访客待审核页 9：
+    pageFlag: 0, // 0:Home页 1：Visitors页  2：admin页  3： 4：VisitorEdit页 5：datePicker页  6：废弃中  7：内容审核 8：访客待审核页 9：
     dialogShow: false,
-    allCanTalk:false,
+    allCanTalk: false,
     buttons: [{
       text: '取消'
     }, {
@@ -35,19 +34,20 @@ Page({
 
     list_index: [],
     allCourseDemo: [{
-      name: "工业园区",
-      value: 0,
-    },
-    {
-      name: "吴中区",
-      value: 0,
-    },
-    {
-      name: "昆山",
-      value: 0,
-    },
+        name: "工业园区",
+        value: 0,
+      },
+      {
+        name: "吴中区",
+        value: 0,
+      },
+      {
+        name: "昆山",
+        value: 0,
+      },
     ],
   },
+
   tap_ch: function (e) {
     if (this.data.open) {
       this.setData({
@@ -61,6 +61,7 @@ Page({
       this.data.open = true;
     }
   },
+
   tap_start: function (e) {
     this.data.mark = this.data.newmark = e.touches[0].pageX;
     if (this.data.staus == 1) {
@@ -110,12 +111,10 @@ Page({
           translate: 'transform: translateX(' + (this.data.newmark + this.data.windowWidth * 0.4 - this.data.startmark) + 'px)'
         })
       }
-
     }
-
     this.data.mark = this.data.newmark;
-
   },
+
   tap_end: function (e) {
     if (this.data.staus == 1 && this.data.startmark < this.data.newmark) {
       if (Math.abs(this.data.newmark - this.data.startmark) < (this.data.windowWidth * 0.2)) {
@@ -221,7 +220,7 @@ Page({
     let nowtime = util.formatDayTime(new Date, 'Y/M/D');
     console.log(nowtime)
     // 获取云端上保密协议的内容
-    
+
     //  下面是云函数的调用
     wx.cloud.callFunction({
       name: 'get_indexCardMess',
@@ -288,7 +287,7 @@ Page({
     })
     // this.queryVisitorList()
   },
-  
+
 
   touchGenerateKeyList: function () {
     this.setData({
@@ -299,13 +298,22 @@ Page({
     // this.getAllApplyVipList();
   },
 
-  showNewVipKeyModal(){
+  touchJobStateList: function () {
     this.setData({
-      showAddKeyModal:true
+      pageFlag: 11,
+      translate: 'transform: translateX(0px)',
+    })
+    // this.getAllVipSecretKeyList();
+    this.getAllJobStateList();
+  },
+
+  showNewVipKeyModal() {
+    this.setData({
+      showAddKeyModal: true
     })
   },
 
- 
+
 
   touchWaitCheckCrouseList: function () {
     this.setData({
@@ -333,11 +341,12 @@ Page({
     this.setData({
       pageFlag: 9,
       translate: 'transform: translateX(0px)',
-    })},
+    })
+  },
 
 
   getAllCourse() {
-    
+
     wx.cloud.callFunction({
       name: 'get_allCourseMess',
       data: {},
@@ -364,7 +373,7 @@ Page({
   },
 
   getAllApplyVipList() {
-    
+
     wx.cloud.init()
     wx.cloud.callFunction({
 
@@ -388,16 +397,16 @@ Page({
         //   title: '获取审核成功',
         //   duration: 1100
         // })
-          // setTimeout(function () { //延时执行函数
-          //   wx.navigateBack({
-          //     delta: 1
-          //   })
-          // }, 1200) //延迟时间 这里是1.5秒
+        // setTimeout(function () { //延时执行函数
+        //   wx.navigateBack({
+        //     delta: 1
+        //   })
+        // }, 1200) //延迟时间 这里是1.5秒
       },
     })
   },
 
- 
+
 
   getAllCourseList(pageType) {
     wx.cloud.callFunction({
@@ -461,40 +470,80 @@ Page({
     })
   },
 
-    //获取Vip秘钥列表
-    getAllVipSecretKeyList() {
-      wx.cloud.callFunction({
-        name: 'operate_userInfo',
-        data: {
-          type: 'get_all_VIP_secretkey_record',
-        },
-        success: res => {
-          const GenerateVipKeysMap = res?.result?.data[0].GenerateVipKeysMap || undefined
-          if (GenerateVipKeysMap) {
-            const converKeysArr = Object.keys(GenerateVipKeysMap)
-            const conversationList = []
-            converKeysArr.forEach(e => {
-              conversationList.push({
+  //获取Vip秘钥列表
+  getAllVipSecretKeyList() {
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get_all_VIP_secretkey_record',
+      },
+      success: res => {
+        const GenerateVipKeysMap = res?.result?.data[0].GenerateVipKeysMap || undefined
+        if (GenerateVipKeysMap) {
+          const converKeysArr = Object.keys(GenerateVipKeysMap)
+          const conversationList = []
+          converKeysArr.forEach(e => {
+            conversationList.push({
               ...GenerateVipKeysMap[e],
-                secretkey: e
-              })
+              secretkey: e
             })
-            this.setData({
-              allVipSecretkeyList: conversationList,
-              GenerateVipKeysMap: GenerateVipKeysMap
-            })
-          }
-        },
-        fail: err => {
-          // handle error
-        },
-        complete: res => {
-          // console.log(res)
+          })
+          this.setData({
+            allVipSecretkeyList: conversationList,
+            GenerateVipKeysMap: GenerateVipKeysMap
+          })
         }
-      })
-    },
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        // console.log(res)
+      }
+    })
+  },
 
-  
+
+  //获取指定工作空间的所有任务列表  默认testWorkSpace
+  getAllJobStateList() {
+    const that = this
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get_allws_jobState'
+        // workspaceName: 'testWorkSpace'
+      },
+      success: res => {
+        const jobStateMap = res?.result?.data || undefined
+        if (jobStateMap) {
+          console.log("jobStateMap", jobStateMap)
+
+          this.setData({
+            jobStateMap: jobStateMap,
+          })
+          // const converKeysArr = Object.keys(GenerateVipKeysMap)
+          // const conversationList = []
+          // converKeysArr.forEach(e => {
+          //   conversationList.push({
+          //   ...GenerateVipKeysMap[e],
+          //     secretkey: e
+          //   })
+          // })
+          // this.setData({
+          //   allVipSecretkeyList: conversationList,
+          //   GenerateVipKeysMap: GenerateVipKeysMap
+          // })
+        }
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        // console.log(res)
+      }
+    })
+  },
+
 
 
 
@@ -563,8 +612,7 @@ Page({
       }
     }).then(res => {
       console.log(res)
-      wx.hideLoading({
-      })
+      wx.hideLoading({})
       this.setData({
         list: res.result.listData
       })
@@ -611,8 +659,7 @@ Page({
             success(res) {
               console.log(res)
               console.log(that.data.list)
-              wx.hideLoading({
-              })
+              wx.hideLoading({})
               wx.showToast({
                 title: '删除成功',
               })
@@ -622,8 +669,7 @@ Page({
               })
             },
             fail(err) {
-              wx.hideLoading({
-              })
+              wx.hideLoading({})
               console.log(err)
               wx.showToast({
                 title: '删除失败',
@@ -669,8 +715,7 @@ Page({
           let httpsrc = 'https://' + res.result.fileID.slice(first + 1, end) + '.tcb.qcloud.la/' + res.result.fileID.slice(end + 1, res.result.fileID.length);
           console.log("httpsrc", httpsrc);
           var filePath = ''
-          wx.hideLoading({
-          })
+          wx.hideLoading({})
           wx.downloadFile({
             url: httpsrc,
             success(res) {
@@ -732,7 +777,7 @@ Page({
     var SystemSetting = wx.getStorageSync("SystemSetting");
     this.setData({
       identity,
-      allCanTalk:SystemSetting.allCanTalk
+      allCanTalk: SystemSetting.allCanTalk
       // remind:'1'
     })
     this.touchHome();
@@ -796,6 +841,17 @@ Page({
     }, 600);
   },
 
+  getAllJobStateListReload() {
+    // this.getAllCourse();
+    this.getAllJobStateList();
+    setTimeout(() => {
+      this.setData({
+        pageFlag: 11,
+        // allCourse: this.data.allCourse,
+      })
+    }, 600);
+  },
+
 
 
 
@@ -834,14 +890,13 @@ Page({
       // select_flag: this.data.dialogFlag || '',
     }
     console.log("test-params", params)
-    
+
     wx.cloud.callFunction({
       name: "query_visitorRecord",
       data: params
     }).then(res => {
       console.log(res)
-      wx.hideLoading({
-      })
+      wx.hideLoading({})
       this.setData({
         list: res.result.listData.data
       })
@@ -886,10 +941,10 @@ Page({
       data: {
         operateType: 'generateVipKey',
         secretKey: util.uuid(), //秘钥
-        indate: this.data.indate,//有效时间
-        certigier:'Jamin',
-        remark:this.data.remark,
-        generatedTime:util.formatTime(new Date, 'Y/M/D'),
+        indate: this.data.indate, //有效时间
+        certigier: 'Jamin',
+        remark: this.data.remark,
+        generatedTime: util.formatTime(new Date, 'Y/M/D'),
       },
       success: res => {
         console.log(res.result)
@@ -907,11 +962,11 @@ Page({
             duration: 1000
           })
           this.close()
-         this.setData({
-          remark:'',
-          indate:undefined
-         })
-         this.getAllVipSecretKeyList()
+          this.setData({
+            remark: '',
+            indate: undefined
+          })
+          this.getAllVipSecretKeyList()
         }
 
       }
@@ -930,9 +985,9 @@ Page({
     wx.cloud.callFunction({
       name: 'update_adminOperation',
       data: {
-       params:{
-        allCanTalk:this.data.allCanTalk
-       },
+        params: {
+          allCanTalk: this.data.allCanTalk
+        },
         operateType: 'updateAdminSetting'
       },
       success: res => {
@@ -957,10 +1012,10 @@ Page({
       }
     })
 
-    
+
   },
 
- 
+
 
 
 

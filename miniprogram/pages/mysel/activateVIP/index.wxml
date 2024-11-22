@@ -23,7 +23,8 @@
 
     <!-- {{GenerateVipKeysMap[]}} -->
 
-    <button class="button" form-type="submit">激活</button>
+    <!-- <button class="button" form-type="submit">激活</button> -->
+    <button class="button"  form-type="submit">激活</button>
   </form>
 
 
@@ -35,4 +36,3 @@
 
 
 </scroll-view>
-

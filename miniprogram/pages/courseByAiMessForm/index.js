@@ -33,9 +33,12 @@ Page({
       curContentType: 'ask',
       courseTagList: [],
 
-      step1Text:'',
-      step2Text:'',
-      step3Text:'',
+      step1Text: '',
+      step2Text: '',
+      step3Text: '',
+
+      BqbSettin: 'noEmoj'
+
     },
 
     tempimg: [], //临时数组  等点击发送的时候一起走
@@ -93,7 +96,7 @@ Page({
         label: '了解知识',
         value: 'get',
         choose: false
-      }, 
+      },
     ],
     tagList2: [{
         label: '广度扩展式学习',
@@ -106,7 +109,7 @@ Page({
         choose: false
       },
     ],
- 
+
     tagList3: [{
         label: '英语（English）',
         value: 'English',
@@ -131,21 +134,37 @@ Page({
     ],
 
     tagList4: [{
-      label: 'AI生成',
-      value: 'useAI',
-      choose: true
-    },
-    {
-      label: '人工生成',
-      value: 'manual',
-      choose: false
-    },
-    {
-      label: '开发者模式',
-      value: 'devMode',
-      choose: false
-    },
-  ],
+        label: 'AI生成',
+        value: 'useAI',
+        choose: true
+      },
+      {
+        label: '人工生成',
+        value: 'manual',
+        choose: false
+      },
+      {
+        label: '开发者模式',
+        value: 'devMode',
+        choose: false
+      },
+    ],
+    tagList5: [{
+        label: '无表情包',
+        value: 'noEmoj',
+        choose: true
+      },
+      {
+        label: '随机模式',
+        value: 'manual',
+        choose: false
+      },
+      {
+        label: '仅柴犬',
+        value: 'CQdog',
+        choose: false
+      },
+    ],
     courseContentMode: 'breadth', // breadth广度  depth深度
     curLanguage: 'English' // 广度扩展式学习的语言
 
@@ -211,7 +230,7 @@ Page({
       let isVip = wx.getStorageSync('isVip');
       this.setData({
         type: options.type,
-        isVip:isVip
+        isVip: isVip
       })
     }
 
@@ -318,7 +337,7 @@ Page({
       return item.label
     });
     this.data.editCourseDetail.courseTagList = courseTagList //选中的课程标签
-    
+
     console.log("this.data.editCourseDetail", this.data.editCourseDetail)
     const courseMess = {
       courseUUid: this.data.editCourseDetail.courseUUid || this.data.courseUUid,
@@ -327,9 +346,17 @@ Page({
       courseIntroduce: this.data.editCourseDetail.courseIntroduce,
       courseType: 'other',
       creatTime: time.formatTime(new Date, 'Y/M/D'),
+      courseContentTypeMode: this.data.editCourseDetail.courseContentTypeMode, // AI  人工生成  开发者模式
+
+      // 开发者模式需要的
+      step1Text: this.data.editCourseDetail.step1Text,
+      step2Text: this.data.editCourseDetail.step2Text,
+      step3Text: this.data.editCourseDetail.step3Text,
+      BqbSettin: this.data.editCourseDetail.BqbSettin,
+
 
       //AI需要的部分
-      useAI:true,
+      useAI: true,
       courseContentMode: this.data.editCourseDetail.courseContentMode || 'breadth',
       curLanguage: this.data.editCourseDetail.curLanguage || 'English',
       learnContent: this.data.editCourseDetail.learnContent || '',
@@ -338,7 +365,7 @@ Page({
     }
     const info = wx.getStorageSync("info") || {
       'nickName': '匿名',
-      avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/WGicQibOVkYHLYQaoSQNLr1fzBcjvkvlqGHaRMBfEI0fulMudnFVr0A2gFKtc8Q4ic50Rap8mBqicv2YwxRQolASdg/132",
+      avatarUrl: "http://imgchatbot.uavserve.online/talkBotDoor.gif",
       language: "zh_CN"
     };
     courseMess.createrInfo = info
@@ -352,7 +379,7 @@ Page({
     // }else if(this.data.type==='narrate'){
     //   collection = 'operate_CourseMess'
     // }
-    
+
     console.log("courseMess", courseMess)
     wx.cloud.callFunction({
       name: 'operate_CourseMess',
@@ -364,7 +391,7 @@ Page({
       success: res => {
         if (this.data.isPageEdit) {
           wx.navigateBack({
-            delta: 2//返回的页面数
+            delta: 2 //返回的页面数
           });
           return;
         } else {
@@ -662,21 +689,21 @@ Page({
     this.data.editCourseDetail.learnContent = e.detail.value
   },
 
-    //编辑 Step1Text
-    bindChangeStep1Text: function (e) {
-      console.log("bindChangeStep1Text",e.detail.value)
-      this.data.editCourseDetail.step1Text = e.detail.value
-    },
+  //编辑 Step1Text
+  bindChangeStep1Text: function (e) {
+    // console.log("bindChangeStep1Text", e.detail.value)
+    this.data.editCourseDetail.step1Text = e.detail.value
+  },
 
-    //编辑 Step2Text
-    bindChangeStep2Text: function (e) {
-      this.data.editCourseDetail.step2Text = e.detail.value
-    },
+  //编辑 Step2Text
+  bindChangeStep2Text: function (e) {
+    this.data.editCourseDetail.step2Text = e.detail.value
+  },
 
-    //编辑 Step1Text
-    bindChangeStep3Text: function (e) {
-      this.data.editCourseDetail.step3Text = e.detail.value
-    },
+  //编辑 Step1Text
+  bindChangeStep3Text: function (e) {
+    this.data.editCourseDetail.step3Text = e.detail.value
+  },
 
   preimage(e) {
     var imgurl = this.data.centendata[e.currentTarget.dataset.i];
@@ -731,7 +758,7 @@ Page({
             //调用云函数
             wx.cloud.init({
               traceUser: true,
-              env: 'bot-cloud1-7g30ztcr37ed0193'
+              env: 'talkbot-7gji40zbdf69e993'
             })
 
             wx.cloud.callFunction({
@@ -962,31 +989,147 @@ Page({
     })
   },
 
-    //内容生成类型 单选Change
-    ContentTypeHandleChoose(e) {
-      const {
-        index,
-        choose
-      } = e.target.dataset;
-      const str = `tagList4[${index}].choose`
-      const curMode = this.data.tagList4[index].value
-      console.log("curMode", curMode)
-      const chooseList = this.data.tagList4.filter(item => item.choose);
-  
-  
-      if (chooseList.length >= 1) {
-        this.data.tagList4.forEach((e, index) => {
-          const str2 = `tagList4[${index}].choose`
-          this.setData({
-            [str2]: false
-          })
+  //内容生成类型 单选Change
+  ContentTypeHandleChoose(e) {
+    const {
+      index,
+      choose
+    } = e.target.dataset;
+    const str = `tagList4[${index}].choose`
+    const curMode = this.data.tagList4[index].value
+    console.log("curMode", curMode)
+    const chooseList = this.data.tagList4.filter(item => item.choose);
+
+
+    if (chooseList.length >= 1) {
+      this.data.tagList4.forEach((e, index) => {
+        const str2 = `tagList4[${index}].choose`
+        this.setData({
+          [str2]: false
         })
-      };
-  
-      this.data.editCourseDetail.courseContentTypeMode = curMode //课程学习模式 【广度优先还是深度优先】
-      this.setData({
-        [str]: !choose,
-        editCourseDetail: this.data.editCourseDetail
       })
-    },
+    };
+
+    this.data.editCourseDetail.courseContentTypeMode = curMode //课程学习模式 【广度优先还是深度优先】
+    this.setData({
+      [str]: !choose,
+      editCourseDetail: this.data.editCourseDetail
+    })
+  },
+
+  //表情包设置 单选Change
+  BqbSettingHandleChoose(e) {
+    const {
+      index,
+      choose
+    } = e.target.dataset;
+    const str = `tagList5[${index}].choose`
+    const bqbSetting = this.data.tagList5[index].value
+    const chooseList = this.data.tagList4.filter(item => item.choose);
+
+
+    if (chooseList.length >= 1) {
+      this.data.tagList4.forEach((e, index) => {
+        const str2 = `tagList5[${index}].choose`
+        this.setData({
+          [str2]: false
+        })
+      })
+    };
+
+    this.data.editCourseDetail.BqbSetting = bqbSetting //课程学习模式 【广度优先还是深度优先】
+    this.setData({
+      [str]: !choose,
+      editCourseDetail: this.data.editCourseDetail
+    })
+  },
+
+
+  getChapterListPromptByKimi() {
+    // wx.showLoading({
+    //   title: '正在生成章节目录中',
+    // })
+
+    //参考章节结构如下：第一章节：英语的特点，文化背景，学习英语有什么优势
+    // 第二章节：英语的语法特点  基础语法
+    // 第三章节：基础英语的简单应用 结合小任务小游戏
+    // 第四章节：高阶进阶语法
+    // 第五章节：高阶语法应用  听力、小作文训练
+    // 第六章节：冒险阶段 随机生成各种场景模拟、小游戏等  
+
+    const curLanguage = this.data.curLanguage || ''
+    const courseContentMode = this.data.editCourseDetail.courseContentMode || 'breadth'
+    const step1Text = this.data.editCourseDetail.step1Text || ''
+    const courseContentModeMap = {
+      breadth: `一个宏观围绕${step1Text}扩展式学习的章节目录`,// 广度扩展型章节
+      depth: `围绕${step1Text}不同方面深入式学习的章节目录`,// 深度挖掘型章节
+    }
+
+
+
+    const courseContentModeDemoMap = {
+      breadth: `{
+        "ChapterList": [
+          {
+            "courseNum": "-"
+"_id": {
+        "chapterId": 1,
+        "chapterName": "第一个章节名（eg:xx前世今生）"
+      }
+          },  {
+            "courseId": "1",
+            "courseNum": "-",
+"_id": {
+        "chapterId": 2,
+        "chapterName": "第二个章节名（eg:xx快速入门）"
+      }
+    }
+    ]
+      }`,// 广度扩展型章节
+      depth: `{
+        "ChapterList": [
+          {
+            "courseNum": "-"
+"_id": {
+        "chapterId": 1,
+        "chapterName": "第一个章节名"
+      }
+          },  {
+            "courseId": "1",
+            "courseNum": "-"
+"_id": {
+        "chapterId": 2,
+        "chapterName": "第二个章节名"
+      }
+    }
+    ]
+      }`,// 深度挖掘型章节
+    }
+
+
+    // mess第一部分  课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce}
+    const msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+
+    // const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+  
+    // this.firstStep_ask(msg)
+
+    console.log(msg)
+
+    wx.setClipboardData({
+      data: msg,
+      success (res) {
+        wx.getClipboardData({
+          success (res) {
+            wx.showToast({
+              title: '复制成功',
+              icon: 'success',
+              duration: 1000
+            })
+          }
+        })
+      }
+    })
+
+  },
 })

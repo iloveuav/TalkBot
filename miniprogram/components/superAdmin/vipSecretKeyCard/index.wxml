@@ -4,7 +4,8 @@
     <!-- <image class="image_1" src="{{userInfo.avatarUrl?userInfo.avatarUrl:'../../images/icon/avata.png'}}" /> -->
     <view class="view_wenzi2">
       <view>
-        <view class="wenzi_title">SecretKey: {{secretkeyInfo.secretkey||'null'}}
+        <view class="wenzi_title">SecretKey: {{showKey||'null'}}
+        <!-- <view class="wenzi_title">SecretKey: {{secretkeyInfo.secretkey||'null'}} -->
         <text class="key_state" style="color:{{secretkeyInfo.state==='有效'?'green':'red'}}">{{secretkeyInfo.state||'无效'}}</text> 
         </view>
         <view class="wenzi_title">

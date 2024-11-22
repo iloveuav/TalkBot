@@ -1,0 +1,89 @@
+<view class='courseInfo'>
+  <view class="title">{{pageTitle}}</view>
+  <view class='tips'>{{pageRowText}}</view>
+  <!-- <view class="unRead" wx:if="{{unReadNum}}">
+    <text>{{unReadNum}}</text>
+  </view> -->
+
+  <view class='item_top_title'>成本价</view>
+  <view class="form_item">
+    <image class="icon" src="/images/icon/title.png"></image>
+    <input type="digit" class="input" bindinput="bindChange1" confirm-type="done" value='{{formData.costPrice||null}}' placeholder="{{firstPlaceholder}}" />
+  </view>
+  <view class='item_top_title'>零售价</view>
+  <view class="form_item">
+    <image class="icon" src="/images/icon/coverImg.png"></image>
+    <input type="number" class="input" type="number" bindinput="bindChange2" confirm-type="done" value='{{formData.retailPrice}}' placeholder="{{secondPlaceholder}}" />
+    <!-- <image src="/images/button/upload2.png" class="addImgBtn" bindtap='uploadimg'></image> -->
+  </view>
+  <view class='item_top_title'>订单数量</view>
+  <view class="form_item">
+    <image class="icon" src="/images/icon/title.png"></image>
+    <input class="input" bindinput="bindChange3" confirm-type="done" value='{{formData.orderQuantity||orderQuantity}}' placeholder="{{thirdPlaceholder}}" />
+  </view>
+  <view class='item_top_title'>推广消耗</view>
+  <view class="form_item">
+    <image class="icon" src="/images/icon/title.png"></image>
+    <input class="input" bindinput="bindChange4" confirm-type="done" value='{{formData.extensionConsumption||extensionConsumption}}' placeholder="{{forthPlaceholder}}" />
+  </view>
+
+  <view class="form_item introduce">
+    <text class="chapter" catchtap="copyResult"  >计算结果👇    (复制结果)</text>
+    <textarea maxlength="-1" user-select class="input" bindinput="copyResult" confirm-type="done" value='{{formData.resultText}}' placeholder="{{thirdPlaceholder}}" />
+  </view>
+</view>
+
+
+<!-- <view class="tagInfo courseInfo">
+
+  <view class="title">课程类别</view>
+  <view class='tips'>课程内容类型选择</view>
+  <view class="tagList">
+    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList1}}" wx:key="{{item.value}}" bindtap="ContentControlhandleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+  </view>
+
+  <view>
+    <view class="title">语言</view>
+    <view class='tips'>选择何种语言生成课程~</view>
+    <view class="tagList">
+      <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList3}}" wx:key="{{item.value}}" bindtap="languageHandleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+    </view>
+  </view>
+
+
+  <view class="title">学习模式</view>
+  <view class='tips'>模式不同生成的章节架构不同</view>
+  <view class="tagList">
+    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList2}}" wx:key="{{item.value}}" bindtap="ModeHandleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+  </view>
+
+
+
+  <view>
+    <view class="title" wx:if="{{formData.courseContentMode==='breadth'}}">扩展式学习的内容</view>
+    <view class="title" wx:if="{{formData.courseContentMode==='depth'}}">深入学习的内容</view>
+    <view class='tips'>填写具体想学习的内容~</view>
+    <view class="form_item introduce">
+      <text class="chapter">eg:英语长短句 其作用和如何在作文中使用</text>
+      <textarea maxlength="-1" user-select class="input" bindinput="bindChange4" confirm-type="done" value='{{formData.learnContent||learnContent}}' placeholder="输入想学习的内容，比如用英语学习C++的语法、用英语教我日语、生活百科100道必会题等" />
+    </view>
+  </view>
+
+
+  <view class="title">{{bottomTitle}}</view>
+  <view class='tips'>可多选，最后选3个~</view>
+  <view class="tagList">
+    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList}}" wx:key="{{item.value}}" bindtap="handleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+  </view>
+
+
+
+
+
+
+</view> -->
+
+<view class="sendMessage">
+  <button class="sendMessButton" catchtap="compute">计算</button>
+  <button class="sendMessButton" catchtap="clearAll">清空</button>
+</view>

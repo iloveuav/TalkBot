@@ -22,13 +22,13 @@ Page({
       const secretKey = e.detail.value.secretKey
       const keyInfo = this.data.GenerateVipKeysMap[secretKey]
       //匹配到秘钥
-      if (keyInfo&&keyInfo.isActivation!=='已激活') {
+      if (keyInfo && keyInfo.isActivation !== '已激活') {
         wx.showModal({
           title: '确认激活',
-            content: `当前秘钥状态：[${keyInfo.state}] \n密钥有效天数：[${keyInfo.indate}天] \n密钥激活状态：[${keyInfo.isActivation}]`,
+          content: `当前秘钥状态：[${keyInfo.state}] \n密钥有效天数：[${keyInfo.indate}天] \n密钥激活状态：[${keyInfo.isActivation}]`,
           //  [密钥激活信息：'+keyInfo.ActivationDate+']',
           // content: '111\n222',
-        
+
           cancelText: "取消",
           confirmText: "确认激活",
           success(res) {
@@ -62,13 +62,13 @@ Page({
                 success: res => {
                   // console.log(res)
                   console.log('callFunction test result: ', res)
-                  if(res.result.sucess){
+                  if (res.result.sucess) {
                     wx.showToast({
                       title: res.result.sucess,
                       icon: 'success',
                       duration: 1000
                     })
-                    if(res.result.sucess==='激活成功'){
+                    if (res.result.sucess === '激活成功') {
                       wx.showModal({
                         title: res.result.sucess,
                         content: '激活成功后请重新进入小程序',
@@ -95,7 +95,7 @@ Page({
             }
           }
         })
-      }else if(keyInfo&&keyInfo.isActivation==='已激活'){
+      } else if (keyInfo && keyInfo.isActivation === '已激活') {
         wx.showModal({
           title: '提示',
           content: '秘钥已被激活，不可重复激活，请联系管理员重新获取密钥',
@@ -152,9 +152,8 @@ Page({
         })
       }
     }
-
-
   },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -243,6 +242,53 @@ Page({
       }
     })
   },
+
+  //获取一个 Vip秘钥的信息
+  // formSubmit(e) {
+
+  //   if (e.detail.value.secretKey == "") {
+  //     wx.showModal({
+  //       title: '提示',
+  //       content: '请填写秘钥码后重试',
+  //       showCancel: false
+  //     })
+  //     return;
+  //   } else {
+  //     const secretKey = e.detail.value.secretKey
+
+  //     wx.cloud.callFunction({
+  //       name: 'operate_userInfo',
+  //       data: {
+  //         type: 'get_one_VIP_secretkey_record',
+  //         akey: secretKey
+  //       },
+  //       success: res => {
+  //         console.log("test1111", res)
+  //         const GenerateVipKeysMap = res?.result?.data.GenerateVipKeysMap || undefined
+  //         if (GenerateVipKeysMap) {
+  //           const converKeysArr = Object.keys(GenerateVipKeysMap)
+  //           const conversationList = []
+  //           converKeysArr.forEach(e => {
+  //             conversationList.push({
+  //               ...GenerateVipKeysMap[e],
+  //               secretkey: e
+  //             })
+  //           })
+  //           this.setData({
+  //             allVipSecretkeyList: conversationList,
+  //             GenerateVipKeysMap: GenerateVipKeysMap
+  //           })
+  //         }
+  //       },
+  //       fail: err => {
+  //         // handle error
+  //       },
+  //       complete: res => {
+  //         // console.log(res)
+  //       }
+  //     })
+  //   }
+  // },
 
   // 激活VIP
   activateVIP() {

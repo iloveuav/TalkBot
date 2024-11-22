@@ -143,7 +143,7 @@ Page({
 
   // getAllCourse(pageType) {
   //   wx.cloud.init({
-  //     env: 'bot-cloud1-7g30ztcr37ed0193'
+  //     env: 'talkbot-7gji40zbdf69e993'
   //   })
   //   wx.cloud.callFunction({
   //     name: 'get_allCourseMess',

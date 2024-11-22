@@ -66,6 +66,14 @@ exports.main = async (event, context) => {
                 createrOpenid: wxContext.OPENID,
                 createrInfo: event.courseMess.createrInfo,
                 state: '待审核',
+                // AI  人工生成  开发者模式
+                courseContentTypeMode: event.courseMess.courseContentTypeMode,
+                // 开发者模式需要的
+                step1Text: event.courseMess.step1Text,
+                step2Text: event.courseMess.step2Text,
+                step3Text: event.courseMess.step3Text,
+                BqbSettin: event.courseMess.BqbSettin,
+
 
                 useAI: true,
                 //AI需要的部分
@@ -90,8 +98,11 @@ exports.main = async (event, context) => {
                 state: event.courseMess.state || '待审核',
                 createrOpenid: wxContext.OPENID,
 
-                useAI: true,
+
+                // AI  人工生成  开发者模式
+                courseContentTypeMode: event.courseMess.courseContentTypeMode,
                 //AI需要的部分
+                useAI: true,
                 courseContentMode: event.courseMess.courseContentMode,
                 curLanguage: event.courseMess.curLanguage || undefined,
                 learnContent: event.courseMess.learnContent,
@@ -122,6 +133,31 @@ exports.main = async (event, context) => {
             }).update({
               data: {
                 ChapterList: event.ChapterList
+              },
+            })
+          }
+        })
+
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  if (event.mode === 'addCharater') {
+    try {
+      return db.collection(Collection).where({
+          courseUUid: event.courseMess.courseUUid,
+        }).count()
+        .then(res => {
+          console.log('count', res)
+          if (res.total <= 0) {
+            return;
+          } else {
+            return db.collection(Collection).where({
+              courseUUid: event.courseMess.courseUUid
+            }).update({
+              data: {
+                ChapterList: db.command.push(event.ChapterObj),
               },
             })
           }
@@ -169,7 +205,7 @@ exports.main = async (event, context) => {
           console.log('count', res)
           if (res.total <= 0) {
             return;
-          } else 
+          } else {
             return db.collection(Collection).where({
               courseUUid: event.courseUUid
             }).update({
@@ -184,7 +220,6 @@ exports.main = async (event, context) => {
             })
           }
         })
-
     } catch (e) {
       console.error(e)
     }
@@ -213,7 +248,5 @@ exports.main = async (event, context) => {
       console.error(e)
     }
   }
-
-
 
 }

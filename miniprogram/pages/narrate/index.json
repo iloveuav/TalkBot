@@ -1,8 +1,0 @@
-{
-    "usingComponents": {
-      "courseCard": "/components/index/indexCourseCard/courseCard",
-      "indexCard": "/components/index/indexCard/indexCard",
-      "bigCardSelect": "/components/index/bigCardSelect/bigCardSelect",
-      "dailySentence": "/components/index/dailySentence/dailySentence"
-    }
-}

@@ -8,8 +8,8 @@
       <!-- 备用 无网情况下显示 -->
 
 
-      <image bindtap="tap_ch" class="pic" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
-      </image>
+      <!-- <image bindtap="tap_ch" class="pic" wx:if="{{!appSetting.homeImageUrl}}" src="../../../images/icon/menu.png">
+      </image> -->
       <image bindtap="tap_ch" class="pic" src="{{appSetting.homeImageUrl}}"></image>
       <text class="title">管理员数据中心 </text>
       <view class="wc {{pageFlag == 0 ? 'active' : ''}}" bindtap="touchHome">
@@ -30,6 +30,10 @@
 
       <view class="wc {{pageFlag == 10 ? 'active' : ''}}" bindtap="touchGenerateKeyList">
         <text>生成VIP密钥🔑 </text>
+      </view>
+
+      <view class="wc {{pageFlag == 11 ? 'active' : ''}}" bindtap="touchJobStateList">
+        <text> 管理cfUI任务列表📜 </text>
       </view>
 
 
@@ -81,12 +85,12 @@
 
         </view>
       </view>
-     
-     <view class="index_all_talk_open_switch_box">
-      <switch class="autoRA" checked="{{allCanTalk}}" bindchange="changeAllCanTalk"></switch>
+
+      <view class="index_all_talk_open_switch_box">
+        <switch class="autoRA" checked="{{allCanTalk}}" bindchange="changeAllCanTalk"></switch>
         <image src='../../../images/talkBot/talk.png' class='autoraImg'></image>
-     </view>
-  
+      </view>
+
 
 
       <!-- <textarea class="noticeTextArea" value="暂无公告" hidden="{{appSetting.notice!=''}}" />
@@ -203,6 +207,36 @@
         </view>
 
       </view>
+    </block>
+
+    <block wx:elif="{{pageFlag == 11}}">
+      <!-- -------------新增密钥表单模态框------------ -->
+      <view class="setwaitData" style="height:{{btnBox}}rpx;width:{{btnBox}}rpx" wx:if="{{showAddKeyModal}}">
+        <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
+        <view class="btnArrayBox">
+          <!-- <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}' placeholder="输入按钮个数" placeholder-style="color:#318FFF;" /> -->
+          <!-- <view wx:for="{{btnNum-0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
+              <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥" value="{{interactData[groupindex]}}" placeholder-style="color:#318FFF;" />
+            </view> -->
+          <input bindinput="setIndate" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{indate}}' placeholder="水印内容" placeholder-style="color:#318FFF;" />
+          <textarea bindinput="setRemark" class="remarkInput" style="border-color: red;" confirm-type="done" value='{{remark}}' placeholder="提示词" placeholder-style="color:#318FFF;" />
+        </view>
+        <button class="answerModelSubmitBtn" catchtap="submitGenerateVipKey">新增任务</button>
+      </view>
+
+      <view class="lists_container">
+        <!-- <image bindtap="showNewVipKeyModal" class="show_newVipKey_btn" src="../../../images/button/upload2.png" mode="" /> -->
+        <!-- 列表部分 -->
+        <view style="height: 100vh;" wx:if="{{!showAddKeyModal}}">
+          <scroll-view scroll-y="true" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
+        
+              <workSpaceCard workSpaceObj="{{jobStateMap['testWorkSpace']}}" workSpaceName='testWorkSpace' scene='superAdmin' bind:Reload="getAllJobStateListReload"></workSpaceCard>
+ 
+          </scroll-view>
+        </view>
+
+      </view>
+      
     </block>
 
 

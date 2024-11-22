@@ -1,7 +1,8 @@
 <!--components/superAdmin/courseAudit.wxml-->
 <view class="view_tupian_wenzi" bindtap="toShowShareConvertsation">
   <view class="view_content">
-    <image class="image_1" src="{{userInfo.avatarUrl?userInfo.avatarUrl:'../../../images/icon/avata.png'}}" />
+    <!-- <image class="image_1" src="{{userInfo.avatarUrl?userInfo.avatarUrl:'../../../images/icon/avata.png'}}" /> -->
+    <image class="image_1" src="{{'../../../images/icon/avata.png'}}" />
     <view class="view_wenzi2">
       <view>
         <view class="wenzi_title">话题： {{theme}}</view>

@@ -32,11 +32,19 @@ Page({
     imgUrl: null,
     textimgTitle: '',
     curTextImg: {},
-    curTextImgIndex: 0,
+    curTextImgIndex: 0, //图文数组 当前下标
+    curBatchContentIndex: 0, //图文数组 当前下标
     uptoken: '',
     centendata: [],
     interactData: [],
-    textImgArray: [{}],
+    textImgArray: [{}], //图文数组初始化
+    batchContentArray: [{ //初始化一个新的
+      step1Text: '',
+      step2Text: '',
+      step3Text: '',
+
+      index: 0
+    }], //批量生成数组初始化 （开发者模式）
     answer: '',
     btnNum: '',
     editStatus: false,
@@ -251,7 +259,8 @@ Page({
     // console.log("111",this.data.multiVoiceArray[0][0])
     this.setData({
       curmultiVoiceArray: this.data.multiVoiceArray[0],
-      curTTsRoleString: this.data.multiVoiceArray[0][0].value
+      curTTsRoleString: this.data.multiVoiceArray[0][0].value,
+      isAdmin: wx.getStorageSync("isAdmin"),
     })
 
     //选择集合
@@ -291,6 +300,17 @@ Page({
       let crouseDetail = JSON.parse(options.courseMess);
       let chapterList = JSON.parse(options.chapterList);
       let chapterobj = JSON.parse(options.chapterobj);
+      console.log("add-onload crouseDetail", crouseDetail)
+      let centendata = []
+      if (crouseDetail.ChapterContentMap) {
+        centendata = crouseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr?.map(item => {
+          return {
+            ...item,
+            is_show_right: 1
+          }
+        }) || []
+      }
+
       this.setData({
         crouseDetail: crouseDetail,
 
@@ -304,12 +324,7 @@ Page({
 
         // centendata: crouseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr || []
 
-        centendata: crouseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr?.map(item => {
-          return {
-            ...item,
-            is_show_right: 1
-          }
-        }) || []
+        centendata
       })
 
 
@@ -584,7 +599,7 @@ Page({
       this.setData({
         centendata: this.data.centendata,
       })
-      //  下面是云函数的调用
+      //  下面是云函数的调用 把章节内容上传
       wx.cloud.callFunction({
         name: 'operate_courseContent',
         data: {
@@ -594,8 +609,6 @@ Page({
           mode: 'AddOrEdit'
         },
         success: res => {
-
-
           wx.hideLoading()
           wx.showModal({
             title: '提示',
@@ -623,7 +636,69 @@ Page({
         }
       })
 
+      //判断一下 如果当前章节名字 没有 就去push一下
+      // 使用some()方法检查是否有对象的title字段与this.data.chapterName相匹配
+      const that = this
+      const isChapterNameInList = this.data.chapterList.some(function (chapter) {
+        console.log("that.data.chapterName", that.data.chapterName)
+        return chapter._id.chapterName === that.data.chapterName;
+      });
+      if (!isChapterNameInList) {
+        const ChapterObj = {
+          _id: {
+            chapterId: this.data.chapterList?.length + 1 || 1,
+            chapterName: this.data.chapterName,
+            courseUUid: this.data.crouseDetail.courseUUid,
+            courseName: this.data.crouseDetail.courseName
+          },
+          courseNum: '_'
+        }
+        //新增一个章节信息
+        wx.cloud.callFunction({
+          name: 'operate_CourseMess',
+          data: {
+            courseMess: this.data.crouseDetail,
+            type: this.data.type,
+            mode: 'addCharater',
+            ChapterObj: ChapterObj
+          },
+          success: res => {
+            wx.showToast({
+              title: '新增章节成功',
+              icon: 'sucess',
+            })
+            if (app.globalData.CurrentCourseObj.ChapterList == undefined) {
+              app.globalData.CurrentCourseObj.ChapterList = [ChapterObj]
+            } else {
+              app.globalData.CurrentCourseObj.ChapterList.push(ChapterObj)
+            }
+
+
+
+          },
+          fail: err => {
+            // handle error
+            wx.showToast({
+              title: '新增章节失败',
+              icon: 'error',
+            })
+
+            wx.showModal({
+              title: '提示',
+              content: '请检查网络后重试',
+              showCancel: false,
+            })
+            return;
+          },
+          complete: res => {
+            console.log('callFunction test result: ', res)
+            wx.hideLoading()
+          }
+        })
+      }
     }
+
+
 
 
   },
@@ -781,6 +856,7 @@ Page({
     }
   },
 
+  // 图文交互  ----------------------------------------------------------------------------------
   leftTextImg: function () {
     const curTextImgIndex = this.data.curTextImgIndex
     this.setData({
@@ -828,11 +904,69 @@ Page({
     })
   },
 
+  //删除一个图文项
+  deleteOneTextImgItem: function (e) {
+    console.log(e)
+  },
+
+  // 图文交互 end ----------------------------------------------------------------------------------
+
+
+
+
+  // 批量生成 开发者模式  ----------------------------------------------------------------------------------
+  leftBatchContent: function () {
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    this.setData({
+      curBatchContentIndex: curBatchContentIndex - 1
+      // curTextImg: this.data.textImgArray[curTextImg.index - 1]
+    })
+  },
+
+  rightBatchContent: function () {
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    this.setData({
+      curBatchContentIndex: curBatchContentIndex + 1
+      // curTextImg: this.data.textImgArray[curTextImg.index - 1]
+    })
+  },
+
+  // 初始化一个图文放入数组
+  addOneItemForBatchContent: function (e) {
+    const batchContentArray = this.data.batchContentArray
+    batchContentArray.push({ //初始化一个新的
+      step1Text: '',
+      step2Text: '',
+      step3Text: '',
+      index: batchContentArray.length
+    });
+    // batchContentArray.push({
+    //   textimgTitle: this.data.curTextImg.textimgTitle,
+    //   chapterName: this.data.chapterName,
+    //   content: this.data.curTextImg.content,
+    //   src: this.data.curTextImg.src || this.data.imgUrl,
+    //   index: this.data.batchContentArray.length
+    // });
+
+
+    this.setData({
+      batchContentArray: batchContentArray,
+      textimgTitle: '',
+      message: '',
+      imgUrl: '',
+      imageObject: '',
+      answer: '',
+      curBatchContentIndex: batchContentArray.length - 1
+
+    })
+  },
 
   //删除一个图文项
   deleteOneTextImgItem: function (e) {
     console.log(e)
   },
+
+  // 批量生成 开发者模式  end ----------------------------------------------------------------------------------
 
   selectedAnswer(e) {
     this.setData({
@@ -1401,6 +1535,33 @@ Page({
     });
     this.bottom();
   },
+
+  //、、、、、设置AIGC内容
+  setAIGC_BatchContent() {
+    console.log('setimg')
+    this.setData({
+      setBatchContentModal: true,
+      btnDie: true,
+      textimgTitle: '',
+      imgUrl: null,
+      content: ''
+    });
+    this.bottom();
+  },
+
+    //、、、、、设置AIGC图文
+    setAIGC_ImageText() {
+      console.log('setimg')
+      this.setData({
+        setAIGC_ImageTextModal: true,
+        btnDie: true,
+        textimgTitle: '',
+        imgUrl: null,
+        content: ''
+      });
+      this.bottom();
+    },
+
   // 、、、、设置封面
   setFrontImg() {
     this.setData({
@@ -1480,6 +1641,328 @@ Page({
       btnIndex: index,
     });
   },
+
+  // ----------------批量生成 开发者模式 准备阶段  交互逻辑---------------
+  inputBatchContentStep1Text(e) {
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    if (e.detail.value) {
+      let value = e.detail.value;
+      this.data.batchContentArray[curBatchContentIndex].step1Text = value
+      this.setData({
+        batchContentArray: this.data.batchContentArray
+      });
+    }
+  },
+
+  inputBatchContentStep3Text(e) {
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    if (e.detail.value) {
+      let value = e.detail.value;
+      this.data.batchContentArray[curBatchContentIndex].step3Text = value
+      this.setData({
+        batchContentArray: this.data.batchContentArray
+      });
+    }
+  },
+
+  getCurStep2PromptByKimi() {
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    const curLanguage = this.data.crouseDetail.curLanguage || ''
+    const curContentType = this.data.crouseDetail.curContentType || 'ask'
+    const courseContentMode = this.data.crouseDetail.courseContentMode || 'breadth'
+    const step1Text = this.data.batchContentArray[curBatchContentIndex].step1Text || ''
+    const courseContentModeMap = {
+      breadth: `一个宏观围绕${step1Text||this.data.chapterName}扩展式学习的课程内容`, // 广度扩展型章节
+      depth: `围绕${step1Text}不同方面深入式学习的课程内容`, // 深度挖掘型章节
+    }
+
+    const courseTypeMap = {
+      'ask': '课程内容必须至少80%以问答为主',
+      'get': '课程内容必须至少80%以讲解为主'
+    }
+    //第一次提问
+    const firstDemoTypeMap = {
+      ask: `{
+    "ContentList": [
+    { 
+     "contentType": "text",
+     "curTTsRoleString": "shanshan",
+     "detail": {},
+     "isBot": true,
+     "content": "接下来，我们开始进行问答环节"
+   },
+   {
+    "curTTsRoleString": "shanshan",
+    "contentType": "Interact",
+    "detail": {
+      "answer": "",
+      "btnNum": "1",
+      "interactData": [
+        "好的 开始吧！"
+      ]
+    },
+    "isBot": true
+  },
+  { 
+    "contentType": "text",
+    "curTTsRoleString": "shanshan",
+    "detail": {},
+    "isBot": true,
+    "content": "这是一段提问"
+  },
+   {
+    "contentType": "Interact",
+     "curTTsRoleString": "shanshan",
+     "detail": {
+       "answer": "正确答案的内容",
+       "if_user_misanswer":"解析：解析内容.",
+       "btnNum": "3",
+       "interactData": [
+         "正确答案的内容",
+         "错误答案1",
+         "错误答案2"
+       ]
+     },
+     "isBot": true
+   },
+
+
+   {
+     "contentType": "text",
+     "curTTsRoleString": "shanshan",
+     "detail": {},
+     "isBot": true,
+     "content": "这是一段提问"
+   },
+  
+   {
+    "contentType": "Interact",
+    "curTTsRoleString": "shanshan",
+    "detail": {
+      "answer": "正确答案的内容",
+      "if_user_misanswer":"解析：解析内容.",
+      "btnNum": "3",
+      "interactData": [
+        "正确答案的内容",
+         "错误答案1",
+         "错误答案2"
+      ]
+    },
+    "isBot": true
+  }
+  ]
+  }`,
+      get: `{
+    "ContentList": [
+    { 
+     "contentType": "text",
+     "curTTsRoleString": "shanshan",
+     "detail": {},
+     "isBot": true,
+     "content": "准备好了吗"
+   },
+   {
+    "contentType": "Interact",
+    "curTTsRoleString": "shanshan",
+    "detail": {
+      "answer": "",
+      "btnNum": "1",
+      "interactData": [
+        "好的 开始吧！"
+      ]
+    },
+    "isBot": true
+  },
+  { 
+    "contentType": "text",
+    "curTTsRoleString": "shanshan",
+    "detail": {},
+    "isBot": true,
+    "content": "这是一段讲解"
+  },
+  {
+    "contentType": "Interact",
+    "curTTsRoleString": "shanshan",
+    "detail": {
+      "answer": "",
+      "btnNum": "1",
+      "interactData": [
+        "原来如此"
+      ]
+    },
+    "isBot": true
+  }
+  ]
+  }`,
+    }
+
+    //扩展提问
+    const extensionDemoTypeMap = {
+      ask: `{
+        "ContentList": [
+      { 
+        "contentType": "text",
+        "curTTsRoleString": "shanshan",
+        "detail": {},
+        "isBot": true,
+        "content": "这是一段提问"
+      },
+       {
+        "contentType": "Interact",
+         "curTTsRoleString": "shanshan",
+         "detail": {
+           "answer": "正确答案的内容",
+           "if_user_misanswer":"解析：这是一段解析内容",
+           "btnNum": "3",
+           "interactData": [
+             "正确答案的内容",
+             "错误答案1",
+             "错误答案2"
+           ]
+         },
+         "isBot": true
+       },
+    
+ 
+       {
+         "contentType": "text",
+         "curTTsRoleString": "shanshan",
+         "detail": {},
+         "isBot": true,
+         "content": "这是一段提问"
+       },
+      
+       {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "正确答案的内容",
+          "if_user_misanswer":"解析：这是一段解析内容",
+          "btnNum": "3",
+          "interactData": [
+            "正确答案的内容",
+             "错误答案1",
+             "错误答案2"
+          ]
+        },
+        "isBot": true
+      }
+      ]
+      }`,
+      get: `{
+        "ContentList": [
+      { 
+        "contentType": "text",
+        "curTTsRoleString": "shanshan",
+        "detail": {},
+        "isBot": true,
+        "content": "这是一段讲解"
+      },
+      {
+        "contentType": "Interact",
+        "curTTsRoleString": "shanshan",
+        "detail": {
+          "answer": "",
+          "btnNum": "1",
+          "interactData": [
+            "原来如此"
+          ]
+        },
+        "isBot": true
+      }
+      ]
+      }`,
+    }
+
+    // // mess第一部分  课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce}
+    // const msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+    // // const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
+    // // this.firstStep_ask(msg)
+    let msg = ''
+    if (this.data.centendata.length != 0) {
+      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${extensionDemoTypeMap[curContentType]}
+      特别声明： 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 不要和之前对话中提供的内容重复 ${courseTypeMap[curContentType]} 务必不说多余的话严格像接口一样返回  记得尽量简短`
+
+    } else {
+      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${firstDemoTypeMap[curContentType]}
+      特别声明： 其中answer字段务必要和选项中内容完全一样不能只有ABCD并且有些情境可以设置为空字符串 问答题务必是单选题且选项最少2个最多可以有4个 不要和之前对话中提供的内容重复 ${courseTypeMap[curContentType]} 务必不说多余的话严格像接口一样返回  记得尽量简短`
+
+    }
+    console.log(msg)
+    wx.setClipboardData({
+      data: msg,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            wx.showToast({
+              title: '复制成功',
+              icon: 'success',
+              duration: 1000
+            })
+          }
+        })
+      }
+    })
+
+  },
+
+
+  localBatchAdd() {
+    this.data.batchContentArray.forEach(item => {
+      if (!this.data.editStatus) {
+        console.log(item.step3Text)
+        console.log(JSON.parse(item.step3Text).ContentList)
+
+        let CodeJSON = JSON.parse(String(item.step3Text));
+        console.log("f-chartCodeJSON", CodeJSON)
+        if (CodeJSON) {
+          let copyLeftOverClassConten = Object.assign([], CodeJSON.ContentList)
+          console.log("f-copyLeftOverClassConten", copyLeftOverClassConten)
+        }
+        const arr = JSON.parse(item.step3Text).ContentList
+        console.log(arr)
+        console.log("this.data.centendata", this.data.centendata)
+        this.data.centendata = this.data.centendata.concat(arr);
+        console.log("this.data.centendata", this.data.centendata)
+
+        // this.data.centendata = this.data.centendata.map((item) => {
+        //   item.is_show_right = 2
+        //   return item
+        // })
+      }
+    })
+    this.setData({
+      centendata: this.data.centendata,
+      batchContentArray: [{ //初始化一个新的
+        step1Text: '',
+        step2Text: '',
+        step3Text: '',
+
+        index: 0
+      }]
+
+      // imgUrl: null,
+      // imageObject: '',
+      // message: '',
+      // setTextImg: false,
+      // textimgTitle: '',
+      // imgfile: '',
+      // btnDie: false,
+      // textImgArray: [{}],
+      // answer: '',
+      // setFrontImg: '',
+      // editStatus: false, //编辑状态关闭
+
+      // curTextImgIndex: 0, //恢复初始化为0
+
+      // edit_id: null //编辑id置空
+
+    })
+    this.close()
+  },
+
+
+  // -----------------------------------------------------------------------
 
   // ----------------上传图文准备---------------
   getTitle(e) {
@@ -1629,6 +2112,8 @@ Page({
       btnDie: false,
       setFrontImg: false,
       editStatus: false,
+      setBatchContentModal: false,
+      setAIGC_ImageTextModal:false,
 
       curTextImg: {
         index: 0

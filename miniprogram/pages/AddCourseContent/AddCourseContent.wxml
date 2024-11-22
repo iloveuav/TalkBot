@@ -11,8 +11,7 @@
       </view>
       <view class="btn-item">
         <text class="chapterKey">章节名</text>
-        <input disabled="{{!!chapterName}}" class="input" bindinput="bindChangeChapterName" confirm-type="done" value='{{chapterName}}'
-          placeholder="eg:第一章" />
+        <input disabled="{{!!chapterName}}" class="input" bindinput="bindChangeChapterName" confirm-type="done" value='{{chapterName}}' placeholder="eg:第一章" />
       </view>
     </view>
   </view>
@@ -21,18 +20,16 @@
 <view class='message'>
   <view class='top_txt'>点击/长按阴影块对块内课程内容编辑</view>
   <view class="historycon">
-    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key=''
-      data-index="{{index}}" bindtap="preimage" bindlongpress="deleteOneItem">
+    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{centendata}}" wx:key='' data-index="{{index}}" bindtap="preimage" bindlongpress="deleteOneItem">
       <!-- 时间 -->
       <view>
         <text class='time'>{{item.time}}</text>
       </view>
-      <block wx:if="{{item.is_show_right ==1}}">
+      <block>
         <!-- 右边 -->
         <view class='message-right'>
           <!-- 文字消息还是图片消息 -->
-          <text wx:if='{{item.content&&item.content!=""&&item.contentType==="text"}}' class='message_txt'
-            data-content="{{item.content}}" catchtap="onTtsSpeach">
+          <text wx:if='{{item.content&&item.content!=""&&item.contentType==="text"}}' class='message_txt' data-content="{{item.content}}" catchtap="onTtsSpeach">
             {{item.content}}
           </text>
           <view wx:if='{{item.contentType==="Interact"}}' class="message_text">
@@ -45,27 +42,25 @@
 
           <image wx:if='{{item.contentType=="img"}}' src='{{item.src}}' class='new_imgtent'></image>
 
-        
+
         </view>
 
-          <!-- -----------------横向轮播卡片组件------------------------------------------ -->
-          <view class="wordCard" wx-if="{{item.textImgArray.length>0&&item.contentType==='textImg'}}">
-            <scroll-view>
-              <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}"
-                bindspeach="onTtsSpeach">
-              </wordCard>
-            </scroll-view>
-          </view>
-          <!-- ------------------------------------------------- -->
+        <!-- -----------------横向轮播卡片组件------------------------------------------ -->
+        <view class="wordCard" wx-if="{{item.textImgArray.length>0&&item.contentType==='textImg'}}">
+          <scroll-view>
+            <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" bindspeach="onTtsSpeach">
+            </wordCard>
+          </scroll-view>
+        </view>
+        <!-- ------------------------------------------------- -->
       </block>
-      <block wx:else>
+      <!-- <block wx:else>
         <view class='message-left'></view>
-      </block>
+      </block> -->
     </scroll-view>
   </view>
 </view>
-<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start"
-  style="{{translate}}">
+<view class="rightBtnBox" bindtouchmove="tap_drag" bindtouchend="tap_end" bindtouchstart="tap_start" style="{{translate}}">
   <view class="rightBtnItem">
     <image class="r-itemImgBox" catchtap="setVoiceRole" src="../../images/button/addCoverBtn.png"></image>
     <view class="r-itemName" catchtap="setVoiceRole">选发音人</view>
@@ -77,6 +72,16 @@
   <view class="rightBtnItem">
     <image class="r-itemImgBox" catchtap="setTextImg" src="../../images/button/addTextImg.png"></image>
     <view class="r-itemName" catchtap="setTextImg">新增图文</view>
+  </view>
+
+  <view class="rightBtnItem" wx:if="{{isAdmin}}">
+    <image class="r-itemImgBox" catchtap="setAIGC_BatchContent" src="../../images/button/addTextImg.png"></image>
+    <view class="r-itemName" catchtap="setAIGC_BatchContent">AIGC内容</view>
+  </view>
+
+  <view class="rightBtnItem">
+    <image class="r-itemImgBox" catchtap="setAIGC_ImageText" src="../../images/button/addTextImg.png"></image>
+    <view class="r-itemName" catchtap="setAIGC_ImageText">AIGC图文</view>
   </view>
 
   <view class="rightBtnItem">
@@ -92,7 +97,7 @@
 <view class="setLBox1">
   <button class="saveChaBtn" disabled="{{btnDie}}" catchtap="saveChapter">保存当前修改</button>
 </view>
-  <view class="setLBox2">
+<view class="setLBox2">
   <button class="deleteChaBtn" disabled="{{btnDie}}" catchtap="delChapterV2">清空章节内容</button>
 </view>
 <!-- right end -->
@@ -101,14 +106,11 @@
 <view class="setwaitData" style="height:{{btnBox}}rpx;width:{{btnBox}}rpx" wx:if="{{setwait}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="btnArrayBox">
-    <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}'
-      placeholder="输入按钮个数" placeholder-style="color:#318FFF;" />
+    <input bindinput="getbtnNum" type="number" class="modelBtn" confirm-type="done" value='{{btnNum}}' placeholder="输入按钮个数" placeholder-style="color:#318FFF;" />
     <view wx:for="{{btnNum-0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
-      <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥"
-        value="{{interactData[groupindex]}}" placeholder-style="color:#318FFF;" />
+      <input bindinput='getInputValue' class="modelBtn" confirm-type="done" placeholder="我叫啥" value="{{interactData[groupindex]}}" placeholder-style="color:#318FFF;" />
     </view>
-    <input bindinput="getAnswer" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{answer}}'
-      placeholder="正确答案" placeholder-style="color:#318FFF;" />
+    <input bindinput="getAnswer" class="modelBtn" style="border-color: red;" confirm-type="done" value='{{answer}}' placeholder="正确答案" placeholder-style="color:#318FFF;" />
   </view>
   <button class="answerModelSubmitBtn" catchtap="submitInteract">提交</button>
 </view>
@@ -118,30 +120,72 @@
 <view class="setwaitData" style="flex-direction: column; " wx:if="{{setTextImg}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="modelTitle">新增图文</view>
-  <view class="textImgNumTitle" >已装填{{textImgArray.length}}个图文</view>
+  <view class="textImgNumTitle">已装填{{textImgArray.length}}个图文</view>
   <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
   </view>
-  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done"
-    value='{{textImgArray[curTextImgIndex].textimgTitle}}' placeholder="标题" placeholder-style="color:#318FFF;" />
-  <input bindinput='getContent' maxlength="1000" style="max-width: 90%;" class="modelBtn" confirm-type="done"
-    value='{{textImgArray[curTextImgIndex].content}}' placeholder="内容" placeholder-style="color:#318FFF;" />
-  <input bindinput='getSrc' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
-    confirm-type="done" value='{{textImgArray[curTextImgIndex].src}}' placeholder="图片src（可为空）" />
+  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].textimgTitle}}' placeholder="标题" placeholder-style="color:#318FFF;" />
+  <input bindinput='getContent' maxlength="1000" style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].content}}' placeholder="内容" placeholder-style="color:#318FFF;" />
+  <input bindinput='getSrc' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].src}}' placeholder="图片src（可为空）" />
 
   <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItem">新增图文项</button>
-  <image wx:if="{{textImgArray.length>1&&curTextImgIndex>=1}}" catchtap="leftTextImg" class="left_textimg" src="../../images/icon/left.png" alt=""/>
+  <image wx:if="{{textImgArray.length>1&&curTextImgIndex>=1}}" catchtap="leftTextImg" class="left_textimg" src="../../images/icon/left.png" alt="" />
   <button class="modelSubmitBtn" catchtap="addV2">提交</button>
-  <image  wx:if="{{textImgArray.length>1&&curTextImgIndex<textImgArray.length-1}}" catchtap="rightTextImg" class="right_textimg" src="../../images/icon/right.png" alt=""/>
+  <image wx:if="{{textImgArray.length>1&&curTextImgIndex<textImgArray.length-1}}" catchtap="rightTextImg" class="right_textimg" src="../../images/icon/right.png" alt="" />
 </view>
 <!-- ----------------设置图文参数区end--------------- -->
+
+<!-- -------------设置AIGC内容参数区 （开发者模式）------------ -->
+<view class="setwaitData" style="flex-direction: column; height:650rpx; " wx:if="{{setBatchContentModal}}">
+  <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
+  <view class="modelTitle">AIGC内容（开发者模式）</view>
+  <view class="textImgNumTitle">已装填{{batchContentArray.length}}个内容</view>
+  <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
+  </view>
+  <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:视频文案、解密文本、知识文本" placeholder-style="color:#318FFF;" />
+  <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 100rpx;" catchtap="getCurStep2PromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
+  <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
+    value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" /> -->
+
+
+  <textarea maxlength="-1" user-select class="step3Input" bindinput="inputBatchContentStep3Text" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" />
+
+
+  <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItemForBatchContent">新增内容项</button>
+  <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
+  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchAdd">本地AIGC内容</button>
+  <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex<batchContentArray.length-1}}" catchtap="rightBatchContent" class="right_textimg" src="../../images/icon/right.png" alt="" />
+</view>
+<!-- ----------------设置AIGC内容参数区end--------------- -->
+<!-- -------------设置AIGC图文参数区 （开发者模式）------------ -->
+<view class="setwaitData" style="flex-direction: column; height:650rpx; " wx:if="{{setAIGC_ImageTextModal}}">
+  <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
+  <view class="modelTitle">AIGC图文（开发者模式）</view>
+  <view class="textImgNumTitle">已装填{{batchContentArray.length}}个内容</view>
+  <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
+  </view>
+  <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:视频文案、解密文本、知识文本" placeholder-style="color:#318FFF;" />
+  <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 100rpx;" catchtap="getCurStep2PromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
+  <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
+    value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" /> -->
+
+
+  <textarea maxlength="-1" user-select class="step3Input" bindinput="inputBatchContentStep3Text" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" />
+
+
+  <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItemForBatchContent">新增内容项</button>
+  <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
+  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchAdd">本地AIGC内容</button>
+  <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex<batchContentArray.length-1}}" catchtap="rightBatchContent" class="right_textimg" src="../../images/icon/right.png" alt="" />
+</view>
+<!-- ----------------设置AIGC图文参数区end--------------- -->
+
 <view class='hei' id="hei"></view>
 <!-- -------------设置发音人------------ -->
 <view class="setwaitData" style="flex-direction: column;height:720rpx;margin-bottom: 50%;" wx:if="{{setVoiceRole||false}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
   <view class="modelTitle">设置发音人<view style="font-size: 8pt;color:rgb(158, 158, 154);">（只对设置后上传的文本生效~）</view>
   </view>
-  <swiper class="voice_category_swiper" circular='true' bindchange="swiperCategoryChange" previousMargin='5px'
-    nextMargin='150rpx' current="{{categoryCur}}">
+  <swiper class="voice_category_swiper" circular='true' bindchange="swiperCategoryChange" previousMargin='5px' nextMargin='150rpx' current="{{categoryCur}}">
     <block wx:for="{{category}}" wx:key="index" wx:for-index="index">
       <swiper-item>
         <view class="{{categoryCur==index?'now':'next'}}">
@@ -158,8 +202,7 @@
     </block>
   </swiper>
   <view class="voice_row">
-    <swiper class="voice_role_swiper" circular='true' bindchange="swiperRoleChange" data-detail="{{item}}"
-      previousMargin='5px' nextMargin='150rpx' current="{{roleCur}}">
+    <swiper class="voice_role_swiper" circular='true' bindchange="swiperRoleChange" data-detail="{{item}}" previousMargin='5px' nextMargin='150rpx' current="{{roleCur}}">
       <block wx:for="{{curmultiVoiceArray}}" wx:key="index" wx:for-index="index" data-detail="item">
         <swiper-item>
           <view class="{{roleCur==index?'now':'next'}}">
@@ -178,14 +221,9 @@
     </swiper>
 
 
-    <textarea bindinput='getSpeachText' class="audio_txt_textarea" confirm-type="done" value='{{curTTsTestText}}'
-      placeholder="写点什么让我读吧~" placeholder-style="color:#318FFF;" />
-
-
-      <switch class="role_SpeakSwitch" checked="{{haveSpeakerFlag}}" bindchange="changeHaveSpeakerFlag"></switch>
-
-    <image class="role_Speak" src="../../images/icon/role_Speak.png" data-content="{{curTTsTestText}}"
-      catchtap="onTtsSpeach"> </image>
+    <textarea bindinput='getSpeachText' class="audio_txt_textarea" confirm-type="done" value='{{curTTsTestText}}' placeholder="写点什么让我读吧~" placeholder-style="color:#318FFF;" />
+    <switch class="role_SpeakSwitch" checked="{{haveSpeakerFlag}}" bindchange="changeHaveSpeakerFlag"></switch>
+    <image class="role_Speak" src="../../images/icon/role_Speak.png" data-content="{{curTTsTestText}}" catchtap="onTtsSpeach"> </image>
 
 
   </view>
@@ -199,8 +237,7 @@
   <view class="addimgBox">
     <image src="/images/button/upload2.png" class="addimgBtn" bindtap='uploadimg'></image>
   </view>
-  <textarea class="texeArea" maxlength="" type="emoji" bindinput="bindChangeMessage" confirm-type="done"
-    value='{{message}}' />
+  <textarea class="texeArea" maxlength="" type="emoji" bindinput="bindChangeMessage" confirm-type="done" value='{{message}}' />
   <view class="senMessBox">
     <button class="senMessButton" catchtap="addV2">发送</button>
   </view>

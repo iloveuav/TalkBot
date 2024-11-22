@@ -171,7 +171,8 @@ Page({
   toRoiComputerTool: function (e) {
     wx.navigateTo({
       //这里传值
-      url: '/pages/RoiComputerTool/index',
+      url: '/toolPackageA/RoiComputerTool/index',
+      // url: '/pages/RoiComputerTool/index',
     })
     // this.queryMineCourseList();
   },

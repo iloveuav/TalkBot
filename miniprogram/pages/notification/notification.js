@@ -1637,6 +1637,7 @@ Page({
     wx.navigateTo({
       //这里传值
       url: "../chartBox/index",
+      // url: "../chartBox/index",
     })
   }
 

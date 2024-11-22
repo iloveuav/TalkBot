@@ -6,7 +6,6 @@
   "navigationBarTextStyle": "white",
   "navigationStyle": "default",
   "usingComponents": {
-    "Grid": "/components/Grid/Grid",
     "courseCard": "/components/index/bigCrouseCard/courseCard",
     "conversationAudit": "/components/superAdmin/conversationAudit/index"
 

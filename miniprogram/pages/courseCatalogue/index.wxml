@@ -47,13 +47,13 @@
       </button>
     </view>
     <view class="chapter_list">
-      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}"
+      <view class="chapter_item" wx:for="{{ChapterList}}" wx:key="{{item._id.chapterId}}" data-index="{{index}}" 
         data-id="{{item._id.chapterId}}" catchtap="handleChapterItem" data-clickChapter="{{item}}" catchtap="handleChapterItem">
         <text class="order" style="background-color: {{currentProgress.chapterId === item._id.chapterId?'#8abdec':'#fff'}};color: {{currentProgress.chapterId === item._id.chapterId?'white':'#666666'}};padding-top: 8rpx;">{{index + 1}}</text>
         <text class="chapterName" style="color: {{currentProgress.chapterId === item._id.chapterId?'#449df2':'#666666'}};"  >
           {{item._id.chapterName}}
         </text>
-        <text wx:if="{{btnType==='edit'}}" class="edit_chapter_btn" catchtap="toEditChapter" data-chapterObj="{{item._id}}">
+        <text wx:if="{{btnType==='edit'}}" class="edit_chapter_btn" bindtap="toEditChapter" data-chapterObj="{{item._id}}">
           🖊
         </text>
       </view>

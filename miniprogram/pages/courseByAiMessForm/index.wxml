@@ -37,6 +37,17 @@
     </view>
   </view>
 
+
+
+  <view class="title">表情包设置【即将上线】</view>
+  <view class='tips'>开启后 内容中才会生成表情包相关内容</view>
+  <!-- bindtap="BqbSettingHandleChoose" -->
+  <view class="tagList">
+    <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList5}}" wx:key="{{item.value}}"  data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+  </view>
+
+
+
   <view class="title">课程内容生成类型</view>
   <view class='tips'>全人工课程将不支持后续AI自动扩充</view>
   <view class="tagList">
@@ -70,17 +81,17 @@
     <view class='tips'>填写内容文本~</view>
     <view class="form_item introduce">
       <textarea maxlength="-1" user-select class="input" bindinput="bindChangeStep1Text" confirm-type="done" value='{{editCourseDetail.step1Text||step1Text}}' placeholder="【step1】 填写未被处理的内容，可以是视频文案、知识文本、想学习的关键词" />
-      <text class="chapter">【step2】点击查看示例图 并复制提示词到剪贴板</text>
+      <text class="chapter"bindtap="getChapterListPromptByKimi">【step2】点击查看示例图 并复制提示词到剪贴板</text>
       <textarea maxlength="-1" user-select class="input" bindinput="bindChangeStep3Text" confirm-type="done" value='{{editCourseDetail.step3Text||step3Text}}' placeholder="【step3】 输入符合格式要求的文本 （AI返回的文本）  系统将自动处理生成章节信息" />
     </view>
 </view>
 
-  <view class="title">{{bottomTitle}}</view>
+ 
+<view class="title">{{bottomTitle}}</view>
   <view class='tips'>可多选，最后选3个~</view>
   <view class="tagList">
     <text class="{{item.choose ? 'active' : ''}}" wx:for="{{tagList}}" wx:key="{{item.value}}" bindtap="handleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
   </view>
-
 
 
 

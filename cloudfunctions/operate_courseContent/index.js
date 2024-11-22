@@ -33,6 +33,8 @@ exports.main = async (event, context) => {
           if (res.total <= 0) {
             return;
           } else {
+
+            
             return db.collection(Collection).where({
               courseUUid: event.courseUUid
             }).update({
@@ -44,6 +46,8 @@ exports.main = async (event, context) => {
                 }
               },
             })
+
+
           }
         })
 
