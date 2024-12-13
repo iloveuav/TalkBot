@@ -11,6 +11,9 @@ const getToken = require("../../tts/token").getToken
 const fs = wx.getFileSystemManager()
 const app = getApp();
 
+import {
+  uuid
+} from '../../tts/uuid';
 import util from '../../utils/util'
 
 Page({
@@ -42,6 +45,171 @@ Page({
       step1Text: '',
       step2Text: '',
       step3Text: '',
+
+      //初始化aigc参数
+      workFlowType: 'textToImage',
+      promptLangType: 'Cn',
+      workFlow: 'KeTuHuaHua',
+      wf_TypeIndex: 0,
+      wf_Index: 0,
+      tagList1: [{
+          label: '全中文',
+          value: 'Cn',
+          choose: true
+        },
+        {
+          label: '全英语',
+          value: 'En',
+          choose: false
+        },
+        {
+          label: '中英混合',
+          value: 'mixCnEn',
+          choose: false
+        },
+      ],
+
+      // 工作流： KeTuHuaHua | RedBook | StickFigure
+      tagList2: [{
+          label: '可图大模型',
+          value: 'KeTuHuaHua',
+          choose: true
+        },
+        {
+          label: 'flux小红书',
+          value: 'RedBook',
+          choose: false
+        },
+        {
+          label: '音乐踩点剪辑',
+          value: 'RedBook',
+          choose: false
+        },
+        {
+          label: '简笔画分镜',
+          value: 'StickFigure',
+          choose: false
+        },
+        {
+          label: '电影分镜',
+          value: 'icLora_Film',
+          choose: false
+        },
+        {
+          label: '漫画分镜',
+          value: 'icLora_MangHua',
+          choose: false
+        },
+      ],
+
+      workFlowTypeArr: [{
+          label: '文生图',
+          value: 'textToImage',
+          choose: true,
+          wfArr: [{
+              label: '可图大模型',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '中英混合',
+                function: '基于可图大模型文生图',
+                notice: '不支持角色一致性'
+              }
+            },
+            {
+              label: 'flux小红书',
+              value: 'RedBook',
+              choose: false,
+              detail: {
+                promptlang: '中英混合',
+                function: '小红书真实感模型',
+                notice: '不支持角色一致性'
+              }
+            },
+            {
+              label: '简笔画分镜',
+              value: 'StickFigure',
+              choose: false,
+              detail: {
+                promptlang: '中英混合',
+                function: '基于本地训练的icLora',
+                notice: '支持角色一致性'
+              }
+            },
+            {
+              label: '电影分镜',
+              value: 'icLora_Film',
+              choose: false,
+              detail: {
+                promptlang: '全英',
+                function: '基于icLora',
+                notice: ''
+              }
+            },
+            {
+              label: '漫画分镜',
+              value: 'icLora_MangHua',
+              choose: false,
+              detail: {
+                promptlang: '全英',
+                function: '基于icLora',
+                notice: ''
+              }
+            },
+          ]
+        },
+        {
+          label: '文生视频',
+          value: 'textToVideo',
+          choose: false,
+          wfArr: [{
+              label: 'cogVideo',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '全英',
+                function: '基于icLora',
+                notice: ''
+              }
+            }
+
+          ]
+        },
+        {
+          label: '文—参图_生图',
+          value: 'mixCnEn',
+          choose: false,
+          wfArr: [{
+              label: 'flux',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '中英混合',
+                function: '根据文本先去找图后基于找到的图进行参考生成',
+                notice: ''
+              }
+            }
+
+          ]
+        },
+        {
+          label: '自动化剪辑',
+          value: 'autoCutVideo',
+          choose: false,
+          wfArr: [{
+              label: '音乐卡点视频',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '全中',
+                function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
+                notice: ''
+              }
+            }
+
+          ]
+        },
+      ],
 
       index: 0
     }], //批量生成数组初始化 （开发者模式）
@@ -247,13 +415,42 @@ Page({
       icon: '../../images/icon/more_language.png'
     }],
 
-    curmultiVoiceArray: []
 
+
+
+    curmultiVoiceArray: [],
+
+    intervalId: null // 保存定时器ID
 
   },
 
+
+  startPolling: function () {
+    // 每隔3秒执行一次
+    this.data.intervalId = setInterval(() => {
+      console.log("轮询开始")
+      this.get_comfyUi_jobStateByWorkSpace();
+      // console.log()
+      // 检查数组是否有内容
+      // if (this.data.array.length > 0) {
+      //   // 取出内容
+      //   const content = this.data.array.shift(); // 假设你想移除并获取数组的第一个元素
+      //   console.log(content); // 处理获取到的内容
+      //   // 可以在这里做进一步的处理，比如更新页面数据
+      //   // this.setData({
+      //   //   // 更新页面数据
+      //   // });
+      // }
+      console.log("轮询结束")
+    }, 15000);
+  },
+
+
   onLoad: async function (options) {
     console.log(options)
+    this.get_comfyUi_jobStateByWorkSpace()
+    // this.startPolling(); // 页面加载时开始轮询
+
     const pageType = options.pageType ? options.pageType : 'course'
 
     // console.log("111",this.data.multiVoiceArray[0][0])
@@ -454,6 +651,146 @@ Page({
     this.data.tts = tts
   },
 
+  onHide: function () {
+    // 清除定时器，避免在页面不显示时继续轮询
+    if (this.data.intervalId) {
+      clearInterval(this.data.intervalId);
+    }
+  },
+
+  onUnload: function () {
+    // 清除定时器，避免在页面不显示时继续轮询
+    if (this.data.intervalId) {
+      clearInterval(this.data.intervalId);
+    }
+  },
+
+  // aigc参数设置相关函数
+
+  //提示词语种 设置
+  promptLangTypeHandleChoose(e) {
+    const {
+      index,
+      choose
+    } = e.target.dataset;
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    const str = `batchContentArray[${curBatchContentIndex}].tagList1[${index}].choose`
+    const curType = this.data.batchContentArray[curBatchContentIndex].tagList1[index].value
+    const curChoose = this.data.batchContentArray[curBatchContentIndex].tagList1[index].choose
+    console.log("curType", curType)
+    const chooseList = this.data.batchContentArray[curBatchContentIndex].tagList1.filter(item => item.choose);
+    if (curChoose == true) {
+      return
+    }
+    if (chooseList.length >= 1) {
+      this.data.batchContentArray[curBatchContentIndex].tagList1.forEach((e, index) => {
+        const str2 = `batchContentArray[${curBatchContentIndex}].tagList1[${index}].choose`
+        this.setData({
+          [str2]: false
+        })
+      })
+    };
+    this.data.batchContentArray[curBatchContentIndex].promptLangType = curType
+    // this.data.editCourseDetail.courseContentTypeMode = curType //课程学习模式 【广度优先还是深度优先】
+    this.setData({
+      [str]: !choose,
+      batchContentArray: this.data.batchContentArray
+      // editCourseDetail: this.data.editCourseDetail
+    })
+  },
+
+  //工作流类型 设置
+  workFlowTypeHandleChoose(e) {
+    const {
+      index,
+      choose
+    } = e.target.dataset;
+    const wf_TypeIndex = index
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    const str = `batchContentArray[${curBatchContentIndex}].workFlowTypeArr[${index}].choose`
+    const curType = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[index].value
+    const curChoose = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[index].choose
+    console.log("curType", curType)
+    const chooseList = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr.filter(item => item.choose);
+    if (curChoose == true) {
+      return
+    }
+    if (chooseList.length >= 1) {
+      this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr.forEach((e, index) => {
+        const str2 = `batchContentArray[${curBatchContentIndex}].workFlowTypeArr[${index}].choose`
+        this.setData({
+          [str2]: false
+        })
+      })
+    };
+
+    this.data.batchContentArray[curBatchContentIndex].workFlowType = curType
+    this.data.batchContentArray[curBatchContentIndex].wf_TypeIndex = index
+
+    // 工作流类型改变 工作流区域工作流 默认选回第一个
+    this.data.batchContentArray[curBatchContentIndex].wf_Index = 0
+    // this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[index].wfArr
+
+    // 先全部 设置按钮取消
+    this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[index].wfArr.forEach((e, index) => {
+      const str2 = `batchContentArray[${curBatchContentIndex}].workFlowTypeArr[${wf_TypeIndex}].wfArr[${index}].choose`
+      this.setData({
+        [str2]: false
+      })
+      // 第一个 设置为选择
+      this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[wf_TypeIndex].wfArr[0].choose = true
+      this.data.batchContentArray[curBatchContentIndex].workFlow = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[wf_TypeIndex].wfArr[0].value
+    })
+
+    // this.data.editCourseDetail.courseContentTypeMode = curType //课程学习模式 【广度优先还是深度优先】
+    this.setData({
+      [str]: !choose,
+      batchContentArray: this.data.batchContentArray
+      // editCourseDetail: this.data.editCourseDetail
+    })
+  },
+
+  //工作流 设置
+  workFlowHandleChoose(e) {
+    const {
+      index,
+      choose
+    } = e.target.dataset;
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    // wf_TypeIndex: 0,
+    // wf_Index: 0,
+    const cur_wfType_Index = this.data.batchContentArray[curBatchContentIndex].wf_TypeIndex
+    console.log("cur_wfType_Index", cur_wfType_Index)
+    const str = `batchContentArray[${curBatchContentIndex}].workFlowTypeArr[${cur_wfType_Index}].wfArr[${index}].choose`
+    const curWorkFlowValue = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[cur_wfType_Index].wfArr[index].value
+    const curWorkFlowChoose = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[cur_wfType_Index].wfArr[index].choose
+    console.log("curWorkFlowValue", curWorkFlowValue)
+    const chooseList = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[cur_wfType_Index].wfArr.filter(item => item.choose);
+    console.log("chooseList", chooseList)
+
+    if (curWorkFlowChoose == true) {
+      return
+    }
+
+    if (chooseList.length >= 1) {
+      this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[cur_wfType_Index].wfArr.forEach((e, index) => {
+        const str2 = `batchContentArray[${curBatchContentIndex}].workFlowTypeArr[${cur_wfType_Index}].wfArr[${index}].choose`
+        this.setData({
+          [str2]: false
+        })
+      })
+    };
+
+    this.data.batchContentArray[curBatchContentIndex].workFlow = curWorkFlowValue
+    this.data.batchContentArray[curBatchContentIndex].wf_Index = index
+    // this.data.editCourseDetail.courseContentTypeMode = curType //课程学习模式 【广度优先还是深度优先】
+    this.setData({
+      [str]: !choose,
+      batchContentArray: this.data.batchContentArray
+      // editCourseDetail: this.data.editCourseDetail
+    })
+  },
+
   // ----------------朗读文本输入---------------
   getSpeachText(e) {
     if (e.detail.value) {
@@ -564,12 +901,15 @@ Page({
   },
 
   //将当前章节所有修改 提交进行云同步 将centendata提交更新
-  saveChapter: function (e) {
+  saveChapter: function (needShowModal = true) {
     // var that = this;
     console.log("进入saveChapter函数")
-    wx.showLoading({
-      title: '修改中',
-    })
+    if (needShowModal) {
+      wx.showLoading({
+        title: '修改中',
+      })
+    }
+
 
     console.log("this.data.message", this.data.message)
     // --------设置封面end-----------------------
@@ -610,11 +950,14 @@ Page({
         },
         success: res => {
           wx.hideLoading()
-          wx.showModal({
-            title: '提示',
-            content: '章节内容批量修改成功',
-            showCancel: false,
-          })
+          if (needShowModal) {
+            wx.showModal({
+              title: '提示',
+              content: '章节内容批量修改成功',
+              showCancel: false,
+            })
+          }
+
           // wx.showToast({
           //   title: '内容批量修改成功',
           //   icon: 'success',
@@ -624,11 +967,14 @@ Page({
         },
         fail: err => {
           // handle error
-          wx.showModal({
-            title: '提示',
-            content: '课程内容修改出错 请检查网络',
-            showCancel: false,
-          })
+          if (needShowModal) {
+            wx.showModal({
+              title: '提示',
+              content: '课程内容修改出错 请检查网络',
+              showCancel: false,
+            })
+          }
+
           return;
         },
         complete: res => {
@@ -938,7 +1284,139 @@ Page({
       step1Text: '',
       step2Text: '',
       step3Text: '',
-      index: batchContentArray.length
+      index: batchContentArray.length,
+
+      workFlowType: 'Cn',
+      promptLangType: 'KeTuHuaHua',
+
+      wf_TypeIndex: 0,
+      wf_Index: 0,
+
+      tagList1: [{
+          label: '全中文',
+          value: 'Cn',
+          choose: true
+        },
+        {
+          label: '全英语',
+          value: 'En',
+          choose: false
+        },
+        {
+          label: '中英混合',
+          value: 'mixCnEn',
+          choose: false
+        },
+      ],
+      workFlowTypeArr: [{
+          label: '文生图',
+          value: 'textToImage',
+          choose: true,
+          wfArr: [{
+              label: '可图大模型',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '中英混合',
+                function: '基于可图大模型文生图',
+                notice: '不支持角色一致性'
+              }
+            },
+            {
+              label: 'flux小红书',
+              value: 'RedBook',
+              choose: false,
+              detail: {
+                promptlang: '中英混合',
+                function: '小红书真实感模型',
+                notice: '不支持角色一致性'
+              }
+            },
+            {
+              label: '简笔画分镜',
+              value: 'StickFigure',
+              choose: false,
+              detail: {
+                promptlang: '中英混合',
+                function: '基于本地训练的icLora',
+                notice: '支持角色一致性'
+              }
+            },
+            {
+              label: '电影分镜',
+              value: 'icLora_Film',
+              choose: false,
+              detail: {
+                promptlang: '全英',
+                function: '基于icLora',
+                notice: ''
+              }
+            },
+            {
+              label: '漫画分镜',
+              value: 'icLora_MangHua',
+              choose: false,
+              detail: {
+                promptlang: '全英',
+                function: '基于icLora',
+                notice: ''
+              }
+            },
+          ]
+        },
+        {
+          label: '文生视频',
+          value: 'textToVideo',
+          choose: false,
+          wfArr: [{
+              label: 'cogVideo',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '全英',
+                function: '基于icLora',
+                notice: ''
+              }
+            }
+
+          ]
+        },
+        {
+          label: '文—参图_生图',
+          value: 'mixCnEn',
+          choose: false,
+          wfArr: [{
+              label: 'flux',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '中英混合',
+                function: '根据文本先去找图后基于找到的图进行参考生成',
+                notice: ''
+              }
+            }
+
+          ]
+        },
+        {
+          label: '自动化剪辑',
+          value: 'autoCutVideo',
+          choose: false,
+          wfArr: [{
+              label: '音乐卡点视频',
+              value: 'KeTuHuaHua',
+              choose: true,
+              detail: {
+                promptlang: '全中',
+                function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
+                notice: ''
+              }
+            }
+
+          ]
+        },
+      ],
+
     });
     // batchContentArray.push({
     //   textimgTitle: this.data.curTextImg.textimgTitle,
@@ -1076,7 +1554,7 @@ Page({
         classType: ClassCollection,
         chapterName: this.data.chapterName,
 
-        chapterId: parseInt(that.data.chapterId),
+
         courseUUid: this.data.crouseDetail.courseUUid || '',
 
         detail: {},
@@ -1549,18 +2027,18 @@ Page({
     this.bottom();
   },
 
-    //、、、、、设置AIGC图文
-    setAIGC_ImageText() {
-      console.log('setimg')
-      this.setData({
-        setAIGC_ImageTextModal: true,
-        btnDie: true,
-        textimgTitle: '',
-        imgUrl: null,
-        content: ''
-      });
-      this.bottom();
-    },
+  //、、、、、设置AIGC创意
+  setAIGC_ImageText() {
+    console.log('setimg')
+    this.setData({
+      setAIGC_ImageTextModal: true,
+      btnDie: true,
+      textimgTitle: '',
+      imgUrl: null,
+      content: ''
+    });
+    this.bottom();
+  },
 
   // 、、、、设置封面
   setFrontImg() {
@@ -1647,6 +2125,7 @@ Page({
     const curBatchContentIndex = this.data.curBatchContentIndex
     if (e.detail.value) {
       let value = e.detail.value;
+      console.log("this.data.batchContentArray[curBatchContentIndex]", this.data.batchContentArray[curBatchContentIndex])
       this.data.batchContentArray[curBatchContentIndex].step1Text = value
       this.setData({
         batchContentArray: this.data.batchContentArray
@@ -1665,7 +2144,8 @@ Page({
     }
   },
 
-  getCurStep2PromptByKimi() {
+  // step2 生成提示词去问AI  for课程内容 
+  getCurStep2CourseContentPromptByKimi() {
     const curBatchContentIndex = this.data.curBatchContentIndex
     const curLanguage = this.data.crouseDetail.curLanguage || ''
     const curContentType = this.data.crouseDetail.curContentType || 'ask'
@@ -1889,6 +2369,142 @@ Page({
 
     }
     console.log(msg)
+
+    wx.setClipboardData({
+      data: msg,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            wx.showToast({
+              title: '复制成功',
+              icon: 'success',
+              duration: 1000
+            })
+          }
+        })
+      }
+    })
+
+  },
+
+
+  // step2 生成提示词去问AI  for课程内容
+  getCurStep2ImageTextPromptByKimi() {
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    const curLanguage = this.data.crouseDetail.curLanguage || ''
+    const curContentType = this.data.crouseDetail.curContentType || 'ask'
+    const courseContentMode = this.data.crouseDetail.courseContentMode || 'breadth'
+    const step1Text = this.data.batchContentArray[curBatchContentIndex].step1Text || ''
+
+    //第一次生成
+    const imgTextJson = {
+      moive: `{
+        "textImgArray": [
+        { 
+         "content": "电影分镜旁白内容文本 也可以是角色台词",
+         "cn_content": "中文的content",
+         "src": "-",
+         "textimgTitle": "电影分镜标题内容",
+         "positionPrompt": "[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty."
+       },
+       { 
+        "content": "电影分镜旁白内容文本 也可以是角色台词",
+        "cn_content": "中文的content",
+        "src": "-",
+        "textimgTitle": "电影分镜标题内容",
+        "positionPrompt": "[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty."
+      }
+      ]
+      }`,
+      cartoon: `{
+        "textImgArray": [
+        { 
+         "content": "电影分镜旁白内容文本 也可以是角色台词",
+         "cn_content": "中文的content",
+         "src": "-",
+         "textimgTitle": "电影分镜标题内容",
+         "positionPrompt": "[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty."
+       },
+       { 
+        "content": "电影分镜旁白内容文本 也可以是角色台词",
+        "cn_content": "中文的content",
+        "src": "-",
+        "textimgTitle": "电影分镜标题内容",
+        "positionPrompt": "[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty."
+      }
+      ]
+      }`,
+    }
+    // -----------------------kimi生成----------------------------------------
+
+
+
+
+    //  what     分镜类工作流【】：   AI绘画分镜脚本 |  文生图工作流【可图】：   图文 | 文生视频工作流【】 ：视频   | 自动剪辑【】 ：视频剪辑脚本  
+    // 分镜类工作流 keyArr
+    const StoryboardKeyArr = ['StickFigure', 'icLora_Film', 'icLora_MangHua'];
+    // 分镜类工作流keyArr
+    const textImgKeyArr = ['KeTuHuaHua', 'RedBook', 'icLora_MangHua'];
+
+    // promptFormat     分镜类工作流【】：   AI绘画分镜脚本提示词格式【Storyboard】 | 图文-简单文生图类工作流 【text2Img】| 简单文生视频类工作流 【text2Video】| 
+
+    // 当前用户所在的项id
+    // const curBatchContentIndex = this.data.curBatchContentIndex
+    // // 当前用户选择的工作流
+    // const workFlow = this.data.batchContentArray[curBatchContentIndex].workFlow
+
+    // const generatePromptFormat = (workFlowType, step1Text) => {
+    //   let promptFomat;
+    //   switch (workFlowType) {
+    //     case 'MOVIE-SHOTS':
+    //       promptFomat = `[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.`;
+    //       break;
+    //     case 'cartoon':
+    //       promptFomat = `Comic style, a cat is sleeping.`;
+    //       break;
+    //       // 可以根据需要添加更多的工作流类型和对应的提示词格式
+    //     default:
+    //       promptFomat = `Default style, ${step1Text}.`;
+    //   }
+    //   return promptFomat;
+    // };
+
+    // 根据当前的工作流类型生成提示词
+    const workFlowType = courseContentMode === 'breadth' ? 'MOVIE-SHOTS' : 'cartoon';
+    // const promptFormat = generatePromptFormat(workFlowType, step1Text);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // -----------------------kimi生成end----------------------------------------
+
+    let msg = ''
+    if (this.data.centendata.length != 0) {
+      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${imgTextJson['moive']}
+        特别声明： positionPrompt字段的内容参考：[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.  务必不说多余的话严格像接口一样返回  记得尽量简短`
+
+    } else {
+      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本 不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${imgTextJson['moive']}
+        特别声明： positionPrompt字段的内容参考：[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.  务必不说多余的话严格像接口一样返回  记得尽量简短`
+
+    }
+    console.log(msg)
+
     wx.setClipboardData({
       data: msg,
       success(res) {
@@ -1962,9 +2578,275 @@ Page({
   },
 
 
+  localBatchImageTextAdd() {
+    this.data.batchContentArray.forEach(item => {
+      if (!this.data.editStatus) {
+        console.log(item.step3Text)
+        console.log(JSON.parse(item.step3Text).textImgArray)
+
+        let CodeJSON = JSON.parse(String(item.step3Text));
+        console.log("f-chartCodeJSON", CodeJSON)
+        if (CodeJSON) {
+          let copyLeftOverClassConten = Object.assign([], CodeJSON.textImgArray)
+          console.log("f-copyLeftOverClassConten", copyLeftOverClassConten)
+        }
+        const arr = JSON.parse(item.step3Text).textImgArray
+        if (arr) {
+          console.log(arr)
+          const imgTextArr = arr.map((item) => {
+            item.job_id = util.uuid()
+            item.createTime = time.formatTime(new Date, 'Y/M/D M:H:S')
+            item.finishTime = '-'
+            item.negativePrompt = 'NSFW'
+            item.waterText = ''
+            item.picUrl = ''
+            item.toWho = ''
+            item.content = item.content || ''
+            return item
+          })
+          var newData = {
+            contentType: 'textImg',
+            isBot: true,
+            contentId: util.uuid(),
+            content: "",
+            // src: that.data.imgUrl,
+            imgfile: "",
+            time: time.formatTime(new Date, 'Y/M/D'),
+            is_show_right: 1,
+            curTTsRoleString: this.data.haveSpeakerFlag ? this.data.curTTsRoleString : null,
+
+            textimgTitle: "",
+            textImgArray: imgTextArr || [],
+            src: "",
+            imgfile: "",
+          }
+          console.log("this.data.centendata", this.data)
+          this.data.centendata.push(newData)
+          // this.data.centendata = this.data.centendata.push(newData);
+          console.log("this.data.centendata", this.data.centendata)
+          // 调用云函数  把绘画任务数组 更新到待绘画队列
+          if (imgTextArr) {
+            this.add_Storyboard_film_Arr(imgTextArr)
+          }
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: 'step3格式不符合要求',
+            showCancel: false
+          })
+          return;
+        }
+
+      }
+    })
+    this.setData({
+      centendata: this.data.centendata,
+      batchContentArray: [{ //初始化一个新的
+        step1Text: '',
+        step2Text: '',
+        step3Text: '',
+
+        index: 0
+      }]
+    })
+    this.saveChapter(false);
+    this.close()
+  },
+
+  get_comfyUi_jobStateByWorkSpace: function () {
+
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'get_comfyUi_jobState',
+        workspaceName: 'miniApp_Storyboard_film'
+      },
+      success: res => {
+        console.log(res.result)
+        let findSameJobId = false
+        //如果finishDrawArr 有的话 根据job_id看看 有没有和当前
+        if (res.result.data.finishDrawArr) {
+          const finishDrawArr = res.result.data.finishDrawArr
+          this.data.centendata.forEach(obj => {
+            if (obj.contentType == 'textImg') {
+              // 使用 map 方法遍历 textImgArray 数组
+              const updatedTextImgArray = obj.textImgArray.map(item => {
+                // 在 finishDrawArr 中查找匹配的 job_id
+                const finishItem = finishDrawArr.find(finishItem => finishItem.job_id === item.job_id);
+                console.log("finishItem", finishItem)
+                // 如果找到匹配的 job_id，则更新 src
+                if (finishItem) {
+                  findSameJobId = true
+                  return {
+                    ...item,
+                    src: finishItem.picUrl,
+                    picUrl: finishItem.picUrl
+                  };
+                }
+                // 如果没有找到匹配的 job_id，则保持原样
+                return item;
+              });
+              obj.textImgArray = updatedTextImgArray
+            }
+          });
+          //有匹配的  并且进行了本地更新  先保存本地到云  再更新队列状态
+          if (findSameJobId) {
+            this.saveChapter(false);
+            // this.update_comfyUi_jobStateByWorkSpace(JobObj);
+          }
+          this.setData({
+            centendata: this.data.centendata
+          })
+        }
+
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+        // if (res.result.success) {
+        //   wx.showModal({
+        //     title: '提示',
+        //     content: res.result.success,
+        //     showCancel: false
+        //   })
+        //   this.reload()
+        // } else {
+        //   wx.showModal({
+        //     title: '提示',
+        //     content: res.result.success,
+        //     showCancel: false
+        //   })
+        // }
+      }
+    })
+  },
+
+  update_comfyUi_jobStateByWorkSpace: function (c) {
+
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        type: 'update_comfyUi_jobState',
+        operateType: 'update',
+        role: 'wechatUser',
+        workspaceName: 'miniApp_Storyboard_film',
+        JobObj: JobObj
+      },
+      success: res => {
+        console.log(res.result)
+        // wx.showModal({
+        //   title: '提示',
+        //   content: '章节名不能为空',
+        //   showCancel: false
+        // })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        wx.hideLoading()
+        // if (res.result.success) {
+        //   wx.showModal({
+        //     title: '提示',
+        //     content: res.result.success,
+        //     showCancel: false
+        //   })
+        //   this.reload()
+        // } else {
+        //   wx.showModal({
+        //     title: '提示',
+        //     content: res.result.success,
+        //     showCancel: false
+        //   })
+        // }
+      }
+    })
+  },
+
+  add_Storyboard_film_Arr: function (JobArr) {
+    console.log("workspaceName", this.data.workSpaceName)
+    wx.cloud.callFunction({
+      name: 'operate_userInfo',
+      data: {
+        operateType: 'addArr',
+        type: 'update_comfyUi_jobState',
+        workspaceName: 'miniApp_Storyboard_film',
+        JobArr: JobArr
+      },
+      success: res => {
+        console.log(res.result)
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res)
+        // wx.hideLoading()
+        if (res.result.success) {
+          wx.showModal({
+            title: '提示',
+            content: res.result.success,
+            showCancel: false
+          })
+          // this.reload()
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: res.result.success,
+            showCancel: false
+          })
+        }
+      }
+    })
+  },
+
+  // emptyArrByKey: function (e) {
+  //   const arrName = e.currentTarget.dataset.content
+  //   console.log("arrName", arrName)
+  //   console.log("workspaceName", this.data.workSpaceName)
+  //   wx.cloud.callFunction({
+  //     name: 'operate_userInfo',
+  //     data: {
+  //       type: 'reset_workspace_jobState',
+  //       arrName: arrName,
+  //       workspaceName: this.data.workSpaceName
+  //     },
+  //     success: res => {
+  //       console.log(res.result)
+  //     },
+  //     fail: err => {
+  //       // handle error
+  //     },
+  //     complete: res => {
+  //       console.log('callFunction test result: ', res)
+  //       // wx.hideLoading()
+  //       if (res.result.success) {
+  //         wx.showModal({
+  //           title: '提示',
+  //           content: res.result.success,
+  //           showCancel: false
+  //         })
+  //         this.reload()
+  //       } else {
+  //         wx.showModal({
+  //           title: '提示',
+  //           content: res.result.success,
+  //           showCancel: false
+  //         })
+  //       }
+  //     }
+  //   })
+  // },
+
+
   // -----------------------------------------------------------------------
 
   // ----------------上传图文准备---------------
+
   getTitle(e) {
     const curTextImgIndex = this.data.curTextImgIndex
     if (e.detail.value) {
@@ -2113,7 +2995,7 @@ Page({
       setFrontImg: false,
       editStatus: false,
       setBatchContentModal: false,
-      setAIGC_ImageTextModal:false,
+      setAIGC_ImageTextModal: false,
 
       curTextImg: {
         index: 0
@@ -2235,47 +3117,56 @@ Page({
     if (edit_id) {
       wx.showModal({
         title: "确认删除当前课程内容？",
-        content: "本次删除不可恢复~",
+        content: "此操作将进行本地删除",
         showCancel: true,
         success: (res) => {
           if (res.confirm) {
+
+            this.data.centendata = this.data.centendata.filter(item => {
+              return item.contentId != edit_id
+            })
+            console.log("this.data.centendata", this.data.centendata)
+            this.setData({
+              centendata: this.data.centendata
+            })
+
             //调用云函数
-            wx.cloud.init({
-              traceUser: true,
-              env: 'talkbot-7gji40zbdf69e993'
-            })
-            wx.cloud.callFunction({
-              name: 'operate_courseContent',
-              data: {
-                edit_id: edit_id,
-                classCollection: ClassCollection,
-                mode: 'delete'
-              },
-              success: res => {
-                this.data.centendata = this.data.centendata.filter(item => {
-                  return item._id != edit_id
-                })
-                this.setData({
-                  centendata: this.data.centendata
-                })
+            // wx.cloud.init({
+            //   traceUser: true,
+            //   env: 'talkbot-7gji40zbdf69e993'
+            // })
+            // wx.cloud.callFunction({
+            //   name: 'operate_courseContent',
+            //   data: {
+            //     edit_id: edit_id,
+            //     classCollection: ClassCollection,
+            //     mode: 'delete'
+            //   },
+            //   success: res => {
+            //     this.data.centendata = this.data.centendata.filter(item => {
+            //       return item.contentId != edit_id
+            //     })
+            //     this.setData({
+            //       centendata: this.data.centendata
+            //     })
 
-                wx.showModal({
-                  title: '提示',
-                  content: '已删除您选择的课程内容~',
-                  showCancel: false,
-                })
+            //     wx.showModal({
+            //       title: '提示',
+            //       content: '已删除您选择的课程内容~',
+            //       showCancel: false,
+            //     })
 
-                return;
-              },
-              fail: err => {
-                wx.showModal({
-                  title: '提示',
-                  content: '删除失败 请检查网络~',
-                  showCancel: false,
-                })
-                return;
-              },
-            })
+            //     return;
+            //   },
+            //   fail: err => {
+            //     wx.showModal({
+            //       title: '提示',
+            //       content: '删除失败 请检查网络~',
+            //       showCancel: false,
+            //     })
+            //     return;
+            //   },
+            // })
             // ----------- 云函数 end---------------
           }
         }

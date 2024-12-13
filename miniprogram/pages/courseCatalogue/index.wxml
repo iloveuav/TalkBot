@@ -53,7 +53,7 @@
         <text class="chapterName" style="color: {{currentProgress.chapterId === item._id.chapterId?'#449df2':'#666666'}};"  >
           {{item._id.chapterName}}
         </text>
-        <text wx:if="{{btnType==='edit'}}" class="edit_chapter_btn" bindtap="toEditChapter" data-chapterObj="{{item._id}}">
+        <text wx:if="{{btnType==='edit'}}" class="edit_chapter_btn" catchtap="toEditChapter" data-chapterObj="{{item._id}}">
           🖊
         </text>
       </view>

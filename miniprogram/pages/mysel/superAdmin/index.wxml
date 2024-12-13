@@ -36,6 +36,10 @@
         <text> 管理cfUI任务列表📜 </text>
       </view>
 
+      <view class="wc {{pageFlag == 12 ? 'active' : ''}}" bindtap="touchWaitCheckTransferList">
+        <text> 审核搬运列表📜 </text>
+      </view>
+
 
       <!-- <view wx:if="{{identity===2}}" class="wc {{pageFlag == 8 ? 'active' : ''}}" bindtap="touchWaitCheckVisitorsList">
 				<text>访客待审核列表🎫 </text>
@@ -237,6 +241,18 @@
 
       </view>
       
+    </block>
+
+       <!-- 搬运审核页 -->
+       <block wx:elif="{{pageFlag == 12}}">
+      <view class="lists_container">
+        <!-- 列表部分 -->
+        <scroll-view scroll-y="true" style="height: 300rpx;" enhanced="{{true}}" show-scrollbar="{{false}}" scroll-with-animation="{{true}}" class="bottom_part">
+          <block wx:for="{{allCourse}}" wx:key="index">
+            <generalTaskAuditCard courseInfo="{{item}}" bind:Reload="courseDetailReload"></generalTaskAuditCard>
+          </block>
+        </scroll-view>
+      </view>
     </block>
 
 

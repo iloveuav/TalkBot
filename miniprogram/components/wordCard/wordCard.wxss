@@ -27,28 +27,31 @@
 }
 .Title {
   text-align: center;
-  font-size: 34rpx;
+  font-size: 25rpx;
   font-weight: bold;
+  max-height:40rpx;
+  text-overflow: ellipsis;
+  /* overflow-x: auto; */
 }
 
 .card_content{
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: #A2A2A2;
-  margin-top: 45rpx;
-  margin: 45rpx 10rpx 10rpx 10rpx;
-  padding: 10rpx;
+  margin: 15rpx 10rpx 10rpx 10rpx;
+  padding: 15rpx;
   overflow-y: auto;
   text-overflow: ellipsis;
-  max-height: 100rpx;
-  height: 75rpx;
-  
+  max-height:90rpx;
+  height: 90rpx;
+  /* border: 1px solid red; */
 }
 
 .content_text_style{
-  height: 400rpx;
-  margin-top: 20rpx;
+  height: 190rpx;
+  margin-top: 2rpx;
   padding: 10rpx;
-  /* border: 1rpx solid red; */
+  /* border: 1rpx solid rgb(29, 209, 74); */
+  width: 90%;
 }
 
 

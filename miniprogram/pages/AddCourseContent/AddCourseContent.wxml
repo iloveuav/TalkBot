@@ -81,7 +81,7 @@
 
   <view class="rightBtnItem">
     <image class="r-itemImgBox" catchtap="setAIGC_ImageText" src="../../images/button/addTextImg.png"></image>
-    <view class="r-itemName" catchtap="setAIGC_ImageText">AIGC图文</view>
+    <view class="r-itemName" catchtap="setAIGC_ImageText">AIGC创意</view>
   </view>
 
   <view class="rightBtnItem">
@@ -123,8 +123,8 @@
   <view class="textImgNumTitle">已装填{{textImgArray.length}}个图文</view>
   <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
   </view>
-  <input bindinput='getTitle' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].textimgTitle}}' placeholder="标题" placeholder-style="color:#318FFF;" />
-  <input bindinput='getContent' maxlength="1000" style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].content}}' placeholder="内容" placeholder-style="color:#318FFF;" />
+  <input bindinput='getTitle' style="max-width: 90%; max-height: 20rpx;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].textimgTitle}}' placeholder="标题" placeholder-style="color:#318FFF;" />
+  <input bindinput='getContent' maxlength="1000" style="max-width: 90%;max-height: 20rpx;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].content}}' placeholder="内容" placeholder-style="color:#318FFF;" />
   <input bindinput='getSrc' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{textImgArray[curTextImgIndex].src}}' placeholder="图片src（可为空）" />
 
   <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItem">新增图文项</button>
@@ -137,12 +137,14 @@
 <!-- -------------设置AIGC内容参数区 （开发者模式）------------ -->
 <view class="setwaitData" style="flex-direction: column; height:650rpx; " wx:if="{{setBatchContentModal}}">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
-  <view class="modelTitle">AIGC内容（开发者模式）</view>
-  <view class="textImgNumTitle">已装填{{batchContentArray.length}}个内容</view>
+  <view style="height: 120rpx; width: 100%;">
+    <view class="modelTitle">AIGC内容（开发者模式）</view>
+    <view class="textImgNumTitle">已装填{{batchContentArray.length}}个内容</view>
+  </view>
   <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
   </view>
   <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:视频文案、解密文本、知识文本" placeholder-style="color:#318FFF;" />
-  <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 100rpx;" catchtap="getCurStep2PromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
+  <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 100rpx;background-color: #b3cff1;" catchtap="getCurStep2CourseContentPromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
   <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
     value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" /> -->
 
@@ -152,32 +154,68 @@
 
   <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItemForBatchContent">新增内容项</button>
   <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
-  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchAdd">本地AIGC内容</button>
+  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchImageTextAdd">本地AIGC内容</button>
   <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex<batchContentArray.length-1}}" catchtap="rightBatchContent" class="right_textimg" src="../../images/icon/right.png" alt="" />
 </view>
 <!-- ----------------设置AIGC内容参数区end--------------- -->
-<!-- -------------设置AIGC图文参数区 （开发者模式）------------ -->
-<view class="setwaitData" style="flex-direction: column; height:650rpx; " wx:if="{{setAIGC_ImageTextModal}}">
+
+<!-- -------------设置AIGC创意参数区 （开发者模式）------------ -->
+<view class="setwaitData" wx:if="{{setAIGC_ImageTextModal}}" style="height: 85vh;margin-bottom: 18%;border-radius: 60rpx;   ">
   <image src="/images/button/cancel2.png" style='position:absoluted;' class="cancel" catchtap="close"></image>
-  <view class="modelTitle">AIGC图文（开发者模式）</view>
-  <view class="textImgNumTitle">已装填{{batchContentArray.length}}个内容</view>
+  <view style="height: 100rpx; width: 100%;">
+    <view class="modelTitle">AIGC创意（开发者模式）</view>
+    <view class=" textImgNumTitle" style="margin-bottom: 10rpx;">已装填{{batchContentArray.length}}个内容</view>
+  </view>
   <view wx:for="{{0}}" data-i="{{groupindex}}" wx:for-index="groupindex" bindtap='updateInteractData'>
   </view>
-  <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;" class="modelBtn" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:视频文案、解密文本、知识文本" placeholder-style="color:#318FFF;" />
-  <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 100rpx;" catchtap="getCurStep2PromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
-  <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
+
+  <view class="settingBox" style="background-color: #ffffff;">
+
+    <!-- aigc参数设置区 -->
+    <view class="setting_title" style="color: gray;">aigc参数设置区</view>
+    <!-- <view class='tips'>| 提示词语种 | 工作流选择 | </view> -->
+    <view class="tagInfo ">
+      <view class="select_Label">工作流类型选择
+        <view class="tagList">
+          <text class="{{item.choose ? 'active' : ''}}" wx:for="{{batchContentArray[curBatchContentIndex].workFlowTypeArr}}" wx:key="{{item.value}}" bindtap="workFlowTypeHandleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+        </view>
+      </view>
+
+      <view class="select_Label">工作流选择
+        <view class="tagList">
+          <text class="{{item.choose ? 'active' : ''}}" wx:for="{{batchContentArray[curBatchContentIndex].workFlowTypeArr[batchContentArray[curBatchContentIndex].wf_TypeIndex].wfArr}}" wx:key="{{item.value}}" bindtap="workFlowHandleChoose" data-choose="{{item.choose}}" data-index="{{index}}">{{item.label}}</text>
+        </view>
+      </view>
+
+      <view class="select_Label">工作流详情 <view class="tagList">
+          <text class="active" style="background-color: #a7c0df; color: whitesmoke;">提示词语种：{{batchContentArray[curBatchContentIndex].workFlowTypeArr[batchContentArray[curBatchContentIndex].wf_TypeIndex].wfArr[batchContentArray[curBatchContentIndex].wf_Index].detail.promptlang}}</text>
+          <text class="active" style="background-color: #a7c0df; color: whitesmoke;">{{batchContentArray[curBatchContentIndex].workFlowTypeArr[batchContentArray[curBatchContentIndex].wf_TypeIndex].wfArr[batchContentArray[curBatchContentIndex].wf_Index].detail.function}}</text>
+          <text class="active" style="background-color: #a7c0df; color: whitesmoke;" wx:if="{{batchContentArray[curBatchContentIndex].workFlowTypeArr[batchContentArray[curBatchContentIndex].wf_TypeIndex].wfArr[batchContentArray[curBatchContentIndex].wf_Index].detail.notice!==''}}">{{batchContentArray[curBatchContentIndex].workFlowTypeArr[batchContentArray[curBatchContentIndex].wf_TypeIndex].wfArr[batchContentArray[curBatchContentIndex].wf_Index].detail.notice}}</text>
+        </view>
+      </view>
+
+    </view>
+    <!-- aigc参数设置区 end -->
+
+    <view class="setting_title" style="color: gray;">图文内容</view>
+    <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;margin-top: 20rpx;" class="modelBtn" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:场景人物概念大文本（自动识别是否是多个情景，多次出图）" placeholder-style="color:#318FFF;" />
+    <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 50rpx; background-color: #a6a9ad;" catchtap="getCurStep2ImageTextPromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
+    <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
     value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" /> -->
 
 
-  <textarea maxlength="-1" user-select class="step3Input" bindinput="inputBatchContentStep3Text" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" />
+    <textarea style="height: 500rpx;" maxlength="-1" user-select class="step3Input" bindinput="inputBatchContentStep3Text" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成任务放入队列等待自动化执行AI绘画" />
 
+  </view>
 
-  <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItemForBatchContent">新增内容项</button>
-  <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
-  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchAdd">本地AIGC内容</button>
+  <view style="height: 180rpx; width: 100%;">
+    <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx;" catchtap="addOneItemForBatchContent">新增内容项</button>
+    <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
+    <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchImageTextAdd">本地AIGC任务提交</button>
+  </view>
   <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex<batchContentArray.length-1}}" catchtap="rightBatchContent" class="right_textimg" src="../../images/icon/right.png" alt="" />
 </view>
-<!-- ----------------设置AIGC图文参数区end--------------- -->
+<!-- ----------------设置AIGC创意参数区end--------------- -->
 
 <view class='hei' id="hei"></view>
 <!-- -------------设置发音人------------ -->

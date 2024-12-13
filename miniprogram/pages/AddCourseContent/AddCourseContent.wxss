@@ -192,6 +192,7 @@ page {
 }
 
 .setwaitData {
+  /* background-color: #111111; */
   background-color: #FFFFFF;
   width: 85%;
   height: 550rpx;
@@ -206,7 +207,8 @@ page {
   border-radius: 100rpx 100rpx 100rpx 100rpx;
   justify-content: space-around;
   font-size: 20rpx;
-  z-index: 99;
+  z-index: 99999999;
+  border: 10rpx solid black;
 }
 
 .btnArrayBox {
@@ -229,10 +231,10 @@ page {
 .setLBox1 {
   background-color: #dbe4f079;
   width: 20%;
-  height:80rpx;
+  height: 80rpx;
   padding: 5rpx;
   position: fixed;
-  bottom:250rpx;
+  bottom: 250rpx;
   left: -5rpx;
   display: flex;
   flex-direction: column;
@@ -279,7 +281,7 @@ page {
   min-height: 20px;
   max-height: 30px;
   max-width: 120px;
-  border-radius:50rpx;
+  border-radius: 50rpx;
   z-index: 9999;
   color: #318FFF;
   background-color: #DEEDFF;
@@ -287,16 +289,21 @@ page {
   margin-left: 30rpx;
   padding: 25rpx 10rpx;
 }
+
 .step3Input {
   margin-top: 10rpx;
   /* height: 200rpx; */
-  max-height: 200rpx;
-  width: 100%;
+  max-height: 400rpx;
+  height: 80rpx;
+  width: 96%;
   flex: auto;
-  border: 1px solid rgb(49, 105, 226);
-  border-radius: 0rpx 0rpx 100rpx 0rpx;
-  text-align: center;
-  padding: 15rpx 0rpx;
+  /* border: 1px solid rgb(49, 105, 226); */
+  box-shadow: 0 0 8rpx #ccc;
+  /* border: 1px solid rgb(49, 105, 226); */
+  border-radius: 0rpx 0rpx 0rpx 0rpx;
+  /* border-radius: 0rpx 0rpx 100rpx 0rpx; */
+  text-align: left;
+  padding: 15rpx 10rpx;
 }
 
 .left_textimg {
@@ -328,8 +335,9 @@ page {
   border-radius: 100rpx 100rpx 100rpx 100rpx;
   z-index: 9999;
   color: #fff;
-  background-color: #318FFF;
+  background-color: #5e90ce;
   text-align: center;
+  margin-top: 10rpx;
 }
 
 .answerModelSubmitBtn {
@@ -359,7 +367,7 @@ page {
   text-align: center;
   padding: 15rpx;
   left: 4rpx;
-  z-index: 99999999;
+  z-index: 999999;
   background-color: #519ce7;
 }
 
@@ -375,7 +383,7 @@ page {
   text-align: center;
   padding: 15rpx;
   left: 4rpx;
-  z-index: 99999999;
+  z-index: 999999;
   background-color: #eccb84;
 }
 
@@ -692,6 +700,7 @@ button[disabled] {
   bottom: -100rpx;
   z-index: 9999;
 }
+
 .role_Speak {
   width: 100rpx;
   height: 100rpx;
@@ -735,3 +744,103 @@ button[disabled] {
   margin-bottom: 60rpx;
   width: 100%;
 }
+
+.settingBox{
+  height: 66vh;
+  overflow: auto;
+  /* border: 1rpx solid #e2e6ec; */
+  border-radius: 5%;
+  padding: 30rpx;
+  box-shadow: 0 0 10rpx rgb(114, 111, 111);
+}
+
+/* aigc参数设置区 */
+
+.setting_title {
+  font-size: 28rpx;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  margin-top: 25rpx;
+}
+
+.tips {
+  margin-top: 5rpx;
+  text-align: center;
+  font-size: 22rpx;
+  width: 100%;
+}
+
+.tagInfo {
+  padding-top: 0;
+}
+
+.tagInfo .tagList {
+  margin: 20rpx 0 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tagList text {
+  min-width: 120rpx;
+  /* max-width: 200rpx; */
+  padding: 0rpx 10rpx 0rpx 10rpx;
+  height: 48rpx;
+  font-size: 18rpx;
+  text-align: center;
+  line-height: 48rpx;
+  border: 1rpx solid #fff;
+  border-radius: 180rpx;
+  margin-bottom: 15rpx;
+  margin-right: 30rpx;
+}
+
+.tagList text:nth-child(3n) {
+  margin-right: 0;
+}
+
+.tagList .active {
+  color: #4D9BF4;
+  background: white;
+}
+
+/* 工作流选择相关按钮 */
+.wf_type_list {
+  margin: 30rpx 0 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wf_type_list text {
+  min-width: 120rpx;
+  /* max-width: 200rpx; */
+  padding: 0rpx 10rpx 0rpx 10rpx;
+  height: 48rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 48rpx;
+  border: 1rpx solid #4D9BF4;
+  border-radius: 180rpx;
+  margin-bottom: 20rpx;
+  margin-right: 30rpx;
+}
+
+.wf_type_list text:nth-child(3n) {
+  margin-right: 0;
+}
+
+.wf_type_list .active {
+  color: #4D9BF4;
+  background: white;
+}
+
+.select_Label {
+  padding: 15rpx 28rpx;
+  border-radius: 34rpx;
+  color: #4D9BF4;
+  background: rgba(77, 155, 244, .2);
+  margin-top: 20rpx;
+  /* border: 1px solid red; */
+}
+
+/* aigc参数设置区 end */

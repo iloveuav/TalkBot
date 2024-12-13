@@ -325,6 +325,17 @@ Page({
     this.getAllCourseList();
   },
 
+  touchWaitCheckTransferList: function () {
+    this.setData({
+      pageFlag: 12,
+      translate: 'transform: translateX(0px)',
+    })
+    // this.queryVisitorList()
+    // this.getAllCourse();
+    // this.getAllCourseList();
+    this.getAllTransferList();
+  },
+
 
   touchWaitCheckVIPList: function () {
     this.setData({
@@ -412,6 +423,38 @@ Page({
     wx.cloud.callFunction({
       name: 'get_CourseList',
       data: {},
+      success: res => {
+        // console.log(res)
+        console.log('callFunction test result: ', res);
+        // wx.setStorageSync('allCourseMess', res.result.allCourse);
+
+        let showCourse = []
+        if (pageType === 'studyPage') {
+          showCourse = res.result.allCourse.data
+        } else {
+          showCourse = res.result.allCourse.data
+        }
+        this.setData({
+          allCourse: showCourse,
+          remind: '',
+        })
+      },
+      fail: err => {
+        // handle error
+      },
+      complete: res => {
+        console.log(res)
+      }
+    })
+  },
+    //获取所有搬运任务
+  getAllTransferList(keyWord) {
+    wx.cloud.callFunction({
+      name: 'get_CourseList',
+      data: {
+        keyWord
+        
+      },
       success: res => {
         // console.log(res)
         console.log('callFunction test result: ', res);

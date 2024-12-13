@@ -23,6 +23,7 @@ exports.main = async (event, context) => {
     state: '200'
   }
 
+  //清空整个章节
   if (event.mode == 'delete') {
     try {
       return db.collection(Collection).where({

@@ -5,6 +5,7 @@
     "datePicker": "/components/superAdmin/datePicker/index",
     "districtCard": "/components/admin/districtCard/districtCard",
     "courseAudit": "/components/superAdmin/courseAudit/courseAudit",
+    "generalTaskAuditCard": "/components/superAdmin/generalTaskAuditCard/index",
     "conversationAudit": "/components/superAdmin/conversationAudit/index",
     "vipSecretKeyCard": "/components/superAdmin/vipSecretKeyCard/index",
     "workSpaceCard": "/components/superAdmin/workSpaceCard/index",

@@ -6,11 +6,12 @@ cloud.init({
 })
 const db = cloud.database()
 const _ = db.command
+
+
 // 云函数入口函数
 exports.main = async (event, context) => {
 
   const now = new Date();
-
   // 可以格式化时间，例如输出为 YYYY-MM-DD HH:mm:ss 格式
   const formattedTime = now.getFullYear() + '-' +
     (now.getMonth() + 1).toString().padStart(2, '0') + '-' +
@@ -415,7 +416,7 @@ exports.main = async (event, context) => {
     }
   } else if (event.type === 'update_comfyUi_jobState') {
 
-    const operateType = event.operateType; //新增任务或更新已完成任务到finish  add||update
+    const operateType = event.operateType; //  add||update
     try {
       if (operateType === 'add') {
         db.collection('SurperAdmin').where({
@@ -430,6 +431,19 @@ exports.main = async (event, context) => {
         })
         mess.success = "新增成功"
         return mess
+      } else if (operateType === 'addArr') {
+        db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              ['waitToDrawArr']: db.command.push(event.JobArr),
+              lastRunTime: currentTime
+            }
+          }
+        })
+        mess.success = "新增成功"
+        return mess
       } else if (operateType === 'update') {
         addTargetKeyName = 'finishDrawArr'
         deleteTargetKeyName = 'waitToDrawArr'
@@ -437,7 +451,193 @@ exports.main = async (event, context) => {
         if (event.role === 'comfyUI') {
           addTargetKeyName = 'finishDrawArr'
           deleteTargetKeyName = 'waitToDrawArr'
-        } else {
+        } else { //微信小程序 或者 影刀 的更新
+          addTargetKeyName = 'historyDrawArr'
+          deleteTargetKeyName = 'finishDrawArr'
+        }
+
+        await db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              [addTargetKeyName]: db.command.push([event.JobObj]),
+              lastRunTime: currentTime
+            }
+          }
+        })
+
+
+        await db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              [deleteTargetKeyName]: db.command.pull({
+                "job_id": event.JobObj.job_id
+              })
+            }
+          }
+        })
+        mess.success = "更新成功"
+        return mess
+      } else if (operateType === 'delete') {
+        // 删除任务
+        await db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              ['waitToDrawArr']: db.command.pull({
+                "job_id": event.JobObj.job_id
+              })
+            }
+          }
+        })
+      }
+    } catch (err) {
+      if (operateType === 'add') {
+        mess.success = "新增失败" + err
+        return mess
+      } else if (operateType === 'update') {
+        mess.success = "更新失败" + err
+        return mess
+      } else if (operateType === 'delete') {
+        mess.success = "删除失败" + err
+        return mess
+      }
+    }
+  } else if (event.type === 'update_workSpace_anyTask') {
+
+    const operateType = event.operateType; //  add||update
+    try {
+      if (operateType === 'add' || operateType === 'reset') {
+        db.collection('SurperAdmin').where({
+          objKey: 'forAutoTask'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              ['waitToDoArr']: [],
+              ['finishArr']: [],
+              ['historyArr']: [],
+              lastRunTime: currentTime
+            }
+          }
+        })
+        mess.success = "新增成功"
+        return mess
+      } else if (operateType === 'addArr') {
+        db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              ['waitToDrawArr']: db.command.push(event.JobArr),
+              lastRunTime: currentTime
+            }
+          }
+        })
+        mess.success = "新增成功"
+        return mess
+      } else if (operateType === 'update') {
+        addTargetKeyName = 'finishDrawArr'
+        deleteTargetKeyName = 'waitToDrawArr'
+
+        if (event.role === 'comfyUI') {
+          addTargetKeyName = 'finishDrawArr'
+          deleteTargetKeyName = 'waitToDrawArr'
+        } else { //微信小程序 或者 影刀 的更新
+          addTargetKeyName = 'historyDrawArr'
+          deleteTargetKeyName = 'finishDrawArr'
+        }
+
+        await db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              [addTargetKeyName]: db.command.push([event.JobObj]),
+              lastRunTime: currentTime
+            }
+          }
+        })
+
+
+        await db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              [deleteTargetKeyName]: db.command.pull({
+                "job_id": event.JobObj.job_id
+              })
+            }
+          }
+        })
+        mess.success = "更新成功"
+        return mess
+      } else if (operateType === 'delete') {
+        // 删除任务
+        await db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              ['waitToDrawArr']: db.command.pull({
+                "job_id": event.JobObj.job_id
+              })
+            }
+          }
+        })
+      }
+    } catch (err) {
+      if (operateType === 'add') {
+        mess.success = "新增失败" + err
+        return mess
+      } else if (operateType === 'update') {
+        mess.success = "更新失败" + err
+        return mess
+      } else if (operateType === 'delete') {
+        mess.success = "删除失败" + err
+        return mess
+      }
+    }
+  } else if (event.type === 'update_waitCheckTransfer') {
+
+    const operateType = event.operateType; //  add||update
+    try {
+      if (operateType === 'add') {
+        db.collection('SurperAdmin').where({
+          objKey: 'forTransfer'
+        }).update({
+          data: {
+            [event.TaskObj.videoPlatformEnName]: db.command.push(event.TaskObj),
+            lastRunTime: currentTime
+          }
+        })
+        mess.success = "新增成功"
+        return mess
+      } else if (operateType === 'addArr') {
+        db.collection('SurperAdmin').where({
+          objKey: 'forComfyUI'
+        }).update({
+          data: {
+            [event.workspaceName]: {
+              ['waitToDrawArr']: db.command.push(event.JobArr),
+              lastRunTime: currentTime
+            }
+          }
+        })
+        mess.success = "新增成功"
+        return mess
+      } else if (operateType === 'update') {
+        addTargetKeyName = 'finishDrawArr'
+        deleteTargetKeyName = 'waitToDrawArr'
+
+        if (event.role === 'comfyUI') {
+          addTargetKeyName = 'finishDrawArr'
+          deleteTargetKeyName = 'waitToDrawArr'
+        } else { //微信小程序 或者 影刀 的更新
           addTargetKeyName = 'historyDrawArr'
           deleteTargetKeyName = 'finishDrawArr'
         }
