@@ -54,162 +54,140 @@ Page({
       wf_TypeIndex: 0,
       wf_Index: 0,
       tagList1: [{
-          label: '全中文',
-          value: 'Cn',
-          choose: true
-        },
-        {
-          label: '全英语',
-          value: 'En',
-          choose: false
-        },
-        {
-          label: '中英混合',
-          value: 'mixCnEn',
-          choose: false
-        },
+        label: '全中文',
+        value: 'Cn',
+        choose: true
+      },
+      {
+        label: '全英语',
+        value: 'En',
+        choose: false
+      },
+      {
+        label: '中英混合',
+        value: 'mixCnEn',
+        choose: false
+      },
       ],
 
-      // 工作流： KeTuHuaHua | RedBook | StickFigure
-      tagList2: [{
+      //这里面 没增加一个选项  本文件代码 共三个地方要添加同样的对象
+      workFlowTypeArr: [{
+        label: '文生图',
+        value: 'textToImage',
+        choose: true,
+        wfArr: [{
           label: '可图大模型',
           value: 'KeTuHuaHua',
-          choose: true
+          choose: true,
+          detail: {
+            promptlang: '中英混合',
+            function: '基于可图大模型文生图',
+            notice: '不支持角色一致性'
+          }
+        },
+        {
+          label: 'XL角色一致性设计',
+          value: 'XL_avata_Design',
+          choose: false,
+          detail: {
+            promptlang: '英文提示词',
+            function: '基于迪士尼XL',
+            notice: '支持角色一致性'
+          }
         },
         {
           label: 'flux小红书',
           value: 'RedBook',
-          choose: false
-        },
-        {
-          label: '音乐踩点剪辑',
-          value: 'RedBook',
-          choose: false
+          choose: false,
+          detail: {
+            promptlang: '中英混合',
+            function: '小红书真实感模型',
+            notice: '不支持角色一致性'
+          }
         },
         {
           label: '简笔画分镜',
           value: 'StickFigure',
-          choose: false
+          choose: false,
+          detail: {
+            promptlang: '中英混合',
+            function: '基于本地训练的icLora',
+            notice: '支持角色一致性'
+          }
         },
         {
           label: '电影分镜',
           value: 'icLora_Film',
-          choose: false
+          choose: false,
+          detail: {
+            promptlang: '全英',
+            function: '基于icLora',
+            notice: ''
+          }
         },
         {
           label: '漫画分镜',
           value: 'icLora_MangHua',
-          choose: false
+          choose: false,
+          detail: {
+            promptlang: '全英',
+            function: '基于icLora',
+            notice: ''
+          }
         },
-      ],
-
-      workFlowTypeArr: [{
-          label: '文生图',
-          value: 'textToImage',
+        ]
+      },
+      {
+        label: '文生视频',
+        value: 'textToVideo',
+        choose: false,
+        wfArr: [{
+          label: 'cogVideo',
+          value: 'KeTuHuaHua',
           choose: true,
-          wfArr: [{
-              label: '可图大模型',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '中英混合',
-                function: '基于可图大模型文生图',
-                notice: '不支持角色一致性'
-              }
-            },
-            {
-              label: 'flux小红书',
-              value: 'RedBook',
-              choose: false,
-              detail: {
-                promptlang: '中英混合',
-                function: '小红书真实感模型',
-                notice: '不支持角色一致性'
-              }
-            },
-            {
-              label: '简笔画分镜',
-              value: 'StickFigure',
-              choose: false,
-              detail: {
-                promptlang: '中英混合',
-                function: '基于本地训练的icLora',
-                notice: '支持角色一致性'
-              }
-            },
-            {
-              label: '电影分镜',
-              value: 'icLora_Film',
-              choose: false,
-              detail: {
-                promptlang: '全英',
-                function: '基于icLora',
-                notice: ''
-              }
-            },
-            {
-              label: '漫画分镜',
-              value: 'icLora_MangHua',
-              choose: false,
-              detail: {
-                promptlang: '全英',
-                function: '基于icLora',
-                notice: ''
-              }
-            },
-          ]
-        },
-        {
-          label: '文生视频',
-          value: 'textToVideo',
-          choose: false,
-          wfArr: [{
-              label: 'cogVideo',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '全英',
-                function: '基于icLora',
-                notice: ''
-              }
-            }
+          detail: {
+            promptlang: '全英',
+            function: '基于icLora',
+            notice: ''
+          }
+        }
 
-          ]
-        },
-        {
-          label: '文—参图_生图',
-          value: 'mixCnEn',
-          choose: false,
-          wfArr: [{
-              label: 'flux',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '中英混合',
-                function: '根据文本先去找图后基于找到的图进行参考生成',
-                notice: ''
-              }
-            }
+        ]
+      },
+      {
+        label: '文—参图_生图',
+        value: 'mixCnEn',
+        choose: false,
+        wfArr: [{
+          label: 'flux',
+          value: 'KeTuHuaHua',
+          choose: true,
+          detail: {
+            promptlang: '中英混合',
+            function: '根据文本先去找图后基于找到的图进行参考生成',
+            notice: ''
+          }
+        }
 
-          ]
-        },
-        {
-          label: '自动化剪辑',
-          value: 'autoCutVideo',
-          choose: false,
-          wfArr: [{
-              label: '音乐卡点视频',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '全中',
-                function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
-                notice: ''
-              }
-            }
+        ]
+      },
+      {
+        label: '自动化剪辑',
+        value: 'autoCutVideo',
+        choose: false,
+        wfArr: [{
+          label: '音乐卡点视频',
+          value: 'KeTuHuaHua',
+          choose: true,
+          detail: {
+            promptlang: '全中',
+            function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
+            notice: ''
+          }
+        }
 
-          ]
-        },
+        ]
+      },
       ],
 
       index: 0
@@ -1320,128 +1298,138 @@ Page({
       wf_Index: 0,
 
       tagList1: [{
-          label: '全中文',
-          value: 'Cn',
-          choose: true
-        },
-        {
-          label: '全英语',
-          value: 'En',
-          choose: false
-        },
-        {
-          label: '中英混合',
-          value: 'mixCnEn',
-          choose: false
-        },
+        label: '全中文',
+        value: 'Cn',
+        choose: true
+      },
+      {
+        label: '全英语',
+        value: 'En',
+        choose: false
+      },
+      {
+        label: '中英混合',
+        value: 'mixCnEn',
+        choose: false
+      },
       ],
       workFlowTypeArr: [{
-          label: '文生图',
-          value: 'textToImage',
+        label: '文生图',
+        value: 'textToImage',
+        choose: true,
+        wfArr: [{
+          label: '可图大模型',
+          value: 'KeTuHuaHua',
           choose: true,
-          wfArr: [{
-              label: '可图大模型',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '中英混合',
-                function: '基于可图大模型文生图',
-                notice: '不支持角色一致性'
-              }
-            },
-            {
-              label: 'flux小红书',
-              value: 'RedBook',
-              choose: false,
-              detail: {
-                promptlang: '中英混合',
-                function: '小红书真实感模型',
-                notice: '不支持角色一致性'
-              }
-            },
-            {
-              label: '简笔画分镜',
-              value: 'StickFigure',
-              choose: false,
-              detail: {
-                promptlang: '中英混合',
-                function: '基于本地训练的icLora',
-                notice: '支持角色一致性'
-              }
-            },
-            {
-              label: '电影分镜',
-              value: 'icLora_Film',
-              choose: false,
-              detail: {
-                promptlang: '全英',
-                function: '基于icLora',
-                notice: ''
-              }
-            },
-            {
-              label: '漫画分镜',
-              value: 'icLora_MangHua',
-              choose: false,
-              detail: {
-                promptlang: '全英',
-                function: '基于icLora',
-                notice: ''
-              }
-            },
-          ]
+          detail: {
+            promptlang: '中英混合',
+            function: '基于可图大模型文生图',
+            notice: '不支持角色一致性'
+          }
         },
         {
-          label: '文生视频',
-          value: 'textToVideo',
+          label: 'XL角色一致性设计',
+          value: 'XL_avata_Design',
           choose: false,
-          wfArr: [{
-              label: 'cogVideo',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '全英',
-                function: '基于icLora',
-                notice: ''
-              }
-            }
-
-          ]
+          detail: {
+            promptlang: '英文提示词',
+            function: '基于迪士尼XL',
+            notice: '支持角色一致性'
+          }
         },
         {
-          label: '文—参图_生图',
-          value: 'mixCnEn',
+          label: 'flux小红书',
+          value: 'RedBook',
           choose: false,
-          wfArr: [{
-              label: 'flux',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '中英混合',
-                function: '根据文本先去找图后基于找到的图进行参考生成',
-                notice: ''
-              }
-            }
-
-          ]
+          detail: {
+            promptlang: '中英混合',
+            function: '小红书真实感模型',
+            notice: '不支持角色一致性'
+          }
         },
         {
-          label: '自动化剪辑',
-          value: 'autoCutVideo',
+          label: '简笔画分镜',
+          value: 'StickFigure',
           choose: false,
-          wfArr: [{
-              label: '音乐卡点视频',
-              value: 'KeTuHuaHua',
-              choose: true,
-              detail: {
-                promptlang: '全中',
-                function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
-                notice: ''
-              }
-            }
-
-          ]
+          detail: {
+            promptlang: '中英混合',
+            function: '基于本地训练的icLora',
+            notice: '支持角色一致性'
+          }
         },
+        {
+          label: '电影分镜',
+          value: 'icLora_Film',
+          choose: false,
+          detail: {
+            promptlang: '全英',
+            function: '基于icLora',
+            notice: ''
+          }
+        },
+        {
+          label: '漫画分镜',
+          value: 'icLora_MangHua',
+          choose: false,
+          detail: {
+            promptlang: '全英',
+            function: '基于icLora',
+            notice: ''
+          }
+        },
+        ]
+      },
+      {
+        label: '文生视频',
+        value: 'textToVideo',
+        choose: false,
+        wfArr: [{
+          label: 'cogVideo',
+          value: 'KeTuHuaHua',
+          choose: true,
+          detail: {
+            promptlang: '全英',
+            function: '基于icLora',
+            notice: ''
+          }
+        }
+
+        ]
+      },
+      {
+        label: '文—参图_生图',
+        value: 'mixCnEn',
+        choose: false,
+        wfArr: [{
+          label: 'flux',
+          value: 'KeTuHuaHua',
+          choose: true,
+          detail: {
+            promptlang: '中英混合',
+            function: '根据文本先去找图后基于找到的图进行参考生成',
+            notice: ''
+          }
+        }
+
+        ]
+      },
+      {
+        label: '自动化剪辑',
+        value: 'autoCutVideo',
+        choose: false,
+        wfArr: [{
+          label: '音乐卡点视频',
+          value: 'KeTuHuaHua',
+          choose: true,
+          detail: {
+            promptlang: '全中',
+            function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
+            notice: ''
+          }
+        }
+
+        ]
+      },
       ],
 
     });
@@ -1907,35 +1895,35 @@ Page({
         })
         initQiniu(result.data);
         qiniuUploader.upload(that.data.tempimg, (res) => {
-            var obj = JSON.stringify(res.imageURL)
+          var obj = JSON.stringify(res.imageURL)
+          that.setData({
+            'imageObject': res,
+          })
+
+          let imgobj = that.data.imageObject;
+          if (imgobj != '') {
             that.setData({
-              'imageObject': res,
+              imgUrl: 'http://' + imgobj.imageURL
             })
+          }
 
-            let imgobj = that.data.imageObject;
-            if (imgobj != '') {
-              that.setData({
-                imgUrl: 'http://' + imgobj.imageURL
-              })
-            }
+          if (that.data.setTextImg) {
+            that.addOneItem();
+          } else {
+            that.add();
+          }
 
-            if (that.data.setTextImg) {
-              that.addOneItem();
-            } else {
-              that.add();
-            }
-
-            // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
-          },
+          // //对象存储中外链默认域名 http://p2mksxx.bkt.clouddn.com/
+        },
           (error) => {
             //   console.error('error: ' + JSON.stringify(error));
           }, {
-            region: 'SCN', // 华南
-            // ECN, SCN, NCN, NA, ASG，分别对应七牛的：华东，华南，华北，北美，新加坡 5 个区域
-            qiniuUploadToken: that.data.uptoken,
-            domain: 'imgchatbot.uavserve.online', // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接。
-            shouldUseQiniuFileName: false,
-          },
+          region: 'SCN', // 华南
+          // ECN, SCN, NCN, NA, ASG，分别对应七牛的：华东，华南，华北，北美，新加坡 5 个区域
+          qiniuUploadToken: that.data.uptoken,
+          domain: 'imgchatbot.uavserve.online', // bucket 域名，下载资源时用到。如果设置，会在 success callback 的 res 参数加上可以直接使用的 ImageURL 字段。否则需要自己拼接。
+          shouldUseQiniuFileName: false,
+        },
           // null, // 可以使用上述参数，或者使用 null 作为参数占位符
           progress => {
             that.log = "上传进度" + progress.progress;
@@ -2187,7 +2175,7 @@ Page({
     const courseContentMode = this.data.courseDetail.courseContentMode || 'breadth'
     const step1Text = this.data.batchContentArray[curBatchContentIndex].step1Text || ''
     const courseContentModeMap = {
-      breadth: `一个宏观围绕${step1Text||this.data.chapterName}扩展式学习的课程内容`, // 广度扩展型章节
+      breadth: `一个宏观围绕${step1Text || this.data.chapterName}扩展式学习的课程内容`, // 广度扩展型章节
       depth: `围绕${step1Text}不同方面深入式学习的课程内容`, // 深度挖掘型章节
     }
 
@@ -2734,162 +2722,141 @@ Page({
         wf_TypeIndex: 0,
         wf_Index: 0,
         tagList1: [{
-            label: '全中文',
-            value: 'Cn',
-            choose: true
-          },
-          {
-            label: '全英语',
-            value: 'En',
-            choose: false
-          },
-          {
-            label: '中英混合',
-            value: 'mixCnEn',
-            choose: false
-          },
+          label: '全中文',
+          value: 'Cn',
+          choose: true
+        },
+        {
+          label: '全英语',
+          value: 'En',
+          choose: false
+        },
+        {
+          label: '中英混合',
+          value: 'mixCnEn',
+          choose: false
+        },
         ],
 
         // 工作流： KeTuHuaHua | RedBook | StickFigure
-        tagList2: [{
+
+        workFlowTypeArr: [{
+          label: '文生图',
+          value: 'textToImage',
+          choose: true,
+          wfArr: [{
             label: '可图大模型',
             value: 'KeTuHuaHua',
-            choose: true
+            choose: true,
+            detail: {
+              promptlang: '中英混合',
+              function: '基于可图大模型文生图',
+              notice: '不支持角色一致性'
+            }
+          },
+          {
+            label: 'XL角色一致性设计',
+            value: 'XL_avata_Design',
+            choose: false,
+            detail: {
+              promptlang: '英文提示词',
+              function: '基于迪士尼XL',
+              notice: '支持角色一致性'
+            }
           },
           {
             label: 'flux小红书',
             value: 'RedBook',
-            choose: false
-          },
-          {
-            label: '音乐踩点剪辑',
-            value: 'RedBook',
-            choose: false
+            choose: false,
+            detail: {
+              promptlang: '中英混合',
+              function: '小红书真实感模型',
+              notice: '不支持角色一致性'
+            }
           },
           {
             label: '简笔画分镜',
             value: 'StickFigure',
-            choose: false
+            choose: false,
+            detail: {
+              promptlang: '中英混合',
+              function: '基于本地训练的icLora',
+              notice: '支持角色一致性'
+            }
           },
           {
             label: '电影分镜',
             value: 'icLora_Film',
-            choose: false
+            choose: false,
+            detail: {
+              promptlang: '全英',
+              function: '基于icLora',
+              notice: ''
+            }
           },
           {
             label: '漫画分镜',
             value: 'icLora_MangHua',
-            choose: false
+            choose: false,
+            detail: {
+              promptlang: '全英',
+              function: '基于icLora',
+              notice: ''
+            }
           },
-        ],
-
-        workFlowTypeArr: [{
-            label: '文生图',
-            value: 'textToImage',
+          ]
+        },
+        {
+          label: '文生视频',
+          value: 'textToVideo',
+          choose: false,
+          wfArr: [{
+            label: 'cogVideo',
+            value: 'KeTuHuaHua',
             choose: true,
-            wfArr: [{
-                label: '可图大模型',
-                value: 'KeTuHuaHua',
-                choose: true,
-                detail: {
-                  promptlang: '中英混合',
-                  function: '基于可图大模型文生图',
-                  notice: '不支持角色一致性'
-                }
-              },
-              {
-                label: 'flux小红书',
-                value: 'RedBook',
-                choose: false,
-                detail: {
-                  promptlang: '中英混合',
-                  function: '小红书真实感模型',
-                  notice: '不支持角色一致性'
-                }
-              },
-              {
-                label: '简笔画分镜',
-                value: 'StickFigure',
-                choose: false,
-                detail: {
-                  promptlang: '中英混合',
-                  function: '基于本地训练的icLora',
-                  notice: '支持角色一致性'
-                }
-              },
-              {
-                label: '电影分镜',
-                value: 'icLora_Film',
-                choose: false,
-                detail: {
-                  promptlang: '全英',
-                  function: '基于icLora',
-                  notice: ''
-                }
-              },
-              {
-                label: '漫画分镜',
-                value: 'icLora_MangHua',
-                choose: false,
-                detail: {
-                  promptlang: '全英',
-                  function: '基于icLora',
-                  notice: ''
-                }
-              },
-            ]
-          },
-          {
-            label: '文生视频',
-            value: 'textToVideo',
-            choose: false,
-            wfArr: [{
-                label: 'cogVideo',
-                value: 'KeTuHuaHua',
-                choose: true,
-                detail: {
-                  promptlang: '全英',
-                  function: '基于icLora',
-                  notice: ''
-                }
-              }
+            detail: {
+              promptlang: '全英',
+              function: '基于icLora',
+              notice: ''
+            }
+          }
 
-            ]
-          },
-          {
-            label: '文—参图_生图',
-            value: 'mixCnEn',
-            choose: false,
-            wfArr: [{
-                label: 'flux',
-                value: 'KeTuHuaHua',
-                choose: true,
-                detail: {
-                  promptlang: '中英混合',
-                  function: '根据文本先去找图后基于找到的图进行参考生成',
-                  notice: ''
-                }
-              }
+          ]
+        },
+        {
+          label: '文—参图_生图',
+          value: 'mixCnEn',
+          choose: false,
+          wfArr: [{
+            label: 'flux',
+            value: 'KeTuHuaHua',
+            choose: true,
+            detail: {
+              promptlang: '中英混合',
+              function: '根据文本先去找图后基于找到的图进行参考生成',
+              notice: ''
+            }
+          }
 
-            ]
-          },
-          {
-            label: '自动化剪辑',
-            value: 'autoCutVideo',
-            choose: false,
-            wfArr: [{
-                label: '音乐卡点视频',
-                value: 'KeTuHuaHua',
-                choose: true,
-                detail: {
-                  promptlang: '全中',
-                  function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
-                  notice: ''
-                }
-              }
+          ]
+        },
+        {
+          label: '自动化剪辑',
+          value: 'autoCutVideo',
+          choose: false,
+          wfArr: [{
+            label: '音乐卡点视频',
+            value: 'KeTuHuaHua',
+            choose: true,
+            detail: {
+              promptlang: '全中',
+              function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
+              notice: ''
+            }
+          }
 
-            ]
-          },
+          ]
+        },
         ],
 
         index: 0

@@ -200,7 +200,7 @@
 
     <view class="setting_title" style="color: gray;margin-top: 30rpx;">图文内容</view>
     <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;margin-top: 20rpx;height: 150rpx;" class="select_Label" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:场景人物概念大文本（自动识别是否是多个情景，多次出图）" placeholder-style="color:#318FFF;" />
-    <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 50rpx; background-color: #a6a9ad;" catchtap="getCurStep2ImageTextPromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
+    <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 50rpx; background-color: #a6a9ad;" catchtap="getCurStep2IdeaPromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
     <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
     value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" /> -->
 
