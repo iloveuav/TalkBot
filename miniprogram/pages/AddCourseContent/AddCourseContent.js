@@ -1,3 +1,4 @@
+const workflowGetStep2Strategy = require('./workflowGetStep2Strategy.js');
 const time = require('../../utils/util.js');
 const qiniuUploader = require("../../utils/qiniuUploader");
 
@@ -218,7 +219,7 @@ Page({
     editStatus: false,
     editIndex: '',
 
-    crouseDetail: {},
+    courseDetail: {},
     chapterList: [],
     curChapter: {},
 
@@ -448,9 +449,8 @@ Page({
 
   onLoad: async function (options) {
     console.log(options)
-    this.get_comfyUi_jobStateByWorkSpace()
-    // this.startPolling(); // 页面加载时开始轮询
-
+    // this.fetchWorkflow('Text2Img');
+    // this.test()
     const pageType = options.pageType ? options.pageType : 'course'
 
     // console.log("111",this.data.multiVoiceArray[0][0])
@@ -478,13 +478,12 @@ Page({
     //新增章节
     if (options && options.type === 'add' && options.courseMess) {
       console.log("yyzm-options", options)
-
-      let crouseDetail = JSON.parse(options.courseMess);
+      let courseDetail = JSON.parse(options.courseMess);
       let chapterList = options.chapterList && options.chapterList !== 'undefined' ? JSON.parse(options.chapterList) : [];
-      console.log("yyzm-crouseDetail", crouseDetail)
+      console.log("yyzm-courseDetail", courseDetail)
       this.setData({
-        crouseDetail: crouseDetail,
-        className: crouseDetail.courseName,
+        courseDetail: courseDetail,
+        className: courseDetail.courseName,
         chapterList: chapterList,
         chapterId: chapterList.length + 1,
 
@@ -494,13 +493,16 @@ Page({
     }
     //编辑章节
     if (options && options.type === 'edit' && options.chapterobj) {
-      let crouseDetail = JSON.parse(options.courseMess);
+      console.log("yyzm-options-courseMess", options.courseMess)
+
+      let courseDetail = app.globalData.curCourseMess;
+      // let courseDetail = JSON.parse(options.courseMess);
       let chapterList = JSON.parse(options.chapterList);
       let chapterobj = JSON.parse(options.chapterobj);
-      console.log("add-onload crouseDetail", crouseDetail)
+      console.log("add-onload courseDetail", courseDetail)
       let centendata = []
-      if (crouseDetail.ChapterContentMap) {
-        centendata = crouseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr?.map(item => {
+      if (courseDetail.ChapterContentMap) {
+        centendata = courseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr?.map(item => {
           return {
             ...item,
             is_show_right: 1
@@ -508,10 +510,20 @@ Page({
         }) || []
       }
 
-      this.setData({
-        crouseDetail: crouseDetail,
 
-        className: crouseDetail.courseName,
+      //从localStorage 获取centendata  和option传递过来的centendata 进行去重合并
+      let localStorageCurCourseCentendata = wx.getStorageSync('editCourse' + courseDetail.courseName) || [];
+      // 合并数组
+      const combinedArray = centendata.concat(localStorageCurCourseCentendata);
+
+      // 去重
+      const uniqueMap = new Map(combinedArray.map(item => [item.contentId, item]));
+      const uniqueArray = Array.from(uniqueMap.values());
+
+      this.setData({
+        courseDetail: courseDetail,
+
+        className: courseDetail.courseName,
         chapterName: chapterobj.chapterName || '',
         chapterList: chapterList,
         chapterId: chapterobj.chapterId || chapterList.length + 1,
@@ -519,10 +531,14 @@ Page({
         curChapter: chapterobj,
         pageType: pageType,
 
-        // centendata: crouseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr || []
+        // centendata: courseDetail.ChapterContentMap[chapterobj.chapterName]?.lineArr || []
 
-        centendata
+        centendata: uniqueArray
       })
+      console.log('uniqueArray', uniqueArray)
+      this.get_comfyUi_jobStateByWorkSpace()
+      this.startPolling(); // 页面加载时开始轮询
+      wx.setStorageSync('editCourse' + courseDetail.courseName, uniqueArray)
 
 
 
@@ -943,7 +959,7 @@ Page({
       wx.cloud.callFunction({
         name: 'operate_courseContent',
         data: {
-          courseUUid: this.data.crouseDetail.courseUUid,
+          courseUUid: this.data.courseDetail.courseUUid,
           ChapterContent: this.data.centendata,
           curChapterName: this.data.chapterName,
           mode: 'AddOrEdit'
@@ -957,6 +973,8 @@ Page({
               showCancel: false,
             })
           }
+
+          wx.setStorageSync('editCourse' + this.data.courseDetail.courseName, this.data.centendata)
 
           // wx.showToast({
           //   title: '内容批量修改成功',
@@ -994,8 +1012,8 @@ Page({
           _id: {
             chapterId: this.data.chapterList?.length + 1 || 1,
             chapterName: this.data.chapterName,
-            courseUUid: this.data.crouseDetail.courseUUid,
-            courseName: this.data.crouseDetail.courseName
+            courseUUid: this.data.courseDetail.courseUUid,
+            courseName: this.data.courseDetail.courseName
           },
           courseNum: '_'
         }
@@ -1003,7 +1021,7 @@ Page({
         wx.cloud.callFunction({
           name: 'operate_CourseMess',
           data: {
-            courseMess: this.data.crouseDetail,
+            courseMess: this.data.courseDetail,
             type: this.data.type,
             mode: 'addCharater',
             ChapterObj: ChapterObj
@@ -1083,14 +1101,19 @@ Page({
       return;
     } else {
 
+      // this.saveChapter(false)
+      // //       // 更新本地缓存  清空调对应章节内容
+      // wx.setStorageSync('history' + this.data.courseDetail.courseName, [])
+      // this.data.centendata = []
       this.setData({
         centendata: this.data.centendata,
       })
-      //  下面是云函数的调用
+
+      // //  下面是云函数的调用
       wx.cloud.callFunction({
         name: 'operate_courseContent',
         data: {
-          courseUUid: this.data.crouseDetail.courseUUid,
+          courseUUid: this.data.courseDetail.courseUUid,
           curChapterName: this.data.chapterName,
           mode: 'delete'
         },
@@ -1104,13 +1127,17 @@ Page({
             showCancel: false,
           })
           setTimeout(() => {
-
-            wx.setloco
             // 更新本地缓存  清空调对应章节内容
-            // wx.setStorageSync('history' + this.data.corseObject.courseName, [])
+            wx.setStorageSync('editCourse' + this.data.courseDetail.courseName, [])
             wx.navigateBack({
               delta: 3 //返回的页面数
             });
+
+            this.data.centendata = []
+            this.setData({
+              centendata: this.data.centendata,
+            })
+
             return;
           }, 1000);
 
@@ -1555,7 +1582,7 @@ Page({
         chapterName: this.data.chapterName,
 
 
-        courseUUid: this.data.crouseDetail.courseUUid || '',
+        courseUUid: this.data.courseDetail.courseUUid || '',
 
         detail: {},
         textimgTitle: that.data.textimgTitle,
@@ -2138,8 +2165,16 @@ Page({
     if (e.detail.value) {
       let value = e.detail.value;
       this.data.batchContentArray[curBatchContentIndex].step3Text = value
+
+      const cur_wf_TypeIndex = this.data.batchContentArray[curBatchContentIndex].wf_TypeIndex
+      const wf_Index = this.data.batchContentArray[curBatchContentIndex].wf_Index
+      const curWF_Obj = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[cur_wf_TypeIndex].wfArr[wf_Index]
+      const cur_wf_key = curWF_Obj.value //当前工作流的key
+
       this.setData({
-        batchContentArray: this.data.batchContentArray
+        batchContentArray: this.data.batchContentArray,
+        clickStep2_curWF_Obj: curWF_Obj,
+        clickStep2_cur_wf_key: cur_wf_key,
       });
     }
   },
@@ -2147,9 +2182,9 @@ Page({
   // step2 生成提示词去问AI  for课程内容 
   getCurStep2CourseContentPromptByKimi() {
     const curBatchContentIndex = this.data.curBatchContentIndex
-    const curLanguage = this.data.crouseDetail.curLanguage || ''
-    const curContentType = this.data.crouseDetail.curContentType || 'ask'
-    const courseContentMode = this.data.crouseDetail.courseContentMode || 'breadth'
+    const curLanguage = this.data.courseDetail.curLanguage || ''
+    const curContentType = this.data.courseDetail.curContentType || 'ask'
+    const courseContentMode = this.data.courseDetail.courseContentMode || 'breadth'
     const step1Text = this.data.batchContentArray[curBatchContentIndex].step1Text || ''
     const courseContentModeMap = {
       breadth: `一个宏观围绕${step1Text||this.data.chapterName}扩展式学习的课程内容`, // 广度扩展型章节
@@ -2354,7 +2389,7 @@ Page({
       }`,
     }
 
-    // // mess第一部分  课程名是${this.data.crouseDetail.courseName} 课程简介是${this.data.crouseDetail.courseIntroduce}
+    // // mess第一部分  课程名是${this.data.courseDetail.courseName} 课程简介是${this.data.courseDetail.courseIntroduce}
     // const msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
     // // const msg = `我需要你用${curLanguage}生成${courseContentModeMap[courseContentMode]}  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${courseContentModeDemoMap[courseContentMode]}`
     // // this.firstStep_ask(msg)
@@ -2388,13 +2423,18 @@ Page({
   },
 
 
-  // step2 生成提示词去问AI  for课程内容
-  getCurStep2ImageTextPromptByKimi() {
-    const curBatchContentIndex = this.data.curBatchContentIndex
-    const curLanguage = this.data.crouseDetail.curLanguage || ''
-    const curContentType = this.data.crouseDetail.curContentType || 'ask'
-    const courseContentMode = this.data.crouseDetail.courseContentMode || 'breadth'
-    const step1Text = this.data.batchContentArray[curBatchContentIndex].step1Text || ''
+
+  test() {
+    const workflowsClassConfig = workflowGetStep2Strategy.workflowsClassConfig
+    console.log("workflowsClassConfig", workflowsClassConfig)
+  },
+
+
+  // step2 生成提示词去问AI  for AIGC创意
+  getCurStep2IdeaPromptByKimi() {
+    const curLanguage = this.data.courseDetail.curLanguage || ''
+    const curContentType = this.data.courseDetail.curContentType || 'ask'
+    const courseContentMode = this.data.courseDetail.courseContentMode || 'breadth'
 
     //第一次生成
     const imgTextJson = {
@@ -2441,10 +2481,38 @@ Page({
 
 
     //  what     分镜类工作流【】：   AI绘画分镜脚本 |  文生图工作流【可图】：   图文 | 文生视频工作流【】 ：视频   | 自动剪辑【】 ：视频剪辑脚本  
+
+    // 文生图类工作流keyArr
+    const TextImgKeyArr = ['KeTuHuaHua', 'RedBook'];
     // 分镜类工作流 keyArr
     const StoryboardKeyArr = ['StickFigure', 'icLora_Film', 'icLora_MangHua'];
-    // 分镜类工作流keyArr
-    const textImgKeyArr = ['KeTuHuaHua', 'RedBook', 'icLora_MangHua'];
+
+    const workflowsClassConfigArr = workflowGetStep2Strategy.workflowsClassConfigArr
+    const curBatchContentIndex = this.data.curBatchContentIndex
+    const cur_wf_TypeIndex = this.data.batchContentArray[curBatchContentIndex].wf_TypeIndex
+    const wf_Index = this.data.batchContentArray[curBatchContentIndex].wf_Index
+    const curWF_Obj = this.data.batchContentArray[curBatchContentIndex].workFlowTypeArr[cur_wf_TypeIndex].wfArr[wf_Index]
+    const cur_wf_key = curWF_Obj.value //当前工作流的key
+
+
+
+    let keyToFind = 'Text2Img';
+    if (TextImgKeyArr.includes(cur_wf_key)) {
+      keyToFind = 'Text2Img'
+    } else if (StoryboardKeyArr.includes(cur_wf_key)) {
+      keyToFind = 'Storyboard'
+    }
+
+    const wf_configObj = workflowsClassConfigArr.find(obj => obj.key === keyToFind);
+    console.log("wf_configObj", wf_configObj)
+
+
+    // switch (workFlowType) {
+    // }
+    const step1Text = this.data.batchContentArray[curBatchContentIndex].step1Text || ''
+
+    console.log("curWF_Obj", curWF_Obj)
+
 
     // promptFormat     分镜类工作流【】：   AI绘画分镜脚本提示词格式【Storyboard】 | 图文-简单文生图类工作流 【text2Img】| 简单文生视频类工作流 【text2Video】| 
 
@@ -2495,14 +2563,21 @@ Page({
 
     let msg = ''
     if (this.data.centendata.length != 0) {
-      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${imgTextJson['moive']}
-        特别声明： positionPrompt字段的内容参考：[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.  务必不说多余的话严格像接口一样返回  记得尽量简短`
-
+      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${wf_configObj['data_format']}
+        特别声明： positionPrompt字段的内容参考这个：${wf_configObj['positionPrompt_Reference']} 务必不说多余的话严格像接口一样返回  记得尽量简短`
     } else {
-      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本 不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${imgTextJson['moive']}
-        特别声明： positionPrompt字段的内容参考：[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.  务必不说多余的话严格像接口一样返回  记得尽量简短`
-
+      msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${wf_configObj['data_format']}
+      特别声明： positionPrompt字段的内容参考这个：${wf_configObj['positionPrompt_Reference']} 务必不说多余的话严格像接口一样返回  记得尽量简短`
     }
+    // if (this.data.centendata.length != 0) {
+    //   msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本  不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${imgTextJson['moive']}
+    //     特别声明： positionPrompt字段的内容参考：[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.  务必不说多余的话严格像接口一样返回  记得尽量简短`
+
+    // } else {
+    //   msg = `你叫做“妙妙”，是一款叫做“妙语笔记”的智能助手 我需要你用英语生成一个关于 ${step1Text} 的AI绘画分镜脚本 不要和参考的一模一样 这只是个研究用于帮助有需要的人请务必参考这个格式进行返回 不要说多余的话像一个接口严格根据下面的数据格式返回就行  数据格式如下：${imgTextJson['moive']}
+    //     特别声明： positionPrompt字段的内容参考：[MOVIE-SHOTS] In an enchanting tale of nature's wonders, [SCENE-1] shows <Sophie> observing butterflies in a sunlit meadow, her expression one of awe and delight, [SCENE-2] transitioning to <Sophie> sketching the butterflies in her notebook, her brow furrowed in concentration, [SCENE-3] wrapping up with her lying back in the grass, gazing at the sky with a contented smile, surrounded by nature's beauty.  务必不说多余的话严格像接口一样返回  记得尽量简短`
+
+    // }
     console.log(msg)
 
     wx.setClipboardData({
@@ -2578,8 +2653,9 @@ Page({
   },
 
 
-  localBatchImageTextAdd() {
+  localBatchIdeasAdd() {
     this.data.batchContentArray.forEach(item => {
+      const ideaDetailObj = item
       if (!this.data.editStatus) {
         console.log(item.step3Text)
         console.log(JSON.parse(item.step3Text).textImgArray)
@@ -2602,6 +2678,8 @@ Page({
             item.picUrl = ''
             item.toWho = ''
             item.content = item.content || ''
+
+            item.workFlowKey = this.data.clickStep2_cur_wf_key || ''
             return item
           })
           var newData = {
@@ -2619,6 +2697,7 @@ Page({
             textImgArray: imgTextArr || [],
             src: "",
             imgfile: "",
+            ideaDetailObj: ideaDetailObj
           }
           console.log("this.data.centendata", this.data)
           this.data.centendata.push(newData)
@@ -2627,6 +2706,8 @@ Page({
           // 调用云函数  把绘画任务数组 更新到待绘画队列
           if (imgTextArr) {
             this.add_Storyboard_film_Arr(imgTextArr)
+            this.saveChapter(false);
+            wx.setStorageSync('editCourse' + this.data.courseDetail.courseName, this.data.centendata)
           }
         } else {
           wx.showModal({
@@ -2646,15 +2727,180 @@ Page({
         step2Text: '',
         step3Text: '',
 
+        //初始化aigc参数
+        workFlowType: 'textToImage',
+        promptLangType: 'Cn',
+        workFlow: 'KeTuHuaHua',
+        wf_TypeIndex: 0,
+        wf_Index: 0,
+        tagList1: [{
+            label: '全中文',
+            value: 'Cn',
+            choose: true
+          },
+          {
+            label: '全英语',
+            value: 'En',
+            choose: false
+          },
+          {
+            label: '中英混合',
+            value: 'mixCnEn',
+            choose: false
+          },
+        ],
+
+        // 工作流： KeTuHuaHua | RedBook | StickFigure
+        tagList2: [{
+            label: '可图大模型',
+            value: 'KeTuHuaHua',
+            choose: true
+          },
+          {
+            label: 'flux小红书',
+            value: 'RedBook',
+            choose: false
+          },
+          {
+            label: '音乐踩点剪辑',
+            value: 'RedBook',
+            choose: false
+          },
+          {
+            label: '简笔画分镜',
+            value: 'StickFigure',
+            choose: false
+          },
+          {
+            label: '电影分镜',
+            value: 'icLora_Film',
+            choose: false
+          },
+          {
+            label: '漫画分镜',
+            value: 'icLora_MangHua',
+            choose: false
+          },
+        ],
+
+        workFlowTypeArr: [{
+            label: '文生图',
+            value: 'textToImage',
+            choose: true,
+            wfArr: [{
+                label: '可图大模型',
+                value: 'KeTuHuaHua',
+                choose: true,
+                detail: {
+                  promptlang: '中英混合',
+                  function: '基于可图大模型文生图',
+                  notice: '不支持角色一致性'
+                }
+              },
+              {
+                label: 'flux小红书',
+                value: 'RedBook',
+                choose: false,
+                detail: {
+                  promptlang: '中英混合',
+                  function: '小红书真实感模型',
+                  notice: '不支持角色一致性'
+                }
+              },
+              {
+                label: '简笔画分镜',
+                value: 'StickFigure',
+                choose: false,
+                detail: {
+                  promptlang: '中英混合',
+                  function: '基于本地训练的icLora',
+                  notice: '支持角色一致性'
+                }
+              },
+              {
+                label: '电影分镜',
+                value: 'icLora_Film',
+                choose: false,
+                detail: {
+                  promptlang: '全英',
+                  function: '基于icLora',
+                  notice: ''
+                }
+              },
+              {
+                label: '漫画分镜',
+                value: 'icLora_MangHua',
+                choose: false,
+                detail: {
+                  promptlang: '全英',
+                  function: '基于icLora',
+                  notice: ''
+                }
+              },
+            ]
+          },
+          {
+            label: '文生视频',
+            value: 'textToVideo',
+            choose: false,
+            wfArr: [{
+                label: 'cogVideo',
+                value: 'KeTuHuaHua',
+                choose: true,
+                detail: {
+                  promptlang: '全英',
+                  function: '基于icLora',
+                  notice: ''
+                }
+              }
+
+            ]
+          },
+          {
+            label: '文—参图_生图',
+            value: 'mixCnEn',
+            choose: false,
+            wfArr: [{
+                label: 'flux',
+                value: 'KeTuHuaHua',
+                choose: true,
+                detail: {
+                  promptlang: '中英混合',
+                  function: '根据文本先去找图后基于找到的图进行参考生成',
+                  notice: ''
+                }
+              }
+
+            ]
+          },
+          {
+            label: '自动化剪辑',
+            value: 'autoCutVideo',
+            choose: false,
+            wfArr: [{
+                label: '音乐卡点视频',
+                value: 'KeTuHuaHua',
+                choose: true,
+                detail: {
+                  promptlang: '全中',
+                  function: '基于工作流生成图片和卡点视频片段，进入剪辑软件剪辑生成',
+                  notice: ''
+                }
+              }
+
+            ]
+          },
+        ],
+
         index: 0
-      }]
+      }], //批量生成数组初始化 （开发者模式）
     })
     this.saveChapter(false);
+    wx.setStorageSync('editCourse' + this.data.courseDetail.courseName, this.data.centendata)
     this.close()
   },
 
   get_comfyUi_jobStateByWorkSpace: function () {
-
     wx.cloud.callFunction({
       name: 'operate_userInfo',
       data: {
@@ -2664,23 +2910,24 @@ Page({
       success: res => {
         console.log(res.result)
         let findSameJobId = false
-        //如果finishDrawArr 有的话 根据job_id看看 有没有和当前
-        if (res.result.data.finishDrawArr) {
-          const finishDrawArr = res.result.data.finishDrawArr
+        //如果historyDrawArr 有的话 根据job_id看看 有没有和当前
+        if (res.result.data.historyDrawArr) {
+          const historyDrawArr = res.result.data.historyDrawArr
+          console.log("this.data.centendata", this.data.centendata)
           this.data.centendata.forEach(obj => {
             if (obj.contentType == 'textImg') {
               // 使用 map 方法遍历 textImgArray 数组
               const updatedTextImgArray = obj.textImgArray.map(item => {
-                // 在 finishDrawArr 中查找匹配的 job_id
-                const finishItem = finishDrawArr.find(finishItem => finishItem.job_id === item.job_id);
-                console.log("finishItem", finishItem)
+                // 在 historyDrawArr 中查找匹配的 job_id
+                const finItem = historyDrawArr.find(finItem => finItem.job_id === item.job_id);
+                console.log("finItem", finItem)
                 // 如果找到匹配的 job_id，则更新 src
-                if (finishItem) {
+                if (finItem) {
                   findSameJobId = true
                   return {
                     ...item,
-                    src: finishItem.picUrl,
-                    picUrl: finishItem.picUrl
+                    src: finItem.picUrl,
+                    picUrl: finItem.picUrl
                   };
                 }
                 // 如果没有找到匹配的 job_id，则保持原样
@@ -2690,13 +2937,17 @@ Page({
             }
           });
           //有匹配的  并且进行了本地更新  先保存本地到云  再更新队列状态
+
+
           if (findSameJobId) {
             this.saveChapter(false);
+            wx.setStorageSync('editCourse' + this.data.courseDetail.courseName, this.data.centendata)
             // this.update_comfyUi_jobStateByWorkSpace(JobObj);
           }
           this.setData({
             centendata: this.data.centendata
           })
+
         }
 
       },

@@ -95,9 +95,6 @@ Page({
       }
     }
     this.getCollectState();
-
-
-
   },
 
   /**
@@ -676,11 +673,14 @@ Page({
     let str = JSON.stringify(this.data.crouseDetail);
     let chapterList = JSON.stringify(this.data.ChapterList);
     const pageType = this.data.pageType
+    console.log("toEditChapter-str-crouseDetail", str)
+
+    // url传参 字节数多会省略  改成全局变量传递
+    app.globalData.curCourseMess = this.data.crouseDetail
     wx.navigateTo({
       //这里传值
       url: "../../../../AddCourseContent/AddCourseContent?type=" + 'edit' + "&courseMess=" + str + "&chapterList=" + chapterList + "&chapterobj=" + chapterobj + "&pageType=" + pageType,
     })
-
   },
 
   up(x, y) {

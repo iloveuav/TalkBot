@@ -508,12 +508,14 @@ exports.main = async (event, context) => {
       }
     }
   } else if (event.type === 'update_workSpace_anyTask') {
-
+    const {
+      objKey
+    } = event
     const operateType = event.operateType; //  add||update
     try {
       if (operateType === 'add' || operateType === 'reset') {
         db.collection('SurperAdmin').where({
-          objKey: 'forAutoTask'
+          objKey: objKey || 'forAutoTask'
         }).update({
           data: {
             [event.workspaceName]: {
@@ -693,6 +695,67 @@ exports.main = async (event, context) => {
         return mess
       }
     }
+  } else if (event.type === 'batch_move_anyWF_A2B') {
+    const {
+      workspaceName,
+      arrayA_key,
+      arrayB_key,
+      objKey
+    } = event
+
+    try {
+      // 获取工作空间的数据
+      const result = await db.collection('SurperAdmin').where({
+        objKey: objKey
+      }).get()
+
+      // 检查工作空间是否存在
+      if (result.data.length === 0) {
+        return {
+          success: false,
+          message: '工作空间不存在'
+        }
+      }
+
+      // 获取工作空间的数据对象
+      const workSpaceData = result.data[0][workspaceName]
+
+      // 检查数组A和数组B是否存在于工作空间数据中
+      if (!workSpaceData[arrayA_key] || !workSpaceData[arrayB_key]) {
+        return {
+          success: false,
+          message: '数组A或数组B不存在'
+        }
+      }
+
+      // 将数组A中的所有元素添加到数组B中
+      const updatedData = {
+        [workspaceName]: {
+          [arrayA_key]: [], // 清空数组A
+          [arrayB_key]: db.command.push(...workSpaceData[arrayA_key])
+        }
+      }
+
+      // 更新数据库中的数据
+      await db.collection('SurperAdmin').where({
+        objKey: objKey
+      }).update({
+        data: updatedData
+      })
+
+      // 返回成功消息
+      return {
+        success: true,
+        message: '搬运成功'
+      }
+    } catch (err) {
+      // 返回错误消息
+      return {
+        success: false,
+        message: `搬运失败：${err}`
+      }
+    }
+
   } else {
     return handleErr('无响应 请检查网络或联系管理员')
   }

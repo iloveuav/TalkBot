@@ -1,4 +1,6 @@
 // components/superAdmin/courseAudit.js
+var app = getApp();
+
 Component({
   /**
    * 组件的属性列表
@@ -56,6 +58,26 @@ Component({
       })
     },
 
+
+    toEditCourse(e) {
+      const courseDetail = this.data.courseInfo
+      let btnType = 'edit'
+      // let btnType = e.currentTarget.dataset.content
+      // let corseArray = this.data.corseArray;
+      // let currentSwiperIndex = this.data.currentSwiperIndex;
+      // const courseDetail = this.data.courseDetail
+      console.log("courseDetail", courseDetail)
+      let str = JSON.stringify(courseDetail);
+
+      //试着用全局变量传递参数
+      app.globalData.CurrentCourseObj = courseDetail
+      wx.navigateTo({
+        //这里传值
+        url: "../../../pages/courseCatalogue/index?btnType=" + btnType,
+        // url: "../../pages/courseCatalogue/index?courseMess=" + str + "&btnType=" + btnType,
+      })
+    },
+
     toCourse(e) {
       const courseDetail = this.data.courseInfo
       let CurrentChapter = {
@@ -71,6 +93,7 @@ Component({
         url: "../../../pages/courseBot/index?course=" + str + "&Cc=" + Cc,
       })
     },
+
     reload: function () {
       this.triggerEvent('Reload')
     },

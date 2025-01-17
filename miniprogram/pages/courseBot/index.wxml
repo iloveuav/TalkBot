@@ -111,6 +111,7 @@
           <!-- -----------------横向轮播卡片组件------------------------------------------ -->
           <view class="wordCard" wx-if="{{item.contentType === 'textImg'}}">
             <scroll-view>
+              <button class="aigcStep1" style="width:80vw;margin:0 auto; margin-bottom: 20rpx;" >{{item.ideaDetailObj.step1Text||'暂无'}}</button>
               <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" bindspeach="onTtsSpeach">
               </wordCard>
             </scroll-view>

@@ -4,6 +4,14 @@ page {
   background-color: #f7f7f7;
 }
 
+.historycon {
+  height: 85%;
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  margin-top: 20rpx;
+  border-top: 0px;
+}
 
 
 /* 聊天内容 */
@@ -225,6 +233,7 @@ button[disabled] {
 }
 
 
+
 .chatBubbles .bubbleContainer {
   display: inline-block;
   max-width: 60%;
@@ -369,7 +378,7 @@ button[disabled] {
 }
 
 .wordCard {
-
+  margin-top: 15rpx;
   margin-bottom: 60rpx;
 }
 
@@ -545,6 +554,15 @@ button[disabled] {
   color: rgba(0, 0, 0, 0.6);
   font-size: 0.7rem;
   width: 100%;
+
+}
+
+.aigcStep1 {
+  margin-top: 15rpx;
+  text-align: center;
+  font-size: 22rpx;
+  width: 100%;
+  /* border: 1px solid red; */
 }
 
 
@@ -571,7 +589,7 @@ button[disabled] {
   left: 15rpx;
   text-align: left;
   margin-top: 18rpx;
-  
+
   /* z-index: 888; */
 }
 

@@ -43,6 +43,7 @@ exports.main = async (event, context) => {
                 ChapterContentMap: {
                   [event.curChapterName]: {
                     contentType: null,
+                    lineArr:[]
                   }
                 }
               },

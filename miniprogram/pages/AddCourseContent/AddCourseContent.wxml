@@ -48,7 +48,8 @@
         <!-- -----------------横向轮播卡片组件------------------------------------------ -->
         <view class="wordCard" wx-if="{{item.textImgArray.length>0&&item.contentType==='textImg'}}">
           <scroll-view>
-            <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" bindspeach="onTtsSpeach">
+            <button class="tips" style="width:80vw;margin:0 auto; margin-bottom: 20rpx;" >{{item.ideaDetailObj.step1Text||''}}</button>
+            <wordCard allItem="{{item.textImgArray}}" data-curTTsRoleString="{{item.curTTsRoleString}}" ideaDetailObj="{{item.ideaDetailObj}}" bindspeach="onTtsSpeach">
             </wordCard>
           </scroll-view>
         </view>
@@ -154,7 +155,7 @@
 
   <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx" catchtap="addOneItemForBatchContent">新增内容项</button>
   <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
-  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchImageTextAdd">本地AIGC内容</button>
+  <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchAdd">本地AIGC内容</button>
   <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex<batchContentArray.length-1}}" catchtap="rightBatchContent" class="right_textimg" src="../../images/icon/right.png" alt="" />
 </view>
 <!-- ----------------设置AIGC内容参数区end--------------- -->
@@ -199,7 +200,7 @@
 
     <view class="setting_title" style="color: gray;">图文内容</view>
     <textarea maxlength="-1" bindinput='inputBatchContentStep1Text' style="max-width: 90%;margin-top: 20rpx;" class="modelBtn" confirm-type="done" value='{{batchContentArray[curBatchContentIndex].step1Text}}' placeholder="【step1】输入未被处理的文本 eg:场景人物概念大文本（自动识别是否是多个情景，多次出图）" placeholder-style="color:#318FFF;" />
-    <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 50rpx; background-color: #a6a9ad;" catchtap="getCurStep2ImageTextPromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
+    <button class="modelSubmitBtn" style="min-width: 500rpx;max-height: 50rpx; background-color: #a6a9ad;" catchtap="getCurStep2IdeaPromptByKimi">【step2】点击查看示例 并复制提示词到剪贴板</button>
     <!-- <textarea bindinput='inputBatchContentStep3Text' placeholder-style="color:#318FFF;" style="max-width: 90%;" class="modelBtn"
     value='{{batchContentArray[curBatchContentIndex].step3Text}}' placeholder="【step3】输入符合格式要求的文本（AI返回的） 系统将处理生成课程内容" /> -->
 
@@ -211,7 +212,7 @@
   <view style="height: 180rpx; width: 100%;">
     <button class="modelSubmitBtn" style="max-width:220rpx;width:220rpx;" catchtap="addOneItemForBatchContent">新增内容项</button>
     <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex>=1}}" catchtap="leftBatchContent" class="left_textimg" src="../../images/icon/left.png" alt="" />
-    <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchImageTextAdd">本地AIGC任务提交</button>
+    <button class="modelSubmitBtn" style="min-width: 160px;" catchtap="localBatchIdeasAdd">本地AIGC任务提交</button>
   </view>
   <image wx:if="{{batchContentArray.length>1&&curBatchContentIndex<batchContentArray.length-1}}" catchtap="rightBatchContent" class="right_textimg" src="../../images/icon/right.png" alt="" />
 </view>

@@ -1,5 +1,5 @@
 <!--components/superAdmin/courseAudit.wxml-->
-<view class="view_tupian_wenzi" catchtap="toCourse">
+<view class="view_tupian_wenzi" catchtap="toEditCourse">
   <view class="view_content">
     <image class="image_1" src="{{courseInfo.courseFrontImgUrl ? courseInfo.courseFrontImgUrl : '../../images/icon/defaultVisitor.png'}}" />
     <view class="view_wenzi2">
